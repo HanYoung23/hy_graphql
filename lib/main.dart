@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:letsgotrip/View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/View/InitPages/login_screen.dart';
 import 'package:letsgotrip/homepage.dart';
 
@@ -40,9 +41,13 @@ class MyApp extends StatelessWidget {
         designSize: Size(375, 667),
         // allowFontScaling: false,
         builder: () => FutureBuilder(
-              future: Future.delayed(Duration(seconds: 2)),
+              future: Future.delayed(Duration(seconds: 5)),
               builder: (context, snapshot) {
+                // if (snapshot.connectionState == ConnectionState.waiting) {
+                //   return Splash();
+                // } else {
                 return ScreenFilter();
+                // }
               },
             ));
   }
@@ -57,6 +62,7 @@ class ScreenFilter extends StatefulWidget {
 
 class _ScreenFilterState extends State<ScreenFilter> {
   String isAuth = "";
+  bool isFirstTime = false;
 
   @override
   void initState() {
@@ -65,10 +71,12 @@ class _ScreenFilterState extends State<ScreenFilter> {
 
   @override
   Widget build(BuildContext context) {
-    if (isAuth != "") {
-      return HomePage();
+    if (!isFirstTime) {
+      return AuthorityScreen();
     } else if (isAuth == "") {
       return LoginScreen();
+    } else if (isAuth != "") {
+      return HomePage();
     } else {
       return Splash();
     }
@@ -83,7 +91,9 @@ class Splash extends StatelessWidget {
       home: Container(
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().screenHeight,
-        color: Colors.white,
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/images/splash.png"))),
       ),
     );
   }
