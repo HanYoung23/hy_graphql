@@ -1,6 +1,8 @@
-import 'package:flowing/constants/common_value.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screen_util.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:letsgotrip/View/MainPages/location/location_screen.dart';
+import 'package:letsgotrip/View/MainPages/profile/profile_screen.dart';
+import 'package:letsgotrip/View/MainPages/store/store_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -12,67 +14,48 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<BottomNavigationBarItem> btmNavItems = [
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset(
-          "assets/images/home_filled.svg",
-          width: ScreenUtil().setSp(40),
+        activeIcon: Image.asset(
+          "assets/images/navigation_store.png",
+          width: ScreenUtil().setSp(54),
         ),
-        icon: SvgPicture.asset(
-          "assets/images/home.svg",
-          color: flowing_grey,
-          width: ScreenUtil().setSp(40),
-        ),
-        label: ("홈")),
+        icon: Image.asset(
+          "assets/images/navigation_store_grey.png",
+          width: ScreenUtil().setSp(54),
+        )),
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset(
-          "assets/images/search.svg",
-          color: flowing_color,
-          width: ScreenUtil().setSp(40),
+        activeIcon: Image.asset(
+          "assets/images/navigation_location.png",
+          width: ScreenUtil().setSp(54),
         ),
-        icon: SvgPicture.asset(
-          "assets/images/search.svg",
-          color: flowing_grey,
-          width: ScreenUtil().setSp(40),
-        ),
-        label: ("검색")),
+        icon: Image.asset(
+          "assets/images/navigation_location_grey.png",
+          width: ScreenUtil().setSp(54),
+        )),
     BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset(
-          "assets/images/basket_filled.svg",
-          width: ScreenUtil().setSp(40),
+        activeIcon: Image.asset(
+          "assets/images/navigation_profile.png",
+          width: ScreenUtil().setSp(54),
         ),
-        icon: SvgPicture.asset(
-          "assets/images/basket.svg",
-          color: flowing_grey,
-          width: ScreenUtil().setSp(40),
-        ),
-        label: ("장바구니")),
-    BottomNavigationBarItem(
-        activeIcon: SvgPicture.asset(
-          "assets/images/profile_filled.svg",
-          width: ScreenUtil().setSp(40),
-        ),
-        icon: SvgPicture.asset(
-          "assets/images/profile.svg",
-          color: flowing_grey,
-          width: ScreenUtil().setSp(40),
-        ),
-        label: ("마이페이지")),
+        icon: Image.asset(
+          "assets/images/navigation_profile_grey.png",
+          width: ScreenUtil().setSp(54),
+        )),
   ];
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
-    setState(() {
-      _selectedIndex = widget.screenNum;
-    });
+    // setState(() {
+    //   _selectedIndex = widget.screenNum;
+    // });
     super.initState();
   }
 
   static List<Widget> _screens = <Widget>[
-    MainScreen(),
-    SearchScreen(),
-    CartScreen(),
-    ProfileScreen(),
+    StoreScreen(),
+    LocationScreen(),
+    ProfileScreen()
   ];
 
   @override
@@ -86,10 +69,6 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
           items: btmNavItems,
-          unselectedItemColor: Colors.black26,
-          selectedItemColor: flowing_color,
-          selectedFontSize: ScreenUtil().setSp(font_xxs),
-          unselectedFontSize: ScreenUtil().setSp(font_xxs),
           currentIndex: _selectedIndex,
           onTap: _onBtmItemClick,
           showUnselectedLabels: true,

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:letsgotrip/View/InitPages/login_screen.dart';
 import 'package:letsgotrip/homepage.dart';
 
 void main() {
@@ -27,7 +28,7 @@ void main() {
       //   FirebaseAnalyticsObserver(analytics: analytics),
       // ],
       home: MyApp(),
-      theme: ThemeData(primarySwatch: Colors.white, fontFamily: 'Oxygen')));
+      theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Oxygen')));
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp]); //가로 기능 비활성
     return ScreenUtilInit(
-        designSize: Size(428, 926),
+        designSize: Size(375, 667),
         // allowFontScaling: false,
         builder: () => FutureBuilder(
               future: Future.delayed(Duration(seconds: 2)),
@@ -66,6 +67,8 @@ class _ScreenFilterState extends State<ScreenFilter> {
   Widget build(BuildContext context) {
     if (isAuth != "") {
       return HomePage();
+    } else if (isAuth == "") {
+      return LoginScreen();
     } else {
       return Splash();
     }
