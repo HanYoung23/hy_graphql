@@ -12,17 +12,12 @@ class AuthorityScreen extends StatelessWidget {
     var safePadding = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Color.fromRGBO(5, 138, 221, 1),
+      // backgroundColor: Colors.black,
       body: SafeArea(
         top: false,
         child: Column(
           children: [
-            Expanded(
-              child: Container(
-                color: Colors.white,
-                // width: ScreenUtil().screenWidth,
-                // height: ScreenUtil().setHeight(110),
-              ),
-            ),
+            // Expanded(child: Container(color: Colors.white)),
             Container(
               width: ScreenUtil().screenWidth,
               color: Colors.white,
@@ -33,7 +28,7 @@ class AuthorityScreen extends StatelessWidget {
                 children: [
                   Container(
                       margin: EdgeInsets.only(
-                          top: ScreenUtil().setHeight(safePadding)),
+                          top: ScreenUtil().setHeight(safePadding + 93)),
                       child: Image.asset("assets/images/authority_title.png",
                           width: ScreenUtil().setSp(225),
                           height: ScreenUtil().setSp(36))),
@@ -131,25 +126,23 @@ class AuthorityScreen extends StatelessWidget {
                         ],
                       )
                     ],
-                  )
+                  ),
+                  SizedBox(height: ScreenUtil().setHeight(111)),
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                color: Colors.white,
-                // width: ScreenUtil().screenWidth,
-                // height: ScreenUtil().setHeight(110),
-              ),
-            ),
+            // Expanded(child: Container(color: Colors.white)),
             InkWell(
               onTap: () {
                 Get.offAll(() => WalkthroughScreen());
               },
-              child: Image.asset(
-                "assets/images/authority_confirm_button.png",
+              child: Container(
                 width: ScreenUtil().screenWidth,
                 height: ScreenUtil().setHeight(54),
+                color: Color.fromRGBO(5, 138, 221, 1),
+                child: Image.asset(
+                  "assets/images/authority_confirm_button.png",
+                ),
               ),
             )
           ],
