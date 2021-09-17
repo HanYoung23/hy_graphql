@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:letsgotrip/Controller/permission_controller.dart';
 import 'package:letsgotrip/View/InitPages/login_screen.dart';
+import 'package:letsgotrip/constants/common_value.dart';
 
 class WalkthroughScreen extends StatefulWidget {
   const WalkthroughScreen({Key key}) : super(key: key);
@@ -16,16 +18,16 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
 
   @override
   void initState() {
-    
+    checkNotificationPermission();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Container(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Container(
             margin: EdgeInsets.symmetric(
                 horizontal:
                     currentScreenIndex != 2 ? ScreenUtil().setWidth(20) : 0,
@@ -43,6 +45,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
     return Column(
       children: [
         Row(children: [
+          Icon(Icons.arrow_back,
+              size: ScreenUtil().setSp(arrow_back_size),
+              color: Colors.transparent),
           Spacer(),
           InkWell(
             onTap: () {
@@ -67,11 +72,11 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             height: ScreenUtil().setHeight(54)),
         SizedBox(height: ScreenUtil().setHeight(47)),
         Container(
-            width: ScreenUtil().setWidth(335),
-            // height: ScreenUtil().setHeight(190),
+            width: ScreenUtil().setSp(340),
+            height: ScreenUtil().setSp(190),
             child: Image.asset(
               "assets/images/walkthroughFirst/photo.png",
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             )),
         Spacer(),
         InkWell(
@@ -82,8 +87,8 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             },
             child: Image.asset(
               "assets/images/walkthroughFirst/next_button.png",
-              width: ScreenUtil().screenWidth,
-              // height: ScreenUtil().setHeight(50)
+              width: ScreenUtil().setWidth(335),
+              height: ScreenUtil().setHeight(50),
             ))
       ],
     );
@@ -102,7 +107,8 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                       currentScreenIndex = 1;
                     });
                   },
-                  child: Icon(Icons.arrow_back, size: ScreenUtil().setSp(28))),
+                  child: Icon(Icons.arrow_back,
+                      size: ScreenUtil().setSp(arrow_back_size))),
               Spacer(),
               InkWell(
                 onTap: () {
@@ -132,8 +138,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         Container(
             child: Image.asset(
           "assets/images/walkthroughSecond/photo.png",
-          width: ScreenUtil().screenWidth,
-          height: ScreenUtil().setHeight(270),
+          width: ScreenUtil().setSp(375),
+          // width: ScreenUtil().screenWidth,
+          height: ScreenUtil().setSp(220),
           fit: BoxFit.fill,
         )),
         Spacer(),
@@ -146,10 +153,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               });
             },
             child: Image.asset(
-              "assets/images/walkthroughSecond/next_button.png",
-              width: ScreenUtil().screenWidth,
-              // height: ScreenUtil().setHeight(50)
-            ),
+                "assets/images/walkthroughSecond/next_button.png",
+                width: ScreenUtil().setWidth(335),
+                height: ScreenUtil().setHeight(50)),
           ),
         ),
       ],
@@ -167,7 +173,8 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                     currentScreenIndex = 2;
                   });
                 },
-                child: Icon(Icons.arrow_back, size: ScreenUtil().setSp(28))),
+                child: Icon(Icons.arrow_back,
+                    size: ScreenUtil().setSp(arrow_back_size))),
             Spacer(),
           ],
         ),
@@ -184,11 +191,11 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             width: ScreenUtil().setWidth(300),
             height: ScreenUtil().setHeight(102)),
         Container(
-            // width: ScreenUtil().setWidth(305),
-            height: ScreenUtil().setHeight(250),
+            width: ScreenUtil().setSp(305),
+            height: ScreenUtil().setSp(250),
             child: Image.asset(
               "assets/images/walkthroughThird/photo.png",
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             )),
         Spacer(),
         InkWell(
@@ -197,11 +204,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               Get.to(() => LoginScreen());
             });
           },
-          child: Image.asset(
-            "assets/images/walkthroughThird/start_button.png",
-            width: ScreenUtil().screenWidth,
-            // height: ScreenUtil().setHeight(50)
-          ),
+          child: Image.asset("assets/images/walkthroughThird/start_button.png",
+              width: ScreenUtil().setWidth(335),
+              height: ScreenUtil().setHeight(50)),
         ),
       ],
     );
