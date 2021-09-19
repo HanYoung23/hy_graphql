@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:letsgotrip/View/MainPages/location/location_screen.dart';
+import 'package:letsgotrip/View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/View/MainPages/profile/profile_screen.dart';
 import 'package:letsgotrip/View/MainPages/store/store_screen.dart';
 
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
 
   static List<Widget> _screens = <Widget>[
     StoreScreen(),
-    LocationScreen(),
+    MapScreen(),
     ProfileScreen()
   ];
 

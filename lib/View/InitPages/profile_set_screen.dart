@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:letsgotrip/View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 
 class ProfileSetScreen extends StatefulWidget {
@@ -85,8 +86,9 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                 ]),
                 SizedBox(height: ScreenUtil().setHeight(5)),
                 Container(
-                    width: ScreenUtil().setWidth(335),
-                    height: ScreenUtil().setHeight(44),
+                    // width: ScreenUtil().setWidth(335),
+                    // height: ScreenUtil().setHeight(44),
+                    alignment: Alignment.bottomLeft,
                     child: TextFormField(
                       controller: nicknameController,
                       cursorColor: Colors.black,
@@ -98,6 +100,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                         });
                       },
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 0, horizontal: ScreenUtil().setSp(10)),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: currentColor),
                         ),
@@ -105,8 +109,9 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                           borderSide: BorderSide(color: Colors.black),
                         ),
                         hintText: '별명을 입력해주세요',
-                        hintStyle:
-                            TextStyle(color: Color.fromRGBO(188, 192, 193, 1)),
+                        hintStyle: TextStyle(
+                            color: Color.fromRGBO(188, 192, 193, 1),
+                            fontSize: ScreenUtil().setSp(14)),
                         suffixIcon: InkWell(
                           onTap: () {
                             // 서버 통신해서 결과별로 state 다르게 설정, 특수문자 유효성 추가
@@ -168,22 +173,29 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                   ],
                 ),
                 Spacer(),
-                Container(
-                  width: ScreenUtil().setWidth(335),
-                  padding: EdgeInsets.symmetric(
-                      vertical: ScreenUtil().setHeight(13)),
-                  decoration: BoxDecoration(
-                      color: nicknameController.text.length > 2
-                          ? Color.fromRGBO(5, 138, 221, 1)
-                          : Color.fromRGBO(5, 138, 221, 0.3),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Center(
-                    child: Text(
-                      "회원가입 완료",
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(16),
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                InkWell(
+                  onTap: () {
+                    nicknameController.text.length > 2
+                        ? Get.to(() => MapScreen())
+                        : null;
+                  },
+                  child: Container(
+                    width: ScreenUtil().setWidth(335),
+                    padding: EdgeInsets.symmetric(
+                        vertical: ScreenUtil().setHeight(13)),
+                    decoration: BoxDecoration(
+                        color: nicknameController.text.length > 2
+                            ? Color.fromRGBO(5, 138, 221, 1)
+                            : Color.fromRGBO(5, 138, 221, 0.3),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        "회원가입 완료",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(16),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 )

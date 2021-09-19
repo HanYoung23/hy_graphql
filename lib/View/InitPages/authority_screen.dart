@@ -11,7 +11,7 @@ class AuthorityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var safePadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(5, 138, 221, 1),
+      // backgroundColor: Color.fromRGBO(5, 138, 221, 1),
       // backgroundColor: Colors.black,
       body: SafeArea(
         top: false,
@@ -127,11 +127,11 @@ class AuthorityScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: ScreenUtil().setHeight(111)),
+                  // SizedBox(height: ScreenUtil().setHeight(111)),
                 ],
               ),
             ),
-            // Expanded(child: Container(color: Colors.white)),
+            Expanded(child: Container(color: Colors.white)),
             InkWell(
               onTap: () {
                 Get.offAll(() => WalkthroughScreen());

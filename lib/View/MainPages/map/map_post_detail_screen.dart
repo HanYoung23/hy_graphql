@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class LocationAddressScreen extends StatelessWidget {
-  const LocationAddressScreen({Key key}) : super(key: key);
+class MapPostDetailScreen extends StatelessWidget {
+  const MapPostDetailScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
