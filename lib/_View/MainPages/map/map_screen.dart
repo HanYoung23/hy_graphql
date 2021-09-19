@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,19 +6,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/user_location.dart';
+import 'package:letsgotrip/widgets/google_map_container.dart';
+import 'package:rect_getter/rect_getter.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  const MapScreen({
+    Key key,
+  }) : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
+  var containerKey = RectGetter.createGlobalKey();
+  var screenCoord;
+
   bool isLeftTap = true;
   bool isPermission = true;
   bool isMapLoading = true;
-  Position? userPosition;
+  Position userPosition;
 
   @override
   void initState() {
@@ -126,9 +130,17 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ),
                   SizedBox(width: ScreenUtil().setWidth(59)),
-                  Image.asset("assets/images/locationTap/calender_button.png",
-                      width: ScreenUtil().setSp(28),
-                      height: ScreenUtil().setSp(28)),
+                  InkWell(
+                    onTap: () {
+                      // var asdf =
+                      //     screenCoord = RectGetter.getRectFromKey(containerKey);
+                      // print("🚨🚨 $asdf");
+                    },
+                    child: Image.asset(
+                        "assets/images/locationTap/calender_button.png",
+                        width: ScreenUtil().setSp(28),
+                        height: ScreenUtil().setSp(28)),
+                  ),
                 ],
               ),
             ),
@@ -136,7 +148,11 @@ class _MapScreenState extends State<MapScreen> {
                 ? Visibility(
                     visible: isMapLoading ? false : true,
                     child: Expanded(
-                        child: GoogleMapContainer(userPosition: userPosition)))
+                        child: Container(
+                            key: containerKey,
+                            child: GoogleMapContainer(
+                                userPosition: userPosition,
+                                screenCoord: screenCoord))))
                 : Expanded(
                     child: Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
             isMapLoading
@@ -151,41 +167,6 @@ class _MapScreenState extends State<MapScreen> {
                 : Container(),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class GoogleMapContainer extends StatefulWidget {
-  final userPosition;
-  const GoogleMapContainer({Key? key, @required this.userPosition})
-      : super(key: key);
-
-  @override
-  _GoogleMapContainerState createState() => _GoogleMapContainerState();
-}
-
-class _GoogleMapContainerState extends State<GoogleMapContainer> {
-  Completer<GoogleMapController> _controller = Completer();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(
-              widget.userPosition.latitude, widget.userPosition.longitude),
-          zoom: 13,
-        ),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
       ),
     );
   }

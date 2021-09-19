@@ -7,7 +7,9 @@ import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 
 class WalkthroughScreen extends StatefulWidget {
-  const WalkthroughScreen({Key? key}) : super(key: key);
+  const WalkthroughScreen({
+    Key key,
+  }) : super(key: key);
 
   @override
   _WalkthroughScreenState createState() => _WalkthroughScreenState();

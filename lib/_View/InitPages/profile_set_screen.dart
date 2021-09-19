@@ -6,7 +6,9 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
 
 class ProfileSetScreen extends StatefulWidget {
-  const ProfileSetScreen({Key? key}) : super(key: key);
+  const ProfileSetScreen({
+    Key key,
+  }) : super(key: key);
 
   @override
   _ProfileSetScreenState createState() => _ProfileSetScreenState();

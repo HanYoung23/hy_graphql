@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:letsgotrip/_View/InitPages/walkthrough_screen.dart';
 
 class AuthorityScreen extends StatelessWidget {
-  const AuthorityScreen({Key? key}) : super(key: key);
+  const AuthorityScreen({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

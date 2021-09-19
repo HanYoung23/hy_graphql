@@ -54,7 +54,9 @@ class MyApp extends StatelessWidget {
 }
 
 class ScreenFilter extends StatefulWidget {
-  const ScreenFilter({Key? key}) : super(key: key);
+  const ScreenFilter({
+    Key key,
+  }) : super(key: key);
 
   @override
   _ScreenFilterState createState() => _ScreenFilterState();
