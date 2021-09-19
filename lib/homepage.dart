@@ -15,31 +15,40 @@ class _HomePageState extends State<HomePage> {
   List<BottomNavigationBarItem> btmNavItems = [
     BottomNavigationBarItem(
         activeIcon: Image.asset(
-          "assets/images/navigation_store.png",
-          width: ScreenUtil().setSp(54),
+          "assets/images/nav_store.png",
+          width: ScreenUtil().setSp(30),
+          height: ScreenUtil().setSp(30),
         ),
         icon: Image.asset(
-          "assets/images/navigation_store_grey.png",
-          width: ScreenUtil().setSp(54),
-        )),
+          "assets/images/nav_store_grey.png",
+          width: ScreenUtil().setSp(30),
+          height: ScreenUtil().setSp(30),
+        ),
+        label: "스토어"),
     BottomNavigationBarItem(
         activeIcon: Image.asset(
-          "assets/images/navigation_location.png",
-          width: ScreenUtil().setSp(54),
+          "assets/images/nav_location.png",
+          width: ScreenUtil().setSp(30),
+          height: ScreenUtil().setSp(30),
         ),
         icon: Image.asset(
-          "assets/images/navigation_location_grey.png",
-          width: ScreenUtil().setSp(54),
-        )),
+          "assets/images/nav_location_grey.png",
+          width: ScreenUtil().setSp(30),
+          height: ScreenUtil().setSp(30),
+        ),
+        label: "장소"),
     BottomNavigationBarItem(
         activeIcon: Image.asset(
-          "assets/images/navigation_profile.png",
-          width: ScreenUtil().setSp(54),
+          "assets/images/nav_profile.png",
+          width: ScreenUtil().setSp(30),
+          height: ScreenUtil().setSp(30),
         ),
         icon: Image.asset(
-          "assets/images/navigation_profile_grey.png",
-          width: ScreenUtil().setSp(54),
-        )),
+          "assets/images/nav_profile_grey.png",
+          width: ScreenUtil().setSp(30),
+          height: ScreenUtil().setSp(30),
+        ),
+        label: "마이페이지"),
   ];
 
   int _selectedIndex = 1;

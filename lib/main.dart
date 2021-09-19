@@ -71,15 +71,16 @@ class _ScreenFilterState extends State<ScreenFilter> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isFirstTime) {
-      return AuthorityScreen();
-    } else if (isAuth == "") {
-      return LoginScreen();
-    } else if (isAuth != "") {
-      return HomePage();
-    } else {
-      return Splash();
-    }
+    // if (!isFirstTime) {
+    //   return AuthorityScreen();
+    // } else if (isAuth == "") {
+    //   return LoginScreen();
+    // } else if (isAuth != "") {
+    //   return HomePage();
+    // } else {
+    //   return Splash();
+    // }
+    return HomePage();
   }
 }
 

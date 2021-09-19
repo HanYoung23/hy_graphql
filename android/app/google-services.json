@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "233304968404",
+    "project_id": "letsgotrip-bdb1c",
+    "storage_bucket": "letsgotrip-bdb1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233304968404:android:fdb615d007a188dc8ebf41",
+        "android_client_info": {
+          "package_name": "com.example.letsgotrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233304968404-8v8b72htcjg4iaq80t7u8k2bh1pafl1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu3YVq2RgMnttAskzWYTufv04So8nzY14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233304968404-8v8b72htcjg4iaq80t7u8k2bh1pafl1b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "233304968404-khu6akja9ikp3a62uao6k8cjk4k8o2v5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.letsgotrip"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

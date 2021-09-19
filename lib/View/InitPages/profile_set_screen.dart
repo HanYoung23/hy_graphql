@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:letsgotrip/View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/homepage.dart';
 
 class ProfileSetScreen extends StatefulWidget {
   const ProfileSetScreen({Key key}) : super(key: key);
@@ -175,9 +175,10 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                 Spacer(),
                 InkWell(
                   onTap: () {
-                    nicknameController.text.length > 2
-                        ? Get.to(() => MapScreen())
-                        : null;
+                    // nicknameController.text.length > 2
+                    //     ? Get.offAll(() => HomePage())
+                    //     : null;
+                    Get.offAll(() => HomePage());
                   },
                   child: Container(
                     width: ScreenUtil().setWidth(335),
