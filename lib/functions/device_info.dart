@@ -10,7 +10,7 @@ Future getDeviceInfo() async {
   Map<String, dynamic> deviceData = <String, dynamic>{};
 
   var getUuid = Uuid().v4();
-  String osName; // ios or android or test
+  String osName = ""; // ios or android or test
   String osVersion;
   String model;
   String appVersion;

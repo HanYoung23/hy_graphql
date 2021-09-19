@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:letsgotrip/View/MainPages/map/map_screen.dart';
-import 'package:letsgotrip/View/MainPages/profile/profile_screen.dart';
-import 'package:letsgotrip/View/MainPages/store/store_screen.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
+import 'package:letsgotrip/_View/MainPages/profile/profile_screen.dart';
+import 'package:letsgotrip/_View/MainPages/store/store_screen.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();

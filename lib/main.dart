@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:letsgotrip/View/InitPages/authority_screen.dart';
-import 'package:letsgotrip/View/InitPages/login_screen.dart';
+import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
+import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/homepage.dart';
 
 void main() {
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
 }
 
 class ScreenFilter extends StatefulWidget {
-  const ScreenFilter({Key key}) : super(key: key);
+  const ScreenFilter({Key? key}) : super(key: key);
 
   @override
   _ScreenFilterState createState() => _ScreenFilterState();

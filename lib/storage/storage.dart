@@ -21,7 +21,7 @@ Future<void> deleteAllUserData() async {
 }
 
 Future seeValue(String key) async {
-  String value = await storage.read(key: key);
+  String? value = await storage.read(key: key);
   print("🌕 see $key : $value");
   return value;
 }
