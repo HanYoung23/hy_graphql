@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
-import 'package:rect_getter/rect_getter.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({
@@ -19,9 +17,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  var containerKey = RectGetter.createGlobalKey();
-  var screenCoord;
-
   bool isLeftTap = true;
   bool isPermission = true;
   bool isMapLoading = true;
@@ -58,7 +53,6 @@ class _MapScreenState extends State<MapScreen> {
                   vertical: ScreenUtil().setSp(8),
                   horizontal: ScreenUtil().setSp(20)),
               child: Row(
-                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.asset("assets/images/hamburger_button.png",
                       width: ScreenUtil().setSp(28),
@@ -131,11 +125,7 @@ class _MapScreenState extends State<MapScreen> {
                   ),
                   SizedBox(width: ScreenUtil().setWidth(59)),
                   InkWell(
-                    onTap: () {
-                      // var asdf =
-                      //     screenCoord = RectGetter.getRectFromKey(containerKey);
-                      // print("🚨🚨 $asdf");
-                    },
+                    onTap: () {},
                     child: Image.asset(
                         "assets/images/locationTap/calender_button.png",
                         width: ScreenUtil().setSp(28),
@@ -148,11 +138,7 @@ class _MapScreenState extends State<MapScreen> {
                 ? Visibility(
                     visible: isMapLoading ? false : true,
                     child: Expanded(
-                        child: Container(
-                            key: containerKey,
-                            child: GoogleMapContainer(
-                                userPosition: userPosition,
-                                screenCoord: screenCoord))))
+                        child: GoogleMapContainer(userPosition: userPosition)))
                 : Expanded(
                     child: Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
             isMapLoading

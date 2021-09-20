@@ -3,33 +3,38 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/widgets/graphql_config.dart';
 
 void main() {
-  runApp(GetMaterialApp(
-      builder: (context, child) {
-        return MediaQuery(
-          child: child,
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-        );
-      }, // text size fix
-      localizationsDelegates: [
-        //  LocalizationsDelegateClass(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ], // for datepicker korean
-      supportedLocales: [
-        const Locale('ko', 'KO'),
-        const Locale('en', 'US'),
-      ], // for datepicker korean
-      debugShowCheckedModeBanner: false,
-      // navigatorObservers: [
-      //   FirebaseAnalyticsObserver(analytics: analytics),
-      // ],
-      home: MyApp(),
-      theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Oxygen')));
+  runApp(GraphQLProvider(
+    client: GraphQlConfig.initClient(),
+    child: GetMaterialApp(
+        builder: (context, child) {
+          return MediaQuery(
+            child: child,
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          );
+        }, // text size fix
+        localizationsDelegates: [
+          //  LocalizationsDelegateClass(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ], // for datepicker korean
+        supportedLocales: [
+          const Locale('ko', 'KO'),
+          const Locale('en', 'US'),
+        ], // for datepicker korean
+        debugShowCheckedModeBanner: false,
+        // navigatorObservers: [
+        //   FirebaseAnalyticsObserver(analytics: analytics),
+        // ],
+        home: MyApp(),
+        theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Oxygen')),
+  ));
 }
 
 class MyApp extends StatelessWidget {

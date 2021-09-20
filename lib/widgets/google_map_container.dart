@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:letsgotrip/server/server_map_photos.dart';
 
 class GoogleMapContainer extends StatefulWidget {
   final Position userPosition;
-  final ScreenCoordinate screenCoord;
-  const GoogleMapContainer(
-      {Key key, @required this.userPosition, @required this.screenCoord})
+  const GoogleMapContainer({Key key, @required this.userPosition})
       : super(key: key);
 
   @override
@@ -19,35 +18,35 @@ class GoogleMapContainer extends StatefulWidget {
 
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _controller = Completer();
-  var _googleMapController = GoogleMapsController();
-
-  static final CameraPosition _currentPosition = CameraPosition(
-    target: LatLng(41.456038, 15.777665),
-  );
-
-  Future<void> _goToCurrentPosition() async {
-    final GoogleMapController controller = await _controller.future;
-    controller
-        .animateCamera(CameraUpdate.newCameraPosition(_currentPosition))
-        .then((_) async {
-      await controller.getVisibleRegion().then((value) {
-        print("🚨 southwest.latitude: " + value.southwest.latitude.toString());
-        print(
-            "🚨 southwest.longitude: " + value.southwest.longitude.toString());
-        print("🚨 northeast.latitude: " + value.northeast.latitude.toString());
-        print(
-            "🚨 northeast.longitude: " + value.northeast.longitude.toString());
-      });
-    });
-  }
+  // var _googleMapController = GoogleMapsController();
 
   @override
   void initState() {
     super.initState();
   }
 
+  Future<void> _goToCurrentPosition() async {
+    final GoogleMapController controller = await _controller.future;
+    await controller.getVisibleRegion().then((lntlngBounds) {
+      postServerMapPhotos(context, lntlngBounds);
+      print("🚨 southwest.latitude: " +
+          lntlngBounds.southwest.latitude.toString());
+      print("🚨 southwest.longitude: " +
+          lntlngBounds.southwest.longitude.toString());
+      print("🚨 northeast.latitude: " +
+          lntlngBounds.northeast.latitude.toString());
+      print("🚨 northeast.longitude: " +
+          lntlngBounds.northeast.longitude.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final CameraPosition _currentPosition = CameraPosition(
+      target:
+          LatLng(widget.userPosition.latitude, widget.userPosition.longitude),
+    );
+
     return Stack(
       children: [
         Positioned(
@@ -66,20 +65,27 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             ),
           ),
         ),
-        // Positioned(
-        //   top: 0,
-        //   child: InkWell(
-        //     onTap: () {
-        //       _goToCurrentPosition();
-        //     },
-        //     child: Container(
-        //       color: Colors.amber,
-        //       height: 100,
-        //       width: 100,
-        //     ),
-        //   ),
-        // )
+        Positioned(
+          top: 0,
+          child: InkWell(
+            onTap: () {
+              _goToCurrentPosition();
+            },
+            child: Container(
+              color: Colors.amber,
+              height: 100,
+              width: 100,
+            ),
+          ),
+        )
       ],
     );
   }
 }
+
+// I/flutter (13306): 🚨 southwest.latitude: 37.24570368093961
+// I/flutter (13306): 🚨 southwest.longitude: 127.01033771038055
+// I/flutter (13306): 🚨 northeast.latitude: 37.313451887073825
+// I/Counters(13306): exceeded sample count in FrameTime
+// I/flutter (13306): 🚨 northeast.longitude: 127.07213547080755
+
