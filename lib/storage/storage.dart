@@ -1,6 +1,4 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get.dart';
-import 'package:letsgotrip/server/server_auth.dart';
 
 final storage = new FlutterSecureStorage();
 

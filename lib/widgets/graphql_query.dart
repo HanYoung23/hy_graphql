@@ -1,8 +1,9 @@
 class Queries {
   static final String mapPhotos = """
-    query mapPhotos(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!) {
-      mapPhotos(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2) {
-        results {
+    query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!) {
+      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2) 
+      {
+        
           contents_id
           category_id
           contents_title
@@ -18,7 +19,7 @@ class Queries {
           latitude
           longitude
         }
-      }
+      
     }
 """;
 }
