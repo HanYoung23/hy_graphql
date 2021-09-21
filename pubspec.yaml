@@ -36,6 +36,7 @@ dependencies:
   geolocator: ^7.6.2
   # rect_getter: ^1.0.0
   graphql_flutter: ^5.0.0
+  fluster: ^1.2.0
 # common
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.0.0+2

@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/functions/google_map_functions.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
+import 'package:http/http.dart' as http;
 
 class GoogleMapContainer extends StatefulWidget {
   final Position userPosition;
@@ -21,14 +24,34 @@ class GoogleMapContainer extends StatefulWidget {
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController mapController;
-
   LatLngBounds latlngBounds;
+  BitmapDescriptor icon;
+
+  Future imageToByte(String imageUrl) async {
+    Uint8List bytes =
+        (await NetworkAssetBundle(Uri.parse(imageUrl)).load(imageUrl))
+            .buffer
+            .asUint8List();
+    print("🚨 $bytes");
+    return bytes;
+
+    // http.Response response = await http.get(Uri.parse("${imageList[0]}"));
+    // print("🚨🚨🚨 ${response.bodyBytes}");
+    // return response.bodyBytes;
+  }
 
   @override
   void initState() {
     getMapCoord().then((value) {
       setState(() {
         latlngBounds = value;
+      });
+    });
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(), 'assets/images/locationTap/map_pin.png')
+        .then((value) {
+      setState(() {
+        icon = value;
       });
     });
     super.initState();
@@ -66,11 +89,19 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               double.parse("${result.data["photo_list_map"][i]["latitude"]}");
           double markerLng =
               double.parse("${result.data["photo_list_map"][i]["longitude"]}");
-
+          // String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
+          // List<String> imageList = imageUrl.split(",");
+          // imageToByte(imageList[0]).then((imageByte) {
+          //   print("🚨 asdf : $imageByte");
+          // });
+          // mapMarkers.add(Marker(
+          //       markerId: MarkerId("$markerId"),
+          //       position: LatLng(markerLat, markerLng),
+          //       icon: BitmapDescriptor.fromBytes(imageByte)));
           mapMarkers.add(Marker(
-            markerId: MarkerId("$markerId"),
-            position: LatLng(markerLat, markerLng),
-          ));
+              markerId: MarkerId("$markerId"),
+              position: LatLng(markerLat, markerLng),
+              icon: icon));
         }
 
         return GoogleMap(
@@ -80,9 +111,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
           onMapCreated: (mapController) {
             _controller.complete(mapController);
           },
-          onCameraMove: (_) {
-            print("🚨🚨 screen moved");
-          },
+          // onCameraMove: (_) {
+          //   print("🚨🚨 screen moved");
+          // },
           markers: Set.from(mapMarkers),
         );
       },
