@@ -1,40 +1,56 @@
 {
   "project_info": {
-    "project_number": "233304968404",
-    "project_id": "letsgotrip-bdb1c",
-    "storage_bucket": "letsgotrip-bdb1c.appspot.com"
+    "project_number": "186240661139",
+    "project_id": "letsgotrip-819ae",
+    "storage_bucket": "letsgotrip-819ae.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:233304968404:android:fdb615d007a188dc8ebf41",
+        "mobilesdk_app_id": "1:186240661139:android:c5005b30e044b5e5a53f66",
         "android_client_info": {
-          "package_name": "com.example.letsgotrip"
+          "package_name": "com.jjang.letsgotrip"
         }
       },
       "oauth_client": [
         {
-          "client_id": "233304968404-8v8b72htcjg4iaq80t7u8k2bh1pafl1b.apps.googleusercontent.com",
+          "client_id": "186240661139-55oqb92j97de1fkg2p4nu6ps2f42p344.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjang.letsgotrip",
+            "certificate_hash": "b6f17770a544cdc1ca61a0cd4e742a20bb1e9a07"
+          }
+        },
+        {
+          "client_id": "186240661139-q11vos72obdr7d0sguvpqpnm0tpcouud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjang.letsgotrip",
+            "certificate_hash": "5d6b7cc6b3f35fbef47807a0dd492e7da1446abf"
+          }
+        },
+        {
+          "client_id": "186240661139-dlk0ll9b6oa7lc402grj7681mmvv4hl6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAu3YVq2RgMnttAskzWYTufv04So8nzY14"
+          "current_key": "AIzaSyAleH8TWLFpVTx42z-j_F2q_ttxSHBl6oM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "233304968404-8v8b72htcjg4iaq80t7u8k2bh1pafl1b.apps.googleusercontent.com",
+              "client_id": "186240661139-dlk0ll9b6oa7lc402grj7681mmvv4hl6.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "233304968404-khu6akja9ikp3a62uao6k8cjk4k8o2v5.apps.googleusercontent.com",
+              "client_id": "186240661139-5s4o42023hk36dbcplj936cf8t2gsob5.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.letsgotrip"
+                "bundle_id": "com.jjang.letsgotrip"
               }
             }
           ]

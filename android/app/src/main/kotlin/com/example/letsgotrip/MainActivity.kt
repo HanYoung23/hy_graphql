@@ -1,4 +1,4 @@
-package com.example.letsgotrip
+package com.jjang.letsgotrip
 
 import io.flutter.embedding.android.FlutterActivity
 

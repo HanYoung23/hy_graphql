@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>233304968404-khu6akja9ikp3a62uao6k8cjk4k8o2v5.apps.googleusercontent.com</string>
+	<string>186240661139-5s4o42023hk36dbcplj936cf8t2gsob5.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.233304968404-khu6akja9ikp3a62uao6k8cjk4k8o2v5</string>
+	<string>com.googleusercontent.apps.186240661139-5s4o42023hk36dbcplj936cf8t2gsob5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>186240661139-55oqb92j97de1fkg2p4nu6ps2f42p344.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCIUHFUCpPttYyYKk27KLFFyEmOrjMf1e4</string>
+	<string>AIzaSyDyfeWdZzGbBMceR7pCdfTk8HjCmNfa9zA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>233304968404</string>
+	<string>186240661139</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.letsgotrip</string>
+	<string>com.jjang.letsgotrip</string>
 	<key>PROJECT_ID</key>
-	<string>letsgotrip-bdb1c</string>
+	<string>letsgotrip-819ae</string>
 	<key>STORAGE_BUCKET</key>
-	<string>letsgotrip-bdb1c.appspot.com</string>
+	<string>letsgotrip-819ae.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:233304968404:ios:d574c551adbe5f618ebf41</string>
+	<string>1:186240661139:ios:813a17a43a4616c3a53f66</string>
 </dict>
 </plist>
