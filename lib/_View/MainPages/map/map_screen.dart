@@ -28,12 +28,13 @@ class _MapScreenState extends State<MapScreen> {
       setState(() {
         isPermission = permission;
       });
-    });
-    getUserLocation().then((latlng) {
-      setState(() {
-        userPosition = latlng;
+
+      getUserLocation().then((latlng) {
+        setState(() {
+          userPosition = latlng;
+          isMapLoading = false;
+        });
       });
-      isMapLoading = false;
     });
     super.initState();
   }
@@ -65,6 +66,7 @@ class _MapScreenState extends State<MapScreen> {
                       });
                     },
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                             width: ScreenUtil().setSp(78),
@@ -79,7 +81,7 @@ class _MapScreenState extends State<MapScreen> {
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: ScreenUtil().setSp(-0.4))),
                             )),
-                        Spacer(),
+                        // Spacer(),
                         isLeftTap
                             ? Container(
                                 color: app_blue,
@@ -98,6 +100,7 @@ class _MapScreenState extends State<MapScreen> {
                       });
                     },
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
                             width: ScreenUtil().setSp(78),
@@ -112,7 +115,6 @@ class _MapScreenState extends State<MapScreen> {
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: ScreenUtil().setSp(-0.4))),
                             )),
-                        Spacer(),
                         !isLeftTap
                             ? Container(
                                 color: app_blue,
