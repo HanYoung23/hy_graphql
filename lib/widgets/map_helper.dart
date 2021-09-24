@@ -5,21 +5,12 @@ import 'dart:ui';
 
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
 
-/// In here we are encapsulating all the logic required to get marker icons from url images
-/// and to show clusters using the [Fluster] package.
 class MapHelper {
-  /// If there is a cached file and it's not old returns the cached marker image file
-  /// else it will download the image and save it on the temp dir and return that file.
-  ///
-  /// This mechanism is possible using the [DefaultCacheManager] package and is useful
-  /// to improve load times on the next map loads, the first time will always take more
-  /// time to download the file and set the marker image.
-  ///
-  /// You can resize the marker image by providing a [targetWidth].
   static Future<BitmapDescriptor> getMarkerImageFromUrl(
     String url, {
     int targetWidth,
@@ -34,6 +25,14 @@ class MapHelper {
         targetWidth,
       );
     }
+
+    return BitmapDescriptor.fromBytes(markerImageBytes);
+  }
+
+  static Future<BitmapDescriptor> getMarkerImageFromAsset() async {
+    final ByteData bytes =
+        await rootBundle.load('assets/images/locationTap/map_pin.png');
+    final Uint8List markerImageBytes = bytes.buffer.asUint8List();
 
     return BitmapDescriptor.fromBytes(markerImageBytes);
   }
