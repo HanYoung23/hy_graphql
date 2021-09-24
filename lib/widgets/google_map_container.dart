@@ -27,7 +27,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
   // GoogleMapController mapController;
   LatLngBounds latlngBounds;
-  // BitmapDescriptor icon;
+  BitmapDescriptor icon;
 
   //
   /// Set of displayed markers and cluster markers on the map
@@ -43,7 +43,17 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Fluster<MapMarker> _clusterManager;
 
   /// Current map zoom. Initial zoom will be 15, street level
-  double _currentZoom = 12;
+  double _currentZoom = 8;
+
+  /// Map loading flag
+  bool _isMapLoading = true;
+
+  /// Markers loading flag
+  bool _areMarkersLoading = true;
+
+  /// Url image used on normal markers
+  // final String _markerImageUrl =
+  //     'https://img.icons8.com/office/80/000000/marker.png';
 
   /// Color of the cluster circle
   final Color _clusterColor = Colors.blue;
@@ -51,21 +61,37 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   /// Color of the cluster text
   final Color _clusterTextColor = Colors.white;
 
+  /// Example marker coordinates
+  final List<LatLng> _markerLocations = [
+    LatLng(34.96071, 127.590889),
+    LatLng(34.62597, 127.762969),
+    LatLng(34.746191, 127.138382),
+    LatLng(35.143573, 126.865573),
+    LatLng(35.187839, 128.980312),
+  ];
+
   /// Called when the Google Map widget is created. Updates the map loading state
   /// and inits the markers.
-  void _onMapCreated(GoogleMapController controller, List _markerLocations) {
+  void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
-    _initMarkers(_markerLocations);
+
+    setState(() {
+      _isMapLoading = false;
+    });
+
+    _initMarkers();
   }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
-  void _initMarkers(List _markerLocations) async {
+  void _initMarkers() async {
     final List<MapMarker> markers = [];
 
     for (LatLng markerLocation in _markerLocations) {
+      // final BitmapDescriptor markerImage =
+      //     await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+
       final BitmapDescriptor markerImage =
-          await MapHelper.getMarkerImageFromUrl(
-              'https://img.icons8.com/office/80/000000/marker.png');
+          await MapHelper.getMarkerImageFromAsset();
 
       markers.add(
         MapMarker(
@@ -94,6 +120,10 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       _currentZoom = updatedZoom;
     }
 
+    setState(() {
+      _areMarkersLoading = true;
+    });
+
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
@@ -105,6 +135,10 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
+
+    setState(() {
+      _areMarkersLoading = false;
+    });
   }
 
   @override
@@ -146,11 +180,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         if (result.hasException) return Text(result.exception.toString());
         if (result.isLoading) return Text('Loading');
 
-        print("🚨 query length : ${result.data["photo_list_map"].length}");
-
-        List<LatLng> mapMarkers = [];
+        // List<Marker> mapMarkers = [];
         // for (int i = 0; i < result.data["photo_list_map"].length; i++) {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
           // int markerId =
           //     int.parse("${result.data["photo_list_map"][i]["contents_id"]}");
           double markerLat =
@@ -159,8 +191,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               double.parse("${result.data["photo_list_map"][i]["longitude"]}");
           // String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
           // List<String> imageList = imageUrl.split(",");
-          print("🚨🚨 $markerLat , $markerLng");
-          mapMarkers.add(LatLng(markerLat, markerLng));
+          // _markerLocations.add(LatLng(markerLat, markerLng));
           // imageToByte(imageList[0]).then((imageByte) {
           //   print("🚨 asdf : $imageByte");
           //   mapMarkers.add(Marker(
@@ -169,6 +200,16 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
           //       icon: BitmapDescriptor.fromBytes(imageByte)));
           // });
         }
+
+        // return GoogleMap(
+        //   mapType: MapType.normal,
+        //   myLocationButtonEnabled: false,
+        //   initialCameraPosition: initPosition,
+        //   onMapCreated: (mapController) {
+        //     _mapController.complete(mapController);
+        //   },
+        //   markers: Set.from(mapMarkers),
+        // );
 
         return GoogleMap(
           mapToolbarEnabled: false,
@@ -183,7 +224,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             zoom: _currentZoom,
           ),
           markers: _markers,
-          onMapCreated: (controller) => _onMapCreated(controller, mapMarkers),
+          onMapCreated: (controller) => _onMapCreated(controller),
           onCameraMove: (position) => _updateMarkers(position.zoom),
         );
       },
