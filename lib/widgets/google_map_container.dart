@@ -4,6 +4,7 @@ import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +12,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/functions/google_map_functions.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
+import 'package:http/http.dart' as http;
 
 import 'map_marker.dart';
 
@@ -28,6 +30,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   // GoogleMapController mapController;
   LatLngBounds latlngBounds;
   BitmapDescriptor icon;
+  List networkImage = [];
 
   //
   /// Set of displayed markers and cluster markers on the map
@@ -87,17 +90,30 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     final List<MapMarker> markers = [];
 
     for (LatLng markerLocation in _markerLocations) {
-      // final BitmapDescriptor markerImage =
-      //     await MapHelper.getMarkerImageFromUrl(_markerImageUrl);
+      int index = _markerLocations.indexOf(markerLocation);
+      print("🚨 image ${networkImage[index]}");
 
       final BitmapDescriptor markerImage =
-          await MapHelper.getMarkerImageFromAsset();
+          await MapHelper.getMarkerImageFromUrl("${networkImage[index]}");
+
+      // final BitmapDescriptor markerImage =
+      //     await MapHelper.getMarkerImageFromAsset();
+
+      // var iconurl ="your url";
+      //     var dataBytes;
+      //     var request = await http.get(iconurl);
+      //     var bytes = await request.bodyBytes;
+
+      // var request = await http.get(Uri.parse(
+      //     "https://travelmapimage.s3.ap-northeast-2.amazonaws.com/IMG_8156.jpg"));
+      // var bytes = request.bodyBytes;
 
       markers.add(
         MapMarker(
           id: _markerLocations.indexOf(markerLocation).toString(),
           position: markerLocation,
           icon: markerImage,
+          // icon: BitmapDescriptor.fromBytes(bytes.buffer.asUint8List())
         ),
       );
     }
@@ -180,36 +196,19 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         if (result.hasException) return Text(result.exception.toString());
         if (result.isLoading) return Text('Loading');
 
-        // List<Marker> mapMarkers = [];
-        // for (int i = 0; i < result.data["photo_list_map"].length; i++) {
-        for (int i = 0; i < 10; i++) {
-          // int markerId =
-          //     int.parse("${result.data["photo_list_map"][i]["contents_id"]}");
+        for (int i = 0; i < result.data["photo_list_map"].length; i++) {
+          // for (int i = 0; i < 10; i++) {
+          int markerId =
+              int.parse("${result.data["photo_list_map"][i]["contents_id"]}");
           double markerLat =
               double.parse("${result.data["photo_list_map"][i]["latitude"]}");
           double markerLng =
               double.parse("${result.data["photo_list_map"][i]["longitude"]}");
-          // String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
-          // List<String> imageList = imageUrl.split(",");
+          String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
+          List<String> imageList = imageUrl.split(",");
+          networkImage.add(imageList[1]);
           // _markerLocations.add(LatLng(markerLat, markerLng));
-          // imageToByte(imageList[0]).then((imageByte) {
-          //   print("🚨 asdf : $imageByte");
-          //   mapMarkers.add(Marker(
-          //       markerId: MarkerId("$markerId"),
-          //       position: LatLng(markerLat, markerLng),
-          //       icon: BitmapDescriptor.fromBytes(imageByte)));
-          // });
         }
-
-        // return GoogleMap(
-        //   mapType: MapType.normal,
-        //   myLocationButtonEnabled: false,
-        //   initialCameraPosition: initPosition,
-        //   onMapCreated: (mapController) {
-        //     _mapController.complete(mapController);
-        //   },
-        //   markers: Set.from(mapMarkers),
-        // );
 
         return GoogleMap(
           mapToolbarEnabled: false,
@@ -231,21 +230,3 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     );
   }
 }
-
-// Future imageToByte(String imageUrl) async {
-//   Uint8List bytes =
-//       (await NetworkAssetBundle(Uri.parse(imageUrl)).load(imageUrl))
-//           .buffer
-//           .asUint8List();
-//   print("🚨 $bytes");
-//   return bytes;
-
-//   // http.Response response = await http.get(Uri.parse("${imageList[0]}"));
-//   // print("🚨🚨🚨 ${response.bodyBytes}");
-//   // return response.bodyBytes;
-// }
-
-// String southwestLat = widget.latlngBounds.southwest.latitude.toString();
-// String southwestLng = widget.latlngBounds.southwest.longitude.toString();
-// String northeastLat = widget.latlngBounds.northeast.latitude.toString();
-// String northeastLng = widget.latlngBounds.northeast.longitude.toString();
