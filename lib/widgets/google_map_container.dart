@@ -93,8 +93,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       int index = _markerLocations.indexOf(markerLocation);
       print("🚨 image ${networkImage[index]}");
 
-      final BitmapDescriptor markerImage =
-          await MapHelper.getMarkerImageFromUrl("${networkImage[index]}");
+      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(
+          "https://travelmapimage.s3.ap-northeast-2.amazonaws.com/IMG_8156.jpg");
 
       // final BitmapDescriptor markerImage =
       //     await MapHelper.getMarkerImageFromAsset();

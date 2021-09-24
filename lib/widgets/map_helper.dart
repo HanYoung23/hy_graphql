@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_utils_class/image_utils_class.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
 
 class MapHelper {
@@ -29,48 +28,44 @@ class MapHelper {
       // targetWidth,
       125,
     );
-    return convertImageFileToBitmapDescriptor(markerImageFile,
-        size: targetWidth);
+    return convertImageFileToBitmapDescriptor(markerImageFile);
     // return BitmapDescriptor.fromBytes(markerImageBytes);
   }
 
   static Future<BitmapDescriptor> convertImageFileToBitmapDescriptor(
-      File imageFile,
-      {int size = 100,
-      bool addBorder = false,
-      Color borderColor = Colors.white,
-      double borderSize = 10}) async {
+      File imageFile) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint = Paint()..color;
-    final TextPainter textPainter = TextPainter(
-      textDirection: TextDirection.ltr,
-    );
-    final double radius = size / 2;
-
     //make canvas clip path to prevent image drawing over the circle
     final Path clipPath = Path();
-    clipPath.addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
-        Radius.circular(100)));
-    clipPath.addRRect(RRect.fromRectAndRadius(
-        Rect.fromLTWH(size / 2.toDouble(), size + 20.toDouble(), 10, 10),
-        Radius.circular(100)));
-    canvas.clipPath(clipPath);
+    int size = 140;
+
+    Paint paint = Paint();
+    paint.color = Colors.white;
+    // bool addBorder = false;
+    // Color borderColor = Colors.white;
+    // double borderSize = 10;
+
+    // clipPath
+    //     .addRect(Rect.fromLTWH(0, 0, size.toDouble(), size * 5.toDouble()));
+    // canvas.clipPath(clipPath);
+
+    final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
+    canvas.drawRect(rect, paint);
 
     //paintImage
     final Uint8List imageUint8List = await imageFile.readAsBytes();
-    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);
+    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
+        targetWidth: size - 15, targetHeight: size - 15);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
         canvas: canvas,
         rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
-        image: imageFI.image);
+        image: imageFI.image,
+        alignment: Alignment.center);
 
     //convert canvas as PNG bytes
-    final _image = await pictureRecorder
-        .endRecording()
-        .toImage(size, (size * 1.1).toInt());
+    final _image = await pictureRecorder.endRecording().toImage(size, size);
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
 
     //convert PNG bytes as BitmapDescriptor
