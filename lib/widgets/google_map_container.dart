@@ -60,12 +60,13 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   void _initMarkers() async {
     final List<MapMarker> markers = [];
+    String clusterImageUrl;
 
     for (LatLng markerLocation in _markerLocations) {
-      int index = _markerLocations.indexOf(markerLocation);
-
       final BitmapDescriptor markerImage =
           await MapHelper.getMarkerImageFromUrl("${networkImage[0]}");
+
+      clusterImageUrl = "${networkImage[0]}";
 
       markers.add(
         MapMarker(
@@ -83,12 +84,13 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       _maxClusterZoom,
     );
 
-    await _updateMarkers();
+    await _updateMarkers(null, clusterImageUrl);
   }
 
   /// Gets the markers and clusters to be displayed on the map for the current zoom level and
   /// updates state.
-  Future<void> _updateMarkers([double updatedZoom]) async {
+  Future<void> _updateMarkers(
+      double updatedZoom, String clusterImageUrl) async {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
 
     if (updatedZoom != null) {
@@ -101,6 +103,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       _clusterColor,
       _clusterTextColor,
       80,
+      clusterImageUrl,
     );
 
     _markers
@@ -135,17 +138,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         if (result.isLoading) return Text('Loading');
 
         for (Map resultData in result.data["photo_list_map"]) {
-          // int markerId =
-          //     int.parse("${result.data["photo_list_map"][i]["contents_id"]}");
-          // double markerLat =
-          //     double.parse("${result.data["photo_list_map"][i]["latitude"]}");
-          // double markerLng =
-          //     double.parse("${result.data["photo_list_map"][i]["longitude"]}");
-          // String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
-          // List<String> imageList = imageUrl.split(",");
-          // networkImage.add(imageList[1]);
-          // _markerLocations.add(LatLng(markerLat, markerLng));
-
           int markerId = int.parse("${resultData["contents_id"]}");
           double markerLat = double.parse("${resultData["latitude"]}");
           double markerLng = double.parse("${resultData["longitude"]}");
@@ -153,7 +145,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
           List<String> imageList = imageUrl.split(",");
           networkImage.add(imageList[0]);
           _markerLocations.add(LatLng(markerLat, markerLng));
-          print("🚨 resultData : $resultData");
         }
 
         return GoogleMap(
@@ -170,7 +161,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
           ),
           markers: _markers,
           onMapCreated: (controller) => _onMapCreated(controller),
-          onCameraMove: (position) => _updateMarkers(position.zoom),
+          onCameraMove: (position) => _updateMarkers(position.zoom, null),
         );
       },
     );
