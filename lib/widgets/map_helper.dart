@@ -72,14 +72,6 @@ class MapHelper {
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 
-  static Future<BitmapDescriptor> getMarkerImageFromAsset() async {
-    final ByteData bytes =
-        await rootBundle.load('assets/images/locationTap/map_pin.png');
-    final Uint8List markerImageBytes = bytes.buffer.asUint8List();
-
-    return BitmapDescriptor.fromBytes(markerImageBytes);
-  }
-
   /// Draw a [clusterColor] circle with the [clusterSize] text inside that is [width] wide.
   ///
   /// Then it will convert the canvas to an image and generate the [BitmapDescriptor]

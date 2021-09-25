@@ -33,54 +33,26 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   List networkImage = [];
 
   //
-  /// Set of displayed markers and cluster markers on the map
   final Set<Marker> _markers = Set();
-
-  /// Minimum zoom at which the markers will cluster
-  final int _minClusterZoom = 0;
-
-  /// Maximum zoom at which the markers will cluster
+  final int _minClusterZoom = 2;
   final int _maxClusterZoom = 19;
-
-  /// [Fluster] instance used to manage the clusters
   Fluster<MapMarker> _clusterManager;
-
-  /// Current map zoom. Initial zoom will be 15, street level
   double _currentZoom = 8;
-
-  /// Map loading flag
-  bool _isMapLoading = true;
-
-  /// Markers loading flag
-  bool _areMarkersLoading = true;
-
-  /// Url image used on normal markers
-  // final String _markerImageUrl =
-  //     'https://img.icons8.com/office/80/000000/marker.png';
-
-  /// Color of the cluster circle
+  // bool _isMapLoading = true;
+  // bool _areMarkersLoading = true;
   final Color _clusterColor = Colors.blue;
-
-  /// Color of the cluster text
   final Color _clusterTextColor = Colors.white;
 
   /// Example marker coordinates
   final List<LatLng> _markerLocations = [
-    LatLng(34.96071, 127.590889),
-    LatLng(34.62597, 127.762969),
-    LatLng(34.746191, 127.138382),
-    LatLng(35.143573, 126.865573),
-    LatLng(35.187839, 128.980312),
+    // LatLng(34.96071, 127.590889),
+    // LatLng(34.62597, 127.762969),
+    // LatLng(34.746191, 127.138382),
+    // LatLng(35.143573, 126.865573),
+    // LatLng(35.187839, 128.980312),
   ];
-
-  /// Called when the Google Map widget is created. Updates the map loading state
-  /// and inits the markers.
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
-
-    setState(() {
-      _isMapLoading = false;
-    });
 
     _initMarkers();
   }
@@ -91,22 +63,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
     for (LatLng markerLocation in _markerLocations) {
       int index = _markerLocations.indexOf(markerLocation);
-      print("🚨 image ${networkImage[index]}");
 
-      final BitmapDescriptor markerImage = await MapHelper.getMarkerImageFromUrl(
-          "https://travelmapimage.s3.ap-northeast-2.amazonaws.com/IMG_8156.jpg");
-
-      // final BitmapDescriptor markerImage =
-      //     await MapHelper.getMarkerImageFromAsset();
-
-      // var iconurl ="your url";
-      //     var dataBytes;
-      //     var request = await http.get(iconurl);
-      //     var bytes = await request.bodyBytes;
-
-      // var request = await http.get(Uri.parse(
-      //     "https://travelmapimage.s3.ap-northeast-2.amazonaws.com/IMG_8156.jpg"));
-      // var bytes = request.bodyBytes;
+      final BitmapDescriptor markerImage =
+          await MapHelper.getMarkerImageFromUrl("${networkImage[0]}");
 
       markers.add(
         MapMarker(
@@ -136,10 +95,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       _currentZoom = updatedZoom;
     }
 
-    setState(() {
-      _areMarkersLoading = true;
-    });
-
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
@@ -151,10 +106,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
-
-    setState(() {
-      _areMarkersLoading = false;
-    });
   }
 
   @override
@@ -164,24 +115,11 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         latlngBounds = value;
       });
     });
-    // BitmapDescriptor.fromAssetImage(
-    //         ImageConfiguration(), 'assets/images/locationTap/map_pin.png')
-    //     .then((value) {
-    //   setState(() {
-    //     icon = value;
-    //   });
-    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final CameraPosition initPosition = CameraPosition(
-    //   target:
-    //       LatLng(widget.userPosition.latitude, widget.userPosition.longitude),
-    //   zoom: 10,
-    // );
-
     return Query(
       options: QueryOptions(
         document: gql(Queries.mapPhotos),
@@ -196,18 +134,26 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         if (result.hasException) return Text(result.exception.toString());
         if (result.isLoading) return Text('Loading');
 
-        for (int i = 0; i < result.data["photo_list_map"].length; i++) {
-          // for (int i = 0; i < 10; i++) {
-          int markerId =
-              int.parse("${result.data["photo_list_map"][i]["contents_id"]}");
-          double markerLat =
-              double.parse("${result.data["photo_list_map"][i]["latitude"]}");
-          double markerLng =
-              double.parse("${result.data["photo_list_map"][i]["longitude"]}");
-          String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
-          List<String> imageList = imageUrl.split(",");
-          networkImage.add(imageList[1]);
+        for (Map resultData in result.data["photo_list_map"]) {
+          // int markerId =
+          //     int.parse("${result.data["photo_list_map"][i]["contents_id"]}");
+          // double markerLat =
+          //     double.parse("${result.data["photo_list_map"][i]["latitude"]}");
+          // double markerLng =
+          //     double.parse("${result.data["photo_list_map"][i]["longitude"]}");
+          // String imageUrl = "${result.data["photo_list_map"][i]["image_link"]}";
+          // List<String> imageList = imageUrl.split(",");
+          // networkImage.add(imageList[1]);
           // _markerLocations.add(LatLng(markerLat, markerLng));
+
+          int markerId = int.parse("${resultData["contents_id"]}");
+          double markerLat = double.parse("${resultData["latitude"]}");
+          double markerLng = double.parse("${resultData["longitude"]}");
+          String imageUrl = "${resultData["image_link"]}";
+          List<String> imageList = imageUrl.split(",");
+          networkImage.add(imageList[0]);
+          _markerLocations.add(LatLng(markerLat, markerLng));
+          print("🚨 resultData : $resultData");
         }
 
         return GoogleMap(
