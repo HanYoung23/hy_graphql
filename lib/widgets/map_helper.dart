@@ -19,39 +19,29 @@ class MapHelper {
   }) async {
     final File markerImageFile = await DefaultCacheManager().getSingleFile(url);
 
-    Uint8List markerImageBytes = await markerImageFile.readAsBytes();
-
-    // int imageSize = ScreenUtil().setSp(75).round();
-
-    markerImageBytes = await _resizeImageBytes(
-      markerImageBytes,
-      // targetWidth,
-      125,
-    );
     return convertImageFileToBitmapDescriptor(markerImageFile);
-    // return BitmapDescriptor.fromBytes(markerImageBytes);
+  }
+
+  Future loadUiImage() async {
+    final ByteData _data =
+        await rootBundle.load("assets/images/locationTap/map_pin.png");
+    final bytes = _data.buffer.asUint8List();
+    final image = await decodeImageFromList(bytes);
+    // canvas.drawImage(image, Offset(0, 0), paint);
   }
 
   static Future<BitmapDescriptor> convertImageFileToBitmapDescriptor(
       File imageFile) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    //make canvas clip path to prevent image drawing over the circle
-    final Path clipPath = Path();
+
     int size = 140;
 
     Paint paint = Paint();
     paint.color = Colors.white;
-    // bool addBorder = false;
-    // Color borderColor = Colors.white;
-    // double borderSize = 10;
-
-    // clipPath
-    //     .addRect(Rect.fromLTWH(0, 0, size.toDouble(), size * 5.toDouble()));
-    // canvas.clipPath(clipPath);
 
     final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
-    canvas.drawRect(rect, paint);
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
 
     //paintImage
     final Uint8List imageUint8List = await imageFile.readAsBytes();
@@ -72,58 +62,50 @@ class MapHelper {
     return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 
-  /// Draw a [clusterColor] circle with the [clusterSize] text inside that is [width] wide.
-  ///
-  /// Then it will convert the canvas to an image and generate the [BitmapDescriptor]
-  /// to be used on the cluster marker icons.
   static Future<BitmapDescriptor> _getClusterMarker(
-      int clusterSize,
-      Color clusterColor,
-      Color textColor,
-      int width,
-      String clusterImageUrl) async {
+      int clusterSize, int width, String clusterImageUrl) async {
     print("🚨 $clusterImageUrl");
-    // final PictureRecorder pictureRecorder = PictureRecorder();
-    // final Canvas canvas = Canvas(pictureRecorder);
-    // final Paint paint = Paint()..color = clusterColor;
-    // final TextPainter textPainter = TextPainter(
-    //   textDirection: TextDirection.ltr,
-    // );
+    final PictureRecorder pictureRecorder = PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color = Colors.blue;
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
 
-    // final double radius = width / 2;
+    final double radius = width / 2;
 
-    // canvas.drawCircle(
-    //   Offset(radius, radius),
-    //   radius,
-    //   paint,
-    // );
+    canvas.drawCircle(
+      Offset(radius, radius),
+      radius,
+      paint,
+    );
 
-    // textPainter.text = TextSpan(
-    //   text: clusterSize.toString(),
-    //   style: TextStyle(
-    //     fontSize: radius - 5,
-    //     fontWeight: FontWeight.bold,
-    //     color: textColor,
-    //   ),
-    // );
+    textPainter.text = TextSpan(
+      text: clusterSize.toString(),
+      style: TextStyle(
+        fontSize: radius - 5,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    );
 
-    // textPainter.layout();
-    // textPainter.paint(
-    //   canvas,
-    //   Offset(radius - textPainter.width / 2, radius - textPainter.height / 2),
-    // );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(radius - textPainter.width / 2, radius - textPainter.height / 2),
+    );
 
-    // final image = await pictureRecorder.endRecording().toImage(
-    //       radius.toInt() * 2,
-    //       radius.toInt() * 2,
-    //     );
-    // final data = await image.toByteData(format: ImageByteFormat.png);
+    final image = await pictureRecorder.endRecording().toImage(
+          radius.toInt() * 2,
+          radius.toInt() * 2,
+        );
+    final data = await image.toByteData(format: ImageByteFormat.png);
 
-    // return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
 
-    final File markerImageFile =
-        await DefaultCacheManager().getSingleFile(clusterImageUrl);
-    return convertImageFileToBitmapDescriptor(markerImageFile);
+    // final File markerImageFile =
+    //     await DefaultCacheManager().getSingleFile(clusterImageUrl);
+    // return convertImageFileToBitmapDescriptor(markerImageFile);
   }
 
   /// Resizes the given [imageBytes] with the [targetWidth].
@@ -183,8 +165,6 @@ class MapHelper {
   static Future<List<Marker>> getClusterMarkers(
     Fluster<MapMarker> clusterManager,
     double currentZoom,
-    Color clusterColor,
-    Color clusterTextColor,
     int clusterWidth,
     String clusterImageUrl,
   ) {
@@ -197,8 +177,6 @@ class MapHelper {
       if (mapMarker.isCluster) {
         mapMarker.icon = await _getClusterMarker(
           mapMarker.pointsSize,
-          clusterColor,
-          clusterTextColor,
           clusterWidth,
           clusterImageUrl,
         );

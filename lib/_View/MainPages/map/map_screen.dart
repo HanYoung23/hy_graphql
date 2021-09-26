@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/google_map_functions.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
 
@@ -21,6 +22,7 @@ class _MapScreenState extends State<MapScreen> {
   bool isPermission = true;
   bool isMapLoading = true;
   Position userPosition;
+  Map googleMapVisibleRegion;
 
   @override
   void initState() {
@@ -28,11 +30,15 @@ class _MapScreenState extends State<MapScreen> {
       setState(() {
         isPermission = permission;
       });
-
       getUserLocation().then((latlng) {
         setState(() {
           userPosition = latlng;
-          isMapLoading = false;
+        });
+        getMapCoord().then((bounds) {
+          setState(() {
+            googleMapVisibleRegion = bounds;
+            isMapLoading = false;
+          });
         });
       });
     });
@@ -140,7 +146,10 @@ class _MapScreenState extends State<MapScreen> {
                 ? Visibility(
                     visible: isMapLoading ? false : true,
                     child: Expanded(
-                        child: GoogleMapContainer(userPosition: userPosition)))
+                        child: GoogleMapContainer(
+                      userPosition: userPosition,
+                      mapBound: {},
+                    )))
                 : Expanded(
                     child: Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
             isMapLoading

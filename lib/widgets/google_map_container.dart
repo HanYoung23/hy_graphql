@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,13 +9,14 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/functions/google_map_functions.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
-import 'package:http/http.dart' as http;
 
 import 'map_marker.dart';
 
 class GoogleMapContainer extends StatefulWidget {
   final Position userPosition;
-  const GoogleMapContainer({Key key, @required this.userPosition})
+  final Map mapBound;
+  const GoogleMapContainer(
+      {Key key, @required this.userPosition, @required this.mapBound})
       : super(key: key);
 
   @override
@@ -37,11 +35,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   final int _minClusterZoom = 2;
   final int _maxClusterZoom = 19;
   Fluster<MapMarker> _clusterManager;
-  double _currentZoom = 8;
+  double _currentZoom = 12;
   // bool _isMapLoading = true;
   // bool _areMarkersLoading = true;
-  final Color _clusterColor = Colors.blue;
-  final Color _clusterTextColor = Colors.white;
 
   /// Example marker coordinates
   final List<LatLng> _markerLocations = [
@@ -100,8 +96,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
-      _clusterColor,
-      _clusterTextColor,
       80,
       clusterImageUrl,
     );
@@ -113,11 +107,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
   @override
   void initState() {
-    getMapCoord().then((value) {
-      setState(() {
-        latlngBounds = value;
-      });
-    });
     super.initState();
   }
 
@@ -127,10 +116,10 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       options: QueryOptions(
         document: gql(Queries.mapPhotos),
         variables: {
-          "latitude1": "33.2200505873032",
-          "latitude2": "38.479807266878815",
-          "longitude1": "125.27173485606909",
-          "longitude2": "129.98494371771812"
+          "latitude1": "${widget.mapBound["swLat"]}",
+          "latitude2": "${widget.mapBound["swLng"]}",
+          "longitude1": "${widget.mapBound["neLat"]}",
+          "longitude2": "${widget.mapBound["neLng"]}",
         },
       ),
       builder: (result, {refetch, fetchMore}) {
