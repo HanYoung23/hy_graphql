@@ -22,7 +22,6 @@ class _MapScreenState extends State<MapScreen> {
   bool isPermission = true;
   bool isMapLoading = true;
   Position userPosition;
-  Map googleMapVisibleRegion;
 
   @override
   void initState() {
@@ -33,12 +32,7 @@ class _MapScreenState extends State<MapScreen> {
       getUserLocation().then((latlng) {
         setState(() {
           userPosition = latlng;
-        });
-        getMapCoord().then((bounds) {
-          setState(() {
-            googleMapVisibleRegion = bounds;
-            isMapLoading = false;
-          });
+          isMapLoading = false;
         });
       });
     });
@@ -146,10 +140,7 @@ class _MapScreenState extends State<MapScreen> {
                 ? Visibility(
                     visible: isMapLoading ? false : true,
                     child: Expanded(
-                        child: GoogleMapContainer(
-                      userPosition: userPosition,
-                      mapBound: {},
-                    )))
+                        child: GoogleMapContainer(userPosition: userPosition)))
                 : Expanded(
                     child: Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
             isMapLoading

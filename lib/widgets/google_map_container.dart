@@ -14,9 +14,7 @@ import 'map_marker.dart';
 
 class GoogleMapContainer extends StatefulWidget {
   final Position userPosition;
-  final Map mapBound;
-  const GoogleMapContainer(
-      {Key key, @required this.userPosition, @required this.mapBound})
+  const GoogleMapContainer({Key key, @required this.userPosition})
       : super(key: key);
 
   @override
@@ -25,9 +23,13 @@ class GoogleMapContainer extends StatefulWidget {
 
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
-  // GoogleMapController mapController;
-  LatLngBounds latlngBounds;
-  BitmapDescriptor icon;
+
+  Map mapBounds = {
+    "swLat": "",
+    "swLng": "",
+    "neLat": "",
+    "neLng": "",
+  };
   List networkImage = [];
 
   //
@@ -35,9 +37,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   final int _minClusterZoom = 2;
   final int _maxClusterZoom = 19;
   Fluster<MapMarker> _clusterManager;
-  double _currentZoom = 12;
-  // bool _isMapLoading = true;
-  // bool _areMarkersLoading = true;
+  double _currentZoom = 13;
+  bool isPin = false;
 
   /// Example marker coordinates
   final List<LatLng> _markerLocations = [
@@ -49,12 +50,11 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   ];
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
-
     _initMarkers();
   }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
-  void _initMarkers() async {
+  _initMarkers() async {
     final List<MapMarker> markers = [];
     String clusterImageUrl;
 
@@ -88,7 +88,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Future<void> _updateMarkers(
       double updatedZoom, String clusterImageUrl) async {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
-
     if (updatedZoom != null) {
       _currentZoom = updatedZoom;
     }
@@ -103,6 +102,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
+
+    setState(() {});
   }
 
   @override
@@ -116,10 +117,10 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       options: QueryOptions(
         document: gql(Queries.mapPhotos),
         variables: {
-          "latitude1": "${widget.mapBound["swLat"]}",
-          "latitude2": "${widget.mapBound["swLng"]}",
-          "longitude1": "${widget.mapBound["neLat"]}",
-          "longitude2": "${widget.mapBound["neLng"]}",
+          "latitude1": "-87.71179927260242",
+          "latitude2": "89.45016124669523",
+          "longitude1": "-180",
+          "longitude2": "180",
         },
       ),
       builder: (result, {refetch, fetchMore}) {
@@ -138,9 +139,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
         return GoogleMap(
           mapToolbarEnabled: false,
-          zoomGesturesEnabled: true,
-          myLocationButtonEnabled: true,
-          myLocationEnabled: true,
+          zoomGesturesEnabled: isPin ? true : false,
+          myLocationButtonEnabled: false,
+          myLocationEnabled: false,
           zoomControlsEnabled: false,
           initialCameraPosition: CameraPosition(
             // target: LatLng(

@@ -64,7 +64,7 @@ class MapHelper {
 
   static Future<BitmapDescriptor> _getClusterMarker(
       int clusterSize, int width, String clusterImageUrl) async {
-    print("🚨 $clusterImageUrl");
+    print("🚨 clusterImageurl $clusterImageUrl");
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Colors.blue;

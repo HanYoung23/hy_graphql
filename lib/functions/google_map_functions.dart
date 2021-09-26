@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-Future<Map> getMapCoord() async {
-  Completer<GoogleMapController> _controller = Completer();
-  final GoogleMapController controller = await _controller.future;
+Future<Map> getMapCoord(Completer<GoogleMapController> _mapController) async {
+  final GoogleMapController controller = await _mapController.future;
 
   Map latlngBounds;
 
