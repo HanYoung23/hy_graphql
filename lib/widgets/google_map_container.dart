@@ -103,7 +103,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       ..clear()
       ..addAll(updatedMarkers);
 
-    setState(() {});
+    setState(() {
+      isPin = true;
+    });
   }
 
   @override
@@ -128,7 +130,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         if (result.isLoading) return Text('Loading');
 
         for (Map resultData in result.data["photo_list_map"]) {
-          int markerId = int.parse("${resultData["contents_id"]}");
+          // int markerId = int.parse("${resultData["contents_id"]}");
           double markerLat = double.parse("${resultData["latitude"]}");
           double markerLng = double.parse("${resultData["longitude"]}");
           String imageUrl = "${resultData["image_link"]}";
