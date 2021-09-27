@@ -63,8 +63,7 @@ class MapHelper {
   }
 
   static Future<BitmapDescriptor> _getClusterMarker(
-      int clusterSize, int width, String clusterImageUrl) async {
-    print("🚨 clusterImageurl $clusterImageUrl");
+      int clusterSize, int width) async {
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Colors.blue;
@@ -166,7 +165,6 @@ class MapHelper {
     Fluster<MapMarker> clusterManager,
     double currentZoom,
     int clusterWidth,
-    String clusterImageUrl,
   ) {
     if (clusterManager == null) return Future.value([]);
 
@@ -178,7 +176,6 @@ class MapHelper {
         mapMarker.icon = await _getClusterMarker(
           mapMarker.pointsSize,
           clusterWidth,
-          clusterImageUrl,
         );
       }
 
