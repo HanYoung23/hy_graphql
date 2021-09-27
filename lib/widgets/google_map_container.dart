@@ -2,16 +2,11 @@ import 'dart:async';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
-import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/google_map_functions.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 
 import 'map_marker.dart';
@@ -28,6 +23,7 @@ class GoogleMapContainer extends StatefulWidget {
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
   final GoogleMapWholeController gmWholeImages = Get.find();
+
   //
   final Set<Marker> _markers = Set();
   final int _minClusterZoom = 2;
@@ -36,7 +32,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   double _currentZoom = 13;
   //
   List<MapMarker> markers = [];
-  bool isPin = false;
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
@@ -54,8 +49,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     await _updateMarkers();
   }
 
-  /// Gets the markers and clusters to be displayed on the map for the current zoom level and
-  /// updates state.
   Future<void> _updateMarkers([double updatedZoom]) async {
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
     if (updatedZoom != null) {
@@ -72,9 +65,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       ..clear()
       ..addAll(updatedMarkers);
 
-    setState(() {
-      isPin = true;
-    });
+    setState(() {});
   }
 
   @override
@@ -89,7 +80,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Widget build(BuildContext context) {
     return GoogleMap(
       mapToolbarEnabled: false,
-      zoomGesturesEnabled: isPin ? true : false,
+      zoomGesturesEnabled: true,
       myLocationButtonEnabled: false,
       myLocationEnabled: false,
       zoomControlsEnabled: false,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/_View/MainPages/profile/profile_screen.dart';
 import 'package:letsgotrip/_View/MainPages/store/store_screen.dart';
@@ -57,16 +58,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // setState(() {
-    //   _selectedIndex = widget.screenNum;
-    // });
+    if (Get.arguments == 0 || Get.arguments == 2) {
+      setState(() {
+        _selectedIndex = Get.arguments;
+      });
+    }
     super.initState();
   }
 
   static List<Widget> _screens = <Widget>[
     StoreScreen(),
     MapScreen(),
-    ProfileScreen()
+    ProfileScreen(),
   ];
 
   @override

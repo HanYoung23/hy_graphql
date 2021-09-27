@@ -6,9 +6,7 @@ import 'dart:ui' as ui;
 
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
 
@@ -23,10 +21,10 @@ class MapHelper {
   }
 
   Future loadUiImage() async {
-    final ByteData _data =
-        await rootBundle.load("assets/images/locationTap/map_pin.png");
-    final bytes = _data.buffer.asUint8List();
-    final image = await decodeImageFromList(bytes);
+    // final ByteData _data =
+    // await rootBundle.load("assets/images/locationTap/map_pin.png");
+    // final bytes = _data.buffer.asUint8List();
+    // final image = await decodeImageFromList(bytes);
     // canvas.drawImage(image, Offset(0, 0), paint);
   }
 

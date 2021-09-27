@@ -8,6 +8,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
+import 'package:letsgotrip/_View/InitPages/walkthrough_screen.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -126,15 +127,16 @@ class _ScreenFilterState extends State<ScreenFilter> {
   @override
   Widget build(BuildContext context) {
     // if (!isFirstTime) {
-    //   return AuthorityScreen();
+    // return AuthorityScreen();
     // } else if (isAuth == "") {
-    //   return LoginScreen();
+    // return LoginScreen();
     // } else if (isAuth != "") {
     //   return HomePage();
     // } else {
     //   return Splash();
     // }
-    return HomePage();
+    // return HomePage();
+    return WalkthroughScreen();
   }
 }
 
