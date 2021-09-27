@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
 
 class MapPostCreationScreen extends StatefulWidget {
@@ -18,8 +19,10 @@ class MapPostCreationScreen extends StatefulWidget {
 class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   final nicknameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final ImagePicker imagePicker = ImagePicker();
 
   String category = "";
+  List imageList = [];
 
   categoryCallback(String categoryName) {
     setState(() {
@@ -119,16 +122,35 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                 SizedBox(height: ScreenUtil().setHeight(15)),
                 Row(
                   children: [
-                    Container(
-                      width: ScreenUtil().setSp(58),
-                      height: ScreenUtil().setSp(58),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(241, 241, 245, 1)),
-                      child: Icon(
-                        Icons.add,
-                        size: ScreenUtil().setSp(40),
-                        color: Color.fromRGBO(188, 192, 193, 1),
+                    InkWell(
+                      onTap: () {
+                        checkGalleryPermission().then((permission) async {
+                          if (permission) {
+                            XFile image = await imagePicker.pickImage(
+                                source: ImageSource.gallery);
+                            List newImageList = imageList;
+                            newImageList.add(image);
+                            setState(() {
+                              imageList = newImageList;
+                            });
+                          } else {
+                            Get.snackbar("error", "사진 접근 권한이 없습니다.");
+                          }
+                        });
+
+                        print("🚨 imagelist : $imageList");
+                      },
+                      child: Container(
+                        width: ScreenUtil().setSp(58),
+                        height: ScreenUtil().setSp(58),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color.fromRGBO(241, 241, 245, 1)),
+                        child: Icon(
+                          Icons.add,
+                          size: ScreenUtil().setSp(40),
+                          color: Color.fromRGBO(188, 192, 193, 1),
+                        ),
                       ),
                     ),
                     Container(
@@ -139,6 +161,16 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                           borderRadius: BorderRadius.circular(10),
                           color: Color.fromRGBO(241, 241, 245, 1)),
                     ),
+                    // Row(
+                    //     children: imageList.map((e) {
+                    // return Container(
+                    //   width: ScreenUtil().setSp(58),
+                    //   height: ScreenUtil().setSp(58),
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(10),
+                    //       image: DecorationImage(image: FileImage())),
+                    // );
+                    // }).toList())
                   ],
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),

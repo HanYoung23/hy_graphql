@@ -10,7 +10,7 @@ Future<bool> checkNotificationPermission() async {
   return permitted;
 }
 
-Future checkLocationPermission() async {
+Future<bool> checkLocationPermission() async {
   bool isPermission;
 
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -28,4 +28,12 @@ Future checkLocationPermission() async {
     isPermission = true;
   }
   return isPermission;
+}
+
+Future checkGalleryPermission() async {
+  bool permitted = true;
+  var status;
+  await Permission.storage.request().then((value) => status = value);
+  if (status != PermissionStatus.granted) permitted = false;
+  return permitted;
 }
