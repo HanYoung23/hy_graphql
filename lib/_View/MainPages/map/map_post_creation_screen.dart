@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,10 +21,11 @@ class MapPostCreationScreen extends StatefulWidget {
 class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   final nicknameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  final ImagePicker imagePicker = ImagePicker();
+  final picker = ImagePicker();
+  File _image;
 
   String category = "";
-  List imageList = [];
+  List<File> imageList = [];
 
   categoryCallback(String categoryName) {
     setState(() {
@@ -126,19 +129,24 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                       onTap: () {
                         checkGalleryPermission().then((permission) async {
                           if (permission) {
-                            XFile image = await imagePicker.pickImage(
-                                source: ImageSource.gallery);
-                            List newImageList = imageList;
-                            newImageList.add(image);
+                            // final XFile image = await picker.pickImage(
+                            //     source: ImageSource.gallery);
+                            List<XFile> images = await picker.pickMultiImage();
+                            List<File> newImageList = imageList;
+                            images.forEach((xfile) {
+                              print("🚨 xfile : $xfile");
+                              newImageList.add(File(xfile.path));
+                            });
+                            print("🚨 images : $images");
                             setState(() {
                               imageList = newImageList;
+                              // _image = File(image.path);
                             });
+                            print("🚨 imageList : $imageList");
                           } else {
                             Get.snackbar("error", "사진 접근 권한이 없습니다.");
                           }
                         });
-
-                        print("🚨 imagelist : $imageList");
                       },
                       child: Container(
                         width: ScreenUtil().setSp(58),
@@ -161,16 +169,32 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                           borderRadius: BorderRadius.circular(10),
                           color: Color.fromRGBO(241, 241, 245, 1)),
                     ),
-                    // Row(
-                    //     children: imageList.map((e) {
-                    // return Container(
-                    //   width: ScreenUtil().setSp(58),
-                    //   height: ScreenUtil().setSp(58),
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //       image: DecorationImage(image: FileImage())),
-                    // );
-                    // }).toList())
+                    // _image != null
+                    //     ? Container(
+                    //         width: ScreenUtil().setSp(58),
+                    //         height: ScreenUtil().setSp(58),
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.red,
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           image: DecorationImage(image: FileImage(_image)),
+                    //         ),
+                    //       )
+                    //     : Container()
+                    imageList.length > 0
+                        ? Row(
+                            children: imageList.map((file) {
+                            print("🚨 file : $file");
+                            return Container(
+                              width: ScreenUtil().setSp(58),
+                              height: ScreenUtil().setSp(58),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(image: FileImage(file)),
+                              ),
+                            );
+                          }).toList())
+                        : Container()
                   ],
                 ),
                 SizedBox(height: ScreenUtil().setHeight(8)),

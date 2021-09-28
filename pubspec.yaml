@@ -40,6 +40,7 @@ dependencies:
   google_maps_cluster_manager: ^3.0.0+1
   flutter_cache_manager: ^3.1.2
   image_picker: ^0.8.4
+  path_provider: ^2.0.4
   
 # common
   cupertino_icons: ^1.0.2
