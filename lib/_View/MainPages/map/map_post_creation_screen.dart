@@ -22,7 +22,6 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   final nicknameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
-  File _image;
 
   String category = "";
   List<File> imageList = [];
@@ -117,86 +116,61 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                 SizedBox(height: ScreenUtil().setHeight(18)),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("이미지를 첨부해보세요\n(0/10)",
+                  child: Text("이미지를 첨부해보세요\n(${imageList.length}/10)",
                       style: TextStyle(
                           fontSize: ScreenUtil().setSp(14),
                           color: app_font_grey)),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(15)),
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        checkGalleryPermission().then((permission) async {
-                          if (permission) {
-                            // final XFile image = await picker.pickImage(
-                            //     source: ImageSource.gallery);
-                            List<XFile> images = await picker.pickMultiImage();
-                            List<File> newImageList = imageList;
-                            images.forEach((xfile) {
-                              print("🚨 xfile : $xfile");
-                              newImageList.add(File(xfile.path));
-                            });
-                            print("🚨 images : $images");
-                            setState(() {
-                              imageList = newImageList;
-                              // _image = File(image.path);
-                            });
-                            print("🚨 imageList : $imageList");
-                          } else {
-                            Get.snackbar("error", "사진 접근 권한이 없습니다.");
-                          }
-                        });
-                      },
-                      child: Container(
-                        width: ScreenUtil().setSp(58),
-                        height: ScreenUtil().setSp(58),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromRGBO(241, 241, 245, 1)),
-                        child: Icon(
-                          Icons.add,
-                          size: ScreenUtil().setSp(40),
-                          color: Color.fromRGBO(188, 192, 193, 1),
+                SizedBox(height: ScreenUtil().setHeight(4)),
+                imageList.length > 0
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        height: ScreenUtil().setSp(74),
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: imageList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index < 10) {
+                              if (index == 0) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    photoUploadButton(),
+                                    photoPreview(index)
+                                  ],
+                                );
+                              }
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  photoPreview(index),
+                                ],
+                              );
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
-                      ),
-                    ),
-                    Container(
-                      width: ScreenUtil().setSp(58),
-                      height: ScreenUtil().setSp(58),
-                      margin: EdgeInsets.only(left: ScreenUtil().setSp(10)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color.fromRGBO(241, 241, 245, 1)),
-                    ),
-                    // _image != null
-                    //     ? Container(
-                    //         width: ScreenUtil().setSp(58),
-                    //         height: ScreenUtil().setSp(58),
-                    //         decoration: BoxDecoration(
-                    //           color: Colors.red,
-                    //           borderRadius: BorderRadius.circular(10),
-                    //           image: DecorationImage(image: FileImage(_image)),
-                    //         ),
-                    //       )
-                    //     : Container()
-                    imageList.length > 0
-                        ? Row(
-                            children: imageList.map((file) {
-                            print("🚨 file : $file");
-                            return Container(
-                              width: ScreenUtil().setSp(58),
-                              height: ScreenUtil().setSp(58),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          photoUploadButton(),
+                          Container(
+                            width: ScreenUtil().setSp(58),
+                            height: ScreenUtil().setSp(58),
+                            margin:
+                                EdgeInsets.only(top: ScreenUtil().setSp(10)),
+                            decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(image: FileImage(file)),
-                              ),
-                            );
-                          }).toList())
-                        : Container()
-                  ],
-                ),
+                                color: Color.fromRGBO(241, 241, 245, 1)),
+                          )
+                        ],
+                      ),
                 SizedBox(height: ScreenUtil().setHeight(8)),
                 Container(
                     color: app_grey,
@@ -240,6 +214,85 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                 SizedBox(height: ScreenUtil().setHeight(14)),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Stack photoPreview(int index) {
+    return Stack(
+      children: [
+        Positioned(
+          child: Container(
+            width: ScreenUtil().setSp(58),
+            height: ScreenUtil().setSp(58),
+            margin: EdgeInsets.only(
+                top: ScreenUtil().setSp(10), right: ScreenUtil().setSp(10)),
+            decoration: BoxDecoration(
+              color: app_grey,
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                  image: FileImage(imageList[index]), fit: BoxFit.fill),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: InkWell(
+            onTap: () {
+              imageList.removeAt(index);
+              setState(() {});
+            },
+            child: Container(
+              width: ScreenUtil().setSp(20),
+              height: ScreenUtil().setSp(20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50), color: app_grey),
+              child: Icon(Icons.close,
+                  size: ScreenUtil().setSp(16), color: Colors.white),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  InkWell photoUploadButton() {
+    return InkWell(
+      onTap: () {
+        checkGalleryPermission().then((permission) async {
+          if (permission) {
+            List<XFile> images = await picker.pickMultiImage();
+            List<File> newImageList = imageList;
+            images.forEach((xfile) {
+              newImageList.add(File(xfile.path));
+            });
+            if (newImageList.length > 10) {
+              newImageList.removeRange(10, newImageList.length);
+            }
+            setState(() {
+              imageList = newImageList;
+            });
+          } else {
+            Get.snackbar("error", "사진 접근 권한이 없습니다.");
+          }
+        });
+      },
+      child: Visibility(
+        visible: imageList.length < 10 ? true : false,
+        child: Container(
+          width: ScreenUtil().setSp(58),
+          height: ScreenUtil().setSp(58),
+          margin: EdgeInsets.only(right: ScreenUtil().setSp(10)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color.fromRGBO(241, 241, 245, 1)),
+          child: Icon(
+            Icons.add,
+            size: ScreenUtil().setSp(40),
+            color: Color.fromRGBO(188, 192, 193, 1),
           ),
         ),
       ),
