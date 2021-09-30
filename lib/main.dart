@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
 
     return Query(
         options: QueryOptions(
-          document: gql(Queries.mapPhotos),
+          document: gql(Queries.photoListMap),
           variables: {
             "latitude1": "-87.71179927260242",
             "latitude2": "89.45016124669523",

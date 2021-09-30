@@ -1,13 +1,19 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_post_creation_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/photo_coord.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
+import 'package:simple_s3/simple_s3.dart';
+import 'package:amazon_s3_cognito/aws_region.dart';
 
 class MapPostCreationScreen extends StatefulWidget {
   const MapPostCreationScreen({
@@ -26,16 +32,55 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
 
   String category = "";
   List<File> imageList = [];
+  Float64List photoLatLng;
+  bool isAllFilled = false;
+
+  Future uploadAWS(File file) async {
+    // print("🚨 file : $file");
+    SimpleS3 _simpleS3 = SimpleS3();
+    String result = await _simpleS3.uploadFile(
+        file,
+        "travelmapimage",
+        "ap-northeast-2:b38b1806-e351-4feb-90fc-e6dc9db287cb",
+        AWSRegions.apNorthEast2,
+        // s3FolderPath: "s3://travelmapimage/image/",
+        // accessControl: S3AccessControl.publicReadWrite,
+        debugLog: true);
+
+    print("🚨 result : $result");
+    // print("🚨 file : ${file.path}");
+    // String uploadedImageUrl = await AmazonS3Cognito.uploadImage(
+    //     file.path,
+    //     "travelmapimage",
+    //     "ap-northeast-2:b38b1806-e351-4feb-90fc-e6dc9db287cb");
+
+    // print("🚨 uploadedImageUrl : $uploadedImageUrl");
+  }
 
   categoryCallback(String categoryName) {
+    checkIsAllFilled();
     setState(() {
       category = categoryName;
     });
   }
 
+  checkIsAllFilled() {
+    if (category != "" &&
+        imageList.length != 0 &&
+        contentTextController.text.length != 0 &&
+        tagTextController.text.length > 1) {
+      setState(() {
+        isAllFilled = true;
+      });
+    } else {
+      setState(() {
+        isAllFilled = false;
+      });
+    }
+  }
+
   @override
   void initState() {
-    // contentTextController.text = "asdf";
     super.initState();
   }
 
@@ -45,10 +90,10 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
+          checkIsAllFilled();
         },
         child: Scaffold(
           backgroundColor: Colors.white,
-          // resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
             child: Container(
               height: ScreenUtil().screenHeight * 0.9,
@@ -63,7 +108,6 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                       children: [
                         Expanded(
                           child: Container(
-                            // width: ScreenUtil().setSp(appbar_title_size * 3),
                             alignment: Alignment.centerLeft,
                             child: InkWell(
                               onTap: () {
@@ -83,15 +127,20 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         Expanded(
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              "임시저장",
-                              style: TextStyle(
-                                  fontSize:
-                                      ScreenUtil().setSp(appbar_title_size),
-                                  color: app_font_grey,
-                                  fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () {
+                              uploadAWS(imageList[0]);
+                            },
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                "임시저장",
+                                style: TextStyle(
+                                    fontSize:
+                                        ScreenUtil().setSp(appbar_title_size),
+                                    color: app_font_grey,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
@@ -188,7 +237,6 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                       width: ScreenUtil().screenWidth,
                       height: ScreenUtil().setSp(3)),
                   SizedBox(height: ScreenUtil().setHeight(4)),
-                  // "내용을 입력해주세요.\n(정책을 위반한 글은 무통보 삭제 처리될 수 있습니다.)"
                   Wrap(
                     children: [
                       Container(
@@ -198,6 +246,9 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                               keyboardType: TextInputType.multiline,
                               minLines: 1,
                               maxLines: null,
+                              onChanged: (_) {
+                                checkIsAllFilled();
+                              },
                               style: TextStyle(
                                   fontSize: ScreenUtil().setSp(14),
                                   color: Colors.black),
@@ -235,20 +286,25 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                                 }
                               },
                               onChanged: (String value) {
-                                String clickedVal =
-                                    "${value[value.length - 1]}";
-                                if (value[0] != "#") {
-                                  tagTextController.text = "#$value";
+                                checkIsAllFilled();
+                                if (value.length != 0) {
+                                  String clickedVal =
+                                      "${value[value.length - 1]}";
+                                  if (value[0] != "#") {
+                                    tagTextController.text = "#$value";
+                                  }
+                                  if (clickedVal == " ") {
+                                    String validText =
+                                        value.replaceAll(" ", "#");
+                                    String validTextTwo =
+                                        validText.replaceAll("##", "#");
+                                    tagTextController.text = validTextTwo;
+                                  }
+                                  tagTextController.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset:
+                                              tagTextController.text.length));
                                 }
-                                if (clickedVal == " ") {
-                                  String validText = value.replaceAll(" ", "#");
-                                  String validTextTwo =
-                                      validText.replaceAll("##", "#");
-                                  tagTextController.text = validTextTwo;
-                                }
-                                tagTextController.selection =
-                                    TextSelection.fromPosition(TextPosition(
-                                        offset: tagTextController.text.length));
                               },
                               style: TextStyle(
                                   fontSize: ScreenUtil().setSp(14),
@@ -261,18 +317,35 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                                       fontSize: ScreenUtil().setSp(14)))))
                     ],
                   ),
-                  // SizedBox(height: ScreenUtil().setHeight(4)),
                   Container(
                       color: app_grey,
                       width: ScreenUtil().screenWidth,
                       height: ScreenUtil().setSp(3)),
                   Spacer(),
-                  InkWell(
-                      onTap: () {
-                        // Get.offAll(() => HomePage());
-                      },
-                      child: Image.asset(
-                          "assets/images/walkthroughFirst/next_button.png")),
+                  isAllFilled
+                      ? InkWell(
+                          onTap: () {
+                            Get.to(() => MapPostCreationDetailScreen(
+                                  latLng: photoLatLng,
+                                ));
+                          },
+                          child: Image.asset(
+                            "assets/images/next_button.png",
+                            width: ScreenUtil().setWidth(335),
+                            height: ScreenUtil().setHeight(50),
+                          ))
+                      : InkWell(
+                          onTap: () {
+                            Get.to(() => MapPostCreationDetailScreen(
+                                  latLng: photoLatLng,
+                                ));
+                          },
+                          child: Image.asset(
+                            "assets/images/next_button_grey.png",
+                            width: ScreenUtil().setWidth(335),
+                            height: ScreenUtil().setHeight(50),
+                          ),
+                        ),
                   SizedBox(height: ScreenUtil().setHeight(14)),
                 ],
               ),
@@ -306,6 +379,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
           child: InkWell(
             onTap: () {
               imageList.removeAt(index);
+              checkIsAllFilled();
               setState(() {});
             },
             child: Container(
@@ -327,16 +401,24 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
       onTap: () {
         checkGalleryPermission().then((permission) async {
           if (permission) {
-            List<XFile> images = await picker.pickMultiImage();
-            List<File> newImageList = imageList;
-            images.forEach((xfile) {
-              newImageList.add(File(xfile.path));
-            });
-            if (newImageList.length > 10) {
-              newImageList.removeRange(10, newImageList.length);
-            }
-            setState(() {
-              imageList = newImageList;
+            // List<XFile> images = await
+            picker.pickMultiImage().then((images) {
+              if (images != null) {
+                List<File> newImageList = imageList;
+                images.forEach((xfile) async {
+                  newImageList.add(File(xfile.path));
+                });
+                if (newImageList.length > 10) {
+                  newImageList.removeRange(10, newImageList.length);
+                }
+                pullPhotoCoordnate(newImageList[0]).then((latlng) {
+                  setState(() {
+                    imageList = newImageList;
+                    photoLatLng = latlng;
+                  });
+                });
+                checkIsAllFilled();
+              }
             });
           } else {
             Get.snackbar("error", "사진 접근 권한이 없습니다.");

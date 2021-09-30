@@ -1,4 +1,9 @@
 PODS:
+  - AWSCognito (2.19.1):
+    - AWSCore (= 2.19.1)
+  - AWSCore (2.19.1)
+  - AWSS3 (2.19.1):
+    - AWSCore (= 2.19.1)
   - connectivity_plus (0.0.1):
     - Flutter
     - Reachability
@@ -44,6 +49,8 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.4)
     - PromisesObjC (< 3.0, >= 1.2)
   - Flutter (1.0.0)
+  - flutter_exif (0.0.1):
+    - Flutter
   - flutter_secure_storage (3.3.1):
     - Flutter
   - FMDB (2.7.5):
@@ -110,6 +117,11 @@ PODS:
     - Flutter
   - PromisesObjC (2.0.0)
   - Reachability (3.2)
+  - simple_s3 (0.0.1):
+    - AWSCognito
+    - AWSCore
+    - AWSS3
+    - Flutter
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
@@ -119,6 +131,7 @@ DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Firebase/Analytics
   - Flutter (from `Flutter`)
+  - flutter_exif (from `.symlinks/plugins/flutter_exif/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
@@ -126,10 +139,14 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - simple_s3 (from `.symlinks/plugins/simple_s3/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
   trunk:
+    - AWSCognito
+    - AWSCore
+    - AWSS3
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -151,6 +168,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
     :path: Flutter
+  flutter_exif:
+    :path: ".symlinks/plugins/flutter_exif/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   geolocator_apple:
@@ -165,10 +184,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  simple_s3:
+    :path: ".symlinks/plugins/simple_s3/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
+  AWSCognito: f50de600804941d083af37a7568905f31a774727
+  AWSCore: 55c154ae27efc5c98bdc30a0eeea5a35d10a2ab5
+  AWSS3: 2272253b098d07803af8dd20ce6ce7302bcffb47
   connectivity_plus: 5f0eb61093bec56935f21a1699dd2758bc895587
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: bc9325d5ee2041524bac78a5213d0e530c651309
@@ -177,6 +201,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: b63732f581a1c6a453ec7241f9ab60b3a5bd3450
   FirebaseInstallations: ede6fb72bb6337914e5888b399271259d0c4910c
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_exif: 8a00d834e4e728f4f870f027b4c40ca2a2ad46c8
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
@@ -192,8 +217,9 @@ SPEC CHECKSUMS:
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  simple_s3: dc1e236435ab824abf10e6147110fe86ab32c51c
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
-PODFILE CHECKSUM: 69a66ba51e7d3eb2f573c2cdcb3b50543e14dbb2
+PODFILE CHECKSUM: 035c7451aa7efda77a454f63e2983a4863637868
 
 COCOAPODS: 1.11.0
