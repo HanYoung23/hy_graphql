@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +42,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   bool isAllFilled = false;
 
   Future uploadAWS(File file) async {
-    // print("🚨 file : $file");
+    print("🚨 file : $file");
     // SimpleS3 _simpleS3 = SimpleS3();
     // String result = await _simpleS3.uploadFile(
     //     file,
@@ -52,25 +55,25 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
 
     // print("🚨 result : $result");
 
-    // print("🚨 file : ${file.path}");
-    // String uploadedImageUrl = await AmazonS3Cognito.uploadImage(
-    //     file.path,
-    //     "travelmapimage",
-    //     "ap-northeast-2:b38b1806-e351-4feb-90fc-e6dc9db287cb");
+    // Select image from user's gallery
+    // final PickedFile pickedFile =
+    //     await picker.getImage(source: ImageSource.gallery);
 
-    // print("🚨 uploadedImageUrl : $uploadedImageUrl");
+    // if (pickedFile == null) {
+    //   print('🚨 No image selected');
+    //   return;
+    // }
 
-    var url = "https://s3.ap-northeast-2.amazonaws.com/travelmapimage";
-    var request = http.MultipartRequest("POST", Uri.parse(url));
-    request.files.add(http.MultipartFile.fromString("file", file.toString()));
-    request.fields
-        .addAll({"key": file.path.split("/").last, "acl": "public-read"});
-    await request.send().then((value) {
-      print("🚨 result : ${value.statusCode}");
-      print("🚨 result : ${value.request}");
-      print("🚨 result : ${value.stream}");
-      print("🚨 result : ${value.reasonPhrase}");
-    });
+    // Upload image with the current time as the key
+    final key = DateTime.now().toString();
+    // final file = File(pickedFile.path);
+    try {
+      final UploadFileResult result =
+          await Amplify.Storage.uploadFile(local: file, key: key);
+      print('🚨 Successfully uploaded image: ${result.key}');
+    } on StorageException catch (e) {
+      print('🚨 Error uploading image: $e');
+    }
   }
 
   categoryCallback(String categoryName) {
@@ -95,8 +98,13 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
     }
   }
 
+  Future initAWS() async {
+    await Amplify.addPlugins([AmplifyAuthCognito(), AmplifyStorageS3()]);
+  }
+
   @override
   void initState() {
+    initAWS();
     super.initState();
   }
 
