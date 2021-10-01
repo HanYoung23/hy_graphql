@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:amazon_s3_cognito/amazon_s3_cognito.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +12,6 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
 import 'package:simple_s3/simple_s3.dart';
-import 'package:amazon_s3_cognito/aws_region.dart';
 
 class MapPostCreationScreen extends StatefulWidget {
   const MapPostCreationScreen({

@@ -44,7 +44,7 @@ dependencies:
   flutter_exif: ^1.0.1
   flutter_rating_bar: ^4.0.0
   simple_s3: ^0.3.2
-  amazon_s3_cognito: ^0.6.0
+  # amazon_s3_cognito: ^0.6.0
   
 # common
   cupertino_icons: ^1.0.2
@@ -64,7 +64,7 @@ dependencies:
   uuid: ^3.0.4
 
   get: ^4.3.8
-  flutter_exif_plugin: ^1.0.0
+  # flutter_exif_plugin: ^1.0.0
 
 dev_dependencies:
   flutter_test:
