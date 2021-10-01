@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -5,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/http/io/file_decoder_io.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_detail_screen.dart';
@@ -12,6 +14,9 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
 import 'package:simple_s3/simple_s3.dart';
+import 'package:http/http.dart' as http;
+import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
+import 'package:http/src/multipart_file.dart';
 
 class MapPostCreationScreen extends StatefulWidget {
   const MapPostCreationScreen({
@@ -35,17 +40,18 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
 
   Future uploadAWS(File file) async {
     // print("🚨 file : $file");
-    SimpleS3 _simpleS3 = SimpleS3();
-    String result = await _simpleS3.uploadFile(
-        file,
-        "travelmapimage",
-        "ap-northeast-2:b38b1806-e351-4feb-90fc-e6dc9db287cb",
-        AWSRegions.apNorthEast2,
-        // s3FolderPath: "s3://travelmapimage/image/",
-        // accessControl: S3AccessControl.publicReadWrite,
-        debugLog: true);
+    // SimpleS3 _simpleS3 = SimpleS3();
+    // String result = await _simpleS3.uploadFile(
+    //     file,
+    //     "travelmapimage",
+    //     "ap-northeast-2:b38b1806-e351-4feb-90fc-e6dc9db287cb",
+    //     AWSRegions.apNorthEast2,
+    //     // s3FolderPath: "s3://travelmapimage/image/",
+    //     // accessControl: S3AccessControl.publicReadWrite,
+    //     debugLog: true);
 
-    print("🚨 result : $result");
+    // print("🚨 result : $result");
+
     // print("🚨 file : ${file.path}");
     // String uploadedImageUrl = await AmazonS3Cognito.uploadImage(
     //     file.path,
@@ -53,6 +59,18 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
     //     "ap-northeast-2:b38b1806-e351-4feb-90fc-e6dc9db287cb");
 
     // print("🚨 uploadedImageUrl : $uploadedImageUrl");
+
+    var url = "https://s3.ap-northeast-2.amazonaws.com/travelmapimage";
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    request.files.add(http.MultipartFile.fromString("file", file.toString()));
+    request.fields
+        .addAll({"key": file.path.split("/").last, "acl": "public-read"});
+    await request.send().then((value) {
+      print("🚨 result : ${value.statusCode}");
+      print("🚨 result : ${value.request}");
+      print("🚨 result : ${value.stream}");
+      print("🚨 result : ${value.reasonPhrase}");
+    });
   }
 
   categoryCallback(String categoryName) {

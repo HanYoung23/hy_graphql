@@ -45,6 +45,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   simple_s3: ^0.3.2
   # amazon_s3_cognito: ^0.6.0
+  amplify_storage_s3: ^0.2.4
   
 # common
   cupertino_icons: ^1.0.2
