@@ -1,0 +1,13 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "Region": "ap-northeast-2"
+    },
+    "categories": {
+      "auth": {
+        "letsgotrip75f8e837": {},
+        "letsgotripcbf9c173": {}
+      }
+    }
+  }
+}
