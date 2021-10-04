@@ -1,6 +1,6 @@
 {
   "auth": {
-    "letsgotripcbf9c173": {
+    "letsgotripflutterd315c72a": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -27,7 +27,7 @@
     }
   },
   "storage": {
-    "amplifystorage": {
+    "s3b1daa4b9": {
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }

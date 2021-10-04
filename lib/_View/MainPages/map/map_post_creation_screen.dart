@@ -38,14 +38,21 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   bool isAllFilled = false;
 
   Future uploadAWS(File file) async {
-    final key = DateTime.now().toString();
+    final key = "${DateTime.now().toString()}.png";
     // final file = File(pickedFile.path);
-    var option = UploadFileOptions(contentType: "image/png");
+    var option = UploadFileOptions(
+      accessLevel: StorageAccessLevel.guest,
+      contentType: "image/jpeg",
+    );
 
     try {
       final UploadFileResult result = await Amplify.Storage.uploadFile(
           local: file, key: key, options: option);
       print('🚨 Successfully uploaded image: ${result.key}');
+      var photoOption = GetUrlOptions(accessLevel: StorageAccessLevel.guest);
+      final GetUrlResult photoUrl =
+          await Amplify.Storage.getUrl(key: key, options: photoOption);
+      print('🚨 Successfully uploaded url: ${photoUrl.url}');
     } on StorageException catch (e) {
       print('🚨 Error uploading image: $e');
     }

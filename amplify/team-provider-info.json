@@ -1,12 +1,19 @@
 {
   "dev": {
     "awscloudformation": {
-      "Region": "ap-northeast-2"
+      "AuthRoleName": "amplify-letsgotripflutter-dev-140446-authRole",
+      "UnauthRoleArn": "arn:aws:iam::750445368255:role/amplify-letsgotripflutter-dev-140446-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::750445368255:role/amplify-letsgotripflutter-dev-140446-authRole",
+      "Region": "ap-northeast-2",
+      "DeploymentBucketName": "amplify-letsgotripflutter-dev-140446-deployment",
+      "UnauthRoleName": "amplify-letsgotripflutter-dev-140446-unauthRole",
+      "StackName": "amplify-letsgotripflutter-dev-140446",
+      "StackId": "arn:aws:cloudformation:ap-northeast-2:750445368255:stack/amplify-letsgotripflutter-dev-140446/9d75e6f0-24d0-11ec-ae78-023bf7ae6726",
+      "AmplifyAppId": "d1smmw39inrx2b"
     },
     "categories": {
       "auth": {
-        "letsgotrip75f8e837": {},
-        "letsgotripcbf9c173": {}
+        "letsgotripflutterd315c72a": {}
       }
     }
   }

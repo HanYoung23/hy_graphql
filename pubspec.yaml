@@ -43,7 +43,6 @@ dependencies:
   path_provider: ^2.0.4
   flutter_exif: ^1.0.1
   flutter_rating_bar: ^4.0.0
-  simple_s3: ^0.3.2
   
 # aws
   amplify_auth_cognito: ^0.2.0
