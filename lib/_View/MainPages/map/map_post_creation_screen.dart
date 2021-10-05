@@ -28,41 +28,70 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
 
-  String category = "";
+  int category = 0;
+  String selectedCategory = "";
   List<File> imageList = [];
   List<LatLng> photoLatLng = [];
   bool isAllFilled = false;
 
   Future uploadAWS(File file) async {
     final key = "${DateTime.now().toString()}.png";
-    // final file = File(pickedFile.path);
     var option = UploadFileOptions(
       accessLevel: StorageAccessLevel.guest,
       contentType: "image/jpeg",
     );
+    GetUrlResult photoUrl;
 
     try {
       final UploadFileResult result = await Amplify.Storage.uploadFile(
           local: file, key: key, options: option);
       print('🚨 Successfully uploaded image: ${result.key}');
       var photoOption = GetUrlOptions(accessLevel: StorageAccessLevel.guest);
-      final GetUrlResult photoUrl =
-          await Amplify.Storage.getUrl(key: key, options: photoOption);
+      photoUrl = await Amplify.Storage.getUrl(key: key, options: photoOption);
       print('🚨 Successfully uploaded url: ${photoUrl.url}');
     } on StorageException catch (e) {
       print('🚨 Error uploading image: $e');
     }
+
+    Map paramMap = {
+      "categoryId": category,
+      // "imageList": imageList,
+      "awsUrl": photoUrl,
+      "imageLatLngList": photoLatLng,
+      "content": contentTextController.text,
+      "tag": tagTextController.text,
+    };
+    Get.to(() => MapPostCreationDetailScreen(
+          paramMap: paramMap,
+        ));
   }
 
   categoryCallback(String categoryName) {
-    checkIsAllFilled();
+    int categoryId;
+    switch (categoryName) {
+      case "바닷가":
+        categoryId = 1;
+        break;
+      case "액티비티":
+        categoryId = 2;
+        break;
+      case "맛집":
+        categoryId = 3;
+        break;
+      case "숙소":
+        categoryId = 4;
+        break;
+      default:
+    }
     setState(() {
-      category = categoryName;
+      category = categoryId;
+      selectedCategory = categoryName;
     });
+    checkIsAllFilled();
   }
 
   checkIsAllFilled() {
-    if (category != "" &&
+    if (selectedCategory != "" &&
         imageList.length != 0 &&
         contentTextController.text.length != 0 &&
         tagTextController.text.length > 1) {
@@ -125,9 +154,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                         ),
                         Expanded(
                           child: InkWell(
-                            onTap: () {
-                              uploadAWS(imageList[0]);
-                            },
+                            onTap: () {},
                             child: Container(
                               alignment: Alignment.centerRight,
                               child: Text(
@@ -158,10 +185,13 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                       padding: EdgeInsets.symmetric(
                           vertical: ScreenUtil().setHeight(8)),
                       alignment: Alignment.centerLeft,
-                      child: Text(category == "" ? "카테고리 설정" : "$category",
+                      child: Text(
+                          selectedCategory == ""
+                              ? "카테고리 설정"
+                              : "$selectedCategory",
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(14),
-                              color: category == ""
+                              color: selectedCategory == ""
                                   ? app_font_grey
                                   : Colors.black)),
                     ),
@@ -322,16 +352,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                   isAllFilled
                       ? InkWell(
                           onTap: () {
-                            Map paramMap = {
-                              "category": category,
-                              "imageList": imageList,
-                              "imageLatLngList": photoLatLng,
-                              "content": contentTextController.text,
-                              "tag": tagTextController.text,
-                            };
-                            Get.to(() => MapPostCreationDetailScreen(
-                                  paramMap: paramMap,
-                                ));
+                            uploadAWS(imageList[0]);
                           },
                           child: Image.asset(
                             "assets/images/next_button.png",
@@ -340,16 +361,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                           ))
                       : InkWell(
                           onTap: () {
-                            Map paramMap = {
-                              "category": category,
-                              "imageList": imageList,
-                              "imageLatLngList": photoLatLng,
-                              "content": contentTextController.text,
-                              "tag": tagTextController.text,
-                            };
-                            Get.to(() => MapPostCreationDetailScreen(
-                                  paramMap: paramMap,
-                                ));
+                            uploadAWS(imageList[0]);
                           },
                           child: Image.asset(
                             "assets/images/next_button_grey.png",

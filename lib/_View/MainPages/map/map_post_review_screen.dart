@@ -17,13 +17,13 @@ class MapPostReviewScreen extends StatefulWidget {
 }
 
 class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
-  double firstQRating;
+  int firstQRating;
 
-  double secondQRating;
+  int secondQRating;
 
-  double thirdQRating;
+  int thirdQRating;
 
-  double fourthQRating;
+  int fourthQRating;
 
   bool isUpload = false;
 
@@ -127,13 +127,13 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                           "location_link": "location_link_test",
                           "image_link":
                               "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-05%2017:39:42.460307.png",
-                          "main_text": "main_text_test",
-                          "tags": "tags_test",
-                          "customer_id": 1,
-                          "star_rating1": 1,
-                          "star_rating2": 2,
-                          "star_rating3": 3,
-                          "star_rating4": 4,
+                          "main_text": widget.paramMap["content"],
+                          "tags": widget.paramMap["tag"],
+                          "customer_id": widget.paramMap["categoryId"],
+                          "star_rating1": firstQRating,
+                          "star_rating2": secondQRating,
+                          "star_rating3": thirdQRating,
+                          "star_rating4": fourthQRating,
                           "latitude": "37.5269497",
                           "longitude": "126.9035056",
                         });
@@ -170,19 +170,19 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
         switch (title) {
           case "first":
             return setState(() {
-              firstQRating = rating;
+              firstQRating = rating.toInt();
             });
           case "second":
             return setState(() {
-              secondQRating = rating;
+              secondQRating = rating.toInt();
             });
           case "third":
             return setState(() {
-              thirdQRating = rating;
+              thirdQRating = rating.toInt();
             });
           case "fourth":
             return setState(() {
-              fourthQRating = rating;
+              fourthQRating = rating.toInt();
             });
             break;
           default:
