@@ -1,18 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_detail_screen.dart';
-import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
@@ -34,7 +30,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
 
   String category = "";
   List<File> imageList = [];
-  Float64List photoLatLng;
+  List<LatLng> photoLatLng = [];
   bool isAllFilled = false;
 
   Future uploadAWS(File file) async {
@@ -80,16 +76,8 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
     }
   }
 
-  Future initAWS() async {
-    AmplifyStorageS3 storage = new AmplifyStorageS3();
-    AmplifyAuthCognito auth = new AmplifyAuthCognito();
-    await Amplify.addPlugins([auth, storage]);
-    await Amplify.configure(amplifyconfig);
-  }
-
   @override
   void initState() {
-    initAWS();
     super.initState();
   }
 
@@ -334,8 +322,15 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                   isAllFilled
                       ? InkWell(
                           onTap: () {
+                            Map paramMap = {
+                              "category": category,
+                              "imageList": imageList,
+                              "imageLatLngList": photoLatLng,
+                              "content": contentTextController.text,
+                              "tag": tagTextController.text,
+                            };
                             Get.to(() => MapPostCreationDetailScreen(
-                                  latLng: photoLatLng,
+                                  paramMap: paramMap,
                                 ));
                           },
                           child: Image.asset(
@@ -345,8 +340,15 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                           ))
                       : InkWell(
                           onTap: () {
+                            Map paramMap = {
+                              "category": category,
+                              "imageList": imageList,
+                              "imageLatLngList": photoLatLng,
+                              "content": contentTextController.text,
+                              "tag": tagTextController.text,
+                            };
                             Get.to(() => MapPostCreationDetailScreen(
-                                  latLng: photoLatLng,
+                                  paramMap: paramMap,
                                 ));
                           },
                           child: Image.asset(
@@ -410,21 +412,23 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
       onTap: () {
         checkGalleryPermission().then((permission) async {
           if (permission) {
-            // List<XFile> images = await
             picker.pickMultiImage().then((images) {
               if (images != null) {
                 List<File> newImageList = imageList;
+                List<LatLng> newLatLngList = photoLatLng;
                 images.forEach((xfile) async {
-                  newImageList.add(File(xfile.path));
+                  File file = File(xfile.path);
+                  newImageList.add(file);
+                  pullPhotoCoordnate(file).then((latlng) {
+                    newLatLngList.add(latlng);
+                  });
                 });
                 if (newImageList.length > 10) {
                   newImageList.removeRange(10, newImageList.length);
                 }
-                pullPhotoCoordnate(newImageList[0]).then((latlng) {
-                  setState(() {
-                    imageList = newImageList;
-                    photoLatLng = latlng;
-                  });
+                setState(() {
+                  imageList = newImageList;
+                  photoLatLng = newLatLngList;
                 });
                 checkIsAllFilled();
               }

@@ -12,6 +12,7 @@ import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/_View/InitPages/walkthrough_screen.dart';
+import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -122,8 +123,16 @@ class _ScreenFilterState extends State<ScreenFilter> {
   String isAuth = "";
   bool isFirstTime = false;
 
+  Future initAWS() async {
+    AmplifyStorageS3 storage = new AmplifyStorageS3();
+    AmplifyAuthCognito auth = new AmplifyAuthCognito();
+    await Amplify.addPlugins([auth, storage]);
+    await Amplify.configure(amplifyconfig);
+  }
+
   @override
   void initState() {
+    initAWS();
     super.initState();
   }
 

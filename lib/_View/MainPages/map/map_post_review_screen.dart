@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
+import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class MapPostReviewScreen extends StatefulWidget {
-  const MapPostReviewScreen({
-    Key key,
-  }) : super(key: key);
+  final Map paramMap;
+  const MapPostReviewScreen({Key key, @required this.paramMap})
+      : super(key: key);
 
   @override
   _MapPostReviewScreenState createState() => _MapPostReviewScreenState();
@@ -25,103 +25,131 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
 
   double fourthQRating;
 
+  bool isUpload = false;
+
   @override
   Widget build(BuildContext context) {
-    Mutation(
-        options: MutationOptions(document: gql(Mutations.createContents)),
+    return Mutation(
+        options: MutationOptions(
+            document: gql(Mutations.createContents),
+            update: (GraphQLDataProxy proxy, QueryResult result) {
+              if (result.hasException) {
+                print(['optimistic', result.exception.toString()]);
+              } else {
+                // Do something
+              }
+            },
+            onCompleted: (dynamic resultData) {
+              print("🚨 resultData : $resultData");
+            }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
-          return reviewScreen();
-        });
-    return reviewScreen();
-  }
-
-  SafeArea reviewScreen() {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
-          margin: EdgeInsets.all(ScreenUtil().setSp(20)),
-          child: Column(
-            children: [
-              Container(
-                width: ScreenUtil().setWidth(375),
-                height: ScreenUtil().setHeight(44),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return SafeArea(
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              body: Container(
+                margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+                child: Column(
                   children: [
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
-                            size: ScreenUtil().setSp(arrow_back_size),
+                    Container(
+                      width: ScreenUtil().setWidth(375),
+                      height: ScreenUtil().setHeight(44),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  size: ScreenUtil().setSp(arrow_back_size),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            "장소 평가",
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(appbar_title_size),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: ScreenUtil().setSp(arrow_back_size),
+                              color: Colors.transparent,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    SizedBox(height: ScreenUtil().setHeight(25)),
+                    Image.asset(
+                      "assets/images/post_logo.png",
+                      width: ScreenUtil().setSp(24),
+                      height: ScreenUtil().setSp(31),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(12)),
                     Text(
-                      "장소 평가",
+                      "${Get.arguments}",
                       style: TextStyle(
-                          fontSize: ScreenUtil().setSp(appbar_title_size),
+                          fontSize: ScreenUtil().setSp(20),
                           fontWeight: FontWeight.bold),
                     ),
-                    Expanded(
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: ScreenUtil().setSp(arrow_back_size),
-                        color: Colors.transparent,
+                    SizedBox(height: ScreenUtil().setHeight(12)),
+                    Text(
+                      "해당 장소에 대해 간략하게 알려주세요",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        color: app_font_grey,
                       ),
                     ),
+                    // SizedBox(height: ScreenUtil().setHeight(12)),
+                    Spacer(),
+                    questionText("방문객이 많이 있었나요?"),
+                    ratingbar("first"),
+                    questionText("주차가 편리한가요?"),
+                    ratingbar("second"),
+                    questionText("아이들과 동반하기 좋았나요?"),
+                    ratingbar("third"),
+                    questionText("이곳을 다른 사람에게 추천하나요?"),
+                    ratingbar("fourth"),
+                    Spacer(),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        runMutation({
+                          "category_id": 1,
+                          "contents_title": "${Get.arguments}",
+                          "location_link": "location_link_test",
+                          "image_link":
+                              "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-05%2017:39:42.460307.png",
+                          "main_text": "main_text_test",
+                          "tags": "tags_test",
+                          "customer_id": 1,
+                          "star_rating1": 1,
+                          "star_rating2": 2,
+                          "star_rating3": 3,
+                          "star_rating4": 4,
+                          "latitude": "37.5269497",
+                          "longitude": "126.9035056",
+                        });
+                      },
+                      child: Image.asset(
+                        "assets/images/upload_button.png",
+                        width: ScreenUtil().setWidth(335),
+                        height: ScreenUtil().setHeight(50),
+                      ),
+                    )
                   ],
                 ),
               ),
-              SizedBox(height: ScreenUtil().setHeight(25)),
-              Image.asset(
-                "assets/images/post_logo.png",
-                width: ScreenUtil().setSp(24),
-                height: ScreenUtil().setSp(31),
-              ),
-              SizedBox(height: ScreenUtil().setHeight(12)),
-              Text(
-                "${Get.arguments}",
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(20),
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: ScreenUtil().setHeight(12)),
-              Text(
-                "해당 장소에 대해 간략하게 알려주세요",
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(16),
-                  color: app_font_grey,
-                ),
-              ),
-              // SizedBox(height: ScreenUtil().setHeight(12)),
-              Spacer(),
-              questionText("방문객이 많이 있었나요?"),
-              ratingbar("first"),
-              questionText("주차가 편리한가요?"),
-              ratingbar("second"),
-              questionText("아이들과 동반하기 좋았나요?"),
-              ratingbar("third"),
-              questionText("이곳을 다른 사람에게 추천하나요?"),
-              ratingbar("fourth"),
-              Spacer(),
-              Spacer(),
-              Image.asset(
-                "assets/images/upload_button.png",
-                width: ScreenUtil().setWidth(335),
-                height: ScreenUtil().setHeight(50),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
   RatingBar ratingbar(String title) {

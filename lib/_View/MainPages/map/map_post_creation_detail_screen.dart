@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +10,8 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 
 class MapPostCreationDetailScreen extends StatefulWidget {
-  final Float64List latLng;
-  const MapPostCreationDetailScreen({Key key, @required this.latLng})
+  final Map paramMap;
+  const MapPostCreationDetailScreen({Key key, @required this.paramMap})
       : super(key: key);
 
   @override
@@ -41,8 +39,10 @@ class _MapPostCreationDetailScreenState
 
   @override
   void initState() {
+    print("🚨 ${widget.paramMap}");
     checkLocationPermission().then((permission) {
       getUserLocation().then((latlng) {
+        // print("🚨 ${latlng.latitude}, ${latlng.longitude}");
         setState(() {
           userPosition = latlng;
         });
@@ -116,16 +116,25 @@ class _MapPostCreationDetailScreenState
                             myLocationButtonEnabled: false,
                             myLocationEnabled: false,
                             zoomControlsEnabled: false,
+                            // here
                             initialCameraPosition: CameraPosition(
-                              target: widget.latLng != null
-                                  ? LatLng(widget.latLng[0], widget.latLng[1])
-                                  : LatLng(userPosition.latitude,
-                                      userPosition.longitude),
+                              target:
+                                  widget.paramMap["imageLatLngList"][0] != null
+                                      ? LatLng(
+                                          widget.paramMap["imageLatLngList"][0]
+                                              .latitude,
+                                          widget.paramMap["imageLatLngList"][0]
+                                              .longitude)
+                                      : LatLng(userPosition.latitude,
+                                          userPosition.longitude),
                               zoom: 14,
                             ),
                             markers: createMarker(),
                           )
-                        : CircularProgressIndicator(color: app_blue),
+                        : Container(
+                            width: ScreenUtil().setSp(50),
+                            height: ScreenUtil().setSp(50),
+                            child: CircularProgressIndicator(color: app_blue)),
                   ),
                   SizedBox(height: ScreenUtil().setHeight(10)),
                   Text(
@@ -167,7 +176,9 @@ class _MapPostCreationDetailScreenState
                   locationTextController.text.length > 0
                       ? InkWell(
                           onTap: () {
-                            Get.to(() => MapPostReviewScreen(),
+                            Get.to(
+                                () => MapPostReviewScreen(
+                                    paramMap: widget.paramMap),
                                 arguments: "${locationTextController.text}");
                           },
                           child: Image.asset(
@@ -177,7 +188,9 @@ class _MapPostCreationDetailScreenState
                           ))
                       : InkWell(
                           onTap: () {
-                            Get.to(() => MapPostReviewScreen(),
+                            Get.to(
+                                () => MapPostReviewScreen(
+                                    paramMap: widget.paramMap),
                                 arguments: "${locationTextController.text}");
                           },
                           child: Image.asset(
@@ -201,8 +214,9 @@ class _MapPostCreationDetailScreenState
       Marker(
         draggable: true,
         markerId: MarkerId("marker_1"),
-        position: widget.latLng != null
-            ? LatLng(widget.latLng[0], widget.latLng[1])
+        position: widget.paramMap["imageLatLngList"][0] != null
+            ? LatLng(widget.paramMap["imageLatLngList"][0].latitude,
+                widget.paramMap["imageLatLngList"][0].longitude)
             : LatLng(userPosition.latitude, userPosition.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
       )
