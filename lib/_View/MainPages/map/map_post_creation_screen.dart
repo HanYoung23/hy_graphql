@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
@@ -36,21 +37,20 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   bool isAllFilled = false;
 
   Future uploadAWS(List<File> imageFiles) async {
-    final key = "${DateTime.now().toString()}.png";
     var option = UploadFileOptions(
       accessLevel: StorageAccessLevel.guest,
-      contentType: "image/jpeg",
+      contentType: "image/png",
     );
     List<String> photoUrlList = [];
     for (File file in imageFiles) {
+      final key = "${DateTime.now().toString()}.png";
       try {
-        Amplify.Storage.uploadFile(local: file, key: key, options: option)
+        await Amplify.Storage.uploadFile(local: file, key: key, options: option)
             .then((result) async {
           var photoOption =
               GetUrlOptions(accessLevel: StorageAccessLevel.guest);
           GetUrlResult storageUrl =
               await Amplify.Storage.getUrl(key: key, options: photoOption);
-          print('🚨 Successfully uploaded url: ${storageUrl.url}');
           photoUrlList.add(storageUrl.url);
           print('🚨 Successfully uploaded url: ${result.key}');
         });
@@ -347,24 +347,23 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                   isAllFilled
                       ? InkWell(
                           onTap: () {
+                            List awsUrlList = [];
                             uploadAWS(imageList).then((photoUrlList) {
-                              print("🚨 list : $photoUrlList");
-                              String photoUrl =
-                                  "${photoUrlList.sublist(0, photoUrlList.length - 1)}";
-                              print("🚨 string : $photoUrl");
-
-                              // 리사이징 + 주소 값
-                              // Map paramMap = {
-                              //   "categoryId": category,
-                              //   // "imageList": imageList,
-                              //   "awsUrl": photoUrl,
-                              //   "imageLatLngList": photoLatLng,
-                              //   "content": contentTextController.text,
-                              //   "tag": tagTextController.text,
-                              // };
-                              // Get.to(() => MapPostCreationDetailScreen(
-                              //       paramMap: paramMap,
-                              //     ));
+                              for (String photoUrl in photoUrlList) {
+                                String shortUrl = photoUrl.substring(
+                                    0, photoUrl.indexOf("?X-Amz"));
+                                awsUrlList.add(shortUrl);
+                              }
+                              Map paramMap = {
+                                "categoryId": category,
+                                "awsUrl": awsUrlList,
+                                "imageLatLngList": photoLatLng,
+                                "content": contentTextController.text,
+                                "tag": tagTextController.text,
+                              };
+                              Get.to(() => MapPostCreationDetailScreen(
+                                    paramMap: paramMap,
+                                  ));
                             });
                           },
                           child: Image.asset(
@@ -372,33 +371,10 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                             width: ScreenUtil().setWidth(335),
                             height: ScreenUtil().setHeight(50),
                           ))
-                      : InkWell(
-                          onTap: () {
-                            uploadAWS(imageList).then((photoUrlList) {
-                              print("🚨 list : $photoUrlList");
-                              String photoUrl =
-                                  "${photoUrlList.sublist(0, photoUrlList.length - 1)}";
-                              print("🚨 string : $photoUrl");
-
-                              // 리사이징 + 주소 값
-                              // Map paramMap = {
-                              //   "categoryId": category,
-                              //   // "imageList": imageList,
-                              //   "awsUrl": photoUrl,
-                              //   "imageLatLngList": photoLatLng,
-                              //   "content": contentTextController.text,
-                              //   "tag": tagTextController.text,
-                              // };
-                              // Get.to(() => MapPostCreationDetailScreen(
-                              //       paramMap: paramMap,
-                              //     ));
-                            });
-                          },
-                          child: Image.asset(
-                            "assets/images/next_button_grey.png",
-                            width: ScreenUtil().setWidth(335),
-                            height: ScreenUtil().setHeight(50),
-                          ),
+                      : Image.asset(
+                          "assets/images/next_button_grey.png",
+                          width: ScreenUtil().setWidth(335),
+                          height: ScreenUtil().setHeight(50),
                         ),
                   SizedBox(height: ScreenUtil().setHeight(14)),
                 ],
@@ -455,7 +431,9 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
       onTap: () {
         checkGalleryPermission().then((permission) async {
           if (permission) {
-            picker.pickMultiImage().then((images) {
+            picker
+                .pickMultiImage(maxWidth: 1000, maxHeight: 1000)
+                .then((images) {
               if (images != null) {
                 List<File> newImageList = imageList;
                 List<LatLng> newLatLngList = photoLatLng;
