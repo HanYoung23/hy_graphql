@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,9 +7,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
+import 'package:letsgotrip/_View/MainPages/map/address_web.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/user_location.dart';
+import 'package:http/http.dart' as http;
 
 class MapPostCreationDetailScreen extends StatefulWidget {
   final Map paramMap;
@@ -23,6 +28,7 @@ class _MapPostCreationDetailScreenState
     extends State<MapPostCreationDetailScreen> {
   final locationTextController = TextEditingController();
   Position userPosition;
+  LatLng photoLatLng;
   bool isAllFilled = false;
 
   checkIsAllFilled() {
@@ -37,12 +43,30 @@ class _MapPostCreationDetailScreenState
     }
   }
 
+  Future getPlaceInfo() async {
+    if (widget.paramMap["imageLatLngList"][0] != null) {
+      double lat = widget.paramMap["imageLatLngList"][0].latitude;
+      double lng = widget.paramMap["imageLatLngList"][0].longitude;
+      setState(() {
+        photoLatLng = widget.paramMap["imageLatLngList"][0];
+      });
+      final url = Uri.parse(
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$googleWebKey&language=ko');
+      final response = await http.get(url);
+      print("🚨 response : ${response.body}");
+      String addressJSON = await jsonDecode(response.body.toString())['results']
+              [0]['formatted_address']
+          .replaceAll("대한민국 ", "");
+      print("🚨 addressJSON : $addressJSON");
+    }
+  }
+
   @override
   void initState() {
     print("🚨 ${widget.paramMap}");
+    getPlaceInfo();
     checkLocationPermission().then((permission) {
       getUserLocation().then((latlng) {
-        // print("🚨 ${latlng.latitude}, ${latlng.longitude}");
         setState(() {
           userPosition = latlng;
         });
@@ -105,37 +129,36 @@ class _MapPostCreationDetailScreenState
                   ),
                   SizedBox(height: ScreenUtil().setHeight(10)),
                   Container(
-                    width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setHeight(240),
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: userPosition != null
-                        ? GoogleMap(
-                            mapToolbarEnabled: false,
-                            zoomGesturesEnabled: true,
-                            myLocationButtonEnabled: false,
-                            myLocationEnabled: false,
-                            zoomControlsEnabled: false,
-                            // here
-                            initialCameraPosition: CameraPosition(
-                              target:
-                                  widget.paramMap["imageLatLngList"][0] != null
-                                      ? LatLng(
-                                          widget.paramMap["imageLatLngList"][0]
-                                              .latitude,
-                                          widget.paramMap["imageLatLngList"][0]
-                                              .longitude)
-                                      : LatLng(userPosition.latitude,
-                                          userPosition.longitude),
-                              zoom: 14,
-                            ),
-                            markers: createMarker(),
-                          )
-                        : Container(
-                            width: ScreenUtil().setSp(50),
-                            height: ScreenUtil().setSp(50),
-                            child: CircularProgressIndicator(color: app_blue)),
-                  ),
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().setHeight(240),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: userPosition != null
+                          ? GoogleMap(
+                              mapToolbarEnabled: false,
+                              zoomGesturesEnabled: true,
+                              myLocationButtonEnabled: false,
+                              myLocationEnabled: false,
+                              zoomControlsEnabled: false,
+                              initialCameraPosition: CameraPosition(
+                                target: photoLatLng != null
+                                    ? photoLatLng
+                                    : LatLng(userPosition.latitude,
+                                        userPosition.longitude),
+                                zoom: 14,
+                              ),
+                              markers: createMarker(),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    width: ScreenUtil().setSp(50),
+                                    height: ScreenUtil().setSp(50),
+                                    child: CircularProgressIndicator(
+                                        color: app_blue)),
+                              ],
+                            )),
                   SizedBox(height: ScreenUtil().setHeight(10)),
                   Text(
                       "위치가 다른 경우 지도에서 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
@@ -149,6 +172,19 @@ class _MapPostCreationDetailScreenState
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(14),
                               fontWeight: FontWeight.bold)),
+                      Text("장소명 입력",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(14),
+                              fontWeight: FontWeight.bold)),
+                      InkWell(
+                        onTap: () {
+                          Get.to(() => WebViewExample());
+                        },
+                        child: Text("ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ",
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                fontWeight: FontWeight.bold)),
+                      ),
                     ],
                   ),
                   SizedBox(height: ScreenUtil().setHeight(5)),
@@ -188,10 +224,11 @@ class _MapPostCreationDetailScreenState
                           ))
                       : InkWell(
                           onTap: () {
-                            Get.to(
-                                () => MapPostReviewScreen(
-                                    paramMap: widget.paramMap),
-                                arguments: "${locationTextController.text}");
+                            getPlaceInfo();
+                            // Get.to(
+                            //     () => MapPostReviewScreen(
+                            //         paramMap: widget.paramMap),
+                            //     arguments: "${locationTextController.text}");
                           },
                           child: Image.asset(
                             "assets/images/next_button_grey.png",
@@ -215,8 +252,7 @@ class _MapPostCreationDetailScreenState
         draggable: true,
         markerId: MarkerId("marker_1"),
         position: widget.paramMap["imageLatLngList"][0] != null
-            ? LatLng(widget.paramMap["imageLatLngList"][0].latitude,
-                widget.paramMap["imageLatLngList"][0].longitude)
+            ? photoLatLng
             : LatLng(userPosition.latitude, userPosition.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
       )
