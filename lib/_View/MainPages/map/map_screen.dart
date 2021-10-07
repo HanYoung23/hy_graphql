@@ -26,6 +26,10 @@ class _MapScreenState extends State<MapScreen> {
   bool isMapLoading = true;
   Position userPosition;
 
+  refreshScreen() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     checkLocationPermission().then((permission) {
@@ -100,12 +104,7 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                       SizedBox(width: ScreenUtil().setWidth(8)),
                       InkWell(
-                        onTap: () {
-                          // setState(() {
-                          //   isLeftTap = false;
-                          // });
-                          Get.to(() => MapAroundScreen());
-                        },
+                        onTap: () {},
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

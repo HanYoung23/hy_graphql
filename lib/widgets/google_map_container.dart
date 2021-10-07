@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:get/get.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/_Controller/permission_controller.dart';
+import 'package:letsgotrip/functions/user_location.dart';
+import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 
 import 'map_marker.dart';
@@ -22,26 +26,32 @@ class GoogleMapContainer extends StatefulWidget {
 
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
-  final GoogleMapWholeController gmWholeImages = Get.find();
-
-  //
+  GoogleMapWholeController gmWholeImages = Get.find();
   final Set<Marker> _markers = Set();
   final int _minClusterZoom = 2;
   final int _maxClusterZoom = 19;
   Fluster<MapMarker> _clusterManager;
   double _currentZoom = 13;
-  //
-  List<MapMarker> markers = [];
+  int markerNum;
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
-    _initMarkers();
+    if (markerNum != gmWholeImages.mapMarkers.length) {
+      Timer.periodic(Duration(milliseconds: 100), (timer) {
+        setState(() {
+          markerNum = gmWholeImages.mapMarkers.length;
+        });
+        _initMarkers();
+      });
+    } else {
+      _initMarkers();
+    }
   }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
   _initMarkers() async {
     _clusterManager = await MapHelper.initClusterManager(
-      markers,
+      gmWholeImages.mapMarkers,
       _minClusterZoom,
       _maxClusterZoom,
     );
@@ -64,15 +74,10 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
-
-    setState(() {});
   }
 
   @override
   void initState() {
-    setState(() {
-      markers = gmWholeImages.mapMarkers;
-    });
     super.initState();
   }
 
@@ -85,15 +90,21 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       myLocationEnabled: false,
       zoomControlsEnabled: false,
       initialCameraPosition: CameraPosition(
-        // target: LatLng(
-        //     widget.userPosition.latitude, widget.userPosition.longitude),
-        target: LatLng(34.960710, 127.590889),
+        target:
+            LatLng(widget.userPosition.latitude, widget.userPosition.longitude),
+        // target: LatLng(34.960710, 127.590889),
         zoom: _currentZoom,
       ),
       markers: _markers,
       onMapCreated: (controller) => _onMapCreated(controller),
       onCameraMove: (position) => _updateMarkers(position.zoom),
     );
+    // : Row(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: [
+    //       CircularProgressIndicator(),
+    //     ],
+    //   );
   }
 }
 

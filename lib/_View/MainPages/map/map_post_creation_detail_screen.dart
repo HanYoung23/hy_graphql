@@ -187,7 +187,7 @@ class _MapPostCreationDetailScreenState
                                 zoomControlsEnabled: false,
                                 initialCameraPosition: CameraPosition(
                                   target: photoLatLng,
-                                  zoom: 14,
+                                  zoom: 13,
                                 ),
                                 onMapCreated: (GoogleMapController controller) {
                                   mapController = controller;
@@ -214,17 +214,17 @@ class _MapPostCreationDetailScreenState
                               ],
                             )),
                   SizedBox(height: ScreenUtil().setHeight(4)),
-                  address != ""
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("위치 : $address",
-                                style:
-                                    TextStyle(fontSize: ScreenUtil().setSp(12)),
-                                overflow: TextOverflow.fade),
-                          ],
-                        )
-                      : Container(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                          address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: address != "" ? Colors.black : Colors.red),
+                          overflow: TextOverflow.fade),
+                    ],
+                  ),
                   SizedBox(height: ScreenUtil().setHeight(8)),
                   Text(
                       "선택된 위치가 다른 경우 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
@@ -262,7 +262,7 @@ class _MapPostCreationDetailScreenState
                               color: app_font_grey,
                               fontSize: ScreenUtil().setSp(14)))),
                   Spacer(),
-                  locationTextController.text.length > 0
+                  (locationTextController.text.length > 0 && address != "")
                       ? InkWell(
                           onTap: () {
                             widget.paramMap["locationLink"] = address;
@@ -281,19 +281,10 @@ class _MapPostCreationDetailScreenState
                             width: ScreenUtil().setWidth(335),
                             height: ScreenUtil().setHeight(50),
                           ))
-                      : InkWell(
-                          onTap: () {
-                            getPlaceInfo();
-                            // Get.to(
-                            //     () => MapPostReviewScreen(
-                            //         paramMap: widget.paramMap),
-                            //     arguments: "${locationTextController.text}");
-                          },
-                          child: Image.asset(
-                            "assets/images/next_button_grey.png",
-                            width: ScreenUtil().setWidth(335),
-                            height: ScreenUtil().setHeight(50),
-                          ),
+                      : Image.asset(
+                          "assets/images/next_button_grey.png",
+                          width: ScreenUtil().setWidth(335),
+                          height: ScreenUtil().setHeight(50),
                         ),
                   SizedBox(height: ScreenUtil().setHeight(14)),
                 ],

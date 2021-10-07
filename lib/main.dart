@@ -78,12 +78,6 @@ class MyApp extends StatelessWidget {
               double markerLat = double.parse("${resultData["latitude"]}");
               double markerLng = double.parse("${resultData["longitude"]}");
               String imageUrl = "${resultData["image_link"]}";
-              // here
-              if (imageUrl[0] == "[") {
-                imageUrl =
-                    "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-06%2017:30:03.616725.png";
-              }
-
               List<String> imageList = imageUrl.split(",");
               markerImages.add("${imageList[0]}");
 

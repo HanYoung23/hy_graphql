@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:geocoder/geocoder.dart';
@@ -13,7 +14,13 @@ class AddressWeb extends StatelessWidget {
   Widget build(BuildContext context) {
     WebViewController _webViewController;
     return Scaffold(
-      appBar: AppBar(title: Text("주소 검색")),
+      appBar: AppBar(
+        title: Text(
+          "주소 검색",
+          style: TextStyle(fontSize: ScreenUtil().setSp(20)),
+        ),
+        elevation: 0,
+      ),
       body: Container(
         child: WebView(
           initialUrl: 'http://plinic.cafe24app.com/api/daumFlutterPost',

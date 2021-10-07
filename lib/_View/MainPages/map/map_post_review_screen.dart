@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class MapPostReviewScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
               print("🚨 resultData : ${resultData["creatContents"]}");
               // print("🚨 resultData : ${resultData["creatContents"]["result"]}");
               // print("🚨 resultData : ${resultData[]}");
-              Get.offAll(() => MapScreen());
+              Get.offAll(() => HomePage());
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
