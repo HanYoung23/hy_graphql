@@ -32,19 +32,23 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   final int _maxClusterZoom = 19;
   Fluster<MapMarker> _clusterManager;
   double _currentZoom = 13;
-  int markerNum;
+  int markerNum = -1;
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
-    if (markerNum != gmWholeImages.mapMarkers.length) {
-      Timer.periodic(Duration(milliseconds: 300), (timer) {
-        print("🚨 marker : $markerNum");
-        print("🚨 images : ${gmWholeImages.mapMarkers.length}");
-        setState(() {
-          markerNum = gmWholeImages.mapMarkers.length;
-        });
+
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
+      if (markerNum == gmWholeImages.mapMarkers.length && markerNum != 0) {
+        print("🚨 timer canceled");
+        timer.cancel();
+      }
+      print("🚨 marker : $markerNum");
+      print("🚨 images : ${gmWholeImages.mapMarkers.length}");
+      setState(() {
+        markerNum = gmWholeImages.mapMarkers.length;
       });
-    }
+      _initMarkers();
+    });
     _initMarkers();
   }
 
@@ -74,6 +78,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
+    // setState(() {
+    //   markerNum = gmWholeImages.mapMarkers.length;
+    // });
   }
 
   @override

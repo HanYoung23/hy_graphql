@@ -170,12 +170,6 @@ class _MapPostCreationDetailScreenState
                   Container(
                       width: ScreenUtil().screenWidth,
                       height: ScreenUtil().setHeight(240),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            width: ScreenUtil().setSp(0.5),
-                            // color: app_font_grey,
-                          ),
-                          borderRadius: BorderRadius.circular(10)),
                       child: photoLatLng != null
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(10),

@@ -9,6 +9,7 @@ import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/user_location.dart';
+import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
 
 class MapScreen extends StatefulWidget {
@@ -104,7 +105,9 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                       SizedBox(width: ScreenUtil().setWidth(8)),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Get.off(() => HomePage());
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

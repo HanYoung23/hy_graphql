@@ -12,6 +12,7 @@ import 'package:letsgotrip/_View/MainPages/map/map_post_creation_detail_screen.d
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
+import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
 
@@ -322,13 +323,6 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                   isAllFilled
                       ? InkWell(
                           onTap: () {
-                            // List awsUrlList = [];
-                            // uploadAWS(imageList).then((photoUrlList) {
-                            // for (String photoUrl in photoUrlList) {
-                            //   String shortUrl = photoUrl.substring(
-                            //       0, photoUrl.indexOf("?X-Amz"));
-                            //   awsUrlList.add(shortUrl);
-                            // }
                             Map paramMap = {
                               "categoryId": category,
                               "imageLink": imageList,
@@ -339,18 +333,21 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                             Get.to(() => MapPostCreationDetailScreen(
                                   paramMap: paramMap,
                                 ));
-                            // }
-                            // );
                           },
                           child: Image.asset(
                             "assets/images/next_button.png",
                             width: ScreenUtil().setWidth(335),
                             height: ScreenUtil().setHeight(50),
                           ))
-                      : Image.asset(
-                          "assets/images/next_button_grey.png",
-                          width: ScreenUtil().setWidth(335),
-                          height: ScreenUtil().setHeight(50),
+                      : InkWell(
+                          onTap: () {
+                            Get.off(() => HomePage());
+                          },
+                          child: Image.asset(
+                            "assets/images/next_button_grey.png",
+                            width: ScreenUtil().setWidth(335),
+                            height: ScreenUtil().setHeight(50),
+                          ),
                         ),
                   SizedBox(height: ScreenUtil().setHeight(14)),
                 ],

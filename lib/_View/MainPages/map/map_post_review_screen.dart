@@ -48,12 +48,6 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
               }
             },
             onCompleted: (dynamic resultData) {
-              print("🚨 resultData : $resultData");
-              var response = jsonDecode(resultData);
-              print("🚨 response : $response");
-              print("🚨 result : ${response["creatContents"]}");
-              print(
-                  "🚨 resultData2 : ${resultData["creatContents"]["result"]}");
               Get.offAll(() => HomePage());
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
