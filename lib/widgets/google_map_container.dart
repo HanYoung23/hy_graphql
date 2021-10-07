@@ -37,15 +37,15 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
     if (markerNum != gmWholeImages.mapMarkers.length) {
-      Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Timer.periodic(Duration(milliseconds: 300), (timer) {
+        print("🚨 marker : $markerNum");
+        print("🚨 images : ${gmWholeImages.mapMarkers.length}");
         setState(() {
           markerNum = gmWholeImages.mapMarkers.length;
         });
-        _initMarkers();
       });
-    } else {
-      _initMarkers();
     }
+    _initMarkers();
   }
 
   /// Inits [Fluster] and all the markers with network images and updates the loading state.
@@ -74,6 +74,11 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

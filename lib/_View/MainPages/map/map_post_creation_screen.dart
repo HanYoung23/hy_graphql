@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
@@ -34,31 +35,6 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   List<File> imageList = [];
   List<LatLng> photoLatLng = [];
   bool isAllFilled = false;
-
-  Future uploadAWS(List<File> imageFiles) async {
-    var option = UploadFileOptions(
-      accessLevel: StorageAccessLevel.guest,
-      contentType: "image/png",
-    );
-    List<String> photoUrlList = [];
-    for (File file in imageFiles) {
-      final key = "${DateTime.now().toString()}.png";
-      try {
-        await Amplify.Storage.uploadFile(local: file, key: key, options: option)
-            .then((result) async {
-          var photoOption =
-              GetUrlOptions(accessLevel: StorageAccessLevel.guest);
-          GetUrlResult storageUrl =
-              await Amplify.Storage.getUrl(key: key, options: photoOption);
-          photoUrlList.add(storageUrl.url);
-          print('🚨 Successfully uploaded url: ${result.key}');
-        });
-      } on StorageException catch (e) {
-        print('🚨 Error uploading image: $e');
-      }
-    }
-    return photoUrlList;
-  }
 
   categoryCallback(String categoryName) {
     int categoryId;
@@ -346,24 +322,25 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                   isAllFilled
                       ? InkWell(
                           onTap: () {
-                            List awsUrlList = [];
-                            uploadAWS(imageList).then((photoUrlList) {
-                              for (String photoUrl in photoUrlList) {
-                                String shortUrl = photoUrl.substring(
-                                    0, photoUrl.indexOf("?X-Amz"));
-                                awsUrlList.add(shortUrl);
-                              }
-                              Map paramMap = {
-                                "categoryId": category,
-                                "imageLink": awsUrlList,
-                                "imageLatLngList": photoLatLng,
-                                "mainText": contentTextController.text,
-                                "tags": tagTextController.text,
-                              };
-                              Get.to(() => MapPostCreationDetailScreen(
-                                    paramMap: paramMap,
-                                  ));
-                            });
+                            // List awsUrlList = [];
+                            // uploadAWS(imageList).then((photoUrlList) {
+                            // for (String photoUrl in photoUrlList) {
+                            //   String shortUrl = photoUrl.substring(
+                            //       0, photoUrl.indexOf("?X-Amz"));
+                            //   awsUrlList.add(shortUrl);
+                            // }
+                            Map paramMap = {
+                              "categoryId": category,
+                              "imageLink": imageList,
+                              "imageLatLngList": photoLatLng,
+                              "mainText": contentTextController.text,
+                              "tags": tagTextController.text,
+                            };
+                            Get.to(() => MapPostCreationDetailScreen(
+                                  paramMap: paramMap,
+                                ));
+                            // }
+                            // );
                           },
                           child: Image.asset(
                             "assets/images/next_button.png",
