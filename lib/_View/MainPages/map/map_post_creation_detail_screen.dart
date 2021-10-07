@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -26,10 +27,13 @@ class MapPostCreationDetailScreen extends StatefulWidget {
 
 class _MapPostCreationDetailScreenState
     extends State<MapPostCreationDetailScreen> {
+  GoogleMapController mapController;
   final locationTextController = TextEditingController();
-  Position userPosition;
+  // Position userPosition;
   LatLng photoLatLng;
+  // bool isCoord = false;
   bool isAllFilled = false;
+  String address = "";
 
   checkIsAllFilled() {
     if (locationTextController.text.length > 0) {
@@ -43,21 +47,33 @@ class _MapPostCreationDetailScreenState
     }
   }
 
+  callBackAddress(Map callbackAddress) {
+    setState(() {
+      address = callbackAddress["address"];
+      photoLatLng = LatLng(callbackAddress["lat"], callbackAddress["lng"]);
+    });
+    mapController.animateCamera(CameraUpdate.newLatLngZoom(
+        LatLng(callbackAddress["lat"], callbackAddress["lng"]), 14));
+  }
+
   Future getPlaceInfo() async {
-    if (widget.paramMap["imageLatLngList"][0] != null) {
+    if (widget.paramMap["imageLatLngList"].length > 0) {
       double lat = widget.paramMap["imageLatLngList"][0].latitude;
       double lng = widget.paramMap["imageLatLngList"][0].longitude;
-      setState(() {
-        photoLatLng = widget.paramMap["imageLatLngList"][0];
-      });
+
       final url = Uri.parse(
           'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$googleWebKey&language=ko');
       final response = await http.get(url);
-      print("🚨 response : ${response.body}");
+
       String addressJSON = await jsonDecode(response.body.toString())['results']
               [0]['formatted_address']
           .replaceAll("대한민국 ", "");
-      print("🚨 addressJSON : $addressJSON");
+
+      setState(() {
+        // isCoord = true;
+        photoLatLng = widget.paramMap["imageLatLngList"][0];
+        address = addressJSON;
+      });
     }
   }
 
@@ -67,9 +83,11 @@ class _MapPostCreationDetailScreenState
     getPlaceInfo();
     checkLocationPermission().then((permission) {
       getUserLocation().then((latlng) {
-        setState(() {
-          userPosition = latlng;
-        });
+        if (latlng != null) {
+          setState(() {
+            photoLatLng = LatLng(latlng.latitude, latlng.longitude);
+          });
+        }
       });
     });
     super.initState();
@@ -118,12 +136,33 @@ class _MapPostCreationDetailScreenState
                               fontWeight: FontWeight.bold),
                         ),
                         Expanded(
-                          child: Icon(
-                            Icons.arrow_back,
-                            size: ScreenUtil().setSp(arrow_back_size),
-                            color: Colors.transparent,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(() => AddressWeb(
+                                      callback: (address) =>
+                                          callBackAddress(address),
+                                    ));
+                              },
+                              child: Text(
+                                "위치 검색",
+                                style: TextStyle(
+                                    color: app_font_grey,
+                                    fontSize:
+                                        ScreenUtil().setSp(appbar_title_size),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ),
                         ),
+                        // Expanded(
+                        //   child: Icon(
+                        //     Icons.arrow_back,
+                        //     size: ScreenUtil().setSp(arrow_back_size),
+                        //     color: Colors.transparent,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -132,22 +171,29 @@ class _MapPostCreationDetailScreenState
                       width: ScreenUtil().screenWidth,
                       height: ScreenUtil().setHeight(240),
                       decoration: BoxDecoration(
+                          border: Border.all(
+                            width: ScreenUtil().setSp(0.5),
+                            // color: app_font_grey,
+                          ),
                           borderRadius: BorderRadius.circular(10)),
-                      child: userPosition != null
-                          ? GoogleMap(
-                              mapToolbarEnabled: false,
-                              zoomGesturesEnabled: true,
-                              myLocationButtonEnabled: false,
-                              myLocationEnabled: false,
-                              zoomControlsEnabled: false,
-                              initialCameraPosition: CameraPosition(
-                                target: photoLatLng != null
-                                    ? photoLatLng
-                                    : LatLng(userPosition.latitude,
-                                        userPosition.longitude),
-                                zoom: 14,
+                      child: photoLatLng != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: GoogleMap(
+                                mapToolbarEnabled: false,
+                                zoomGesturesEnabled: true,
+                                myLocationButtonEnabled: false,
+                                myLocationEnabled: false,
+                                zoomControlsEnabled: false,
+                                initialCameraPosition: CameraPosition(
+                                  target: photoLatLng,
+                                  zoom: 14,
+                                ),
+                                onMapCreated: (GoogleMapController controller) {
+                                  mapController = controller;
+                                },
+                                markers: createMarker(),
                               ),
-                              markers: createMarker(),
                             )
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -157,11 +203,31 @@ class _MapPostCreationDetailScreenState
                                     height: ScreenUtil().setSp(50),
                                     child: CircularProgressIndicator(
                                         color: app_blue)),
+                                // : Container(
+                                //     child: Text(
+                                //         "사진의 GPS값을 불러올 수 없습니다.\n위치를 검색해주세요.",
+                                //         style: TextStyle(
+                                //           fontSize: ScreenUtil().setSp(14),
+                                //           color: app_font_grey,
+                                //         ),
+                                //         textAlign: TextAlign.center))
                               ],
                             )),
-                  SizedBox(height: ScreenUtil().setHeight(10)),
+                  SizedBox(height: ScreenUtil().setHeight(4)),
+                  address != ""
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text("위치 : $address",
+                                style:
+                                    TextStyle(fontSize: ScreenUtil().setSp(12)),
+                                overflow: TextOverflow.fade),
+                          ],
+                        )
+                      : Container(),
+                  SizedBox(height: ScreenUtil().setHeight(8)),
                   Text(
-                      "위치가 다른 경우 지도에서 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
+                      "선택된 위치가 다른 경우 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
                       style: TextStyle(
                           fontSize: ScreenUtil().setSp(14),
                           color: app_font_grey)),
@@ -172,19 +238,6 @@ class _MapPostCreationDetailScreenState
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(14),
                               fontWeight: FontWeight.bold)),
-                      Text("장소명 입력",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              fontWeight: FontWeight.bold)),
-                      InkWell(
-                        onTap: () {
-                          Get.to(() => WebViewExample());
-                        },
-                        child: Text("ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                                fontWeight: FontWeight.bold)),
-                      ),
                     ],
                   ),
                   SizedBox(height: ScreenUtil().setHeight(5)),
@@ -212,10 +265,16 @@ class _MapPostCreationDetailScreenState
                   locationTextController.text.length > 0
                       ? InkWell(
                           onTap: () {
-                            Get.to(
-                                () => MapPostReviewScreen(
-                                    paramMap: widget.paramMap),
-                                arguments: "${locationTextController.text}");
+                            widget.paramMap["locationLink"] = address;
+                            widget.paramMap["latitude"] = photoLatLng.latitude;
+                            widget.paramMap["longitude"] =
+                                photoLatLng.longitude;
+                            widget.paramMap["contentsTitle"] =
+                                "${locationTextController.text}";
+                            print("🚨 map : ${widget.paramMap}");
+
+                            Get.to(() =>
+                                MapPostReviewScreen(paramMap: widget.paramMap));
                           },
                           child: Image.asset(
                             "assets/images/next_button.png",
@@ -251,10 +310,8 @@ class _MapPostCreationDetailScreenState
       Marker(
         draggable: true,
         markerId: MarkerId("marker_1"),
-        position: widget.paramMap["imageLatLngList"][0] != null
-            ? photoLatLng
-            : LatLng(userPosition.latitude, userPosition.longitude),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+        position: photoLatLng,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       )
     ].toSet();
   }

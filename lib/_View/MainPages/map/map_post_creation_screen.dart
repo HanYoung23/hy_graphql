@@ -355,10 +355,10 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                               }
                               Map paramMap = {
                                 "categoryId": category,
-                                "awsUrl": awsUrlList,
+                                "imageLink": awsUrlList,
                                 "imageLatLngList": photoLatLng,
-                                "content": contentTextController.text,
-                                "tag": tagTextController.text,
+                                "mainText": contentTextController.text,
+                                "tags": tagTextController.text,
                               };
                               Get.to(() => MapPostCreationDetailScreen(
                                     paramMap: paramMap,

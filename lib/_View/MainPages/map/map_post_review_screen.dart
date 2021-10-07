@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
@@ -17,13 +20,13 @@ class MapPostReviewScreen extends StatefulWidget {
 }
 
 class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
-  int firstQRating;
+  int firstQRating = 3;
 
-  int secondQRating;
+  int secondQRating = 3;
 
-  int thirdQRating;
+  int thirdQRating = 3;
 
-  int fourthQRating;
+  int fourthQRating = 3;
 
   bool isUpload = false;
 
@@ -34,13 +37,17 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
             document: gql(Mutations.createContents),
             update: (GraphQLDataProxy proxy, QueryResult result) {
               if (result.hasException) {
-                print(['optimistic', result.exception.toString()]);
+                // print(['optimistic', result.exception.toString()]);
               } else {
                 // Do something
               }
             },
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
+              print("🚨 resultData : ${resultData["creatContents"]}");
+              // print("🚨 resultData : ${resultData["creatContents"]["result"]}");
+              // print("🚨 resultData : ${resultData[]}");
+              Get.offAll(() => MapScreen());
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
@@ -94,7 +101,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                     ),
                     SizedBox(height: ScreenUtil().setHeight(12)),
                     Text(
-                      "${Get.arguments}",
+                      "${widget.paramMap["contentsTitle"]}",
                       style: TextStyle(
                           fontSize: ScreenUtil().setSp(20),
                           fontWeight: FontWeight.bold),
@@ -121,21 +128,27 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                     Spacer(),
                     InkWell(
                       onTap: () {
+                        String imageLink =
+                            widget.paramMap["imageLink"].join(",");
+                        String tag = widget.paramMap["tags"];
+                        String tags =
+                            tag.replaceAll(RegExp(r'#'), ",").substring(1);
+
                         runMutation({
                           "category_id": 1,
-                          "contents_title": "${Get.arguments}",
-                          "location_link": "location_link_test",
-                          "image_link":
-                              "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-05%2017:39:42.460307.png",
-                          "main_text": widget.paramMap["content"],
-                          "tags": widget.paramMap["tag"],
+                          "contents_title":
+                              "${widget.paramMap["contentsTitle"]}",
+                          "location_link": widget.paramMap["locationLink"],
+                          "image_link": imageLink,
+                          "main_text": widget.paramMap["mainText"],
+                          "tags": tags,
                           "customer_id": widget.paramMap["categoryId"],
                           "star_rating1": firstQRating,
                           "star_rating2": secondQRating,
                           "star_rating3": thirdQRating,
                           "star_rating4": fourthQRating,
-                          "latitude": "37.5269497",
-                          "longitude": "126.9035056",
+                          "latitude": "${widget.paramMap["latitude"]}",
+                          "longitude": "${widget.paramMap["longitude"]}",
                         });
                       },
                       child: Image.asset(
@@ -205,3 +218,15 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
     );
   }
 }
+// print("🚨 1 ${widget.paramMap["contentsTitle"]}");
+// print("🚨 2 ${widget.paramMap["locationLink"]}");
+// print("🚨 3 ${widget.paramMap["imageLink"]}");
+// print("🚨 4 ${widget.paramMap["mainText"]}");
+// print("🚨 5 ${widget.paramMap["tags"]}");
+// print("🚨 6 ${widget.paramMap["categoryId"]}");
+// print("🚨 7 $firstQRating");
+// print("🚨 8 $secondQRating");
+// print("🚨 9 $thirdQRating");
+// print("🚨 10 $fourthQRating");
+// print("🚨 11 ${widget.paramMap["latitude"]}");
+// print("🚨 12 ${widget.paramMap["longitude"]}");

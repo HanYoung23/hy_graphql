@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
@@ -76,8 +78,13 @@ class MyApp extends StatelessWidget {
               double markerLat = double.parse("${resultData["latitude"]}");
               double markerLng = double.parse("${resultData["longitude"]}");
               String imageUrl = "${resultData["image_link"]}";
-              List<String> imageList = imageUrl.split(",");
+              // here
+              if (imageUrl[0] == "[") {
+                imageUrl =
+                    "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-06%2017:30:03.616725.png";
+              }
 
+              List<String> imageList = imageUrl.split(",");
               markerImages.add("${imageList[0]}");
 
               MapHelper.getMarkerImageFromUrl("${imageList[0]}")

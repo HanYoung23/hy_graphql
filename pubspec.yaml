@@ -45,6 +45,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   exif: ^3.0.0
   webview_flutter: any
+  geocoder: ^0.2.1
   
 # aws
   amplify_auth_cognito: ^0.2.0
@@ -69,7 +70,7 @@ dependencies:
   uuid: ^3.0.4
 
   get: ^4.3.8
-  # flutter_exif_plugin: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:
