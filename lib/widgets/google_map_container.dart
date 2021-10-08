@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
-import 'package:letsgotrip/_Controller/permission_controller.dart';
-import 'package:letsgotrip/functions/user_location.dart';
-import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 
 import 'map_marker.dart';
@@ -36,19 +32,20 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
-
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
-      if (markerNum == gmWholeImages.mapMarkers.length && markerNum != 0) {
-        print("🚨 timer canceled");
-        timer.cancel();
-      }
-      print("🚨 marker : $markerNum");
-      print("🚨 images : ${gmWholeImages.mapMarkers.length}");
-      setState(() {
-        markerNum = gmWholeImages.mapMarkers.length;
+    if (markerNum == -1) {
+      Timer.periodic(Duration(milliseconds: 1000), (timer) {
+        if (markerNum == gmWholeImages.mapMarkers.length && markerNum != 0) {
+          print("🚨 timer canceled");
+          timer.cancel();
+        }
+        print("🚨 marker : $markerNum");
+        print("🚨 images : ${gmWholeImages.mapMarkers.length}");
+        setState(() {
+          markerNum = gmWholeImages.mapMarkers.length;
+        });
+        _initMarkers();
       });
-      _initMarkers();
-    });
+    }
     _initMarkers();
   }
 
@@ -78,9 +75,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
-    // setState(() {
-    //   markerNum = gmWholeImages.mapMarkers.length;
-    // });
+
+    setState(() {});
   }
 
   @override
@@ -108,44 +104,20 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         zoom: _currentZoom,
       ),
       markers: _markers,
+      // markers: createMarker(),
       onMapCreated: (controller) => _onMapCreated(controller),
       onCameraMove: (position) => _updateMarkers(position.zoom),
     );
-    // : Row(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       CircularProgressIndicator(),
-    //     ],
-    //   );
   }
 }
 
-// return Query(
-//       options: QueryOptions(
-//         document: gql(Queries.mapPhotos),
-//         variables: {
-//           "latitude1": "-87.71179927260242",
-//           "latitude2": "89.45016124669523",
-//           "longitude1": "-180",
-//           "longitude2": "180",
-//         },
-//       ),
-//       builder: (result, {refetch, fetchMore}) {
-//         if (result.hasException) return Text(result.exception.toString());
-//         if (result.isLoading) return Text('Loading');
-
-//         for (Map resultData in result.data["photo_list_map"]) {
-//           // int markerId = int.parse("${resultData["contents_id"]}");
-//           double markerLat = double.parse("${resultData["latitude"]}");
-//           double markerLng = double.parse("${resultData["longitude"]}");
-//           String imageUrl = "${resultData["image_link"]}";
-//           List<String> imageList = imageUrl.split(",");
-//           markerImagesList.add(imageList[0]);
-//           markerLatLngsList.add(LatLng(markerLat, markerLng));
-//         });
-
-// LatLng(34.96071, 127.590889),
-// LatLng(34.62597, 127.762969),
-// LatLng(34.746191, 127.138382),
-// LatLng(35.143573, 126.865573),
-// LatLng(35.187839, 128.980312),
+// createMarker() {
+//   return [
+//     Marker(
+//       draggable: false,
+//       markerId: MarkerId("marker_1"),
+//       // position: photoLatLng,
+//       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+//     )
+//   ].toSet();
+// }

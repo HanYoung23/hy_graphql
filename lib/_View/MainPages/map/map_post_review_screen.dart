@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_post_done_screen.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
@@ -48,7 +49,9 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
               }
             },
             onCompleted: (dynamic resultData) {
+              print("🚨 resultData : $resultData");
               Get.offAll(() => HomePage());
+              // Get.offAll(() => MapPostDoneScreen());
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
@@ -56,141 +59,139 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
               backgroundColor: Colors.white,
               body: Container(
                   margin: EdgeInsets.all(ScreenUtil().setSp(20)),
-                  child: !isUploading
-                      ? Column(
+                  child:
+                      // !isUploading
+                      //     ?
+                      Column(
+                    children: [
+                      Container(
+                        width: ScreenUtil().setWidth(375),
+                        height: ScreenUtil().setHeight(44),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: ScreenUtil().setWidth(375),
-                              height: ScreenUtil().setHeight(44),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        child: Icon(
-                                          Icons.arrow_back,
-                                          size: ScreenUtil()
-                                              .setSp(arrow_back_size),
-                                        ),
-                                      ),
-                                    ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.back();
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    size: ScreenUtil().setSp(arrow_back_size),
                                   ),
-                                  Text(
-                                    "장소 평가",
-                                    style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(appbar_title_size),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Expanded(
-                                    child: Icon(
-                                      Icons.arrow_back,
-                                      size: ScreenUtil().setSp(arrow_back_size),
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
-                            SizedBox(height: ScreenUtil().setHeight(25)),
-                            Image.asset(
-                              "assets/images/post_logo.png",
-                              width: ScreenUtil().setSp(24),
-                              height: ScreenUtil().setSp(31),
-                            ),
-                            SizedBox(height: ScreenUtil().setHeight(12)),
                             Text(
-                              "${widget.paramMap["contentsTitle"]}",
+                              "장소 평가",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(20),
+                                  fontSize:
+                                      ScreenUtil().setSp(appbar_title_size),
                                   fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: ScreenUtil().setHeight(12)),
-                            Text(
-                              "해당 장소에 대해 간략하게 알려주세요",
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(16),
-                                color: app_font_grey,
+                            Expanded(
+                              child: Icon(
+                                Icons.arrow_back,
+                                size: ScreenUtil().setSp(arrow_back_size),
+                                color: Colors.transparent,
                               ),
                             ),
-                            // SizedBox(height: ScreenUtil().setHeight(12)),
-                            Spacer(),
-                            questionText("방문객이 많이 있었나요?"),
-                            ratingbar("first"),
-                            questionText("주차가 편리한가요?"),
-                            ratingbar("second"),
-                            questionText("아이들과 동반하기 좋았나요?"),
-                            ratingbar("third"),
-                            questionText("이곳을 다른 사람에게 추천하나요?"),
-                            ratingbar("fourth"),
-                            Spacer(),
-                            Spacer(),
-                            InkWell(
-                              onTap: () async {
-                                setState(() {
-                                  isUploading = true;
-                                });
-                                List awsUrlList = [];
-                                await uploadAWS(widget.paramMap["imageLink"])
-                                    .then((awsLinks) {
-                                  for (String photoUrl in awsLinks) {
-                                    String shortUrl = photoUrl.substring(
-                                        0, photoUrl.indexOf("?X-Amz"));
-                                    awsUrlList.add(shortUrl);
-                                  }
-                                });
-                                String imageLink = awsUrlList.join(",");
-                                String tag = widget.paramMap["tags"];
-                                String tags = tag
-                                    .replaceAll(RegExp(r'#'), ",")
-                                    .substring(1);
-
-                                runMutation({
-                                  "customer_id": 1,
-                                  "category_id": widget.paramMap["categoryId"],
-                                  "contents_title":
-                                      "${widget.paramMap["contentsTitle"]}",
-                                  "location_link":
-                                      widget.paramMap["locationLink"],
-                                  "image_link": imageLink,
-                                  "main_text": widget.paramMap["mainText"],
-                                  "tags": tags,
-                                  "star_rating1": firstQRating,
-                                  "star_rating2": secondQRating,
-                                  "star_rating3": thirdQRating,
-                                  "star_rating4": fourthQRating,
-                                  "latitude": "${widget.paramMap["latitude"]}",
-                                  "longitude":
-                                      "${widget.paramMap["longitude"]}",
-                                });
-                              },
-                              child: Image.asset(
-                                "assets/images/upload_button.png",
-                                width: ScreenUtil().setWidth(335),
-                                height: ScreenUtil().setHeight(50),
-                              ),
-                            )
                           ],
-                        )
-                      : Container(
-                          width: ScreenUtil().screenWidth,
-                          height: ScreenUtil().screenHeight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                              SizedBox(height: ScreenUtil().setSp(40)),
-                              Text("업로드 중 ...",
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(16)))
-                            ],
-                          ))),
+                        ),
+                      ),
+                      SizedBox(height: ScreenUtil().setHeight(25)),
+                      Image.asset(
+                        "assets/images/post_logo.png",
+                        width: ScreenUtil().setSp(24),
+                        height: ScreenUtil().setSp(31),
+                      ),
+                      SizedBox(height: ScreenUtil().setHeight(12)),
+                      Text(
+                        "${widget.paramMap["contentsTitle"]}",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(20),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: ScreenUtil().setHeight(12)),
+                      Text(
+                        "해당 장소에 대해 간략하게 알려주세요",
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(16),
+                          color: app_font_grey,
+                        ),
+                      ),
+                      // SizedBox(height: ScreenUtil().setHeight(12)),
+                      Spacer(),
+                      questionText("방문객이 많이 있었나요?"),
+                      ratingbar("first"),
+                      questionText("주차가 편리한가요?"),
+                      ratingbar("second"),
+                      questionText("아이들과 동반하기 좋았나요?"),
+                      ratingbar("third"),
+                      questionText("이곳을 다른 사람에게 추천하나요?"),
+                      ratingbar("fourth"),
+                      Spacer(),
+                      Spacer(),
+                      InkWell(
+                        onTap: () async {
+                          setState(() {
+                            isUploading = true;
+                          });
+                          List awsUrlList = [];
+                          await uploadAWS(widget.paramMap["imageLink"])
+                              .then((awsLinks) {
+                            for (String photoUrl in awsLinks) {
+                              String shortUrl = photoUrl.substring(
+                                  0, photoUrl.indexOf("?X-Amz"));
+                              awsUrlList.add(shortUrl);
+                            }
+                          });
+                          String imageLink = awsUrlList.join(",");
+                          String tag = widget.paramMap["tags"];
+                          String tags =
+                              tag.replaceAll(RegExp(r'#'), ",").substring(1);
+
+                          runMutation({
+                            "customer_id": 1,
+                            "category_id": widget.paramMap["categoryId"],
+                            "contents_title":
+                                "${widget.paramMap["contentsTitle"]}",
+                            "location_link": widget.paramMap["locationLink"],
+                            "image_link": imageLink,
+                            "main_text": widget.paramMap["mainText"],
+                            "tags": tags,
+                            "star_rating1": firstQRating,
+                            "star_rating2": secondQRating,
+                            "star_rating3": thirdQRating,
+                            "star_rating4": fourthQRating,
+                            "latitude": "${widget.paramMap["latitude"]}",
+                            "longitude": "${widget.paramMap["longitude"]}",
+                          });
+                        },
+                        child: Image.asset(
+                          "assets/images/upload_button.png",
+                          width: ScreenUtil().setWidth(335),
+                          height: ScreenUtil().setHeight(50),
+                        ),
+                      )
+                    ],
+                  )
+                  // : Container(
+                  //     width: ScreenUtil().screenWidth,
+                  //     height: ScreenUtil().screenHeight,
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         CircularProgressIndicator(),
+                  //         SizedBox(height: ScreenUtil().setSp(40)),
+                  //         Text("업로드 중 ...",
+                  //             style: TextStyle(
+                  //                 fontSize: ScreenUtil().setSp(16)))
+                  //       ],
+                  //     ))
+                  ),
             ),
           );
         });

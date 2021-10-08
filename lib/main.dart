@@ -55,19 +55,59 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp]); //가로 기능 비활성
 
-    return ScreenUtilInit(
-        designSize: Size(375, 667),
-        // allowFontScaling: false,
-        builder: () => FutureBuilder(
-              future: Future.delayed(Duration(seconds: 1)),
-              builder: (context, snapshot) {
-                // if (snapshot.connectionState == ConnectionState.waiting) {
-                //   return Splash();
-                // } else {
-                return ScreenFilter();
-                // }
-              },
-            ));
+    final GoogleMapWholeController gmWholeController =
+        Get.put(GoogleMapWholeController());
+
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.photoListMap),
+          variables: {
+            "latitude1": "-87.71179927260242",
+            "latitude2": "89.45016124669523",
+            "longitude1": "-180",
+            "longitude2": "180",
+          },
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading) {
+            List<MapMarker> markers = [];
+            List<String> markerImages = [];
+
+            for (Map resultData in result.data["photo_list_map"]) {
+              int markerId = int.parse("${resultData["contents_id"]}");
+              double markerLat = double.parse("${resultData["latitude"]}");
+              double markerLng = double.parse("${resultData["longitude"]}");
+              String imageUrl = "${resultData["image_link"]}";
+              List<String> imageList = imageUrl.split(",");
+              markerImages.add("${imageList[0]}");
+
+              MapHelper.getMarkerImageFromUrl("${imageList[0]}")
+                  .then((markerImage) {
+                markers.add(
+                  MapMarker(
+                    id: "$markerId",
+                    position: LatLng(markerLat, markerLng),
+                    icon: markerImage,
+                  ),
+                );
+              });
+            }
+            gmWholeController.addMapMarkers(markers);
+          }
+          return ScreenUtilInit(
+              designSize: Size(375, 667),
+              // allowFontScaling: false,
+              builder: () => FutureBuilder(
+                    future: Future.delayed(Duration(seconds: 1)),
+                    builder: (context, snapshot) {
+                      // if (snapshot.connectionState == ConnectionState.waiting) {
+                      //   return Splash();
+                      // } else {
+                      return ScreenFilter();
+                      // }
+                    },
+                  ));
+        });
   }
 }
 

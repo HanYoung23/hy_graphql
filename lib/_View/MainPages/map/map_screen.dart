@@ -76,7 +76,7 @@ class _MapScreenState extends State<MapScreen> {
                           });
                         },
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                                 width: ScreenUtil().setSp(78),
