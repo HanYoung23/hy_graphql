@@ -4,12 +4,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
-import 'package:letsgotrip/_View/MainPages/map/address_web.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
+import 'package:letsgotrip/_View/MainPages/map/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/user_location.dart';
@@ -140,7 +139,7 @@ class _MapPostCreationDetailScreenState
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: () {
-                                Get.to(() => AddressWeb(
+                                Get.to(() => PostalWeb(
                                       callback: (address) =>
                                           callBackAddress(address),
                                     ));
