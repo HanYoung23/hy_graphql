@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
+import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -17,6 +19,9 @@ class PostalWeb extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             "주소 검색",
+            style: TextStyle(
+                fontSize: ScreenUtil().setSp(appbar_title_size),
+                fontWeight: FontWeight.bold),
           ),
           elevation: 0,
           centerTitle: true,

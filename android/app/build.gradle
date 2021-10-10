@@ -40,6 +40,8 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // amplify auth error
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -65,4 +67,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:28.4.1') // for firebase
     implementation 'com.google.firebase:firebase-analytics' // for firebase
+    implementation 'com.android.support:multidex:1.0.3' // for amplify error
 }

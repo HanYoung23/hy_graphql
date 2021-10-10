@@ -148,8 +148,8 @@ class _ScreenFilterState extends State<ScreenFilter> {
     // } else {
     //   return Splash();
     // }
-    return HomePage();
-    // return WalkthroughScreen();
+    // return HomePage();
+    return WalkthroughScreen();
   }
 }
 

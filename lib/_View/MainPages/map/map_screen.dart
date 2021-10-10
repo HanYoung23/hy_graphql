@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
-import 'package:letsgotrip/_View/MainPages/map/postal.dart';
+import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
@@ -102,36 +102,31 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ),
                       SizedBox(width: ScreenUtil().setWidth(8)),
-                      InkWell(
-                        onTap: () async {
-                          Get.to(() => PostalWeb(callback: null));
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                                width: ScreenUtil().setSp(78),
-                                height: ScreenUtil().setSp(24),
-                                child: Center(
-                                  child: Text("둘러보기",
-                                      style: TextStyle(
-                                          color: !isLeftTap
-                                              ? app_font_black
-                                              : app_font_grey,
-                                          fontSize: ScreenUtil().setSp(16),
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing:
-                                              ScreenUtil().setSp(-0.4))),
-                                )),
-                            !isLeftTap
-                                ? Container(
-                                    color: app_blue,
-                                    width: ScreenUtil().setSp(60),
-                                    height: ScreenUtil().setSp(3),
-                                  )
-                                : Container()
-                          ],
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              width: ScreenUtil().setSp(78),
+                              height: ScreenUtil().setSp(24),
+                              child: Center(
+                                child: Text("둘러보기",
+                                    style: TextStyle(
+                                        color: !isLeftTap
+                                            ? app_font_black
+                                            : app_font_grey,
+                                        fontSize: ScreenUtil().setSp(16),
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing:
+                                            ScreenUtil().setSp(-0.4))),
+                              )),
+                          !isLeftTap
+                              ? Container(
+                                  color: app_blue,
+                                  width: ScreenUtil().setSp(60),
+                                  height: ScreenUtil().setSp(3),
+                                )
+                              : Container()
+                        ],
                       ),
                       SizedBox(width: ScreenUtil().setWidth(59)),
                       InkWell(

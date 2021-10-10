@@ -2,13 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+// import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/constants/keys.dart';
+import 'package:letsgotrip/functions/kakao_login.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({
     Key key,
   }) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    // KakaoContext.clientId = kakaoAppKey;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +61,7 @@ class LoginScreen extends StatelessWidget {
               Spacer(),
               InkWell(
                 onTap: () {
-                  Get.to(() => ProfileSetScreen());
+                  // kakaoLogin();
                 },
                 child: Container(
                   width: ScreenUtil().setWidth(305),

@@ -48,9 +48,10 @@ dependencies:
   geocoder: ^0.2.1
 
 # aws
-  amplify_auth_cognito: ^0.2.0
+  amplify_auth_cognito: any
   amplify_flutter: ^0.2.0
   amplify_storage_s3: ^0.2.0
+  amplify_core: any
   
 # common
   cupertino_icons: ^1.0.2
@@ -68,8 +69,8 @@ dependencies:
   ios_utsname_ext: ^2.0.0
   package_info: ^2.0.2
   uuid: ^3.0.4
-
   get: ^4.3.8
+  kakao_flutter_sdk: any
 
 
 dev_dependencies:
