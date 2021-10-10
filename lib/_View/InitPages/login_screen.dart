@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-// import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Spacer(),
               InkWell(
                 onTap: () {
-                  // kakaoLogin();
+                  kakaoLogin();
                 },
                 child: Container(
                   width: ScreenUtil().setWidth(305),
