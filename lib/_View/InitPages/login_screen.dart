@@ -20,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
-    // KakaoContext.clientId = kakaoAppKey;
+    KakaoContext.clientId = kakaoAppKey;
     super.initState();
   }
 

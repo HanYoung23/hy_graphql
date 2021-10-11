@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
         <!-- for kakao login -->
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
+        <!-- <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
         <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -54,6 +54,15 @@
         <data android:host="oauth"
                 android:scheme="kakaobb7ebfb5b4cc388795bf68e8e69f3cc9" />
         </intent-filter>
+        </activity> -->
+        <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
+            <intent-filter android:label="flutter_web_auth">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="oauth"
+                android:scheme="kakaobb7ebfb5b4cc388795bf68e8e69f3cc9" />
+            </intent-filter>
         </activity>
         <!-- end kakao login -->
 <!-- google map -->

@@ -15,7 +15,6 @@ Future<void> deleteUserData(String key) async {
 Future<void> deleteAllUserData() async {
   await storage.deleteAll();
   print("🌕 deleteAllUserData");
-  // Get.offAll(() => SnowAuthScreen(isRunning: true));
 }
 
 Future seeValue(String key) async {
@@ -28,3 +27,5 @@ Future<void> seeAllValues() async {
   Map<String, String> allValues = await storage.readAll();
   print("🌕 see all values : $allValues");
 }
+
+// accessToken
