@@ -2,33 +2,30 @@ import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 import 'package:letsgotrip/storage/storage.dart';
 
-kakaoLogin() async {
+Future kakaoLogin() async {
   final installed = await isKakaoTalkInstalled();
+  String token = "";
   if (installed) {
     print("🐤 kakako native login");
-    kakaoNativeLogin();
+    token = await kakaoNativeLogin();
   } else {
     print("🐤 kakako account login");
-    kakaoAccountLogin();
+    token = await kakaoAccountLogin();
   }
+
+  return token;
 }
 
 kakaoNativeLogin() async {
-  try {
-    var code = await UserApi.instance.loginWithKakaoTalk();
-    print("🐤 kakako login ${code.accessToken}");
-    storeUserData("accessToken", "${code.accessToken}");
-  } catch (e) {
-    print("🚨 kakao login error : $e");
-  }
+  var code = await UserApi.instance.loginWithKakaoTalk();
+  print("🐤 kakako login ${code.accessToken}");
+  storeUserData("accessToken", "${code.accessToken}");
+  return "${code.accessToken}";
 }
 
 kakaoAccountLogin() async {
-  try {
-    var code = await UserApi.instance.loginWithKakaoAccount();
-    print("🐤 kakako login ${code.accessToken}");
-    storeUserData("accessToken", "${code.accessToken}");
-  } catch (e) {
-    print("🚨 kakao login error : $e");
-  }
+  var code = await UserApi.instance.loginWithKakaoAccount();
+  print("🐤 kakako login ${code.accessToken}");
+  storeUserData("accessToken", "${code.accessToken}");
+  return "${code.accessToken}";
 }
