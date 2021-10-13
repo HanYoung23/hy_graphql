@@ -31,7 +31,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-
+  app_settings: 4.1.0
 
   geolocator: ^7.6.2
   # rect_getter: ^1.0.0
@@ -44,6 +44,7 @@ dependencies:
   flutter_exif: ^1.0.1
   flutter_rating_bar: ^4.0.0
   exif: ^3.0.0
+  metadata: any
   webview_flutter: any
   geocoder: ^0.2.1
   sign_in_with_apple: ^3.2.0
@@ -72,11 +73,11 @@ dependencies:
   uuid: ^3.0.4
   get: ^4.3.8
   kakao_flutter_sdk: any
-  dio: ^4.0.0 # for kakao login
-  json_annotation: ^4.0.1 # for kakao login
-  shared_preferences: ^2.0.5 # for kakao login
-  platform: ^3.0.0 # for kakao login
-  package_info_plus: ^1.0.4 # for kakao login
+  # dio: ^4.0.0 # for kakao login
+  # json_annotation: ^4.0.1 # for kakao login
+  # shared_preferences: ^2.0.5 # for kakao login
+  # platform: ^3.0.0 # for kakao login
+  # package_info_plus: ^1.0.4 # for kakao login
 
 
 dev_dependencies:

@@ -1,6 +1,5 @@
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:kakao_flutter_sdk/user.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 
 Future kakaoLogin() async {
   final installed = await isKakaoTalkInstalled();
@@ -18,14 +17,18 @@ Future kakaoLogin() async {
 
 kakaoNativeLogin() async {
   var code = await UserApi.instance.loginWithKakaoTalk();
-  print("🐤 kakako login ${code.accessToken}");
+  // print("🐤 kakako login ${code.accessToken}");
   storeUserData("accessToken", "${code.accessToken}");
-  return "${code.accessToken}";
+  User user = await UserApi.instance.me();
+  // print("🐤 user : ${user.id}");
+  return "${user.id}";
 }
 
 kakaoAccountLogin() async {
   var code = await UserApi.instance.loginWithKakaoAccount();
-  print("🐤 kakako login ${code.accessToken}");
+  // print("🐤 kakako login ${code.accessToken}");
   storeUserData("accessToken", "${code.accessToken}");
-  return "${code.accessToken}";
+  User user = await UserApi.instance.me();
+  // print("🐤 user : ${user.id}");
+  return "${user.id}";
 }

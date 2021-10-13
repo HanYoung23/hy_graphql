@@ -1,7 +1,17 @@
 class Mutations {
   static final String createCustomer = """
-    mutation(\$login_link: Int!, \$login_type: String!) {
+    mutation(\$login_link: String!, \$login_type: String!) {
       createCustomer(login_link : \$login_link, login_type : \$login_type) 
+      {
+          result
+          msg
+        }
+    }
+""";
+
+  static final String createNickname = """
+    mutation(\$nick_name: String!, \$profile_photo_link: String!, \$customer_id: String!) {
+      createCustomer(nick_name : \$nick_name, profile_photo_link : \$profile_photo_link, customer_id : \$customer_id) 
       {
           result
           msg

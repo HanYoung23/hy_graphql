@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/apple_login.dart';
 import 'package:letsgotrip/functions/kakao_login.dart';
+import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,7 +26,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
-    KakaoContext.clientId = kakaoAppKey;
+    KakaoContext.clientId = "$kakaoAppKey";
     super.initState();
   }
 
@@ -41,6 +44,15 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
+
+              if (resultData["createCustomer"]["result"]) {
+                Get.to(() => ProfileSetScreen());
+              } else if (resultData["createCustomer"]["msg"] ==
+                  "이미 가입된 아이디입니다.") {
+                Get.to(() => ProfileSetScreen());
+              } else {
+                Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
+              }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return Scaffold(
@@ -79,13 +91,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Spacer(),
                     InkWell(
                       onTap: () {
-                        kakaoLogin().then((token) {
-                          if (token.length > 10) {
-                            // runMutation({
-                            //   "login_link": token,
-                            //   "login_type": "kakao",
-                            // });
-                            print("🚨 ${token.length}");
+                        kakaoLogin().then((userId) {
+                          if (userId != null) {
+                            runMutation({
+                              "login_link": "$userId",
+                              "login_type": "kakao",
+                            });
                           } else {
                             print("🚨 login canceled");
                           }

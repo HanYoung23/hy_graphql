@@ -14,7 +14,6 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         >
-
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -45,26 +44,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- for kakao login -->
-        <!-- <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
-        <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:host="oauth"
-                android:scheme="kakaobb7ebfb5b4cc388795bf68e8e69f3cc9" />
-        </intent-filter>
-        </activity> -->
-        <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
-            <intent-filter android:label="flutter_web_auth">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="oauth"
-                android:scheme="kakaobb7ebfb5b4cc388795bf68e8e69f3cc9" />
-            </intent-filter>
+<!-- kakao -->
+    <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
+          <intent-filter android:label="flutter_web_auth">
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data android:scheme="kakaobb7ebfb5b4cc388795bf68e8e69f3cc9" android:host="oauth"/>
+          </intent-filter>
         </activity>
-        <!-- end kakao login -->
+<!-- kakao end -->
 <!-- google map -->
 <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyB_gTLGGBPrr1YI5_fKfyb3SerPc5CwpQY"/>

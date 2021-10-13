@@ -36,16 +36,16 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.jjang.letsgotrip"
-        minSdkVersion 26
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        // amplify auth error
         multiDexEnabled true
     }
 
     buildTypes {
         release {
+           
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
 
@@ -57,6 +57,9 @@ android {
 
         //     signingConfig signingConfigs.release  
 		//   minifyEnabled true  
+         // kakao login
+            proguardFiles 'proguard-kakao.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		//   useProguard true  
 		//   proguardFiles getDefaultProguardFile('proguard-android.txt'),  
 		//                 'proguard-aws-2.1.5.pro'

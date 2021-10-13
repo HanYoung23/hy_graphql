@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.4"
+  app_settings:
+    dependency: "direct main"
+    description:
+      name: app_settings
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
   archive:
     dependency: transitive
     description:
@@ -219,7 +226,7 @@ packages:
     source: hosted
     version: "2.0.1"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       url: "https://pub.dartlang.org"
@@ -547,7 +554,7 @@ packages:
     source: hosted
     version: "0.6.3"
   json_annotation:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: json_annotation
       url: "https://pub.dartlang.org"
@@ -574,6 +581,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  metadata:
+    dependency: "direct main"
+    description:
+      name: metadata
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   nested:
     dependency: transitive
     description:
@@ -603,7 +617,7 @@ packages:
     source: hosted
     version: "2.0.2"
   package_info_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: package_info_plus
       url: "https://pub.dartlang.org"
@@ -729,7 +743,7 @@ packages:
     source: hosted
     version: "4.1.0"
   platform:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: platform
       url: "https://pub.dartlang.org"
@@ -764,7 +778,7 @@ packages:
     source: hosted
     version: "0.26.0"
   shared_preferences:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"

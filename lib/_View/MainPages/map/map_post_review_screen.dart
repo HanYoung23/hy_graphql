@@ -34,8 +34,6 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
 
   bool isUploading = false;
 
-  uploadAws() {}
-
   @override
   Widget build(BuildContext context) {
     return Mutation(
@@ -50,8 +48,11 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
             },
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
-              Get.offAll(() => HomePage());
-              // Get.offAll(() => MapPostDoneScreen());
+              if (resultData["createCustomer"]["result"]) {
+                Get.offAll(() => HomePage());
+              } else {
+                Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
+              }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
