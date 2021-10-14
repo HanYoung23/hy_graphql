@@ -12,6 +12,7 @@ import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/apple_login.dart';
 import 'package:letsgotrip/functions/kakao_login.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,6 +25,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String loginId;
+  String loginType;
+
   @override
   void initState() {
     KakaoContext.clientId = "$kakaoAppKey";
@@ -35,21 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
     return Mutation(
         options: MutationOptions(
             document: gql(Mutations.createCustomer),
-            update: (GraphQLDataProxy proxy, QueryResult result) {
-              if (result.hasException) {
-                print("🚨  ${['optimistic', result.exception.toString()]}");
-              } else {
-                // Do something
-              }
-            },
+            update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
-
               if (resultData["createCustomer"]["result"]) {
-                Get.to(() => ProfileSetScreen());
+                storeUserData(
+                    "customerId", "${resultData["createCustomer"]["msg2"]}");
+                Get.to(() => ProfileSetScreen(
+                    userId: '$loginId', loginType: "$loginType"));
               } else if (resultData["createCustomer"]["msg"] ==
                   "이미 가입된 아이디입니다.") {
-                Get.to(() => ProfileSetScreen());
+                Get.to(() => ProfileSetScreen(
+                    userId: '$loginId', loginType: "$loginType"));
               } else {
                 Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
               }
@@ -93,6 +94,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         kakaoLogin().then((userId) {
                           if (userId != null) {
+                            setState(() {
+                              loginId = "$userId";
+                              loginType = "kakao";
+                            });
                             runMutation({
                               "login_link": "$userId",
                               "login_type": "kakao",
@@ -176,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     InkWell(
                       onTap: () {
                         // Get.to(() => ProfileSetScreen());
-                        // appleLogin(context);
+                        appleLogin(context);
                       },
                       child: Container(
                         width: ScreenUtil().setWidth(305),

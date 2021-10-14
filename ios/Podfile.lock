@@ -32,6 +32,8 @@ PODS:
     - AWSCore (~> 2.25.0)
     - AWSPluginsCore (= 1.13.4)
     - AWSS3 (~> 2.25.0)
+  - "app_settings (3.0.0+1)":
+    - Flutter
   - AWSAuthCore (2.25.0):
     - AWSCore (= 2.25.0)
   - AWSCognitoIdentityProvider (2.25.0):
@@ -103,6 +105,7 @@ DEPENDENCIES:
   - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
   - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
   - amplify_storage_s3 (from `.symlinks/plugins/amplify_storage_s3/ios`)
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
@@ -147,6 +150,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/amplify_flutter/ios"
   amplify_storage_s3:
     :path: ".symlinks/plugins/amplify_storage_s3/ios"
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   device_info:
@@ -191,6 +196,7 @@ SPEC CHECKSUMS:
   amplify_flutter: 3e5ada5600f3657ccbd77f08419eb3aa936b5d4b
   amplify_storage_s3: 8a8952f8ce8641da90c69d3749d2b92935daaddf
   AmplifyPlugins: 290f52ebdc10a84af0b0408d52b6153b0806e31f
+  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   AWSAuthCore: c1ea75ec283e5ac3eb042de21f7ab127ad50de11
   AWSCognitoIdentityProvider: f52be11a4b2f2e9971ef0559da24e288d5c28869
   AWSCognitoIdentityProviderASF: d58893fe74d0db1817e77592eed30c4f5b5a2672

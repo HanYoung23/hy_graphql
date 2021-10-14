@@ -10,8 +10,8 @@ class Mutations {
 """;
 
   static final String createNickname = """
-    mutation(\$nick_name: String!, \$profile_photo_link: String!, \$customer_id: String!) {
-      createCustomer(nick_name : \$nick_name, profile_photo_link : \$profile_photo_link, customer_id : \$customer_id) 
+    mutation(\$nick_name: String!, \$profile_photo_link: String!, \$customer_id: Int!) {
+      createNickname(nick_name : \$nick_name, profile_photo_link : \$profile_photo_link, customer_id : \$customer_id) 
       {
           result
           msg

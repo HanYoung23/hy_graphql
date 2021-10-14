@@ -18,17 +18,21 @@ Future kakaoLogin() async {
 kakaoNativeLogin() async {
   var code = await UserApi.instance.loginWithKakaoTalk();
   // print("🐤 kakako login ${code.accessToken}");
-  storeUserData("accessToken", "${code.accessToken}");
+
   User user = await UserApi.instance.me();
   // print("🐤 user : ${user.id}");
+  storeUserData("userId", "${user.id}");
+  storeUserData("loginType", "kakao");
   return "${user.id}";
 }
 
 kakaoAccountLogin() async {
   var code = await UserApi.instance.loginWithKakaoAccount();
   // print("🐤 kakako login ${code.accessToken}");
-  storeUserData("accessToken", "${code.accessToken}");
+
   User user = await UserApi.instance.me();
   // print("🐤 user : ${user.id}");
+  storeUserData("userId", "${user.id}");
+  storeUserData("loginType", "kakao");
   return "${user.id}";
 }

@@ -9,12 +9,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class ProfileSetScreen extends StatefulWidget {
-  const ProfileSetScreen({
-    Key key,
-  }) : super(key: key);
+  final String userId;
+  final String loginType;
+
+  const ProfileSetScreen(
+      {Key key, @required this.userId, @required this.loginType})
+      : super(key: key);
 
   @override
   _ProfileSetScreenState createState() => _ProfileSetScreenState();
@@ -24,30 +29,54 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
   final nicknameController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
+  final validChar = RegExp(r'^[ㄱ-ㅎ가-힣a-zA-Z0-9]+$');
 
   Color enableColor = Color.fromRGBO(5, 138, 221, 1);
-  Color unfocusColor = Color.fromRGBO(211, 211, 211, 1);
+  Color focusColor = Color.fromRGBO(211, 211, 211, 1);
   Color errorColor = Color.fromRGBO(255, 49, 32, 1);
   Color currentColor = Color.fromRGBO(211, 211, 211, 1);
   String inputMessage = "";
   XFile pickedImage;
+  bool isValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // return Query(
+    //     options: QueryOptions(
+    //       document: gql(Queries.login),
+    //       variables: {
+    //         "login_link": "${widget.userId}",
+    //         "login_type": "${widget.loginType}",
+    //       },
+    //       // variables: {
+    //       //   "nick_name": "${nicknameController.text}",
+    //       //   "customer_id": 35,
+    //       // },
+    //     ),
+    //     builder: (result, {refetch, fetchMore}) {
+    //       print("🚨 query : $result");
     return Mutation(
         options: MutationOptions(
-            document: gql(Mutations.createContents),
-            update: (GraphQLDataProxy proxy, QueryResult result) {
-              if (result.hasException) {
-                // print(['optimistic', result.exception.toString()]);
-              } else {
-                // Do something
-              }
-            },
+            document: gql(Mutations.createNickname),
+            update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
-              Get.offAll(() => HomePage());
-              // Get.offAll(() => MapPostDoneScreen());
+              if (resultData["createNickname"]["result"]) {
+                setState(() {
+                  inputMessage = "사용 가능한 별명입니다 :)";
+                  currentColor = enableColor;
+                });
+              } else if ("${resultData["createNickname"]["msg"]}" == "??") {
+                setState(() {
+                  inputMessage = "이미 사용 중인 별명입니다.";
+                  currentColor = errorColor;
+                });
+              }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
@@ -156,11 +185,37 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             controller: nicknameController,
                             cursorColor: Colors.black,
                             keyboardType: TextInputType.text,
-                            onChanged: (_) {
-                              setState(() {
-                                inputMessage = "";
-                                currentColor = unfocusColor;
-                              });
+                            onChanged: (value) {
+                              if (value.length > 0) {
+                                String typedData = value[value.length - 1];
+                                print("🚨 value : $typedData");
+                                if (!validChar.hasMatch(typedData) ||
+                                    typedData == " ") {
+                                  setState(() {
+                                    isValid = false;
+                                    inputMessage = "별명은 한글, 영문, 숫자만 사용 가능합니다.";
+                                    currentColor = errorColor;
+                                  });
+                                } else if (nicknameController.text.length < 3) {
+                                  setState(() {
+                                    isValid = false;
+                                    inputMessage = "";
+                                    currentColor = focusColor;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isValid = true;
+                                    inputMessage = "";
+                                    currentColor = focusColor;
+                                  });
+                                }
+                              } else {
+                                setState(() {
+                                  isValid = false;
+                                  inputMessage = "";
+                                  currentColor = focusColor;
+                                });
+                              }
                             },
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
@@ -178,12 +233,14 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                   fontSize: ScreenUtil().setSp(14)),
                               suffixIcon: InkWell(
                                 onTap: () {
-                                  // 서버 통신해서 결과별로 state 다르게 설정, 특수문자 유효성 추가
-                                  setState(() {
-                                    currentColor = errorColor;
-                                    inputMessage = "이미 사용 중인 별명입니다.";
-                                  });
-                                  FocusScope.of(context).unfocus();
+                                  if (isValid) {
+                                    runMutation({
+                                      "nick_name": nicknameController.text,
+                                      "profile_photo_link": "",
+                                      "customer_id": 35,
+                                    });
+                                    FocusScope.of(context).unfocus();
+                                  }
                                 },
                                 child: Container(
                                   width: ScreenUtil().setWidth(56),
@@ -193,7 +250,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                       horizontal: ScreenUtil().setWidth(8)),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
-                                    color: nicknameController.text.length > 2
+                                    color: isValid
                                         ? Color.fromRGBO(5, 138, 221, 1)
                                         : Color.fromRGBO(5, 138, 221, 0.3),
                                   ),
@@ -239,9 +296,11 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       Spacer(),
                       InkWell(
                         onTap: () {
-                          // nicknameController.text.length > 2
-                          //     ? Get.offAll(() => HomePage())
-                          //     : null;
+                          // runMutation({
+                          //     "nick_name": "$",
+                          //     "profile_photo_link": "$",
+                          //     "customer_id" : "$",
+                          //   });
                           Get.offAll(() => HomePage());
                         },
                         child: Container(
@@ -271,5 +330,6 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
             ),
           );
         });
+    // });
   }
 }
