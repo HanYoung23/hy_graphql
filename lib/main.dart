@@ -40,7 +40,10 @@ void main() {
         //   FirebaseAnalyticsObserver(analytics: analytics),
         // ],
         home: MyApp(),
-        theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Oxygen')),
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.black,
+            primaryColor: Colors.white,
+            fontFamily: 'Oxygen')),
   ));
 }
 
