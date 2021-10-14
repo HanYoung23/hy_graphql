@@ -1,14 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:letsgotrip/_View/MainPages/map/map_post_done_screen.dart';
-import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/homepage.dart';

@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
+import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
@@ -191,11 +193,7 @@ class _MapPostCreationDetailScreenState
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                    width: ScreenUtil().setSp(50),
-                                    height: ScreenUtil().setSp(50),
-                                    child: CircularProgressIndicator(
-                                        color: app_blue)),
+                                LoadingIndicator(),
                                 // : Container(
                                 //     child: Text(
                                 //         "사진의 GPS값을 불러올 수 없습니다.\n위치를 검색해주세요.",

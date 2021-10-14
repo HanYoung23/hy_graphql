@@ -70,6 +70,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
               print("🚨 resultData : $resultData");
               if (isAllFilled) {
                 if (resultData["createNickname"]["result"]) {
+                  storeUserData("isProfileSet", "true");
                   Get.offAll(() => HomePage());
                 } else {
                   Get.snackbar(

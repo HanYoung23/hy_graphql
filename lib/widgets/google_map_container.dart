@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/functions/get_map_coord.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 
 import 'map_marker.dart';
@@ -23,6 +24,9 @@ class GoogleMapContainer extends StatefulWidget {
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
   GoogleMapWholeController gmWholeImages = Get.find();
+  final GoogleMapWholeController gmWholeController =
+      Get.put(GoogleMapWholeController());
+
   final Set<Marker> _markers = Set();
   final int _minClusterZoom = 2;
   final int _maxClusterZoom = 19;
@@ -61,6 +65,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   }
 
   Future<void> _updateMarkers([double updatedZoom]) async {
+    gmWholeImages.addMapCoord(_mapController);
     if (_clusterManager == null || updatedZoom == _currentZoom) return;
     if (updatedZoom != null) {
       _currentZoom = updatedZoom;

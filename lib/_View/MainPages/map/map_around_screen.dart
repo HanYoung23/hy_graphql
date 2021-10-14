@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:letsgotrip/_Controller/permission_controller.dart';
-import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
+import 'package:letsgotrip/widgets/loading_indicator.dart';
 
 class MapAroundScreen extends StatefulWidget {
   const MapAroundScreen({
@@ -17,129 +19,192 @@ class MapAroundScreen extends StatefulWidget {
 }
 
 class _MapAroundScreenState extends State<MapAroundScreen> {
-  bool isPermission = true;
-  bool isMapLoading = false;
+  bool isMapLoading = true;
 
   @override
   void initState() {
-    checkLocationPermission().then((permission) {
-      setState(() {
-        isPermission = permission;
-      });
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                SizedBox(height: ScreenUtil().setHeight(20)),
-                Container(
-                  width: ScreenUtil().screenWidth,
-                  height: ScreenUtil().setHeight(46),
-                  padding: EdgeInsets.symmetric(
-                      vertical: ScreenUtil().setSp(8),
-                      horizontal: ScreenUtil().setSp(20)),
-                  child: Row(
-                    children: [
-                      Image.asset("assets/images/hamburger_button.png",
-                          width: ScreenUtil().setSp(28),
-                          height: ScreenUtil().setSp(28)),
-                      SizedBox(width: ScreenUtil().setWidth(56)),
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                                width: ScreenUtil().setSp(78),
-                                height: ScreenUtil().setSp(24),
+    GoogleMapWholeController gmWholeLatLng = Get.find();
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.photoListMap),
+          variables: {
+            "latitude1": "${gmWholeLatLng.latlngBounds["swLat"]}",
+            "latitude2": "${gmWholeLatLng.latlngBounds["neLat"]}",
+            "longitude1": "${gmWholeLatLng.latlngBounds["swLng"]}",
+            "longitude2": "${gmWholeLatLng.latlngBounds["neLng"]}",
+          },
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading) {
+            List<Map> imageMaps = [];
+            for (Map resultData in result.data["photo_list_map"]) {
+              int contentsId = int.parse("${resultData["contents_id"]}");
+              String imageUrl = "${resultData["image_link"]}";
+              List urlList = imageUrl.split(",");
+              for (String url in urlList) {
+                Map mapData = {
+                  "id": contentsId,
+                  "url": url,
+                };
+                imageMaps.add(mapData);
+              }
+            }
+            print("🚨 imageMaps : ${imageMaps.length}");
+            // print("🚨 result : $result");
+            return SafeArea(
+              child: Scaffold(
+                  backgroundColor: Colors.white,
+                  body: Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        SizedBox(height: ScreenUtil().setHeight(20)),
+                        Container(
+                          width: ScreenUtil().screenWidth,
+                          height: ScreenUtil().setHeight(46),
+                          padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setSp(8),
+                              horizontal: ScreenUtil().setSp(20)),
+                          child: Row(
+                            children: [
+                              Image.asset("assets/images/hamburger_button.png",
+                                  width: ScreenUtil().setSp(28),
+                                  height: ScreenUtil().setSp(28)),
+                              SizedBox(width: ScreenUtil().setWidth(56)),
+                              InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                        width: ScreenUtil().setSp(78),
+                                        height: ScreenUtil().setSp(24),
+                                        child: Center(
+                                          child: Text("지도",
+                                              style: TextStyle(
+                                                  color: app_font_grey,
+                                                  fontSize:
+                                                      ScreenUtil().setSp(16),
+                                                  fontWeight: FontWeight.w700,
+                                                  letterSpacing: ScreenUtil()
+                                                      .setSp(-0.4))),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: ScreenUtil().setWidth(8)),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                      width: ScreenUtil().setSp(78),
+                                      height: ScreenUtil().setSp(24),
+                                      child: Center(
+                                        child: Text("둘러보기",
+                                            style: TextStyle(
+                                                color: app_font_black,
+                                                fontSize:
+                                                    ScreenUtil().setSp(16),
+                                                fontWeight: FontWeight.w700,
+                                                letterSpacing:
+                                                    ScreenUtil().setSp(-0.4))),
+                                      )),
+                                  Container(
+                                    color: app_blue,
+                                    width: ScreenUtil().setSp(60),
+                                    height: ScreenUtil().setSp(3),
+                                  )
+                                ],
+                              ),
+                              SizedBox(width: ScreenUtil().setWidth(59)),
+                              InkWell(
+                                onTap: () {},
+                                child: Image.asset(
+                                    "assets/images/locationTap/calender_button.png",
+                                    width: ScreenUtil().setSp(28),
+                                    height: ScreenUtil().setSp(28)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        imageMaps.length > 0
+                            ? SingleChildScrollView(
+                                child: Container(
+                                  width: ScreenUtil().screenWidth,
+                                  height: ScreenUtil().setHeight(516),
+                                  child: GridView.builder(
+                                      itemCount: imageMaps.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        childAspectRatio: 1,
+                                        mainAxisSpacing: ScreenUtil().setSp(2),
+                                        crossAxisSpacing: ScreenUtil().setSp(2),
+                                      ),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Image.network(
+                                          imageMaps[index]["url"],
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
+                                            return CupertinoActivityIndicator();
+                                          },
+                                        );
+                                      }),
+                                ),
+                              )
+                            : Container(
+                                width: ScreenUtil().screenWidth,
+                                height: ScreenUtil().setHeight(516),
                                 child: Center(
-                                  child: Text("지도",
-                                      style: TextStyle(
-                                          color: app_font_grey,
-                                          fontSize: ScreenUtil().setSp(16),
-                                          fontWeight: FontWeight.w700,
-                                          letterSpacing:
-                                              ScreenUtil().setSp(-0.4))),
-                                ))
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: ScreenUtil().setWidth(8)),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              width: ScreenUtil().setSp(78),
-                              height: ScreenUtil().setSp(24),
-                              child: Center(
-                                child: Text("둘러보기",
-                                    style: TextStyle(
-                                        color: app_font_black,
-                                        fontSize: ScreenUtil().setSp(16),
-                                        fontWeight: FontWeight.w700,
-                                        letterSpacing:
-                                            ScreenUtil().setSp(-0.4))),
-                              )),
-                          Container(
-                            color: app_blue,
-                            width: ScreenUtil().setSp(60),
-                            height: ScreenUtil().setSp(3),
-                          )
-                        ],
-                      ),
-                      SizedBox(width: ScreenUtil().setWidth(59)),
-                      InkWell(
-                        onTap: () {},
-                        child: Image.asset(
-                            "assets/images/locationTap/calender_button.png",
-                            width: ScreenUtil().setSp(28),
-                            height: ScreenUtil().setSp(28)),
-                      ),
-                    ],
+                                    child: Image.asset(
+                                  "assets/images/map_around_content.png",
+                                  width: ScreenUtil().setSp(260),
+                                  height: ScreenUtil().setSp(48),
+                                )),
+                              )
+                      ],
+                    ),
                   ),
-                ),
-                isPermission
-                    ? Visibility(
-                        visible: isMapLoading ? false : true,
-                        child: Expanded(
-                            child: Container(
-                          child: Text("data"),
-                        )))
-                    : Expanded(
-                        child: Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
-                isMapLoading
-                    ? Expanded(
-                        child: Center(
-                          child: Container(
-                              width: ScreenUtil().setSp(40),
-                              height: ScreenUtil().setSp(40),
-                              child:
-                                  CircularProgressIndicator(color: app_blue)),
-                        ),
-                      )
-                    : Container(),
-              ],
-            ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed,
-            items: btmNavItems,
-            showUnselectedLabels: true,
-            currentIndex: 1,
-            onTap: _onBtmItemClick,
-            elevation: 0,
-          )),
-    );
+                  bottomNavigationBar: BottomNavigationBar(
+                    backgroundColor: Colors.white,
+                    type: BottomNavigationBarType.fixed,
+                    items: btmNavItems,
+                    showUnselectedLabels: true,
+                    currentIndex: 1,
+                    onTap: _onBtmItemClick,
+                    elevation: 0,
+                  )),
+            );
+          } else {
+            return Scaffold(
+              body: Container(
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().screenHeight,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoadingIndicator(),
+                      ],
+                    ),
+                  )),
+            );
+          }
+        });
   }
 
   List<BottomNavigationBarItem> btmNavItems = [

@@ -29,4 +29,5 @@ Future<void> seeAllValues() async {
 }
 
 // accessToken
-// customerId
+// customerId 35
+// isProfileSet true

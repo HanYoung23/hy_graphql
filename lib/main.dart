@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
@@ -11,9 +9,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
-import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
-import 'package:letsgotrip/_View/InitPages/login_screen.dart';
-import 'package:letsgotrip/_View/InitPages/walkthrough_screen.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
@@ -148,8 +143,8 @@ class _ScreenFilterState extends State<ScreenFilter> {
     // } else {
     //   return Splash();
     // }
-    // return HomePage();
-    return LoginScreen();
+    return HomePage();
+    // return LoginScreen();
   }
 }
 
