@@ -8,6 +8,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
@@ -38,6 +39,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
   String inputMessage = "";
   XFile pickedImage;
   bool isValid = false;
+  bool isAllFilled = false;
 
   @override
   void initState() {
@@ -66,16 +68,35 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
-              if (resultData["createNickname"]["result"]) {
-                setState(() {
-                  inputMessage = "사용 가능한 별명입니다 :)";
-                  currentColor = enableColor;
-                });
-              } else if ("${resultData["createNickname"]["msg"]}" == "??") {
-                setState(() {
-                  inputMessage = "이미 사용 중인 별명입니다.";
-                  currentColor = errorColor;
-                });
+              if (isAllFilled) {
+                if (resultData["createNickname"]["result"]) {
+                  Get.offAll(() => HomePage());
+                } else {
+                  Get.snackbar(
+                      "error", "${resultData["createNickname"]["msg"]}");
+                }
+              } else {
+                if (resultData["createNickname"]["result"]) {
+                  setState(() {
+                    inputMessage = "사용 가능한 별명입니다 :)";
+                    currentColor = enableColor;
+                    isAllFilled = true;
+                  });
+                } else if ("${resultData["createNickname"]["msg"]}" == "???") {
+                  setState(() {
+                    inputMessage = "이미 사용 중인 별명입니다.";
+                    currentColor = errorColor;
+                    isAllFilled = false;
+                  });
+                } else {
+                  setState(() {
+                    inputMessage = "";
+                    currentColor = errorColor;
+                    isAllFilled = false;
+                  });
+                  Get.snackbar(
+                      "error", "${resultData["createNickname"]["msg"]}");
+                }
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -178,8 +199,6 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                           ]),
                       SizedBox(height: ScreenUtil().setHeight(5)),
                       Container(
-                          // width: ScreenUtil().setWidth(335),
-                          // height: ScreenUtil().setHeight(44),
                           alignment: Alignment.bottomLeft,
                           child: TextFormField(
                             controller: nicknameController,
@@ -188,7 +207,6 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             onChanged: (value) {
                               if (value.length > 0) {
                                 String typedData = value[value.length - 1];
-                                print("🚨 value : $typedData");
                                 if (!validChar.hasMatch(typedData) ||
                                     typedData == " ") {
                                   setState(() {
@@ -216,6 +234,9 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                   currentColor = focusColor;
                                 });
                               }
+                              setState(() {
+                                isAllFilled = false;
+                              });
                             },
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
@@ -295,20 +316,36 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       ),
                       Spacer(),
                       InkWell(
-                        onTap: () {
-                          // runMutation({
-                          //     "nick_name": "$",
-                          //     "profile_photo_link": "$",
-                          //     "customer_id" : "$",
-                          //   });
-                          Get.offAll(() => HomePage());
+                        onTap: () async {
+                          String customerId =
+                              await storage.read(key: "customerId");
+                          int id = int.parse(customerId);
+                          if (isAllFilled) {
+                            if (pickedImage != null) {
+                              File file = File(pickedImage.path);
+                              uploadAWS([file]).then((awsLink) {
+                                if (awsLink[0] != null) {
+                                  runMutation({
+                                    "nick_name": "${nicknameController.text}",
+                                    "profile_photo_link": "${awsLink[0]}",
+                                    "customer_id": id,
+                                  });
+                                }
+                              });
+                            } else {
+                              runMutation({
+                                "nick_name": "${nicknameController.text}",
+                                "customer_id": id,
+                              });
+                            }
+                          }
                         },
                         child: Container(
                           width: ScreenUtil().setWidth(335),
                           padding: EdgeInsets.symmetric(
                               vertical: ScreenUtil().setHeight(13)),
                           decoration: BoxDecoration(
-                              color: nicknameController.text.length > 2
+                              color: isAllFilled
                                   ? Color.fromRGBO(5, 138, 221, 1)
                                   : Color.fromRGBO(5, 138, 221, 0.3),
                               borderRadius: BorderRadius.circular(10)),
