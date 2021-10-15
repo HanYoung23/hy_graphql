@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/homepage.dart';

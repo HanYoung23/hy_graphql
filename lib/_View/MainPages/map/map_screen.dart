@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -22,26 +23,14 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  FloatingButtonController floatingBtnController =
+      Get.put(FloatingButtonController());
+  FloatingButtonController floatingBtn = Get.find();
+
   bool isLeftTap = true;
   bool isPermission = true;
   bool isMapLoading = true;
   Position userPosition;
-  bool isFilterActive = false;
-  bool isAddActive = false;
-
-  filterBtnCallback() {
-    setState(() {
-      isFilterActive = true;
-      isAddActive = false;
-    });
-  }
-
-  addBtnCallback() {
-    setState(() {
-      isFilterActive = false;
-      isAddActive = true;
-    });
-  }
 
   @override
   void initState() {
@@ -61,12 +50,11 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("🚨 ${floatingBtn.isFilterActive.value}");
+    print("🚨 ${floatingBtn.isAddActive.value}");
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isFilterActive = false;
-          isAddActive = false;
-        });
+        floatingBtnController.allBtnCancel();
       },
       child: SafeArea(
         child: Scaffold(
@@ -190,23 +178,45 @@ class _MapScreenState extends State<MapScreen> {
                 ),
               ),
             ),
-            FilterBtn(
-                isActive: "", filterBtnOnClick: () => filterBtnCallback()),
-            AddBtn(isActive: "", addBtnOnClick: () => addBtnCallback()),
-            isFilterActive || isAddActive
+            FilterBtn(isActive: ""),
+            AddBtn(isActive: ""),
+            Obx(() => floatingBtn.isFilterActive.value ||
+                    floatingBtn.isAddActive.value
                 ? Positioned(
                     child: Container(
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().screenHeight,
                     color: Colors.black.withOpacity(0.7),
                   ))
-                : Container(),
-            isFilterActive
-                ? FilterBtn(isActive: "active", filterBtnOnClick: null)
-                : Container(),
-            isAddActive
-                ? AddBtn(isActive: "active", addBtnOnClick: null)
-                : Container(),
+                : Container()),
+            Obx(() => floatingBtn.isFilterActive.value
+                ? Positioned(
+                    bottom: ScreenUtil().setSp(80),
+                    left: ScreenUtil().setSp(18),
+                    child: Column(
+                      children: [
+                        FilterBtnOptions(title: '전체'),
+                        FilterBtnOptions(title: '바닷가'),
+                        FilterBtnOptions(title: '액티비티'),
+                        FilterBtnOptions(title: '맛집'),
+                        FilterBtnOptions(title: '숙소'),
+                      ],
+                    ),
+                  )
+                : Container()),
+            Obx(() => floatingBtn.isAddActive.value
+                ? Positioned(
+                    bottom: ScreenUtil().setSp(80),
+                    right: ScreenUtil().setSp(18),
+                    child: AddBtnOptions(title: '글쓰기'),
+                  )
+                : Container()),
+            Obx(() => floatingBtn.isFilterActive.value
+                ? FilterBtn(isActive: "active")
+                : Container()),
+            Obx(() => floatingBtn.isAddActive.value
+                ? AddBtn(isActive: "active")
+                : Container()),
           ]),
         ),
       ),

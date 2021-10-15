@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_controller/google_maps_controller.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/_View/MainPages/profile/profile_screen.dart';
 import 'package:letsgotrip/_View/MainPages/store/store_screen.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
-import 'package:letsgotrip/widgets/map_helper.dart';
-import 'package:letsgotrip/widgets/map_marker.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -21,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  FloatingButtonController floatingBtn;
+
   List<BottomNavigationBarItem> btmNavItems = [
     BottomNavigationBarItem(
         activeIcon: Image.asset(
@@ -69,6 +66,9 @@ class _HomePageState extends State<HomePage> {
         _selectedIndex = Get.arguments;
       });
     }
+    Get.lazyPut(() => FloatingButtonController());
+    floatingBtn = Get.find();
+
     super.initState();
   }
 
@@ -77,9 +77,6 @@ class _HomePageState extends State<HomePage> {
     MapScreen(),
     ProfileScreen(),
   ];
-
-  // final GoogleMapWholeController gmWholeController =
-  //     Get.put(GoogleMapWholeController());
 
   @override
   Widget build(BuildContext context) {
@@ -120,19 +117,38 @@ class _HomePageState extends State<HomePage> {
     //         gmWholeController.addMapMarkers(markers);
     //       }
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         body: IndexedStack(
           index: _selectedIndex,
           children: _screens,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          items: btmNavItems,
-          currentIndex: _selectedIndex,
-          onTap: _onBtmItemClick,
-          showUnselectedLabels: true,
-          elevation: 0,
+        bottomNavigationBar: Obx(
+          () {
+            return Stack(
+              children: [
+                Positioned(
+                  child: BottomNavigationBar(
+                    backgroundColor: Colors.white,
+                    type: BottomNavigationBarType.fixed,
+                    items: btmNavItems,
+                    currentIndex: _selectedIndex,
+                    onTap: _onBtmItemClick,
+                    showSelectedLabels: true,
+                    elevation: 0,
+                  ),
+                ),
+                floatingBtn.isFilterActive.value ||
+                        floatingBtn.isAddActive.value
+                    ? Positioned(
+                        child: Container(
+                        width: ScreenUtil().screenWidth,
+                        height: ScreenUtil().setSp(60),
+                        color: Colors.black.withOpacity(0.7),
+                      ))
+                    : SizedBox()
+              ],
+            );
+          },
         ));
     // });
   }

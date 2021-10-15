@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 
 class AddBtn extends StatelessWidget {
   final String isActive;
-  final Function addBtnOnClick;
-  const AddBtn({Key key, @required this.isActive, @required this.addBtnOnClick})
-      : super(key: key);
+  const AddBtn({Key key, @required this.isActive}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final FloatingButtonController addBtnController =
+        Get.put(FloatingButtonController());
     return Positioned(
         bottom: ScreenUtil().setSp(10),
         right: ScreenUtil().setSp(10),
         child: InkWell(
           onTap: () {
-            isActive == "" ? addBtnOnClick() : null;
+            addBtnController.addBtnOnClick();
           },
           child: Image.asset(
             isActive == "active"
@@ -24,5 +26,33 @@ class AddBtn extends StatelessWidget {
             height: ScreenUtil().setSp(56),
           ),
         ));
+  }
+}
+
+class AddBtnOptions extends StatelessWidget {
+  final String title;
+  const AddBtnOptions({Key key, @required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // func();
+      },
+      child: Container(
+        width: ScreenUtil().setSp(82),
+        height: ScreenUtil().setSp(42),
+        alignment: Alignment.centerRight,
+        child: Text(
+          "$title",
+          style: TextStyle(
+            fontSize: ScreenUtil().setSp(16),
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            letterSpacing: ScreenUtil().setSp(-0.45),
+          ),
+        ),
+      ),
+    );
   }
 }
