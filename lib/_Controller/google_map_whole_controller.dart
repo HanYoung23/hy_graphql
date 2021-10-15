@@ -22,4 +22,11 @@ class GoogleMapWholeController extends GetxController {
     });
     update();
   }
+/////////////////////
+
+  RxList photoListMap = [].obs;
+
+  setPhotoListMap(List queryData) {
+    photoListMap.value = queryData;
+  }
 }

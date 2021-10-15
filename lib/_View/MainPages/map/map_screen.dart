@@ -50,8 +50,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("🚨 ${floatingBtn.isFilterActive.value}");
-    print("🚨 ${floatingBtn.isAddActive.value}");
     return GestureDetector(
       onTap: () {
         floatingBtnController.allBtnCancel();
@@ -154,19 +152,19 @@ class _MapScreenState extends State<MapScreen> {
                         ],
                       ),
                     ),
-                    isPermission
-                        ? Visibility(
-                            visible: isMapLoading
-                                ? false
-                                : isLeftTap
-                                    ? true
-                                    : false,
-                            child: Expanded(
-                                child: GoogleMapContainer(
-                                    userPosition: userPosition)))
-                        : Expanded(
-                            child:
-                                Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
+                    // isPermission
+                    //     ? Visibility(
+                    //         visible: isMapLoading
+                    //             ? false
+                    //             : isLeftTap
+                    //                 ? true
+                    //                 : false,
+                    //         child: Expanded(
+                    //             child: GoogleMapContainer(
+                    //                 userPosition: userPosition)))
+                    //     : Expanded(
+                    //         child:
+                    //             Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
                     isMapLoading
                         ? Expanded(
                             child: Center(

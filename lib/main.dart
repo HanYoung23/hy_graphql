@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
@@ -8,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/homepage.dart';
@@ -69,29 +70,61 @@ class MyApp extends StatelessWidget {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            List<MapMarker> markers = [];
-            List<String> markerImages = [];
+            // List<MapMarker> markers = [];
+            // List<String> markerImages = [];
+            List<Map> photoMapList = [];
 
             for (Map resultData in result.data["photo_list_map"]) {
-              int markerId = int.parse("${resultData["contents_id"]}");
-              double markerLat = double.parse("${resultData["latitude"]}");
-              double markerLng = double.parse("${resultData["longitude"]}");
-              String imageUrl = "${resultData["image_link"]}";
-              List<String> imageList = imageUrl.split(",");
-              markerImages.add("${imageList[0]}");
+              // int markerId = int.parse("${resultData["contents_id"]}");
+              // double markerLat = double.parse("${resultData["latitude"]}");
+              // double markerLng = double.parse("${resultData["longitude"]}");
+              // String imageUrl = "${resultData["image_link"]}";
+              // List<String> imageList = imageUrl.split(",");
+              // markerImages.add("${imageList[0]}");
 
-              MapHelper.getMarkerImageFromUrl("${imageList[0]}")
-                  .then((markerImage) {
-                markers.add(
-                  MapMarker(
-                    id: "$markerId",
-                    position: LatLng(markerLat, markerLng),
-                    icon: markerImage,
-                  ),
-                );
-              });
+              // MapHelper.getMarkerImageFromUrl("${imageList[0]}")
+              //     .then((markerImage) {
+              //   markers.add(
+              //     MapMarker(
+              //       id: "$markerId",
+              //       position: LatLng(markerLat, markerLng),
+              //       icon: markerImage,
+              //     ),
+              //   );
+              // });
+              int customerId = int.parse("${resultData["customer_id"]}");
+              int contentId = int.parse("${resultData["contents_id"]}");
+              int categoryId = int.parse("${resultData["category_id"]}");
+              List<String> imageLink =
+                  ("${resultData["image_link"]}").split(",");
+              List<String> tags = ("${resultData["tags"]}").split(",");
+              List<int> starRating = [
+                resultData["star_rating1"],
+                resultData["star_rating2"],
+                resultData["star_rating3"],
+                resultData["star_rating4"]
+              ];
+              double latitude = double.parse("${resultData["latitude"]}");
+              double longitude = double.parse("${resultData["longitude"]}");
+
+              Map<dynamic, dynamic> photoDataMap = {
+                "customerId": customerId,
+                "contentsId": contentId,
+                "categoryId": categoryId,
+                "contentsTitle": "${resultData["contents_title"]}",
+                "locationLink": "${resultData["location_link"]}",
+                "imageLink": imageLink,
+                "mainText": "${resultData["main_text"]}",
+                "tags": tags,
+                "starRating": starRating,
+                "latitude": latitude,
+                "longitude": longitude,
+              };
+
+              photoMapList.add(photoDataMap);
             }
-            gmWholeController.addMapMarkers(markers);
+            gmWholeController.setPhotoListMap(photoMapList);
+            // gmWholeController.addMapMarkers(markers);
           }
           return ScreenUtilInit(
               designSize: Size(375, 667),
