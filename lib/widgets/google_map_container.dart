@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
-import 'package:letsgotrip/functions/get_map_coord.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 
 import 'map_marker.dart';

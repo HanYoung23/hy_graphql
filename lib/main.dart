@@ -92,6 +92,7 @@ class MyApp extends StatelessWidget {
               //     ),
               //   );
               // });
+              //
               int customerId = int.parse("${resultData["customer_id"]}");
               int contentId = int.parse("${resultData["contents_id"]}");
               int categoryId = int.parse("${resultData["category_id"]}");

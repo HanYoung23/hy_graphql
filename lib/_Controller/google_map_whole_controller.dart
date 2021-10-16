@@ -24,9 +24,20 @@ class GoogleMapWholeController extends GetxController {
   }
 /////////////////////
 
-  RxList photoListMap = [].obs;
+  RxList photoListMap = [].obs; // 전체 사진 데이터
+  RxList categoryMap = [].obs;
 
   setPhotoListMap(List queryData) {
     photoListMap.value = queryData;
+  }
+
+  setCategoryMap(int categoryId) {
+    List filteredList = [];
+    photoListMap.map((data) {
+      if (data["categoryId"] == categoryId) {
+        filteredList.add(data);
+      }
+    }).toList();
+    categoryMap.value = filteredList;
   }
 }
