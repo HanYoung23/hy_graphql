@@ -14,21 +14,22 @@ class GoogleMapWholeController extends GetxController {
     update();
   }
 
-  Map latlngBounds;
+/////////////////////
+  RxMap latlngBounds = {}.obs;
 
   Future addMapCoord(Completer<GoogleMapController> mapCoordController) async {
     await getMapCoord(mapCoordController).then((latlngMap) {
-      latlngBounds = latlngMap;
+      latlngBounds.value = latlngMap;
     });
-    update();
   }
-/////////////////////
 
+/////////////////////
   RxList photoListMap = [].obs; // 전체 사진 데이터
   RxList categoryMap = [].obs;
 
   setPhotoListMap(List queryData) {
     photoListMap.value = queryData;
+    categoryMap.value = queryData;
   }
 
   setCategoryMap(int categoryId) {
