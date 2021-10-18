@@ -42,7 +42,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _mapController.complete(controller);
     if (markerNum == -1) {
       Timer.periodic(Duration(milliseconds: 1000), (timer) {
-        if (markerNum == gmWholeImages.mapMarkerList.length) {
+        if (markerNum == gmWholeImages.mapMarkerList.length && markerNum != 0) {
           print("🚨 timer canceled");
           timer.cancel();
         }

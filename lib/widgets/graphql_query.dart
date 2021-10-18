@@ -68,4 +68,60 @@ class Queries {
         }
     }
 """;
+
+/////////////////////////////////////////////////////////////////profile screen
+  static final String mypageCount = """
+    query mypage_count(\$customer_id: Int!) {
+      mypage_count(customer_id: \$customer_id) 
+      {
+          contents_count
+          bookmarks_count
+          coments_count
+        }
+    }
+""";
+
+  static final String mypageContentsList = """
+    query mypage_contents_list(\$customer_id: Int!) {
+      mypage_contents_list(customer_id: \$customer_id) 
+      {
+          contents_id
+          category_id
+          contents_title
+          location_link
+          image_link
+          main_text
+          customer_id
+          star_rating1
+          star_rating2
+          star_rating3
+          star_rating4
+          latitude
+          longitude
+        }
+    }
+""";
+
+  static final String mypageComentsList = """
+    query mypage_coments_list(\$customer_id: Int!) {
+      mypage_coments_list(customer_id: \$customer_id) 
+      {
+          contents_id
+          coments_id
+          coments_text
+          main_text
+        }
+    }
+""";
+
+  static final String mypageBookmarksList = """
+    query mypage_bookmarks_list(\$customer_id: Int!) {
+      mypage_bookmarks_list(customer_id: \$customer_id) 
+      {
+        bookmarks_id
+        contents_id
+        image_link
+        }
+    }
+""";
 }

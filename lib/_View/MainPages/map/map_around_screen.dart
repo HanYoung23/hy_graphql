@@ -348,6 +348,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
         label: "마이페이지"),
   ];
   void _onBtmItemClick(int index) {
-    Get.off(() => HomePage(), arguments: index);
+    Get.to(() => HomePage(),
+        arguments: index, transition: Transition.noTransition);
   }
 }

@@ -45,9 +45,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
   @override
   void initState() {
     seeValue("customerId").then((value) {
-      String id = value;
       setState(() {
-        customerId = int.parse(id);
+        customerId = int.parse(value);
       });
     });
     super.initState();

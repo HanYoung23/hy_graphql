@@ -92,7 +92,6 @@ class _MapScreenState extends State<MapScreen> {
         isPermission = permission;
       });
       getUserLocation().then((latlng) {
-        print("🚨 latlng : $latlng");
         if (latlng != null) {
           setState(() {
             userPosition = latlng;
