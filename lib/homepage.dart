@@ -116,40 +116,41 @@ class _HomePageState extends State<HomePage> {
     //         }
     //         gmWholeController.addMapMarkers(markers);
     //       }
-    return Scaffold(
-        backgroundColor: Colors.black,
-        body: IndexedStack(
-          index: _selectedIndex,
-          children: _screens,
-        ),
-        bottomNavigationBar: Obx(
-          () {
-            return Stack(
-              children: [
-                Positioned(
-                  child: BottomNavigationBar(
-                    backgroundColor: Colors.white,
-                    type: BottomNavigationBarType.fixed,
-                    items: btmNavItems,
-                    currentIndex: _selectedIndex,
-                    onTap: _onBtmItemClick,
-                    showSelectedLabels: true,
-                    elevation: 0,
+    return SafeArea(
+      child: Scaffold(
+          body: IndexedStack(
+            index: _selectedIndex,
+            children: _screens,
+          ),
+          bottomNavigationBar: Obx(
+            () {
+              return Stack(
+                children: [
+                  Positioned(
+                    child: BottomNavigationBar(
+                      backgroundColor: Colors.white,
+                      type: BottomNavigationBarType.fixed,
+                      items: btmNavItems,
+                      currentIndex: _selectedIndex,
+                      onTap: _onBtmItemClick,
+                      showSelectedLabels: true,
+                      elevation: 0,
+                    ),
                   ),
-                ),
-                floatingBtn.isFilterActive.value ||
-                        floatingBtn.isAddActive.value
-                    ? Positioned(
-                        child: Container(
-                        width: ScreenUtil().screenWidth,
-                        height: ScreenUtil().setSp(60),
-                        color: Colors.black.withOpacity(0.7),
-                      ))
-                    : SizedBox()
-              ],
-            );
-          },
-        ));
+                  floatingBtn.isFilterActive.value ||
+                          floatingBtn.isAddActive.value
+                      ? Positioned(
+                          child: Container(
+                          width: ScreenUtil().screenWidth,
+                          height: ScreenUtil().setSp(60),
+                          color: Colors.black.withOpacity(0.7),
+                        ))
+                      : SizedBox()
+                ],
+              );
+            },
+          )),
+    );
     // });
   }
 

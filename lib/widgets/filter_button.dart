@@ -33,30 +33,45 @@ class FilterBtn extends StatelessWidget {
 
 class FilterBtnOptions extends StatelessWidget {
   final String title;
-  const FilterBtnOptions({Key key, @required this.title}) : super(key: key);
+  final Function callback;
+  const FilterBtnOptions(
+      {Key key, @required this.title, @required this.callback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final GoogleMapWholeController gmCategoryMapController =
+    GoogleMapWholeController gmCategoryMapController =
         Get.put(GoogleMapWholeController());
+    FloatingButtonController floatingBtnController =
+        Get.put(FloatingButtonController());
 
     return InkWell(
       onTap: () {
         switch (title) {
           case "전체":
             gmCategoryMapController.setCategoryMap(1);
+            callback(1);
+            floatingBtnController.allBtnCancel();
             break;
           case "바닷가":
             gmCategoryMapController.setCategoryMap(2);
+            callback(2);
+            floatingBtnController.allBtnCancel();
             break;
           case "액티비티":
             gmCategoryMapController.setCategoryMap(3);
+            callback(3);
+            floatingBtnController.allBtnCancel();
             break;
           case "맛집":
             gmCategoryMapController.setCategoryMap(4);
+            callback(4);
+            floatingBtnController.allBtnCancel();
             break;
           case "숙소":
             gmCategoryMapController.setCategoryMap(5);
+            callback(5);
+            floatingBtnController.allBtnCancel();
             break;
           default:
         }

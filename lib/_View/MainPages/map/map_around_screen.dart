@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
@@ -55,8 +56,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               List urlList = imageUrl.split(",");
               for (String url in urlList) {
                 Map mapData = {
-                  "id": contentsId,
-                  "url": url,
+                  "contentsId": contentsId,
+                  "imageLink": url,
                 };
                 imageMaps.add(mapData);
               }
@@ -175,15 +176,27 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                return Image.network(
-                                                  imageMaps[index]["url"],
-                                                  fit: BoxFit.cover,
-                                                  loadingBuilder: (context,
-                                                      child, loadingProgress) {
-                                                    if (loadingProgress == null)
-                                                      return child;
-                                                    return CupertinoActivityIndicator();
+                                                return InkWell(
+                                                  onTap: () {
+                                                    Get.to(() =>
+                                                        PlaceDetailScreen(
+                                                          contentsId: imageMaps[
+                                                                  index]
+                                                              ["contentsId"],
+                                                        ));
                                                   },
+                                                  child: Image.network(
+                                                    imageMaps[index]
+                                                        ["imageLink"],
+                                                    fit: BoxFit.cover,
+                                                    loadingBuilder: (context,
+                                                        child,
+                                                        loadingProgress) {
+                                                      if (loadingProgress ==
+                                                          null) return child;
+                                                      return CupertinoActivityIndicator();
+                                                    },
+                                                  ),
                                                 );
                                               }),
                                         ),
@@ -217,11 +230,26 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                 left: ScreenUtil().setSp(18),
                                 child: Column(
                                   children: [
-                                    FilterBtnOptions(title: '전체'),
-                                    FilterBtnOptions(title: '바닷가'),
-                                    FilterBtnOptions(title: '액티비티'),
-                                    FilterBtnOptions(title: '맛집'),
-                                    FilterBtnOptions(title: '숙소'),
+                                    FilterBtnOptions(
+                                      title: '전체',
+                                      callback: null,
+                                    ),
+                                    FilterBtnOptions(
+                                      title: '바닷가',
+                                      callback: null,
+                                    ),
+                                    FilterBtnOptions(
+                                      title: '액티비티',
+                                      callback: null,
+                                    ),
+                                    FilterBtnOptions(
+                                      title: '맛집',
+                                      callback: null,
+                                    ),
+                                    FilterBtnOptions(
+                                      title: '숙소',
+                                      callback: null,
+                                    ),
                                   ],
                                 ),
                               )

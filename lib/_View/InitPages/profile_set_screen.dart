@@ -40,9 +40,16 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
   XFile pickedImage;
   bool isValid = false;
   bool isAllFilled = false;
+  int customerId;
 
   @override
   void initState() {
+    seeValue("customerId").then((value) {
+      String id = value;
+      setState(() {
+        customerId = int.parse(id);
+      });
+    });
     super.initState();
   }
 
@@ -259,7 +266,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     runMutation({
                                       "nick_name": nicknameController.text,
                                       "profile_photo_link": "",
-                                      "customer_id": 35,
+                                      "customer_id": customerId,
                                     });
                                     FocusScope.of(context).unfocus();
                                   }
@@ -318,9 +325,6 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       Spacer(),
                       InkWell(
                         onTap: () async {
-                          String customerId =
-                              await storage.read(key: "customerId");
-                          int id = int.parse(customerId);
                           if (isAllFilled) {
                             if (pickedImage != null) {
                               File file = File(pickedImage.path);
@@ -329,14 +333,15 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                   runMutation({
                                     "nick_name": "${nicknameController.text}",
                                     "profile_photo_link": "${awsLink[0]}",
-                                    "customer_id": id,
+                                    "customer_id": customerId,
                                   });
                                 }
                               });
                             } else {
                               runMutation({
                                 "nick_name": "${nicknameController.text}",
-                                "customer_id": id,
+                                "profile_photo_link": "",
+                                "customer_id": customerId,
                               });
                             }
                           }

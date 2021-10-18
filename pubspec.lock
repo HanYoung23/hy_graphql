@@ -99,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   characters:
     dependency: transitive
     description:
@@ -226,7 +233,7 @@ packages:
     source: hosted
     version: "2.0.1"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       url: "https://pub.dartlang.org"
@@ -554,7 +561,7 @@ packages:
     source: hosted
     version: "0.6.3"
   json_annotation:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: json_annotation
       url: "https://pub.dartlang.org"
@@ -617,7 +624,7 @@ packages:
     source: hosted
     version: "2.0.2"
   package_info_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: package_info_plus
       url: "https://pub.dartlang.org"
@@ -743,7 +750,7 @@ packages:
     source: hosted
     version: "4.1.0"
   platform:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: platform
       url: "https://pub.dartlang.org"
@@ -778,7 +785,7 @@ packages:
     source: hosted
     version: "0.26.0"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"

@@ -57,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return Scaffold(
+            backgroundColor: Colors.white,
             body: SafeArea(
               child: Container(
                 margin: EdgeInsets.symmetric(
@@ -124,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              color: Colors.black,
+                              child:
+                                  Image.asset("assets/images/kakao_logo.png"),
                             ),
                             Text(
                               "카카오 계정으로 로그인",
@@ -134,7 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              color: Colors.black,
                             ),
                           ],
                         ),
@@ -161,7 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              color: Colors.black,
+                              child:
+                                  Image.asset("assets/images/naver_logo.png"),
                             ),
                             Text(
                               "네이버 계정으로 로그인",
@@ -172,7 +174,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              color: Colors.black,
                             ),
                           ],
                         ),
@@ -200,7 +201,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              color: Colors.white,
+                              child:
+                                  Image.asset("assets/images/apple_logo.png"),
                             ),
                             Text(
                               "애플 계정으로 로그인",
@@ -211,7 +213,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              color: Colors.white,
                             ),
                           ],
                         ),

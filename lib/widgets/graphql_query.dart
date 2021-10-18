@@ -41,6 +41,30 @@ class Queries {
           star_rating4
           latitude
           longitude
+          regist_date
+        }
+    }
+""";
+
+  static final String photoDetail = """
+    query photo_detail(\$contents_id: Int!) {
+      photo_detail(contents_id: \$contents_id) 
+      {
+          contents_id
+          category_id
+          contents_title
+          nick_name
+          image_link
+          main_text
+          regist_date
+          star_rating1
+          star_rating2
+          star_rating3
+          star_rating4
+          bookmarks_count
+          likes_count
+          coments_count
+          profile_photo_link
         }
     }
 """;

@@ -73,11 +73,12 @@ dependencies:
   uuid: ^3.0.4
   get: ^4.3.8
   kakao_flutter_sdk: any
-  # dio: ^4.0.0 # for kakao login
-  # json_annotation: ^4.0.1 # for kakao login
-  # shared_preferences: ^2.0.5 # for kakao login
-  # platform: ^3.0.0 # for kakao login
-  # package_info_plus: ^1.0.4 # for kakao login
+  carousel_slider: ^4.0.0
+  dio: ^4.0.0 # for kakao login
+  json_annotation: ^4.0.1 # for kakao login
+  shared_preferences: ^2.0.5 # for kakao login
+  platform: ^3.0.0 # for kakao login
+  package_info_plus: ^1.0.4 # for kakao login
 
 
 dev_dependencies:

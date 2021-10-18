@@ -28,4 +28,14 @@ class Mutations {
         }
     }
 """;
+
+  static final String addLikes = """
+    mutation(\$contents_id: Int!,\$customer_id: Int!) {
+      add_likes(contents_id : \$contents_id, customer_id : \$customer_id) 
+      {
+          result
+          msg
+        }
+    }
+""";
 }
