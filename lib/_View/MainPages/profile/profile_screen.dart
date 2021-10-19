@@ -72,9 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Container(
                                         alignment: Alignment.centerLeft,
                                         child: InkWell(
-                                            onTap: () {
-                                              Get.to(() => ProfileEditScreen());
-                                            },
+                                            onTap: () {},
                                             child: Image.asset(
                                                 "assets/images/hamburger_button.png",
                                                 width: ScreenUtil().setSp(28),
@@ -128,13 +126,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             overflow: TextOverflow.fade,
                                             maxLines: 1),
                                         SizedBox(height: ScreenUtil().setSp(5)),
-                                        Text("프로필 편집",
-                                            style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                // fontWeight: FontWeight.bold,
-                                                color: app_font_grey,
-                                                letterSpacing: -0.35)),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.to(() => ProfileEditScreen());
+                                          },
+                                          child: Text("프로필 편집",
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(14),
+                                                  // fontWeight: FontWeight.bold,
+                                                  color: app_font_grey,
+                                                  letterSpacing: -0.35)),
+                                        ),
                                       ],
                                     )
                                   ],

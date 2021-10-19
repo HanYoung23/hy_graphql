@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
+import 'package:letsgotrip/_View/MainPages/profile/profile_edit_introduction_screen.dart';
+import 'package:letsgotrip/_View/MainPages/profile/profile_edit_nickname_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -136,67 +138,80 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       height: ScreenUtil().setSp(10),
                     ),
                     SizedBox(height: ScreenUtil().setSp(20)),
-                    Container(
-                        width: ScreenUtil().screenWidth,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setSp(20)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "프로필 별명",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4),
-                            ),
-                            SizedBox(height: ScreenUtil().setSp(10)),
-                            Text(
-                              "홍길동",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  color: app_font_grey,
-                                  letterSpacing: -0.4),
-                            ),
-                            SizedBox(height: ScreenUtil().setSp(10)),
-                            Container(
-                              color: app_grey_light,
-                              width: ScreenUtil().screenWidth,
-                              height: ScreenUtil().setSp(2),
-                            )
-                          ],
-                        )),
+                    InkWell(
+                      onTap: () {
+                        Get.to(
+                            () => ProfileEditNicknameScreen(nickname: '홍길동'));
+                      },
+                      child: Container(
+                          width: ScreenUtil().screenWidth,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: ScreenUtil().setSp(20)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "프로필 별명",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(16),
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: -0.4),
+                              ),
+                              SizedBox(height: ScreenUtil().setSp(10)),
+                              Text(
+                                "홍길동",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(16),
+                                    color: app_font_grey,
+                                    letterSpacing: -0.4),
+                              ),
+                              SizedBox(height: ScreenUtil().setSp(10)),
+                              Container(
+                                color: app_grey_light,
+                                width: ScreenUtil().screenWidth,
+                                height: ScreenUtil().setSp(2),
+                              )
+                            ],
+                          )),
+                    ),
                     SizedBox(height: ScreenUtil().setSp(30)),
-                    Container(
-                        width: ScreenUtil().screenWidth,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setSp(20)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "프로필 소개",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4),
-                            ),
-                            SizedBox(height: ScreenUtil().setSp(10)),
-                            Text(
-                              "소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개",
-                              style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  color: app_font_grey,
-                                  letterSpacing: -0.4),
-                            ),
-                            SizedBox(height: ScreenUtil().setSp(10)),
-                            Container(
-                              color: app_grey_light,
-                              width: ScreenUtil().screenWidth,
-                              height: ScreenUtil().setSp(2),
-                            )
-                          ],
-                        )),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => ProfileEditIntroductionScreen(
+                            introduction:
+                                "소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개"));
+                      },
+                      child: Container(
+                          width: ScreenUtil().screenWidth,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: ScreenUtil().setSp(20)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "프로필 소개",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(16),
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: -0.4),
+                              ),
+                              SizedBox(height: ScreenUtil().setSp(10)),
+                              Text(
+                                "소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개 소개",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(16),
+                                    color: app_font_grey,
+                                    letterSpacing: -0.4),
+                              ),
+                              SizedBox(height: ScreenUtil().setSp(10)),
+                              Container(
+                                color: app_grey_light,
+                                width: ScreenUtil().screenWidth,
+                                height: ScreenUtil().setSp(2),
+                              )
+                            ],
+                          )),
+                    ),
                   ],
                 )))));
   }

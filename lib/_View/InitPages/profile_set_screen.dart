@@ -12,7 +12,6 @@ import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class ProfileSetScreen extends StatefulWidget {
   final String userId;
@@ -221,7 +220,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     inputMessage = "별명은 한글, 영문, 숫자만 사용 가능합니다.";
                                     currentColor = errorColor;
                                   });
-                                } else if (nicknameController.text.length < 3) {
+                                } else if (nicknameController.text.length < 2) {
                                   setState(() {
                                     isValid = false;
                                     inputMessage = "";
