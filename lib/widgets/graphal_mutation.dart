@@ -49,13 +49,13 @@ class Mutations {
     }
 """;
 
-// static final String addComments = """
-//     mutation(\$contents_id: Int!,\$customer_id: Int!) {
-//       add_bookmarks(contents_id : \$contents_id, customer_id : \$customer_id)
-//       {
-//           result
-//           msg
-//         }
-//     }
-// """;
+  static final String createComents = """
+    mutation(\$contents_id: Int!,\$customer_id: Int!, \$coment_text: String!, \$coments_id_link: Int!) {
+      createComents(contents_id : \$contents_id, customer_id : \$customer_id, coment_text : \$coment_text, coments_id_link : \$coments_id_link)
+      {
+          result
+          msg
+        }
+    }
+""";
 }

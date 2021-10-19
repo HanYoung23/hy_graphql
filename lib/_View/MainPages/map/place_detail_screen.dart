@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/comment_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
@@ -48,7 +49,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           if (!result.isLoading) {
             if (result.data["photo_detail"] != null) {
               Map resultData = result.data["photo_detail"];
-              print("🚨 place detail result : $resultData");
+              // print("🚨 place detail result : $resultData");
               int contentsId = int.parse("${resultData["contents_id"]}");
               int categoryId = int.parse("${resultData["category_id"]}");
               String contentsTitle = resultData["contents_title"];
@@ -392,10 +393,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
   Mutation comentsButton(int comentsCount) {
     return Mutation(
         options: MutationOptions(
-            document: gql(Mutations.addBookmarks),
+            document: gql(Mutations.createComents),
             onCompleted: (dynamic resultData) {
               if (resultData["add_bookmarks"]["result"]) {
-                print("🚨 ${resultData["add_bookmarks"]}");
+                // print("🚨 ${resultData["add_bookmarks"]}");
                 if (comentsNum == 0) {
                   setState(() {
                     comentsNum = 1;
@@ -413,10 +414,18 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           return Expanded(
             child: InkWell(
               onTap: () {
-                runMutation({
-                  "customer_id": widget.customerId,
-                  "contents_id": widget.contentsId,
-                });
+                // runMutation({
+                //   "customer_id": widget.customerId,
+                //   "contents_id": widget.contentsId,
+                //   "coment_text":
+                //       "text text text text text text text text text text text text text",
+                //   "coments_id_link": "",
+                // });
+                showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (_) => CommentBottomSheet(),
+                    isScrollControlled: true);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -441,7 +450,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             document: gql(Mutations.addBookmarks),
             onCompleted: (dynamic resultData) {
               if (resultData["add_bookmarks"]["result"]) {
-                print("🚨 ${resultData["add_bookmarks"]}");
+                // print("🚨 ${resultData["add_bookmarks"]}");
                 if (bookmarks == 1) {
                   if (bookmarksNum == 0) {
                     setState(() {
@@ -509,7 +518,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             document: gql(Mutations.addLikes),
             onCompleted: (dynamic resultData) {
               if (resultData["add_likes"]["result"]) {
-                print("🚨 ${resultData["add_likes"]}");
+                // print("🚨 ${resultData["add_likes"]}");
                 if (likes == 1) {
                   if (likesNum == 0) {
                     setState(() {
