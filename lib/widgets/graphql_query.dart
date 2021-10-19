@@ -71,6 +71,20 @@ class Queries {
     }
 """;
 
+  static final String comentsList = """
+    query coments_list(\$contents_id: Int!, \$sequence: Int!) {
+      coments_list(contents_id: \$contents_id, sequence: \$sequence) 
+      {
+          coments_id
+          nick_name
+          coment_text
+          coments_id_link
+          regist_date
+          edit_date
+        }
+    }
+""";
+
 /////////////////////////////////////////////////////////////////profile screen
   static final String mypageCount = """
     query mypage_count(\$customer_id: Int!) {

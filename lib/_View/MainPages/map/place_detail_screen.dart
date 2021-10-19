@@ -26,6 +26,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
   int likesNum = 0;
   int bookmarksNum = 0;
   int comentsNum = 0;
+  int currentIndex = 1;
   bool isLike = false;
 
   onPageChanged() {}
@@ -149,7 +150,11 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                           autoPlayAnimationDuration:
                                               Duration(milliseconds: 800),
                                           autoPlayCurve: Curves.fastOutSlowIn,
-                                          onPageChanged: onPageChanged(),
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              currentIndex = index + 1;
+                                            });
+                                          },
                                           scrollDirection: Axis.horizontal,
                                         )),
                                   ),
@@ -170,7 +175,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                   BorderRadius.circular(50)),
                                           child: Center(
                                             child: Text(
-                                              "1/${imageLink.length}",
+                                              "$currentIndex/${imageLink.length}",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize:
@@ -424,7 +429,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                 showModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     context: context,
-                    builder: (_) => CommentBottomSheet(),
+                    builder: (_) =>
+                        CommentBottomSheet(contentsId: widget.contentsId),
                     isScrollControlled: true);
               },
               child: Row(
