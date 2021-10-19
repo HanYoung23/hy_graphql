@@ -26,7 +26,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     seeValue("customerId").then((value) {
-      print("🚨 id : $value");
       setState(() {
         customerId = int.parse(value);
       });
@@ -259,7 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             builder: (result, {refetch, fetchMore}) {
                               if (!result.isLoading) {
-                                print("🚨 result : $result");
+                                // print("🚨 result : $result");
                                 // Map resultData =
                                 //     result.data["mypage_bookmarks_list"];
                                 if (resultData != []) {

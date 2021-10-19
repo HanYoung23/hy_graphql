@@ -71,7 +71,6 @@ class GoogleMapWholeController extends GetxController {
         });
       }
     }
-    print("🚨 mapMarkerList ${mapMarkers.length}");
     mapMarkerList = mapMarkers;
     update();
   }

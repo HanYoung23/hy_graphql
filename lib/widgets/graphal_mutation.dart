@@ -38,4 +38,24 @@ class Mutations {
         }
     }
 """;
+
+  static final String addBookmarks = """
+    mutation(\$contents_id: Int!,\$customer_id: Int!) {
+      add_bookmarks(contents_id : \$contents_id, customer_id : \$customer_id) 
+      {
+          result
+          msg
+        }
+    }
+""";
+
+// static final String addComments = """
+//     mutation(\$contents_id: Int!,\$customer_id: Int!) {
+//       add_bookmarks(contents_id : \$contents_id, customer_id : \$customer_id)
+//       {
+//           result
+//           msg
+//         }
+//     }
+// """;
 }

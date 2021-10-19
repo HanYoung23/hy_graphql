@@ -47,8 +47,8 @@ class Queries {
 """;
 
   static final String photoDetail = """
-    query photo_detail(\$contents_id: Int!) {
-      photo_detail(contents_id: \$contents_id) 
+    query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+      photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
       {
           contents_id
           category_id
@@ -65,6 +65,8 @@ class Queries {
           likes_count
           coments_count
           profile_photo_link
+          likes
+          bookmarks
         }
     }
 """;
