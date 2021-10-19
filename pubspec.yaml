@@ -104,6 +104,7 @@ flutter:
     - assets/images/walkthroughThird/
     - assets/images/profileSettings/
     - assets/images/locationTap/
+    - assets/images/settings/
     - assets/html/
   #   - images/a_dot_ham.jpeg
 

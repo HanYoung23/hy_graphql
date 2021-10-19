@@ -8,6 +8,7 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
+import 'package:letsgotrip/widgets/menu_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -19,6 +20,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   int customerId;
 
   @override
@@ -50,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 return SafeArea(
                     child: Scaffold(
+                  key: scaffoldKey,
                   backgroundColor: Colors.white,
                   body: SingleChildScrollView(
                     child: Column(
@@ -72,7 +75,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: Container(
                                         alignment: Alignment.centerLeft,
                                         child: InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              scaffoldKey.currentState
+                                                  .openDrawer();
+                                            },
                                             child: Image.asset(
                                                 "assets/images/hamburger_button.png",
                                                 width: ScreenUtil().setSp(28),
@@ -271,6 +277,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+                  drawer: MenuDrawer(),
                 ));
               } else {
                 return SafeArea(

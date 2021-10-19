@@ -20,3 +20,4 @@ const Color app_font_black = Color.fromRGBO(25, 25, 25, 1);
 const Color app_font_grey = Color.fromRGBO(188, 192, 193, 1);
 const Color app_grey = Color.fromRGBO(237, 237, 237, 1);
 const Color app_grey_light = Color.fromRGBO(248, 248, 250, 1);
+const Color app_grey_dark = Color.fromRGBO(188, 192, 193, 1);
