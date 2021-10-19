@@ -126,4 +126,18 @@ class Queries {
         }
     }
 """;
+
+  static final String mypage = """
+    query mypage(\$customer_id: Int!) {
+      mypage(customer_id: \$customer_id) 
+      {
+          customer_id
+          nick_name
+          profile_photo_link
+          profile_text
+          point
+          language
+        }
+    }
+""";
 }

@@ -308,7 +308,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       direction: Axis.horizontal,
                                       children: [
                                         Text(
-                                          "mainText mainText mainText mainText mainText mainText mainText mainText mainText mainText mainText mainText mainText",
+                                          mainText,
                                           style: TextStyle(
                                             fontSize: ScreenUtil().setSp(14),
                                           ),
