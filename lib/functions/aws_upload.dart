@@ -17,7 +17,10 @@ Future uploadAWS(List<File> imageFiles) async {
         var photoOption = GetUrlOptions(accessLevel: StorageAccessLevel.guest);
         GetUrlResult storageUrl =
             await Amplify.Storage.getUrl(key: key, options: photoOption);
-        photoUrlList.add(storageUrl.url);
+        String shortUrl =
+            storageUrl.url.substring(0, storageUrl.url.indexOf("?X-Amz"));
+
+        photoUrlList.add(shortUrl);
         print('🚨 Successfully uploaded url: ${result.key}');
       });
     } on StorageException catch (e) {

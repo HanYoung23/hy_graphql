@@ -81,6 +81,7 @@ class Queries {
           coments_id_link
           regist_date
           edit_date
+          profile_photo_link
         }
     }
 """;

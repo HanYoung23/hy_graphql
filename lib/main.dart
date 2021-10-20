@@ -150,7 +150,7 @@ class _ScreenFilterState extends State<ScreenFilter> {
     seeValue("isWalkThrough").then((value) {
       if (value == "true") {
         seeValue("customerId").then((value) {
-          if (value != "null") {
+          if (value != null) {
             seeValue("isProfileSet").then((value) {
               if (value == "true") {
                 setState(() {

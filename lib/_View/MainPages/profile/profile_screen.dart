@@ -311,12 +311,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
             Map resultData = result.data["mypage"][0];
-            // print("🚨 mypage result : $resultData");
+            print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
             String profileText = resultData["profile_text"];
-            int point = resultData["point"];
-            int language = resultData["language"];
+            // int point = resultData["point"];
+            // int language = resultData["language"];
 
             return Column(
               children: [
@@ -326,12 +326,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Container(
                         width: ScreenUtil().setSp(70),
+                        height: ScreenUtil().setSp(70),
                         decoration: profilePhotoLink == null
                             ? BoxDecoration(
                                 color: app_grey,
                                 borderRadius: BorderRadius.circular(50))
                             : BoxDecoration(
                                 image: DecorationImage(
+                                    fit: BoxFit.cover,
                                     image: NetworkImage(profilePhotoLink)),
                                 borderRadius: BorderRadius.circular(50)),
                       ),
