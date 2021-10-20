@@ -28,6 +28,7 @@
         <key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaobb7ebfb5b4cc388795bf68e8e69f3cc9</string>
+				<string>com.jjang.letsgotrip.naver</string>
 			</array>
 		</dict>
 	</array>
@@ -41,6 +42,41 @@
 		<string>kakaokompassauth</string>
 		<string>kakaotalk-5.9.7</string>
 	</array>
+	<!-- naver -->
+	<array>
+        <string>naversearchapp</string>
+        <string>naversearchthirdlogin</string>
+    </array>
+	<key>kServiceAppUrlScheme</key>
+        <string>com.jjang.letsgotrip.naver</string>
+        <key>kConsumerKey</key>
+        <string>lYqxXzWsxilVPsR5i6Ux</string>
+        <key>kConsumerSecret</key>
+        <string>RNR1JUfDb2</string>
+        <key>kServiceAppName</key>
+        <string>letsgotrip</string>
+           <key>NSExceptionDomains</key>
+           <dict>
+              <key>naver.com</key>
+              <dict>
+                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                 <true/>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+              </dict>
+              <key>naver.net</key>
+              <dict>
+                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                 <true/>
+                 <key>NSExceptionRequiresForwardSecrecy</key>
+                 <false/>
+                 <key>NSIncludesSubdomains</key>
+                 <true/>
+              </dict>
+           </dict>
+	<!-- naver end -->
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

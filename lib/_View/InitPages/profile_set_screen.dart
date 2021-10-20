@@ -180,9 +180,17 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                                 "assets/images/profileSettings/thumbnail_default.png",
                                                 width: ScreenUtil().setSp(101),
                                                 height: ScreenUtil().setSp(101))
-                                            : Image.network(profilePhotoLink,
-                                                width: ScreenUtil().setSp(101),
-                                                height: ScreenUtil().setSp(101))
+                                            : ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: Image.network(
+                                                    profilePhotoLink,
+                                                    fit: BoxFit.cover,
+                                                    width:
+                                                        ScreenUtil().setSp(101),
+                                                    height: ScreenUtil()
+                                                        .setSp(101)),
+                                              )
                                         : ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(50),

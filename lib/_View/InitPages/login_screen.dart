@@ -11,6 +11,7 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/apple_login.dart';
 import 'package:letsgotrip/functions/kakao_login.dart';
+import 'package:letsgotrip/functions/naver_login.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
@@ -146,7 +147,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        // Get.to(() => ProfileSetScreen(loginType: ''));
+                        naverLogin().then((userId) {
+                          if (userId != null) {
+                            setState(() {
+                              loginType = "naver";
+                            });
+                            runMutation({
+                              "login_link": "$userId",
+                              "login_type": "naver",
+                            });
+                          } else {
+                            print("🚨 login canceled");
+                          }
+                        });
                       },
                       child: Container(
                         width: ScreenUtil().setWidth(305),

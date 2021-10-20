@@ -73,6 +73,7 @@ dependencies:
   uuid: ^3.0.4
   get: ^4.3.8
   kakao_flutter_sdk: any
+  flutter_naver_login: ^1.2.3
   carousel_slider: ^4.0.0
   dio: ^4.0.0 # for kakao login
   json_annotation: ^4.0.1 # for kakao login
