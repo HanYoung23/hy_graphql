@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/storage/storage.dart';
 
 class WalkthroughScreen extends StatefulWidget {
   const WalkthroughScreen({
@@ -204,7 +205,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         Spacer(),
         InkWell(
           onTap: () {
-            setState(() {
+            storeUserData("isWalkThrough", "true").then((value) {
               Get.to(() => LoginScreen());
             });
           },

@@ -12,8 +12,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
+import 'package:letsgotrip/_View/InitPages/login_screen.dart';
+import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
@@ -113,11 +116,7 @@ class MyApp extends StatelessWidget {
               builder: () => FutureBuilder(
                     future: Future.delayed(Duration(seconds: 1)),
                     builder: (context, snapshot) {
-                      // if (snapshot.connectionState == ConnectionState.waiting) {
-                      //   return Splash();
-                      // } else {
                       return ScreenFilter();
-                      // }
                     },
                   ));
         });
@@ -134,8 +133,9 @@ class ScreenFilter extends StatefulWidget {
 }
 
 class _ScreenFilterState extends State<ScreenFilter> {
-  String isAuth = "";
-  bool isFirstTime = false;
+  String nextScreen;
+  String userId;
+  String loginType;
 
   Future initAWS() async {
     AmplifyStorageS3 storage = new AmplifyStorageS3();
@@ -147,22 +147,59 @@ class _ScreenFilterState extends State<ScreenFilter> {
   @override
   void initState() {
     initAWS();
+    seeValue("isWalkThrough").then((value) {
+      if (value == "true") {
+        seeValue("customerId").then((value) {
+          if (value != "null") {
+            seeValue("isProfileSet").then((value) {
+              if (value == "true") {
+                setState(() {
+                  nextScreen = "homepage";
+                });
+              } else {
+                seeValue("userId").then((value) {
+                  setState(() {
+                    userId = value;
+                  });
+                });
+                seeValue("loginType").then((value) {
+                  setState(() {
+                    loginType = value;
+                  });
+                });
+                setState(() {
+                  nextScreen = "profileSetScreen";
+                });
+              }
+            });
+          } else {
+            setState(() {
+              nextScreen = "loginScreen";
+            });
+          }
+        });
+      } else {
+        setState(() {
+          nextScreen = "walkThroughScreen";
+        });
+      }
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // if (!isFirstTime) {
-    // return AuthorityScreen();
-    // } else if (isAuth == "") {
-    // return LoginScreen();
-    // } else if (isAuth != "") {
-    //   return HomePage();
-    // } else {
-    //   return Splash();
-    // }
-    return HomePage();
-    // return AuthorityScreen();
+    return nextScreen == "walkThroughScreen"
+        ? AuthorityScreen()
+        : nextScreen == "loginScreen"
+            ? LoginScreen()
+            : nextScreen == "homepage"
+                ? HomePage()
+                : nextScreen == "profileSetScreen"
+                    ? ProfileSetScreen(userId: userId, loginType: loginType)
+                    : AuthorityScreen();
+    // return HomePage();
+
     // return LoginScreen();
   }
 }

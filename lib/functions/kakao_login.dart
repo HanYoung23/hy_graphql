@@ -16,7 +16,7 @@ Future kakaoLogin() async {
 }
 
 kakaoNativeLogin() async {
-  UserApi.instance.loginWithKakaoTalk();
+  await UserApi.instance.loginWithKakaoTalk();
   // print("🐤 kakako login ${code.accessToken}");
 
   User user = await UserApi.instance.me();
@@ -27,7 +27,7 @@ kakaoNativeLogin() async {
 }
 
 kakaoAccountLogin() async {
-  UserApi.instance.loginWithKakaoAccount();
+  await UserApi.instance.loginWithKakaoAccount();
   // print("🐤 kakako login ${code.accessToken}");
 
   User user = await UserApi.instance.me();

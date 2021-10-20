@@ -182,11 +182,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     onTap: () async {
                       String customerId = await storage.read(key: "customerId");
                       if (isValid) {
+                        print("🚨 ${int.parse(customerId)}");
                         runMutation({
                           "contents_id": widget.contentsId,
                           "customer_id": int.parse(customerId),
                           "coment_text": commentController.text,
-                          // "coments_id_link": 1,
+                          "coments_id_link": 0,
                         });
                       }
                       FocusScope.of(context).unfocus();

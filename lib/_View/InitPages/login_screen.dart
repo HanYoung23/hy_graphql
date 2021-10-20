@@ -40,17 +40,21 @@ class _LoginScreenState extends State<LoginScreen> {
         options: MutationOptions(
             document: gql(Mutations.createCustomer),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
-            onCompleted: (dynamic resultData) {
+            onCompleted: (dynamic resultData) async {
               print("🚨 resultData : $resultData");
               if (resultData["createCustomer"]["result"]) {
-                storeUserData(
-                    "customerId", "${resultData["createCustomer"]["msg2"]}");
-                Get.to(() => ProfileSetScreen(
-                    userId: '$loginId', loginType: "$loginType"));
+                String customerId = "${resultData["createCustomer"]["msg2"]}";
+                await storeUserData("customerId", customerId);
+                String userId = await storage.read(key: "userId");
+                String loginType = await storage.read(key: "loginType");
+                Get.to(() =>
+                    ProfileSetScreen(userId: userId, loginType: loginType));
               } else if (resultData["createCustomer"]["msg"] ==
                   "이미 가입된 아이디입니다.") {
-                Get.to(() => ProfileSetScreen(
-                    userId: '$loginId', loginType: "$loginType"));
+                String userId = await storage.read(key: "userId");
+                String loginType = await storage.read(key: "loginType");
+                Get.to(() =>
+                    ProfileSetScreen(userId: userId, loginType: loginType));
               } else {
                 Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
               }
@@ -96,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         kakaoLogin().then((userId) {
                           if (userId != null) {
                             setState(() {
-                              loginId = "$userId";
                               loginType = "kakao";
                             });
                             runMutation({
@@ -143,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.to(() => ProfileSetScreen());
+                        // Get.to(() => ProfileSetScreen(loginType: ''));
                       },
                       child: Container(
                         width: ScreenUtil().setWidth(305),
