@@ -13,7 +13,7 @@ import 'package:letsgotrip/widgets/add_button.dart';
 import 'package:letsgotrip/widgets/filter_button.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
-import 'package:letsgotrip/widgets/menu_drawer.dart';
+import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
 
 class MapAroundScreen extends StatefulWidget {
   const MapAroundScreen({

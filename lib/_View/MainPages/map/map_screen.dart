@@ -16,7 +16,7 @@ import 'package:letsgotrip/widgets/google_map_container.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
-import 'package:letsgotrip/widgets/menu_drawer.dart';
+import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({

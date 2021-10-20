@@ -51,10 +51,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     onTap: () {
                                       Get.back();
                                     },
-                                    child: Icon(
-                                      Icons.arrow_back,
-                                      size: ScreenUtil().setSp(arrow_back_size),
-                                    ),
+                                    child: Image.asset(
+                                        "assets/images/arrow_back.png",
+                                        width:
+                                            ScreenUtil().setSp(arrow_back_size),
+                                        height: ScreenUtil()
+                                            .setSp(arrow_back_size)),
                                   ),
                                 ),
                               ),

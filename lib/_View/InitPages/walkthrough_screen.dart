@@ -47,9 +47,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
     return Column(
       children: [
         Row(children: [
-          Icon(Icons.arrow_back,
-              size: ScreenUtil().setSp(arrow_back_size),
-              color: Colors.transparent),
+          Image.asset("assets/images/arrow_back.png",
+              width: ScreenUtil().setSp(arrow_back_size),
+              height: ScreenUtil().setSp(arrow_back_size)),
           Spacer(),
           InkWell(
             onTap: () {
@@ -109,8 +109,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                       currentScreenIndex = 1;
                     });
                   },
-                  child: Icon(Icons.arrow_back,
-                      size: ScreenUtil().setSp(arrow_back_size))),
+                  child: Image.asset("assets/images/arrow_back.png",
+                      width: ScreenUtil().setSp(arrow_back_size),
+                      height: ScreenUtil().setSp(arrow_back_size))),
               Spacer(),
               InkWell(
                 onTap: () {
@@ -175,8 +176,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                     currentScreenIndex = 2;
                   });
                 },
-                child: Icon(Icons.arrow_back,
-                    size: ScreenUtil().setSp(arrow_back_size))),
+                child: Image.asset("assets/images/arrow_back.png",
+                    width: ScreenUtil().setSp(arrow_back_size),
+                    height: ScreenUtil().setSp(arrow_back_size))),
             Spacer(),
           ],
         ),

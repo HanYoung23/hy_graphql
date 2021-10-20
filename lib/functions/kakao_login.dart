@@ -36,3 +36,9 @@ kakaoAccountLogin() async {
   storeUserData("loginType", "kakao");
   return "${user.id}";
 }
+
+kakaoLogout() {
+  UserApi.instance.logout().then((result) {
+    print("🐤 kakao Logout : $result");
+  });
+}

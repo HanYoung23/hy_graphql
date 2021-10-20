@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:letsgotrip/_View/MainPages/settings/settings_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/storage/storage.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
@@ -20,16 +23,31 @@ class MenuDrawer extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      "assets/images/settings/close_button.png",
-                      width: ScreenUtil().setSp(28),
-                      height: ScreenUtil().setSp(28),
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Image.asset(
+                        "assets/images/settings/close_button.png",
+                        width: ScreenUtil().setSp(28),
+                        height: ScreenUtil().setSp(28),
+                      ),
                     ),
                     SizedBox(width: ScreenUtil().setSp(10)),
-                    Image.asset(
-                      "assets/images/settings/settings_button.png",
-                      width: ScreenUtil().setSp(28),
-                      height: ScreenUtil().setSp(28),
+                    InkWell(
+                      onTap: () async {
+                        String customerId =
+                            await storage.read(key: "customerId");
+                        String loginType = await storage.read(key: "loginType");
+                        Get.to(() => SettingsScreen(
+                            customerId: int.parse(customerId),
+                            loginType: loginType));
+                      },
+                      child: Image.asset(
+                        "assets/images/settings/settings_button.png",
+                        width: ScreenUtil().setSp(28),
+                        height: ScreenUtil().setSp(28),
+                      ),
                     ),
                     Spacer(),
                     Image.asset(

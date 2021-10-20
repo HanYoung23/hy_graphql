@@ -9,7 +9,7 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
-import 'package:letsgotrip/widgets/menu_drawer.dart';
+import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({

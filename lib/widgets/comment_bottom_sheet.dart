@@ -181,14 +181,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   suffixIcon: InkWell(
                     onTap: () async {
                       String customerId = await storage.read(key: "customerId");
-                      // if (isValid) {
-                      //   runMutation({
-                      //     "contents_id": widget.contentsId,
-                      //     "customer_id": int.parse(customerId),
-                      //     "coment_text": commentController.text,
-                      //     // "coments_id_link": 1,
-                      //   });
-                      // }
+                      if (isValid) {
+                        runMutation({
+                          "contents_id": widget.contentsId,
+                          "customer_id": int.parse(customerId),
+                          "coment_text": commentController.text,
+                          // "coments_id_link": 1,
+                        });
+                      }
                       FocusScope.of(context).unfocus();
                     },
                     child: Container(

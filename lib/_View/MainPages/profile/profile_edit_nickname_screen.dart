@@ -98,14 +98,14 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: Icon(
-                                Icons.arrow_back,
-                                size: ScreenUtil().setSp(arrow_back_size),
-                              ),
-                            ),
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Image.asset(
+                                    "assets/images/arrow_back.png",
+                                    width: ScreenUtil().setSp(arrow_back_size),
+                                    height:
+                                        ScreenUtil().setSp(arrow_back_size))),
                             Text(
                               "프로필 별명",
                               style: TextStyle(
