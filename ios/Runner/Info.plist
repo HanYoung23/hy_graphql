@@ -41,13 +41,13 @@
 		<string>kakaobb7ebfb5b4cc388795bf68e8e69f3cc9</string>
 		<string>kakaokompassauth</string>
 		<string>kakaotalk-5.9.7</string>
+		<!-- naver -->
+		<string>naversearchapp</string>
+            <string>naversearchthirdlogin</string>
+			<!-- naver end -->
 	</array>
 	<!-- naver -->
-	<array>
-        <string>naversearchapp</string>
-        <string>naversearchthirdlogin</string>
-    </array>
-	<key>kServiceAppUrlScheme</key>
+        <key>kServiceAppUrlScheme</key>
         <string>com.jjang.letsgotrip.naver</string>
         <key>kConsumerKey</key>
         <string>lYqxXzWsxilVPsR5i6Ux</string>
@@ -55,6 +55,12 @@
         <string>RNR1JUfDb2</string>
         <key>kServiceAppName</key>
         <string>letsgotrip</string>
+
+        <!-- http allows configurations -->
+        <key>NSAppTransportSecurity</key>
+        <dict>
+           <key>NSAllowsArbitraryLoads</key>
+           <true/>
            <key>NSExceptionDomains</key>
            <dict>
               <key>naver.com</key>
@@ -76,16 +82,8 @@
                  <true/>
               </dict>
            </dict>
-	<!-- naver end -->
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
-	</dict>
+        </dict>
+			  <!-- naver end -->
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>위치서비스를 허용 후 서비스 이용 할 수 있습니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>

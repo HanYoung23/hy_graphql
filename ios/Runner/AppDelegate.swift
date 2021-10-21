@@ -15,9 +15,26 @@ import NaverThirdPartyLogin
   }
   
 // naver
-  override func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-    return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
-}
+//   override func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]?) -> Bool {
+//     return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+// }
+
+// kakao & naver login, combined for not to get a conflict
+  override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        var result = false
+        
+        NSLog("URL = \(url.absoluteString)")
+        
+        if url.absoluteString.hasPrefix("kakao"){
+            result = super.application(app, open: url, options: options)
+        }
+        if !result {
+            result = NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+        }
+        
+        return result
+    }
+
 }
 
 
