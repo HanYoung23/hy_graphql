@@ -52,6 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ProfileSetScreen(userId: userId, loginType: loginType));
               } else if (resultData["createCustomer"]["msg"] ==
                   "이미 가입된 아이디입니다.") {
+                String customerId = "${resultData["createCustomer"]["msg2"]}";
+                await storeUserData("customerId", customerId);
                 String userId = await storage.read(key: "userId");
                 String loginType = await storage.read(key: "loginType");
                 Get.to(() =>
@@ -148,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     InkWell(
                       onTap: () {
                         naverLogin().then((userId) {
+                          print("🐸 userId : $userId");
                           if (userId != null) {
                             setState(() {
                               loginType = "naver";

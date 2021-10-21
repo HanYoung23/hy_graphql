@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
@@ -20,6 +21,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   bool isLeft = true;
   bool isValid = false;
   int sequence = 1;
+  int replyCommentId = 0;
+  int replyCommentNicknameLength = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +61,22 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       children: [
                         Row(
                           children: [
-                            Text("댓글 333",
+                            Text("댓글 ${comentsList.length}",
                                 style: TextStyle(
                                     fontSize: ScreenUtil().setSp(16),
                                     letterSpacing: -0.4,
                                     fontWeight: FontWeight.bold)),
                             Spacer(),
-                            Text("닫기",
-                                style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(16),
-                                    letterSpacing: -0.4,
-                                    fontWeight: FontWeight.bold)),
+                            InkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Text("닫기",
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(16),
+                                      letterSpacing: -0.4,
+                                      fontWeight: FontWeight.bold)),
+                            ),
                           ],
                         ),
                         SizedBox(height: ScreenUtil().setSp(10)),
@@ -109,8 +117,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       ],
                     ),
                   ),
-                  // Query(options: options, builder: builder),
-                  // commentForm(null, "nickname", "date", "content"),
+                  SizedBox(height: ScreenUtil().setSp(4)),
                   comentsList.length == 0
                       ? Expanded(
                           child: Container(
@@ -145,14 +152,16 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                   .replaceAll(RegExp(r'-'), ".")
                                   .substring(15, 17);
                               String content = comment["coment_text"];
+                              int comentsId = comment["coments_id"];
+                              int comentsIdLink = comment["coments_id_link"];
 
-                              return commentForm(
-                                  profilePhotoLInk, nickname, date, content);
+                              return commentForm(profilePhotoLInk, nickname,
+                                  date, content, comentsId, comentsIdLink);
                             }).toList(),
                           ),
                         ),
                   comentsList.length != 0 ? Spacer() : Container(),
-                  textInput(context),
+                  textInput(context, refetch),
                   SizedBox(height: ScreenUtil().setSp(20))
                 ],
               ),
@@ -163,7 +172,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         });
   }
 
-  Container textInput(BuildContext context) {
+  Container textInput(BuildContext context, Function refetch) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
         child: Mutation(
@@ -172,23 +181,42 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
                   print("🚨 resultData : $resultData");
+                  refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
+              print("🚨 comment mutation query result : $queryResult");
               return TextFormField(
                 controller: commentController,
                 cursorColor: Colors.black,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
-                  if (commentController.text.length > 0) {
-                    setState(() {
-                      isValid = true;
-                    });
+                  if (replyCommentId == 0) {
+                    if (commentController.text.length > 0) {
+                      setState(() {
+                        isValid = true;
+                      });
+                    } else {
+                      setState(() {
+                        isValid = false;
+                      });
+                    }
                   } else {
-                    setState(() {
-                      isValid = false;
-                    });
+                    if (commentController.text.length -
+                            replyCommentNicknameLength >
+                        0) {
+                      setState(() {
+                        isValid = true;
+                      });
+                    } else {
+                      setState(() {
+                        isValid = false;
+                      });
+                      commentController.text = "";
+                    }
                   }
                 },
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(14), letterSpacing: -0.35),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical: 0, horizontal: ScreenUtil().setSp(10)),
@@ -212,6 +240,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           "customer_id": int.parse(customerId),
                           "coment_text": commentController.text,
                           "coments_id_link": 0,
+                        });
+                        commentController.text = "";
+                        setState(() {
+                          isValid = false;
                         });
                       }
                       FocusScope.of(context).unfocus();
@@ -244,8 +276,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             }));
   }
 
-  Column commentForm(
-      String photo, String nickname, String date, String content) {
+  Column commentForm(String photo, String nickname, String date, String content,
+      int comentsId, int comentsIdLink) {
     return Column(
       children: [
         SizedBox(height: ScreenUtil().setSp(20)),
@@ -300,20 +332,29 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           ),
                         ],
                       ),
-                      SizedBox(height: ScreenUtil().setSp(3)),
+                      SizedBox(height: ScreenUtil().setSp(6)),
                       Text(
                         content,
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             letterSpacing: -0.35),
                       ),
-                      SizedBox(height: ScreenUtil().setSp(3)),
-                      Text(
-                        "답글 달기",
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(12),
-                            color: app_font_grey,
-                            letterSpacing: -0.3),
+                      SizedBox(height: ScreenUtil().setSp(8)),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            replyCommentId = comentsId;
+                            replyCommentNicknameLength = nickname.length + 2;
+                          });
+                          commentController.text = "@$nickname ";
+                        },
+                        child: Text(
+                          "답글 달기",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: app_font_grey,
+                              letterSpacing: -0.3),
+                        ),
                       ),
                     ],
                   ),

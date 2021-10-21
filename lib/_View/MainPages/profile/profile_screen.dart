@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-            drawer: MenuDrawer(),
+            drawer: MenuDrawer(customerId: customerId),
           ))
         : SafeArea(
             child: Scaffold(

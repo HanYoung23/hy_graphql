@@ -32,9 +32,15 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool isMapLoading = true;
+  int customerId;
 
   @override
   void initState() {
+    seeValue("customerId").then((value) {
+      setState(() {
+        customerId = int.parse(value);
+      });
+    });
     super.initState();
   }
 
@@ -184,17 +190,13 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                                 int index) {
                                               return InkWell(
                                                 onTap: () {
-                                                  seeValue("customerId")
-                                                      .then((customerId) {
-                                                    Get.to(() =>
-                                                        PlaceDetailScreen(
-                                                          contentsId: imageMaps[
-                                                                  index]
-                                                              ["contentsId"],
-                                                          customerId: int.parse(
-                                                              customerId),
-                                                        ));
-                                                  });
+                                                  Get.to(() =>
+                                                      PlaceDetailScreen(
+                                                        contentsId:
+                                                            imageMaps[index]
+                                                                ["contentsId"],
+                                                        customerId: customerId,
+                                                      ));
                                                 },
                                                 child: Image.network(
                                                   imageMaps[index]["imageLink"],
@@ -304,7 +306,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                       ],
                     );
                   }),
-                  drawer: MenuDrawer(),
+                  drawer: MenuDrawer(customerId: customerId),
                 ),
               ),
             );

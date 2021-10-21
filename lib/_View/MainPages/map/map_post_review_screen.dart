@@ -7,6 +7,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class MapPostReviewScreen extends StatefulWidget {
@@ -43,10 +44,10 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
             },
             onCompleted: (dynamic resultData) {
               print("🚨 resultData : $resultData");
-              if (resultData["createCustomer"]["result"]) {
+              if (resultData["createContents"]["result"]) {
                 Get.offAll(() => HomePage());
               } else {
-                Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
+                Get.snackbar("error", "${resultData["createContents"]["msg"]}");
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -91,6 +92,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                             ),
                             Expanded(
                               child: Image.asset("assets/images/arrow_back.png",
+                                  color: Colors.transparent,
                                   width: ScreenUtil().setSp(arrow_back_size),
                                   height: ScreenUtil().setSp(arrow_back_size)),
                             ),
@@ -139,18 +141,18 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                           await uploadAWS(widget.paramMap["imageLink"])
                               .then((awsLinks) {
                             for (String photoUrl in awsLinks) {
-                              String shortUrl = photoUrl.substring(
-                                  0, photoUrl.indexOf("?X-Amz"));
-                              awsUrlList.add(shortUrl);
+                              awsUrlList.add(photoUrl);
                             }
                           });
                           String imageLink = awsUrlList.join(",");
                           String tag = widget.paramMap["tags"];
                           String tags =
                               tag.replaceAll(RegExp(r'#'), ",").substring(1);
+                          String customerId =
+                              await storage.read(key: "customerId");
 
                           runMutation({
-                            "customer_id": 1,
+                            "customer_id": int.parse(customerId),
                             "category_id": widget.paramMap["categoryId"],
                             "contents_title":
                                 "${widget.paramMap["contentsTitle"]}",

@@ -155,4 +155,19 @@ class Queries {
         }
     }
 """;
+
+/////////////////////////////////////////////////////////////////settings screen
+
+  static final String checkList = """
+    query check_list(\$customer_id: Int!) {
+      check_list(customer_id: \$customer_id) 
+      {
+          check_id
+          id
+          regist_date
+          check
+          type
+        }
+    }
+""";
 }

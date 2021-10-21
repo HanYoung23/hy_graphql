@@ -4,16 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/naver_login.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
 import 'package:letsgotrip/widgets/filter_button.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
+import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
@@ -44,6 +47,7 @@ class _MapScreenState extends State<MapScreen> {
   bool isMapLoading = true;
   Position userPosition;
   int currentCategory = 1;
+  int customerId;
   List<MapMarker> mapMarkers = [];
 
   filterBtnCallback(int callbackInt) {
@@ -104,7 +108,11 @@ class _MapScreenState extends State<MapScreen> {
         }
       });
     });
-    // filterBtnCallback(1);
+    seeValue("customerId").then((value) {
+      setState(() {
+        customerId = int.parse(value);
+      });
+    });
     super.initState();
   }
 
@@ -209,13 +217,40 @@ class _MapScreenState extends State<MapScreen> {
                             ),
                           ),
                           SizedBox(width: ScreenUtil().setWidth(59)),
-                          InkWell(
-                            onTap: () {},
-                            child: Image.asset(
-                                "assets/images/locationTap/calender_button.png",
-                                width: ScreenUtil().setSp(28),
-                                height: ScreenUtil().setSp(28)),
-                          ),
+                          Mutation(
+                              options: MutationOptions(
+                                  document: gql(Mutations.secession),
+                                  update: (GraphQLDataProxy proxy,
+                                      QueryResult result) {},
+                                  onCompleted: (dynamic resultData) async {
+                                    print("🚨 resultData : $resultData");
+                                  }),
+                              builder: (RunMutation runMutation,
+                                  QueryResult queryResult) {
+                                return InkWell(
+                                  onTap: () {
+                                    deleteAllUserData();
+                                    naverLogout();
+                                    // runMutation({
+                                    //   "customer_id" : 35
+                                    // });
+                                  },
+                                  child: Image.asset(
+                                      "assets/images/locationTap/calender_button.png",
+                                      width: ScreenUtil().setSp(28),
+                                      height: ScreenUtil().setSp(28)),
+                                );
+                              }),
+                          // InkWell(
+                          //   onTap: () {
+                          //     deleteAllUserData();
+                          //     naverLogout();
+                          //   },
+                          //   child: Image.asset(
+                          //       "assets/images/locationTap/calender_button.png",
+                          //       width: ScreenUtil().setSp(28),
+                          //       height: ScreenUtil().setSp(28)),
+                          // ),
                         ],
                       ),
                     ),
@@ -331,7 +366,7 @@ class _MapScreenState extends State<MapScreen> {
                 ? AddBtn(isActive: "active")
                 : Container()),
           ]),
-          drawer: MenuDrawer(),
+          drawer: MenuDrawer(customerId: customerId),
         ),
       ),
     );

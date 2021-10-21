@@ -114,6 +114,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
-	<true/>
+	<string>YES</string>
+	<!-- <true/> -->
 </dict>
 </plist>

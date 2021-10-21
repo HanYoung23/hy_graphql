@@ -211,7 +211,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                               50),
                                                       image: DecorationImage(
                                                           image: NetworkImage(
-                                                              profilePhotoLink)))
+                                                              profilePhotoLink),
+                                                          fit: BoxFit.cover))
                                                   : BoxDecoration(
                                                       color: app_grey,
                                                       borderRadius:
