@@ -113,8 +113,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: ScreenUtil().screenWidth,
                       height: ScreenUtil().setSp(10),
                     ),
-                    // currentTap == 1 ? mypageBookmarksListQuery() : Container(),
-                    // currentTap == 2 ? mypageBookmarksListQuery() : Container(),
+                    currentTap == 1 ? mypageContentsListQuery() : Container(),
+                    currentTap == 2 ? mypageComentsListQuery() : Container(),
                     currentTap == 3 ? mypageBookmarksListQuery() : Container(),
                   ],
                 ),
@@ -139,6 +139,118 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )),
             ),
           );
+  }
+
+  Query mypageContentsListQuery() {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.mypageContentsList),
+          variables: {"customer_id": customerId},
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading) {
+            // print("🚨 bookmarkslist : $result");
+            List resultData = result.data["mypage_contents_list"];
+
+            return Expanded(
+              child: GridView.builder(
+                  itemCount: resultData.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1,
+                    mainAxisSpacing: ScreenUtil().setSp(1),
+                    crossAxisSpacing: ScreenUtil().setSp(1),
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    List imageLink = resultData[index]["image_link"].split(",");
+
+                    return InkWell(
+                      onTap: () {
+                        Get.to(() => PlaceDetailScreen(
+                              contentsId: resultData[index]["contents_id"],
+                              customerId: customerId,
+                            ));
+                      },
+                      child: Image.network(
+                        imageLink[0],
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return CupertinoActivityIndicator();
+                        },
+                      ),
+                    );
+                  }),
+            );
+          } else {
+            return Container();
+          }
+        });
+  }
+
+  Query mypageComentsListQuery() {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.mypageComentsList),
+          variables: {"customer_id": customerId},
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading) {
+            print("🚨 bookmarkslist : $result");
+            List resultData = result.data["mypage_coments_list"];
+
+            return Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setSp(20),
+                    vertical: ScreenUtil().setSp(10)),
+                child: ListView(
+                    children: resultData.map((item) {
+                  int index = resultData.indexOf(item);
+                  String commentsText = resultData[index]["coment_text"];
+                  String mainText = resultData[index]["main_text"];
+
+                  return InkWell(
+                      onTap: () {
+                        seeValue("customerId").then((customerId) {
+                          Get.to(() => PlaceDetailScreen(
+                                contentsId: resultData[index]["contents_id"],
+                                customerId: int.parse(customerId),
+                              ));
+                        });
+                      },
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: ScreenUtil().setSp(10)),
+                            Text(commentsText,
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    letterSpacing: -0.35)),
+                            SizedBox(height: ScreenUtil().setSp(6)),
+                            Text(mainText,
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(14),
+                                    letterSpacing: -0.35,
+                                    color: app_font_grey),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2),
+                            SizedBox(height: ScreenUtil().setSp(10)),
+                            Container(
+                              color: app_grey_light,
+                              height: ScreenUtil().setSp(2),
+                            ),
+                          ],
+                        ),
+                      ));
+                }).toList()),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 
   Query mypageBookmarksListQuery() {

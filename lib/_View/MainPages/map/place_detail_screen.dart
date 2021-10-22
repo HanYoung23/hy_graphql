@@ -313,30 +313,34 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       ],
                                     ),
                                     SizedBox(height: ScreenUtil().setSp(10)),
-                                    Wrap(
-                                      direction: Axis.horizontal,
-                                      children: [
-                                        Text(
-                                          mainText,
-                                          style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(14),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: isMoreText ? null : 2,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              isMoreText = !isMoreText;
-                                            });
-                                          },
-                                          child: Text(isMoreText ? "접기" : "더보기",
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(14),
-                                                  color: app_font_grey)),
-                                        ),
-                                      ],
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isMoreText = !isMoreText;
+                                        });
+                                      },
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text: mainText,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(14),
+                                                letterSpacing: -0.35,
+                                                color: Colors.black),
+                                            children: [
+                                              TextSpan(
+                                                  text: isMoreText
+                                                      ? "  접기"
+                                                      : "  더보기",
+                                                  style: TextStyle(
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(14),
+                                                      letterSpacing: -0.35,
+                                                      color: app_font_grey))
+                                            ]),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: isMoreText ? null : 2,
+                                      ),
                                     ),
                                     SizedBox(height: ScreenUtil().setSp(20)),
                                     Row(

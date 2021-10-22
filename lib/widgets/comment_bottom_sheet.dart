@@ -442,6 +442,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   Column commentReplyForm(String photo, String replyNickname, String nickname,
       String date, String content, int comentsId) {
+    String replyText =
+        content.substring(replyNickname.length + 1, content.length);
     return Column(
       children: [
         SizedBox(height: ScreenUtil().setSp(20)),
@@ -507,8 +509,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 color: app_blue),
                             children: [
                               TextSpan(
-                                text: content.substring(
-                                    replyNickname.length + 1, content.length),
+                                text: replyText,
                                 style: TextStyle(
                                     letterSpacing: -0.35,
                                     color: Colors.black,

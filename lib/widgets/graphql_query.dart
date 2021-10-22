@@ -103,18 +103,8 @@ class Queries {
       mypage_contents_list(customer_id: \$customer_id) 
       {
           contents_id
-          category_id
-          contents_title
-          location_link
           image_link
-          main_text
           customer_id
-          star_rating1
-          star_rating2
-          star_rating3
-          star_rating4
-          latitude
-          longitude
         }
     }
 """;
@@ -125,7 +115,7 @@ class Queries {
       {
           contents_id
           coments_id
-          coments_text
+          coment_text
           main_text
         }
     }
