@@ -6,7 +6,10 @@ import 'package:letsgotrip/constants/common_value.dart';
 
 class ProfileEditIntroductionScreen extends StatefulWidget {
   final String introduction;
-  const ProfileEditIntroductionScreen({Key key, @required this.introduction})
+  final Function setIntroduction;
+
+  const ProfileEditIntroductionScreen(
+      {Key key, @required this.introduction, @required this.setIntroduction})
       : super(key: key);
 
   @override
@@ -78,7 +81,10 @@ class _ProfileEditIntroductionScreenState
                       ),
                       Expanded(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            widget.setIntroduction(contentTextController.text);
+                            Get.back();
+                          },
                           child: Container(
                             alignment: Alignment.centerRight,
                             child: Text(

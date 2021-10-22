@@ -431,6 +431,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // int language = resultData["language"];
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   height: ScreenUtil().setSp(70),
@@ -464,7 +465,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(height: ScreenUtil().setSp(5)),
                           InkWell(
                             onTap: () {
-                              Get.to(() => ProfileEditScreen());
+                              Get.to(() => ProfileEditScreen(
+                                  customerId: customerId,
+                                  callbackRefetch: () => refetch()));
                             },
                             child: Text("프로필 편집",
                                 style: TextStyle(

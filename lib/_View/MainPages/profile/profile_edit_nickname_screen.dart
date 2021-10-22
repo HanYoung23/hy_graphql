@@ -11,7 +11,13 @@ import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class ProfileEditNicknameScreen extends StatefulWidget {
   final String nickname;
-  const ProfileEditNicknameScreen({Key key, @required this.nickname})
+  final Function setNickname;
+  final String profilePhoto;
+  const ProfileEditNicknameScreen(
+      {Key key,
+      @required this.nickname,
+      @required this.setNickname,
+      @required this.profilePhoto})
       : super(key: key);
 
   @override
@@ -106,17 +112,25 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                     width: ScreenUtil().setSp(arrow_back_size),
                                     height:
                                         ScreenUtil().setSp(arrow_back_size))),
-                            Text(
-                              "프로필 별명",
-                              style: TextStyle(
-                                  fontSize:
-                                      ScreenUtil().setSp(appbar_title_size),
-                                  letterSpacing: -0.4,
-                                  fontWeight: FontWeight.bold),
+                            InkWell(
+                              onTap: () {
+                                print("🚨 ${nicknameController.text}");
+                              },
+                              child: Text(
+                                "프로필 별명",
+                                style: TextStyle(
+                                    fontSize:
+                                        ScreenUtil().setSp(appbar_title_size),
+                                    letterSpacing: -0.4,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                             InkWell(
                               onTap: () {
-                                if (inputMessage == "사용 가능한 별명입니다 :)") {}
+                                if (inputMessage == "사용 가능한 별명입니다 :)") {
+                                  widget.setNickname(nicknameController.text);
+                                  Get.back();
+                                }
                               },
                               child: Container(
                                 alignment: Alignment.centerRight,
@@ -215,7 +229,8 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                       int customerId = int.parse(value);
                                       runMutation({
                                         "nick_name": nicknameController.text,
-                                        "profile_photo_link": "",
+                                        "profile_photo_link":
+                                            "${widget.profilePhoto}",
                                         "customer_id": customerId,
                                       });
                                     });

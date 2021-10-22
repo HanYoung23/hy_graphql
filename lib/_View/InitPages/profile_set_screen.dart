@@ -59,7 +59,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            print("🚨 query : $result");
+            // print("🚨 query : $result");
             Map resultData = result.data["Login"];
             int customerId = resultData["customer_id"];
             String nickname = resultData["nick_name"];
@@ -124,16 +124,20 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                 width: ScreenUtil().setWidth(375),
                                 height: ScreenUtil().setHeight(44),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // InkWell(
-                                    //   onTap: () {
-                                    //     Get.back();
-                                    //   },
-                                    //   child: Image.asset("assets/images/arrow_back.png",
-                                    //       width: ScreenUtil().setSp(arrow_back_size),
-                                    //       height: ScreenUtil().setSp(arrow_back_size)),
-                                    // ),
+                                    InkWell(
+                                      onTap: () {
+                                        Get.back();
+                                      },
+                                      child: Image.asset(
+                                          "assets/images/arrow_back.png",
+                                          width: ScreenUtil()
+                                              .setSp(arrow_back_size),
+                                          height: ScreenUtil()
+                                              .setSp(arrow_back_size)),
+                                    ),
                                     Text(
                                       "프로필 설정",
                                       style: TextStyle(
@@ -142,10 +146,12 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                           letterSpacing: -0.4,
                                           fontWeight: appbar_title_weight),
                                     ),
-                                    // Image.asset("assets/images/arrow_back.png",
-                                    //     color: Colors.transparent,
-                                    //     width: ScreenUtil().setSp(arrow_back_size),
-                                    //     height: ScreenUtil().setSp(arrow_back_size)),
+                                    Image.asset("assets/images/arrow_back.png",
+                                        color: Colors.transparent,
+                                        width:
+                                            ScreenUtil().setSp(arrow_back_size),
+                                        height: ScreenUtil()
+                                            .setSp(arrow_back_size)),
                                   ],
                                 ),
                               ),
@@ -356,8 +362,6 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     if (pickedImage != null) {
                                       File file = File(pickedImage.path);
                                       uploadAWS([file]).then((awsLink) {
-                                        print(
-                                            "🚨 photo upload link : ${awsLink[0]}");
                                         if (awsLink[0] != null) {
                                           runMutation({
                                             "nick_name":

@@ -69,4 +69,14 @@ class Mutations {
         }
     }
 """;
+
+  static final String changeProfile = """
+    mutation(\$customer_id: Int!, \$profile_photo_link: String!, \$nick_name: String!, \$profile_text: String!) {
+      change_profile(customer_id : \$customer_id, profile_photo_link : \$profile_photo_link, nick_name : \$nick_name, profile_text : \$profile_text)
+      {
+          result
+          msg
+        }
+    }
+""";
 }

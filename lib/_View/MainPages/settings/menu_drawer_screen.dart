@@ -93,7 +93,7 @@ class MenuDrawer extends StatelessWidget {
                             ),
                             builder: (result, {refetch, fetchMore}) {
                               if (!result.isLoading) {
-                                print("🚨 query : $result");
+                                print("🚨 mypage query : $result");
                                 Map resultData = result.data["mypage"][0];
                                 String nickname = resultData["nick_name"];
                                 String profilePhotoLink =

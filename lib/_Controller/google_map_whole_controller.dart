@@ -32,7 +32,7 @@ class GoogleMapWholeController extends GetxController {
   setPhotoListMap(List queryData) {
     photoListMap = queryData;
     categoryMap = queryData;
-    print("🚨 queryData : ${categoryMap.length}");
+    print("🚨 googlemap queryData : ${categoryMap.length}");
 
     setMapMarker(photoListMap);
 
