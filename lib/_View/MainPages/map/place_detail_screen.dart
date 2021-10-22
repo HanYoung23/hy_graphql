@@ -344,7 +344,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         likeButton(likesCount, likes),
                                         bookmarkButton(
                                             bookmarksCount, bookmarks),
-                                        comentsButton(comentsCount),
+                                        comentsButton(comentsCount, refetch),
                                       ],
                                     ),
                                     SizedBox(height: ScreenUtil().setSp(50)),
@@ -398,7 +398,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
         });
   }
 
-  Mutation comentsButton(int comentsCount) {
+  Mutation comentsButton(int comentsCount, Function refetch) {
     return Mutation(
         options: MutationOptions(
             document: gql(Mutations.createComents),
@@ -432,8 +432,9 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                 showModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     context: context,
-                    builder: (_) =>
-                        CommentBottomSheet(contentsId: widget.contentsId),
+                    builder: (_) => CommentBottomSheet(
+                        contentsId: widget.contentsId,
+                        callbackRefetch: () => refetch),
                     isScrollControlled: true);
               },
               child: Row(

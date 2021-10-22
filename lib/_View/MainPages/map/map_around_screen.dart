@@ -72,7 +72,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                 imageMaps.add(mapData);
               }
             }
-            print("🚨 imageMaps : ${imageMaps.length}");
+            // print("🚨 imageMaps : ${imageMaps.length}");
             // print("🚨 result : $result");
             return GestureDetector(
               onTap: () {

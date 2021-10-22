@@ -6,6 +6,7 @@ const double common_side_gap = 35;
 
 const int arrow_back_size = 28;
 const int appbar_title_size = 16;
+const FontWeight appbar_title_weight = FontWeight.bold;
 
 const int font_xl = 22;
 const int font_l = 20;

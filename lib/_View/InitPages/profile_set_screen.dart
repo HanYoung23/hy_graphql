@@ -139,8 +139,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                       style: TextStyle(
                                           fontSize: ScreenUtil()
                                               .setSp(appbar_title_size),
-                                          // fontStyle: NotoSansCJKKR-Bold
-                                          fontWeight: FontWeight.bold),
+                                          letterSpacing: -0.4,
+                                          fontWeight: appbar_title_weight),
                                     ),
                                     // Image.asset("assets/images/arrow_back.png",
                                     //     color: Colors.transparent,
@@ -376,12 +376,22 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                         }
                                       });
                                     } else {
-                                      runMutation({
-                                        "nick_name":
-                                            "${nicknameController.text}",
-                                        "profile_photo_link": "",
-                                        "customer_id": customerId,
-                                      });
+                                      if (profilePhotoLink == null) {
+                                        runMutation({
+                                          "nick_name":
+                                              "${nicknameController.text}",
+                                          "profile_photo_link": "",
+                                          "customer_id": customerId,
+                                        });
+                                      } else {
+                                        runMutation({
+                                          "nick_name":
+                                              "${nicknameController.text}",
+                                          "profile_photo_link":
+                                              profilePhotoLink,
+                                          "customer_id": customerId,
+                                        });
+                                      }
                                     }
                                   }
                                 },

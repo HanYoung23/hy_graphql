@@ -9,7 +9,9 @@ import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class CommentBottomSheet extends StatefulWidget {
   final int contentsId;
-  const CommentBottomSheet({Key key, @required this.contentsId})
+  final Function callbackRefetch;
+  const CommentBottomSheet(
+      {Key key, @required this.contentsId, @required this.callbackRefetch})
       : super(key: key);
 
   @override
@@ -18,11 +20,17 @@ class CommentBottomSheet extends StatefulWidget {
 
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
   final commentController = TextEditingController();
+  FocusNode focusNode;
   bool isLeft = true;
   bool isValid = false;
-  int sequence = 1;
   int replyCommentId = 0;
-  int replyCommentNicknameLength = 0;
+  String replyCommentNickname = "";
+
+  @override
+  void initState() {
+    focusNode = FocusNode();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +39,18 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           document: gql(Queries.comentsList),
           variables: {
             "contents_id": widget.contentsId,
-            "sequence": sequence,
+            "sequence": isLeft ? 1 : 2,
           },
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            // print("🚨 comments : $result");
-            print("🚨 comments : ${result.data["coments_list"]}");
+            // print("🚨 comments : ${result.data["coments_list"][0]}");
 
             List comentsList = result.data["coments_list"];
 
             return Container(
               width: ScreenUtil().screenWidth,
-              height: ScreenUtil().screenHeight * 0.84,
+              height: ScreenUtil().screenHeight * 0.9,
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               decoration: BoxDecoration(
@@ -87,6 +94,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 setState(() {
                                   isLeft = true;
                                 });
+                                refetch();
                               },
                               child: Text("등록순",
                                   style: TextStyle(
@@ -102,6 +110,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 setState(() {
                                   isLeft = false;
                                 });
+                                refetch();
                               },
                               child: Text("최신순",
                                   style: TextStyle(
@@ -134,8 +143,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         )
                       : Container(
                           width: ScreenUtil().screenWidth,
-                          height: ScreenUtil().screenHeight * 0.84 -
-                              ScreenUtil().setSp(170) -
+                          height: ScreenUtil().screenHeight * 0.9 -
+                              ScreenUtil().setSp(180) -
                               MediaQuery.of(context).viewInsets.bottom,
                           child: ListView(
                             children: comentsList.map((comment) {
@@ -155,8 +164,52 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                               int comentsId = comment["coments_id"];
                               int comentsIdLink = comment["coments_id_link"];
 
-                              return commentForm(profilePhotoLInk, nickname,
-                                  date, content, comentsId, comentsIdLink);
+                              ///
+                              List replyList = [];
+                              comentsList.map((e) {
+                                if (e["coments_id_link"] == comentsId) {
+                                  replyList.add(e);
+                                }
+                              }).toList();
+                              // print("🚨 replyList : $replyList");
+
+                              return comentsIdLink == null
+                                  ? Column(
+                                      children: [
+                                        commentForm(
+                                            profilePhotoLInk,
+                                            nickname,
+                                            date,
+                                            content,
+                                            comentsId,
+                                            comentsIdLink),
+                                        Column(
+                                          children: replyList.map((e) {
+                                            String _nickname = e["nick_name"];
+                                            String _profilePhotoLInk =
+                                                e["profile_photo_link"];
+                                            String _date = e["regist_date"]
+                                                .replaceAll(RegExp(r'-'), ".")
+                                                .substring(0, 10);
+                                            String _hour = e["regist_date"]
+                                                .replaceAll(RegExp(r'-'), ".")
+                                                .substring(12, 14);
+                                            String _min = e["regist_date"]
+                                                .replaceAll(RegExp(r'-'), ".")
+                                                .substring(15, 17);
+                                            String _content = e["coment_text"];
+                                            return commentReplyForm(
+                                                _profilePhotoLInk,
+                                                nickname,
+                                                _nickname,
+                                                _date,
+                                                _content,
+                                                comentsId);
+                                          }).toList(),
+                                        )
+                                      ],
+                                    )
+                                  : Container();
                             }).toList(),
                           ),
                         ),
@@ -180,39 +233,24 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  print("🚨 resultData : $resultData");
                   refetch();
+                  widget.callbackRefetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
-              print("🚨 comment mutation query result : $queryResult");
               return TextFormField(
+                focusNode: focusNode,
                 controller: commentController,
                 cursorColor: Colors.black,
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
-                  if (replyCommentId == 0) {
-                    if (commentController.text.length > 0) {
-                      setState(() {
-                        isValid = true;
-                      });
-                    } else {
-                      setState(() {
-                        isValid = false;
-                      });
-                    }
+                  if (commentController.text.length > 0) {
+                    setState(() {
+                      isValid = true;
+                    });
                   } else {
-                    if (commentController.text.length -
-                            replyCommentNicknameLength >
-                        0) {
-                      setState(() {
-                        isValid = true;
-                      });
-                    } else {
-                      setState(() {
-                        isValid = false;
-                      });
-                      commentController.text = "";
-                    }
+                    setState(() {
+                      isValid = false;
+                    });
                   }
                 },
                 style: TextStyle(
@@ -234,19 +272,42 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     onTap: () async {
                       String customerId = await storage.read(key: "customerId");
                       if (isValid) {
-                        print("🚨 ${int.parse(customerId)}");
-                        runMutation({
-                          "contents_id": widget.contentsId,
-                          "customer_id": int.parse(customerId),
-                          "coment_text": commentController.text,
-                          "coments_id_link": 0,
-                        });
+                        if (replyCommentId != 0) {
+                          String inputValue = commentController.text;
+                          int nicknameLength = replyCommentNickname.length + 1;
+                          if (inputValue.substring(0, nicknameLength) ==
+                              "@$replyCommentNickname") {
+                            runMutation({
+                              "contents_id": widget.contentsId,
+                              "customer_id": int.parse(customerId),
+                              "coment_text": commentController.text,
+                              "coments_id_link": replyCommentId,
+                            });
+                          } else {
+                            runMutation({
+                              "contents_id": widget.contentsId,
+                              "customer_id": int.parse(customerId),
+                              "coment_text": commentController.text,
+                              "coments_id_link": replyCommentId,
+                            });
+                          }
+                        } else {
+                          runMutation({
+                            "contents_id": widget.contentsId,
+                            "customer_id": int.parse(customerId),
+                            "coment_text": commentController.text,
+                            "coments_id_link": replyCommentId,
+                          });
+                        }
+
                         commentController.text = "";
                         setState(() {
+                          replyCommentId = 0;
+                          replyCommentNickname = "";
                           isValid = false;
                         });
+                        FocusScope.of(context).unfocus();
                       }
-                      FocusScope.of(context).unfocus();
                     },
                     child: Container(
                       width: ScreenUtil().setWidth(56),
@@ -344,9 +405,129 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         onTap: () {
                           setState(() {
                             replyCommentId = comentsId;
-                            replyCommentNicknameLength = nickname.length + 2;
+                            replyCommentNickname = nickname;
                           });
                           commentController.text = "@$nickname ";
+                          commentController.selection =
+                              TextSelection.fromPosition(TextPosition(
+                                  offset: commentController.text.length));
+                          focusNode.requestFocus();
+                        },
+                        child: Text(
+                          "답글 달기",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: app_font_grey,
+                              letterSpacing: -0.3),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Image.asset("assets/images/comment_toggle_button.png",
+                  width: ScreenUtil().setSp(28), height: ScreenUtil().setSp(28))
+            ],
+          ),
+        ),
+        SizedBox(height: ScreenUtil().setSp(20)),
+        Container(
+          width: ScreenUtil().screenWidth,
+          height: ScreenUtil().setSp(1),
+          color: app_grey,
+        )
+      ],
+    );
+  }
+
+  Column commentReplyForm(String photo, String replyNickname, String nickname,
+      String date, String content, int comentsId) {
+    return Column(
+      children: [
+        SizedBox(height: ScreenUtil().setSp(20)),
+        Container(
+          width: ScreenUtil().screenWidth,
+          padding: EdgeInsets.only(
+              left: ScreenUtil().setSp(34), right: ScreenUtil().setSp(20)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: ScreenUtil().setSp(25),
+                height: ScreenUtil().setSp(25),
+                decoration: photo == null
+                    ? BoxDecoration(
+                        color: app_grey,
+                        borderRadius: BorderRadius.circular(50))
+                    : BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover, image: NetworkImage(photo)),
+                        borderRadius: BorderRadius.circular(50)),
+              ),
+              SizedBox(width: ScreenUtil().setSp(6)),
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: ScreenUtil().setSp(3)),
+                      Row(
+                        children: [
+                          Text(
+                            nickname,
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                letterSpacing: -0.35,
+                                fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          SizedBox(width: ScreenUtil().setSp(10)),
+                          Expanded(
+                            child: Text(
+                              date,
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                letterSpacing: -0.35,
+                                color: app_font_grey,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: ScreenUtil().setSp(6)),
+                      RichText(
+                        text: TextSpan(
+                            text: "@$replyNickname",
+                            style: TextStyle(
+                                letterSpacing: -0.35,
+                                fontSize: ScreenUtil().setSp(14),
+                                color: app_blue),
+                            children: [
+                              TextSpan(
+                                text: content.substring(
+                                    replyNickname.length + 1, content.length),
+                                style: TextStyle(
+                                    letterSpacing: -0.35,
+                                    color: Colors.black,
+                                    fontSize: ScreenUtil().setSp(14)),
+                              )
+                            ]),
+                      ),
+                      SizedBox(height: ScreenUtil().setSp(8)),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            replyCommentId = comentsId;
+                            replyCommentNickname = nickname;
+                          });
+                          commentController.text = "@$nickname ";
+                          commentController.selection =
+                              TextSelection.fromPosition(TextPosition(
+                                  offset: commentController.text.length));
+                          focusNode.requestFocus();
                         },
                         child: Text(
                           "답글 달기",

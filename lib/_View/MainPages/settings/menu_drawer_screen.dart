@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/settings_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
@@ -22,6 +23,14 @@ class MenuDrawer extends StatelessWidget {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
             print("🧾 settings result : $result");
+            List resultData = result.data["check_list"];
+            bool isNewNoti = false;
+
+            for (Map checkListMap in resultData) {
+              if (checkListMap["check"] == 1) {
+                isNewNoti = true;
+              }
+            }
 
             return Drawer(
               child: Column(
@@ -60,10 +69,19 @@ class MenuDrawer extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
-                            Image.asset(
-                              "assets/images/settings/alarm_button.png",
-                              width: ScreenUtil().setSp(22),
-                              height: ScreenUtil().setSp(22),
+                            InkWell(
+                              onTap: () {},
+                              child: Image.asset(
+                                !isNewNoti
+                                    ? "assets/images/settings/alarm_button.png"
+                                    : "assets/images/settings/alarm_button_active.png",
+                                width: !isNewNoti
+                                    ? ScreenUtil().setSp(22)
+                                    : ScreenUtil().setSp(28),
+                                height: !isNewNoti
+                                    ? ScreenUtil().setSp(22)
+                                    : ScreenUtil().setSp(28),
+                              ),
                             ),
                           ],
                         ),
@@ -159,17 +177,21 @@ class MenuDrawer extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: ScreenUtil().screenWidth,
-                              height: ScreenUtil().setSp(48),
-                              alignment: Alignment.centerLeft,
-                              child: Image.asset(
-                                "assets/images/settings/post_text.png",
-                                width: ScreenUtil().setSp(44),
-                                height: ScreenUtil().setSp(24),
+                            InkWell(
+                              onTap: () {
+                                Get.to(() => MapPostCreationScreen());
+                              },
+                              child: Container(
+                                width: ScreenUtil().screenWidth,
+                                height: ScreenUtil().setSp(48),
+                                alignment: Alignment.centerLeft,
+                                child: Image.asset(
+                                  "assets/images/settings/post_text.png",
+                                  width: ScreenUtil().setSp(44),
+                                  height: ScreenUtil().setSp(24),
+                                ),
                               ),
                             ),
-                            // SizedBox(height: ScreenUtil().setSp(24)),
                             Container(
                               width: ScreenUtil().screenWidth,
                               height: ScreenUtil().setSp(48),
@@ -180,21 +202,27 @@ class MenuDrawer extends StatelessWidget {
                                 height: ScreenUtil().setSp(24),
                               ),
                             ),
-                            // SizedBox(height: ScreenUtil().setSp(24)),
-                            Container(
-                              width: ScreenUtil().screenWidth,
-                              height: ScreenUtil().setSp(48),
-                              alignment: Alignment.centerLeft,
-                              child: Image.asset(
-                                "assets/images/settings/notification_text.png",
-                                width: ScreenUtil().setSp(56),
-                                height: ScreenUtil().setSp(24),
-                              ),
-                            ),
-                            // SizedBox(height: ScreenUtil().setSp(24)),
                             InkWell(
                               onTap: () {
-                                // Get.to(() => ChanneltalkBottomSheet());
+                                // 알림 읽음 mutation
+                              },
+                              child: Container(
+                                width: ScreenUtil().screenWidth,
+                                height: ScreenUtil().setSp(48),
+                                alignment: Alignment.centerLeft,
+                                child: Image.asset(
+                                  !isNewNoti
+                                      ? "assets/images/settings/notification_text.png"
+                                      : "assets/images/settings/notification_text_active.png",
+                                  width: !isNewNoti
+                                      ? ScreenUtil().setSp(56)
+                                      : ScreenUtil().setSp(70),
+                                  height: ScreenUtil().setSp(24),
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
                                 showModalBottomSheet(
                                     enableDrag: false,
                                     backgroundColor: Colors.transparent,
