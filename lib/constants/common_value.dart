@@ -17,6 +17,7 @@ const int font_xxs = 12;
 
 // const Color app_blue = Color(0xff0008ad8);
 const Color app_blue = Color.fromRGBO(5, 138, 211, 1);
+const Color app_blue_light = Color.fromRGBO(232, 246, 255, 1);
 const Color app_font_black = Color.fromRGBO(25, 25, 25, 1);
 const Color app_font_grey = Color.fromRGBO(188, 192, 193, 1);
 const Color app_grey = Color.fromRGBO(237, 237, 237, 1);

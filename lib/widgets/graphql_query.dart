@@ -160,4 +160,18 @@ class Queries {
         }
     }
 """;
+
+  static final String noticeList = """
+    query notice_list() {
+      notice_list() 
+      {
+          notice_id
+          notice_title
+          image_link
+          notice_text
+          regist_date
+          edit_date
+        }
+    }
+""";
 }

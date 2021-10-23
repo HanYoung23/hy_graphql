@@ -196,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            print("🚨 bookmarkslist : $result");
+            // print("🚨 bookmarkslist : $result");
             List resultData = result.data["mypage_coments_list"];
 
             return Expanded(
@@ -423,7 +423,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
             Map resultData = result.data["mypage"][0];
-            print("🚨 mypage result : $resultData");
+            // print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
             String profileText = resultData["profile_text"];
