@@ -48,6 +48,8 @@ dependencies:
   webview_flutter: any
   geocoder: ^0.2.1
   sign_in_with_apple: ^3.2.0
+  date_range_picker: ^1.0.7
+  intl: ^0.17.0
 
 # aws
   amplify_auth_cognito: any

@@ -14,6 +14,7 @@ import 'package:letsgotrip/functions/naver_login.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
+import 'package:letsgotrip/widgets/calendar_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/filter_button.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
@@ -21,6 +22,7 @@ import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/map_helper.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
 import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({
@@ -229,11 +231,11 @@ class _MapScreenState extends State<MapScreen> {
                                   QueryResult queryResult) {
                                 return InkWell(
                                   onTap: () {
-                                    deleteAllUserData();
-                                    naverLogout();
-                                    // runMutation({
-                                    //   "customer_id" : 35
-                                    // });
+                                    showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (_) => CalendarBottomSheet(),
+                                        isScrollControlled: true);
                                   },
                                   child: Image.asset(
                                       "assets/images/locationTap/calender_button.png",
