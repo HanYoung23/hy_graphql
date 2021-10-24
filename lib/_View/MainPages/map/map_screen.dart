@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/naver_login.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
@@ -19,10 +17,8 @@ import 'package:letsgotrip/widgets/filter_button.dart';
 import 'package:letsgotrip/widgets/google_map_container.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
-import 'package:letsgotrip/widgets/map_helper.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
 import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({

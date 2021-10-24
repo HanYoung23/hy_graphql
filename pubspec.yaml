@@ -48,7 +48,7 @@ dependencies:
   webview_flutter: any
   geocoder: ^0.2.1
   sign_in_with_apple: ^3.2.0
-  date_range_picker: ^1.0.7
+  syncfusion_flutter_datepicker: ^19.3.46
   intl: ^0.17.0
 
 # aws
