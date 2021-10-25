@@ -185,17 +185,17 @@ class _ScreenFilterState extends State<ScreenFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return nextScreen == "walkThroughScreen"
-        ? AuthorityScreen()
-        : nextScreen == "loginScreen"
-            ? LoginScreen()
-            : nextScreen == "homepage"
-                ? HomePage()
-                : nextScreen == "profileSetScreen"
-                    ? ProfileSetScreen(userId: userId, loginType: loginType)
-                    : Container();
+    // return nextScreen == "walkThroughScreen"
+    //     ? AuthorityScreen()
+    //     : nextScreen == "loginScreen"
+    //         ? LoginScreen()
+    //         : nextScreen == "homepage"
+    //             ? HomePage()
+    //             : nextScreen == "profileSetScreen"
+    //                 ? ProfileSetScreen(userId: userId, loginType: loginType)
+    //                 : Container();
     // return ProfileSetScreen(userId: userId, loginType: loginType);
-    // return LoginScreen();
+    return LoginScreen();
     // return HomePage();
   }
 }

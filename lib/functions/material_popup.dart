@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
+import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/kakao_login.dart';
+import 'package:letsgotrip/functions/naver_login.dart';
+import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 // void gpsNullPopup(BuildContext context) {
 //     showDialog(
@@ -25,74 +32,81 @@ import 'package:letsgotrip/constants/common_value.dart';
 savePostPopup(BuildContext context, Function saveDataCallback) {
   showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (_) => AlertDialog(
-            // insetPadding: EdgeInsets.zero,
-            // contentPadding: EdgeInsets.zero,
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: Padding(
-              padding: EdgeInsets.only(top: ScreenUtil().setSp(20)),
-              child: Container(
-                width: ScreenUtil().setSp(320),
-                // height: ScreenUtil().setSp(100),
-                child: Text(
-                  "임시저장 하시겠습니까?\n다음 게시물 작성 시 불러올 수 있습니다.",
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(16),
-                    letterSpacing: -0.4,
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
                   ),
-                  overflow: TextOverflow.clip,
-                ),
+                  Container(
+                    child: Text(
+                      "임시저장 하시겠습니까?\n다음 게시물 작성 시 불러올 수 있습니다.",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            saveDataCallback();
+                            Get.back();
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
+                ],
               ),
             ),
-            actions: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil().setSp(14),
-                  vertical: ScreenUtil().setSp(10),
-                ),
-                child: InkWell(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Text(
-                      "취소",
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
-                        fontWeight: FontWeight.bold,
-                        color: app_font_grey,
-                      ),
-                    )),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil().setSp(14),
-                  vertical: ScreenUtil().setSp(10),
-                ),
-                child: InkWell(
-                    onTap: () {
-                      saveDataCallback();
-                      Get.back();
-                    },
-                    child: Text(
-                      "확인",
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-              ),
-            ],
           ));
 }
 
 callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
   showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
@@ -157,6 +171,7 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                   SizedBox(height: ScreenUtil().setSp(10)),
                   InkWell(
                     onTap: () {
+                      deleteUserData("postSaveData");
                       Get.back();
                     },
                     child: Container(
@@ -181,6 +196,239 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                     ),
                   ),
                   Spacer(),
+                ],
+              ),
+            ),
+          ));
+}
+
+logOutPopup(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "로그아웃 하시겠습니까?",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            seeValue("loginType").then((loginType) async {
+                              switch (loginType) {
+                                case "kakao":
+                                  await kakaoLogout();
+                                  break;
+                                case "naver":
+                                  await naverLogout();
+                                  break;
+                              }
+                              await deleteUserData("userId");
+                              await deleteUserData("customerId");
+                              await deleteUserData("loginType");
+                              Get.offAll(() => AuthorityScreen());
+                            });
+                          },
+                          child: Text(
+                            "로그아웃",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+signOutPopupFirst(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "버튼을 누르시면 정상적으로 진행됩니다.\n탈퇴하시겠습니까?",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      Mutation(
+                          options: MutationOptions(
+                              document: gql(Mutations.secession),
+                              update: (GraphQLDataProxy proxy,
+                                  QueryResult result) {},
+                              onCompleted: (dynamic resultData) async {
+                                print("🚨 signout result : $resultData");
+                                if (resultData["secession"]["result"]) {
+                                  signOutPopupSecond(context);
+                                }
+                              }),
+                          builder: (RunMutation runMutation,
+                              QueryResult queryResult) {
+                            return InkWell(
+                                onTap: () {
+                                  seeValue("customerId").then((customerId) {
+                                    runMutation(
+                                        {"customer_id": int.parse(customerId)});
+                                  });
+                                },
+                                child: Text(
+                                  "탈퇴하기",
+                                  style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(16),
+                                    letterSpacing: -0.4,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ));
+                          })
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+signOutPopupSecond(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "탈퇴되었습니다.\n로그인 화면으로 돌아갑니다.",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.offAll(() => LoginScreen());
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
                 ],
               ),
             ),

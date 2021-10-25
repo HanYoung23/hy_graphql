@@ -211,40 +211,19 @@ class _MapScreenState extends State<MapScreen> {
                           ),
                         ),
                         SizedBox(width: ScreenUtil().setWidth(59)),
-                        Mutation(
-                            options: MutationOptions(
-                                document: gql(Mutations.secession),
-                                update: (GraphQLDataProxy proxy,
-                                    QueryResult result) {},
-                                onCompleted: (dynamic resultData) async {
-                                  print("🚨 resultData : $resultData");
-                                }),
-                            builder: (RunMutation runMutation,
-                                QueryResult queryResult) {
-                              return InkWell(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (_) => CalendarBottomSheet(),
-                                      isScrollControlled: true);
-                                },
-                                child: Image.asset(
-                                    "assets/images/locationTap/calender_button.png",
-                                    width: ScreenUtil().setSp(28),
-                                    height: ScreenUtil().setSp(28)),
-                              );
-                            }),
-                        // InkWell(
-                        //   onTap: () {
-                        //     deleteAllUserData();
-                        //     naverLogout();
-                        //   },
-                        //   child: Image.asset(
-                        //       "assets/images/locationTap/calender_button.png",
-                        //       width: ScreenUtil().setSp(28),
-                        //       height: ScreenUtil().setSp(28)),
-                        // ),
+                        InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (_) => CalendarBottomSheet(),
+                                isScrollControlled: true);
+                          },
+                          child: Image.asset(
+                              "assets/images/locationTap/calender_button.png",
+                              width: ScreenUtil().setSp(28),
+                              height: ScreenUtil().setSp(28)),
+                        )
                       ],
                     ),
                   ),

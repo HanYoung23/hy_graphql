@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
+import 'package:letsgotrip/_View/MainPages/settings/signout_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/kakao_login.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
+import 'package:letsgotrip/functions/naver_login.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class SettingsScreen extends StatefulWidget {
   final int customerId;
@@ -126,15 +131,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               InkWell(
                 onTap: () {
-                  switch (widget.loginType) {
-                    case "kakao":
-                      kakaoLogout();
-                      break;
-                    default:
-                  }
-                  deleteAllUserData().then((value) {
-                    Get.offAll(() => AuthorityScreen());
-                  });
+                  logOutPopup(context);
                 },
                 child: Container(
                   padding:
@@ -144,12 +141,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       height: ScreenUtil().setSp(24)),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
-                child: Image.asset("assets/images/settings/signout_text.png",
-                    width: ScreenUtil().setSp(58),
-                    height: ScreenUtil().setSp(24)),
-              ),
+              InkWell(
+                onTap: () {
+                  Get.to(() => SignOutScreen());
+                },
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
+                  child: Image.asset("assets/images/settings/signout_text.png",
+                      width: ScreenUtil().setSp(58),
+                      height: ScreenUtil().setSp(24)),
+                ),
+              )
             ],
           ),
         ),

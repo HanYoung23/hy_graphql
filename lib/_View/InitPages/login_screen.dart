@@ -52,11 +52,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   "이미 가입된 아이디입니다.") {
                 String customerId = "${resultData["createCustomer"]["msg2"]}";
                 await storeUserData("customerId", customerId);
-                // String userId = await storage.read(key: "userId");
-                // String loginType = await storage.read(key: "loginType");
-                // Get.to(() =>
-                //     ProfileSetScreen(userId: userId, loginType: loginType));
-                Get.to(() => HomePage());
+                String userId = await storage.read(key: "userId");
+                String loginType = await storage.read(key: "loginType");
+                seeValue("isProfileSet").then((value) {
+                  if (value == "true") {
+                    Get.to(() => HomePage());
+                  } else {
+                    Get.to(() =>
+                        ProfileSetScreen(userId: userId, loginType: loginType));
+                  }
+                });
               } else {
                 Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
               }

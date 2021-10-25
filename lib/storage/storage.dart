@@ -28,10 +28,11 @@ Future<void> seeAllValues() async {
   print("🌕 see all values : $allValues");
 }
 
-//isWalkThrough
+//isWalkThrough true
+// isProfileSet true
 
+// userId
 // customerId 35
 // loginType kakao,naver,apple
-// isProfileSet true
 
 // postSaveData
