@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/comment_cupertino_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 
@@ -182,7 +184,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             date,
                                             content,
                                             comentsId,
-                                            comentsIdLink),
+                                            comentsIdLink,
+                                            refetch),
                                         Column(
                                           children: replyList.map((e) {
                                             String _nickname = e["nick_name"];
@@ -198,13 +201,16 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             //     .replaceAll(RegExp(r'-'), ".")
                                             //     .substring(15, 17);
                                             String _content = e["coment_text"];
+                                            int _comentsId = e["coments_id"];
                                             return commentReplyForm(
                                                 _profilePhotoLInk,
                                                 nickname,
                                                 _nickname,
                                                 _date,
                                                 _content,
-                                                comentsId);
+                                                comentsId,
+                                                _comentsId,
+                                                refetch);
                                           }).toList(),
                                         )
                                       ],
@@ -338,7 +344,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   Column commentForm(String photo, String nickname, String date, String content,
-      int comentsId, int comentsIdLink) {
+      int comentsId, int comentsIdLink, Function refetch) {
     return Column(
       children: [
         SizedBox(height: ScreenUtil().setSp(20)),
@@ -425,8 +431,21 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                 ),
               ),
-              Image.asset("assets/images/comment_toggle_button.png",
-                  width: ScreenUtil().setSp(28), height: ScreenUtil().setSp(28))
+              InkWell(
+                onTap: () {
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        CommentCupertinoBottomSheet(
+                            comentsId: comentsId,
+                            comentText: content,
+                            refetchCallback: refetch),
+                  );
+                },
+                child: Image.asset("assets/images/comment_toggle_button.png",
+                    width: ScreenUtil().setSp(28),
+                    height: ScreenUtil().setSp(28)),
+              )
             ],
           ),
         ),
@@ -440,8 +459,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     );
   }
 
-  Column commentReplyForm(String photo, String replyNickname, String nickname,
-      String date, String content, int comentsId) {
+  Column commentReplyForm(
+      String photo,
+      String replyNickname,
+      String nickname,
+      String date,
+      String content,
+      int comentsId,
+      int _comentsId,
+      Function refetch) {
     String replyText =
         content.substring(replyNickname.length + 1, content.length);
     return Column(
@@ -542,8 +568,22 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                 ),
               ),
-              Image.asset("assets/images/comment_toggle_button.png",
-                  width: ScreenUtil().setSp(28), height: ScreenUtil().setSp(28))
+              InkWell(
+                onTap: () {
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        CommentCupertinoBottomSheet(
+                      comentsId: _comentsId,
+                      comentText: content,
+                      refetchCallback: refetch,
+                    ),
+                  );
+                },
+                child: Image.asset("assets/images/comment_toggle_button.png",
+                    width: ScreenUtil().setSp(28),
+                    height: ScreenUtil().setSp(28)),
+              )
             ],
           ),
         ),

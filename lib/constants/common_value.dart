@@ -17,8 +17,11 @@ const int font_xxs = 12;
 
 // const Color app_blue = Color(0xff0008ad8);
 const Color app_blue = Color.fromRGBO(5, 138, 211, 1);
+const Color app_blue_cupertino = Color.fromRGBO(10, 132, 255, 1);
+const Color app_blue_cupertino_cancel = Color.fromRGBO(0, 122, 255, 1);
 const Color app_blue_light = Color.fromRGBO(232, 246, 255, 1);
 const Color app_blue_calendar = Color.fromRGBO(124, 205, 255, 1);
+const Color app_red_cupertino = Color.fromRGBO(255, 59, 48, 1);
 const Color app_font_black = Color.fromRGBO(25, 25, 25, 1);
 const Color app_font_grey = Color.fromRGBO(188, 192, 193, 1);
 const Color app_grey = Color.fromRGBO(237, 237, 237, 1);

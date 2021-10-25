@@ -60,6 +60,16 @@ class Mutations {
     }
 """;
 
+  static final String changeComent = """
+    mutation(\$type: String!, \$coments_id: Int!, \$coment_text: String!) {
+      change_coment(type : \$type, coments_id: \$coments_id, coment_text: \$coment_text)
+      {
+          result
+          msg
+        }
+    }
+""";
+
   static final String secession = """
     mutation(\$customer_id: Int!) {
       secession(customer_id : \$customer_id)
