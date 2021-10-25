@@ -67,19 +67,12 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                           ? Expanded(
                               child: ListView(
                                 children: noticeList.map((item) {
-                                  //               notice_id
-                                  // notice_title
-                                  // image_link
-                                  // notice_text
-                                  // regist_date
-                                  // edit_date
-
-                                  int noticeId = item["notice_id"];
+                                  // int noticeId = item["notice_id"];
                                   String noticeTitle = item["notice_title"];
-                                  String imageLink = item["image_link"];
-                                  String noticeText = item["notice_text"];
+                                  // String imageLink = item["image_link"];
+                                  // String noticeText = item["notice_text"];
                                   String date = item["regist_date"];
-                                  String editDate = item["edit_date"];
+                                  // String editDate = item["edit_date"];
                                   if (date != null) {
                                     date = date
                                         .substring(0, 10)

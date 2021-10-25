@@ -105,26 +105,22 @@ class MapHelper {
     // return convertImageFileToBitmapDescriptor(markerImageFile);
   }
 
-  /// Resizes the given [imageBytes] with the [targetWidth].
-  ///
-  /// We don't want the marker image to be too big so we might need to resize the image.
-  ///
-  static Future<Uint8List> _resizeImageBytes(
-    Uint8List imageBytes,
-    int targetWidth,
-  ) async {
-    final Codec imageCodec = await instantiateImageCodec(
-      imageBytes,
-      targetWidth: targetWidth,
-      targetHeight: targetWidth,
-    );
+  // static Future<Uint8List> _resizeImageBytes(
+  //   Uint8List imageBytes,
+  //   int targetWidth,
+  // ) async {
+  //   final Codec imageCodec = await instantiateImageCodec(
+  //     imageBytes,
+  //     targetWidth: targetWidth,
+  //     targetHeight: targetWidth,
+  //   );
 
-    final FrameInfo frameInfo = await imageCodec.getNextFrame();
+  //   final FrameInfo frameInfo = await imageCodec.getNextFrame();
 
-    final data = await frameInfo.image.toByteData(format: ImageByteFormat.png);
+  //   final data = await frameInfo.image.toByteData(format: ImageByteFormat.png);
 
-    return data.buffer.asUint8List();
-  }
+  //   return data.buffer.asUint8List();
+  // }
 
   /// Inits the cluster manager with all the [MapMarker] to be displayed on the map.
   /// Here we're also setting up the cluster marker itself, also with an [clusterImageUrl].

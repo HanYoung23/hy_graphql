@@ -154,12 +154,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                               String date = comment["regist_date"]
                                   .replaceAll(RegExp(r'-'), ".")
                                   .substring(0, 10);
-                              String hour = comment["regist_date"]
-                                  .replaceAll(RegExp(r'-'), ".")
-                                  .substring(12, 14);
-                              String min = comment["regist_date"]
-                                  .replaceAll(RegExp(r'-'), ".")
-                                  .substring(15, 17);
+                              // String hour = comment["regist_date"]
+                              //     .replaceAll(RegExp(r'-'), ".")
+                              //     .substring(12, 14);
+                              // String min = comment["regist_date"]
+                              //     .replaceAll(RegExp(r'-'), ".")
+                              //     .substring(15, 17);
                               String content = comment["coment_text"];
                               int comentsId = comment["coments_id"];
                               int comentsIdLink = comment["coments_id_link"];
@@ -191,12 +191,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             String _date = e["regist_date"]
                                                 .replaceAll(RegExp(r'-'), ".")
                                                 .substring(0, 10);
-                                            String _hour = e["regist_date"]
-                                                .replaceAll(RegExp(r'-'), ".")
-                                                .substring(12, 14);
-                                            String _min = e["regist_date"]
-                                                .replaceAll(RegExp(r'-'), ".")
-                                                .substring(15, 17);
+                                            // String _hour = e["regist_date"]
+                                            //     .replaceAll(RegExp(r'-'), ".")
+                                            //     .substring(12, 14);
+                                            // String _min = e["regist_date"]
+                                            //     .replaceAll(RegExp(r'-'), ".")
+                                            //     .substring(15, 17);
                                             String _content = e["coment_text"];
                                             return commentReplyForm(
                                                 _profilePhotoLInk,

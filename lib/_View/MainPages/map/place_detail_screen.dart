@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/comment_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -51,8 +50,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             if (result.data["photo_detail"] != null) {
               Map resultData = result.data["photo_detail"];
               // print("🚨 place detail result : $resultData");
-              int contentsId = int.parse("${resultData["contents_id"]}");
-              int categoryId = int.parse("${resultData["category_id"]}");
+              // int contentsId = int.parse("${resultData["contents_id"]}");
+              // int categoryId = int.parse("${resultData["category_id"]}");
               String contentsTitle = resultData["contents_title"];
               String nickName = resultData["nick_name"];
               String mainText = resultData["main_text"];

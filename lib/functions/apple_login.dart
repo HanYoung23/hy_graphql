@@ -1,19 +1,30 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import "package:http/http.dart" as http;
+// import "package:http/http.dart" as http;
 
 Future appleLogin(BuildContext context) async {
   print("🍎 apple login");
-  final credential = await SignInWithApple.getAppleIDCredential(
-    scopes: [
+
+  try {
+    final credential = await SignInWithApple.getAppleIDCredential(scopes: [
       AppleIDAuthorizationScopes.email,
       AppleIDAuthorizationScopes.fullName,
-    ],
-  );
+    ]);
+    if (credential.userIdentifier != null) {
+      print("🍎 apple token : ${credential.userIdentifier}");
+      storeUserData("userId", "${credential.userIdentifier}");
+      storeUserData("loginType", "apple");
+      return credential.userIdentifier;
+    }
+  } on SignInWithAppleException catch (e) {
+    print("🍎 apple login canceled : $e");
+    return null;
+  }
 
-  print("🍎 apple token : ${credential}");
-  print("🍎 apple token : ${credential.identityToken}");
+  // print("🍎 apple token : ${credential}");
+  // print("🍎 apple token : ${credential.identityToken}");
+
   // final signInWithAppleEndpoint = Uri(
   //   scheme: 'https',
   //   // host: 'flutter-sign-in-with-apple-example.glitch.me',

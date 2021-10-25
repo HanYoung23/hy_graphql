@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,10 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
 import 'package:letsgotrip/homepage.dart';
-import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/map_post_creation_bottom_sheet.dart';
 
 class MapPostCreationScreen extends StatefulWidget {

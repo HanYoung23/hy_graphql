@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
@@ -8,19 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
-import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
-import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
-import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
-import 'package:letsgotrip/widgets/map_helper.dart';
-import 'package:letsgotrip/widgets/map_marker.dart';
 
 void main() {
   runApp(GraphQLProvider(
@@ -189,17 +181,17 @@ class _ScreenFilterState extends State<ScreenFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return nextScreen == "walkThroughScreen"
-        ? AuthorityScreen()
-        : nextScreen == "loginScreen"
-            ? LoginScreen()
-            : nextScreen == "homepage"
-                ? HomePage()
-                : nextScreen == "profileSetScreen"
-                    ? ProfileSetScreen(userId: userId, loginType: loginType)
-                    : Container();
+    // return nextScreen == "walkThroughScreen"
+    //     ? AuthorityScreen()
+    //     : nextScreen == "loginScreen"
+    //         ? LoginScreen()
+    //         : nextScreen == "homepage"
+    //             ? HomePage()
+    //             : nextScreen == "profileSetScreen"
+    //                 ? ProfileSetScreen(userId: userId, loginType: loginType)
+    //                 : Container();
     // return ProfileSetScreen(userId: userId, loginType: loginType);
-    // return LoginScreen();
+    return LoginScreen();
     // return HomePage();
   }
 }

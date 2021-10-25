@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
-import 'package:letsgotrip/_View/MainPages/map/map_screen.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';

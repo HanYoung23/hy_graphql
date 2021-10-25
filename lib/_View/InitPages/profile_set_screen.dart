@@ -64,7 +64,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
             int customerId = resultData["customer_id"];
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
-            int language = resultData["language"];
+            // int language = resultData["language"];
 
             return Mutation(
                 options: MutationOptions(

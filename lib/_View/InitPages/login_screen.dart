@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             document: gql(Mutations.createCustomer),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) async {
-              print("🚨 resultData : $resultData");
+              print("🚨 login result : $resultData");
               if (resultData["createCustomer"]["result"]) {
                 String customerId = "${resultData["createCustomer"]["msg2"]}";
                 await storeUserData("customerId", customerId);
@@ -152,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         naverLogin().then((userId) {
                           print("🐸 userId : $userId");
-                          if (userId != null) {
+                          if (userId.length > 1) {
                             setState(() {
                               loginType = "naver";
                             });
@@ -201,8 +199,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        // Get.to(() => ProfileSetScreen());
-                        appleLogin(context);
+                        appleLogin(context).then((userId) {
+                          if (userId != null) {
+                            setState(() {
+                              loginType = "apple";
+                            });
+                            runMutation({
+                              "login_link": "$userId",
+                              "login_type": "apple",
+                            });
+                          } else {
+                            print("🚨 login canceled");
+                          }
+                        });
                       },
                       child: Container(
                         width: ScreenUtil().setWidth(305),

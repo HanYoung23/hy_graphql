@@ -36,9 +36,6 @@ class AddBtnOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FloatingButtonController floatingBtnController =
-        Get.put(FloatingButtonController());
-
     return InkWell(
       onTap: () {
         Get.to(() => MapPostCreationScreen());

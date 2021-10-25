@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:exif/exif.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:metadata/metadata.dart';
 
@@ -40,7 +39,7 @@ Future pullPhotoCoordnate(File photo) async {
             double.parse(lngDataList[2]) / 3600)
         .toStringAsFixed(7);
 
-    print("🚨 GPSLongitude data : ${latValue}, ${lngValue}");
+    print("🚨 GPSLongitude data : $latValue, $lngValue");
     return LatLng(double.parse(latValue), double.parse(lngValue));
 
     // if (exifData["GPS GPSLatitude"] != null) {

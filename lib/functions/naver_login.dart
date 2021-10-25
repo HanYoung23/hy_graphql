@@ -6,6 +6,7 @@ naverLogin() async {
   print("🐸 naver login result : ${res.account.id}");
   storeUserData("userId", "${res.account.id}");
   storeUserData("loginType", "naver");
+
   return "${res.account.id}";
 }
 

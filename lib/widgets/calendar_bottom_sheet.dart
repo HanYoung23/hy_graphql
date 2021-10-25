@@ -13,10 +13,10 @@ class CalendarBottomSheet extends StatefulWidget {
 }
 
 class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
-  String _selectedDate = '';
-  String _dateCount = '';
-  String _range = '';
-  String _rangeCount = '';
+  // String _selectedDate = '';
+  // String _dateCount = '';
+  // String _range = '';
+  // String _rangeCount = '';
 
   bool isWhole = false;
   String leftDate = "";
