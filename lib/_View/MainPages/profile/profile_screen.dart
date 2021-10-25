@@ -443,12 +443,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: profilePhotoLink == null
                             ? BoxDecoration(
                                 color: app_grey,
-                                borderRadius: BorderRadius.circular(50))
+                                borderRadius: BorderRadius.circular(100))
                             : BoxDecoration(
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(profilePhotoLink)),
-                                borderRadius: BorderRadius.circular(50)),
+                                borderRadius: BorderRadius.circular(100)),
                       ),
                       SizedBox(width: ScreenUtil().setSp(10)),
                       Column(

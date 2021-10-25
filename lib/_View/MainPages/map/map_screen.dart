@@ -116,256 +116,250 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        floatingBtnController.allBtnCancel();
-      },
-      child: SafeArea(
-        child: Scaffold(
-          key: scaffoldKey,
-          body: Stack(children: [
-            Positioned(
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    SizedBox(height: ScreenUtil().setHeight(20)),
-                    Container(
-                      width: ScreenUtil().screenWidth,
-                      height: ScreenUtil().setHeight(46),
-                      padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setSp(8),
-                          horizontal: ScreenUtil().setSp(20)),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              scaffoldKey.currentState.openDrawer();
-                            },
-                            child: Image.asset(
-                                "assets/images/hamburger_button.png",
-                                width: ScreenUtil().setSp(28),
-                                height: ScreenUtil().setSp(28)),
-                          ),
-                          SizedBox(width: ScreenUtil().setWidth(56)),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                isLeftTap = true;
-                              });
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                    width: ScreenUtil().setSp(78),
-                                    height: ScreenUtil().setSp(24),
-                                    child: Center(
-                                      child: Text("지도",
-                                          style: TextStyle(
-                                              color: isLeftTap
-                                                  ? app_font_black
-                                                  : app_font_grey,
-                                              fontSize: ScreenUtil().setSp(16),
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing:
-                                                  ScreenUtil().setSp(-0.4))),
-                                    )),
-                                isLeftTap
-                                    ? Container(
-                                        color: app_blue,
-                                        width: ScreenUtil().setSp(30),
-                                        height: ScreenUtil().setSp(3),
-                                      )
-                                    : Container()
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: ScreenUtil().setWidth(8)),
-                          InkWell(
-                            onTap: () {
-                              Get.to(() => MapAroundScreen(),
-                                  transition: Transition.noTransition);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                    width: ScreenUtil().setSp(78),
-                                    height: ScreenUtil().setSp(24),
-                                    child: Center(
-                                      child: Text("둘러보기",
-                                          style: TextStyle(
-                                              color: !isLeftTap
-                                                  ? app_font_black
-                                                  : app_font_grey,
-                                              fontSize: ScreenUtil().setSp(16),
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing:
-                                                  ScreenUtil().setSp(-0.4))),
-                                    )),
-                                !isLeftTap
-                                    ? Container(
-                                        color: app_blue,
-                                        width: ScreenUtil().setSp(60),
-                                        height: ScreenUtil().setSp(3),
-                                      )
-                                    : Container()
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: ScreenUtil().setWidth(59)),
-                          Mutation(
-                              options: MutationOptions(
-                                  document: gql(Mutations.secession),
-                                  update: (GraphQLDataProxy proxy,
-                                      QueryResult result) {},
-                                  onCompleted: (dynamic resultData) async {
-                                    print("🚨 resultData : $resultData");
-                                  }),
-                              builder: (RunMutation runMutation,
-                                  QueryResult queryResult) {
-                                return InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (_) => CalendarBottomSheet(),
-                                        isScrollControlled: true);
-                                  },
-                                  child: Image.asset(
-                                      "assets/images/locationTap/calender_button.png",
-                                      width: ScreenUtil().setSp(28),
-                                      height: ScreenUtil().setSp(28)),
-                                );
-                              }),
-                          // InkWell(
-                          //   onTap: () {
-                          //     deleteAllUserData();
-                          //     naverLogout();
-                          //   },
-                          //   child: Image.asset(
-                          //       "assets/images/locationTap/calender_button.png",
-                          //       width: ScreenUtil().setSp(28),
-                          //       height: ScreenUtil().setSp(28)),
-                          // ),
-                        ],
-                      ),
-                    ),
-                    isPermission
-                        ? Visibility(
-                            visible: isMapLoading
-                                ? false
-                                : isLeftTap
-                                    ? true
-                                    : false,
-                            child: Expanded(
-                                child: GoogleMapContainer(
-                              userPosition: userPosition,
-                              mapMarkers: mapMarkers,
-                              category: currentCategory,
-                            )))
-                        : Expanded(
-                            child:
-                                Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
-                    isMapLoading
-                        ? Expanded(
-                            child: Center(
-                              child: LoadingIndicator(),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-              ),
-            ),
-            FilterBtn(isActive: ""),
-            AddBtn(isActive: ""),
-            Obx(() => floatingBtn.isFilterActive.value ||
-                    floatingBtn.isAddActive.value
-                ? Positioned(
-                    child: Container(
+    return SafeArea(
+      child: Scaffold(
+        key: scaffoldKey,
+        body: Stack(children: [
+          Positioned(
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  SizedBox(height: ScreenUtil().setHeight(20)),
+                  Container(
                     width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().screenHeight,
-                    color: Colors.black.withOpacity(0.7),
-                  ))
-                : Container()),
-            Obx(() => floatingBtn.isFilterActive.value
-                ? Positioned(
-                    bottom: ScreenUtil().setSp(80),
-                    left: ScreenUtil().setSp(18),
-                    child: Column(
+                    height: ScreenUtil().setHeight(46),
+                    padding: EdgeInsets.symmetric(
+                        vertical: ScreenUtil().setSp(8),
+                        horizontal: ScreenUtil().setSp(20)),
+                    child: Row(
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              isMapLoading = true;
-                            });
+                            scaffoldKey.currentState.openDrawer();
                           },
-                          child: FilterBtnOptions(
-                              title: '전체',
-                              callback: (int) => filterBtnCallback(int)),
+                          child: Image.asset(
+                              "assets/images/hamburger_button.png",
+                              width: ScreenUtil().setSp(28),
+                              height: ScreenUtil().setSp(28)),
                         ),
+                        SizedBox(width: ScreenUtil().setWidth(56)),
                         InkWell(
                           onTap: () {
                             setState(() {
-                              isMapLoading = true;
+                              isLeftTap = true;
                             });
                           },
-                          child: FilterBtnOptions(
-                              title: '바닷가',
-                              callback: (int) => filterBtnCallback(int)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                  width: ScreenUtil().setSp(78),
+                                  height: ScreenUtil().setSp(24),
+                                  child: Center(
+                                    child: Text("지도",
+                                        style: TextStyle(
+                                            color: isLeftTap
+                                                ? app_font_black
+                                                : app_font_grey,
+                                            fontSize: ScreenUtil().setSp(16),
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing:
+                                                ScreenUtil().setSp(-0.4))),
+                                  )),
+                              isLeftTap
+                                  ? Container(
+                                      color: app_blue,
+                                      width: ScreenUtil().setSp(30),
+                                      height: ScreenUtil().setSp(3),
+                                    )
+                                  : Container()
+                            ],
+                          ),
                         ),
+                        SizedBox(width: ScreenUtil().setWidth(8)),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              isMapLoading = true;
-                            });
+                            Get.to(() => MapAroundScreen(),
+                                transition: Transition.noTransition);
                           },
-                          child: FilterBtnOptions(
-                              title: '액티비티',
-                              callback: (int) => filterBtnCallback(int)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                  width: ScreenUtil().setSp(78),
+                                  height: ScreenUtil().setSp(24),
+                                  child: Center(
+                                    child: Text("둘러보기",
+                                        style: TextStyle(
+                                            color: !isLeftTap
+                                                ? app_font_black
+                                                : app_font_grey,
+                                            fontSize: ScreenUtil().setSp(16),
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing:
+                                                ScreenUtil().setSp(-0.4))),
+                                  )),
+                              !isLeftTap
+                                  ? Container(
+                                      color: app_blue,
+                                      width: ScreenUtil().setSp(60),
+                                      height: ScreenUtil().setSp(3),
+                                    )
+                                  : Container()
+                            ],
+                          ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              isMapLoading = true;
-                            });
-                          },
-                          child: FilterBtnOptions(
-                              title: '맛집',
-                              callback: (int) => filterBtnCallback(int)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              isMapLoading = true;
-                            });
-                          },
-                          child: FilterBtnOptions(
-                              title: '숙소',
-                              callback: (int) => filterBtnCallback(int)),
-                        ),
+                        SizedBox(width: ScreenUtil().setWidth(59)),
+                        Mutation(
+                            options: MutationOptions(
+                                document: gql(Mutations.secession),
+                                update: (GraphQLDataProxy proxy,
+                                    QueryResult result) {},
+                                onCompleted: (dynamic resultData) async {
+                                  print("🚨 resultData : $resultData");
+                                }),
+                            builder: (RunMutation runMutation,
+                                QueryResult queryResult) {
+                              return InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (_) => CalendarBottomSheet(),
+                                      isScrollControlled: true);
+                                },
+                                child: Image.asset(
+                                    "assets/images/locationTap/calender_button.png",
+                                    width: ScreenUtil().setSp(28),
+                                    height: ScreenUtil().setSp(28)),
+                              );
+                            }),
+                        // InkWell(
+                        //   onTap: () {
+                        //     deleteAllUserData();
+                        //     naverLogout();
+                        //   },
+                        //   child: Image.asset(
+                        //       "assets/images/locationTap/calender_button.png",
+                        //       width: ScreenUtil().setSp(28),
+                        //       height: ScreenUtil().setSp(28)),
+                        // ),
                       ],
                     ),
-                  )
-                : Container()),
-            Obx(() => floatingBtn.isAddActive.value
-                ? Positioned(
-                    bottom: ScreenUtil().setSp(80),
-                    right: ScreenUtil().setSp(18),
-                    child: AddBtnOptions(title: '글쓰기'),
-                  )
-                : Container()),
-            Obx(() => floatingBtn.isFilterActive.value
-                ? FilterBtn(isActive: "active")
-                : Container()),
-            Obx(() => floatingBtn.isAddActive.value
-                ? AddBtn(isActive: "active")
-                : Container()),
-          ]),
-          drawer: MenuDrawer(customerId: customerId),
-        ),
+                  ),
+                  isPermission
+                      ? Visibility(
+                          visible: isMapLoading
+                              ? false
+                              : isLeftTap
+                                  ? true
+                                  : false,
+                          child: Expanded(
+                              child: GoogleMapContainer(
+                            userPosition: userPosition,
+                            mapMarkers: mapMarkers,
+                            category: currentCategory,
+                          )))
+                      : Expanded(
+                          child: Container(child: Text("위치 권한 허용 후 이용가능합니다."))),
+                  isMapLoading
+                      ? Expanded(
+                          child: Center(
+                            child: LoadingIndicator(),
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
+          ),
+          FilterBtn(isActive: ""),
+          AddBtn(isActive: ""),
+          Obx(() =>
+              floatingBtn.isFilterActive.value || floatingBtn.isAddActive.value
+                  ? Positioned(
+                      child: Container(
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().screenHeight,
+                      color: Colors.black.withOpacity(0.7),
+                    ))
+                  : Container()),
+          Obx(() => floatingBtn.isFilterActive.value
+              ? Positioned(
+                  bottom: ScreenUtil().setSp(80),
+                  left: ScreenUtil().setSp(18),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isMapLoading = true;
+                          });
+                        },
+                        child: FilterBtnOptions(
+                            title: '전체',
+                            callback: (int) => filterBtnCallback(int)),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isMapLoading = true;
+                          });
+                        },
+                        child: FilterBtnOptions(
+                            title: '바닷가',
+                            callback: (int) => filterBtnCallback(int)),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isMapLoading = true;
+                          });
+                        },
+                        child: FilterBtnOptions(
+                            title: '액티비티',
+                            callback: (int) => filterBtnCallback(int)),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isMapLoading = true;
+                          });
+                        },
+                        child: FilterBtnOptions(
+                            title: '맛집',
+                            callback: (int) => filterBtnCallback(int)),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            isMapLoading = true;
+                          });
+                        },
+                        child: FilterBtnOptions(
+                            title: '숙소',
+                            callback: (int) => filterBtnCallback(int)),
+                      ),
+                    ],
+                  ),
+                )
+              : Container()),
+          Obx(() => floatingBtn.isAddActive.value
+              ? Positioned(
+                  bottom: ScreenUtil().setSp(80),
+                  right: ScreenUtil().setSp(18),
+                  child: AddBtnOptions(title: '글쓰기'),
+                )
+              : Container()),
+          Obx(() => floatingBtn.isFilterActive.value
+              ? FilterBtn(isActive: "active")
+              : Container()),
+          Obx(() => floatingBtn.isAddActive.value
+              ? AddBtn(isActive: "active")
+              : Container()),
+        ]),
+        drawer: MenuDrawer(customerId: customerId),
       ),
     );
   }

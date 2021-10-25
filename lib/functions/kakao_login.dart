@@ -16,25 +16,35 @@ Future kakaoLogin() async {
 }
 
 kakaoNativeLogin() async {
-  await UserApi.instance.loginWithKakaoTalk();
-  // print("🐤 kakako login ${code.accessToken}");
+  try {
+    await UserApi.instance.loginWithKakaoTalk();
+    // print("🐤 kakako login ${code.accessToken}");
 
-  User user = await UserApi.instance.me();
-  // print("🐤 user : ${user.id}");
-  storeUserData("userId", "${user.id}");
-  storeUserData("loginType", "kakao");
-  return "${user.id}";
+    User user = await UserApi.instance.me();
+    // print("🐤 user : ${user.id}");
+    storeUserData("userId", "${user.id}");
+    storeUserData("loginType", "kakao");
+    return "${user.id}";
+  } catch (e) {
+    print("🐤 kakako error $e");
+    return "";
+  }
 }
 
 kakaoAccountLogin() async {
-  await UserApi.instance.loginWithKakaoAccount();
-  // print("🐤 kakako login ${code.accessToken}");
+  try {
+    await UserApi.instance.loginWithKakaoAccount();
+    // print("🐤 kakako login ${code.accessToken}");
 
-  User user = await UserApi.instance.me();
-  // print("🐤 user : ${user.id}");
-  storeUserData("userId", "${user.id}");
-  storeUserData("loginType", "kakao");
-  return "${user.id}";
+    User user = await UserApi.instance.me();
+    // print("🐤 user : ${user.id}");
+    storeUserData("userId", "${user.id}");
+    storeUserData("loginType", "kakao");
+    return "${user.id}";
+  } catch (e) {
+    print("🐤 kakako error $e");
+    return "";
+  }
 }
 
 kakaoLogout() {

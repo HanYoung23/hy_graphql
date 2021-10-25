@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     InkWell(
                       onTap: () {
                         kakaoLogin().then((userId) {
-                          if (userId != null) {
+                          if (userId.length > 1) {
                             setState(() {
                               loginType = "kakao";
                             });

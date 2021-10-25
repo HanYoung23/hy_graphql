@@ -117,14 +117,14 @@ class MenuDrawer extends StatelessWidget {
                                       color: app_grey_dark,
                                       border: Border.all(
                                           width: ScreenUtil().setSp(0.5)),
-                                      borderRadius: BorderRadius.circular(50))
+                                      borderRadius: BorderRadius.circular(100))
                                   : BoxDecoration(
                                       image: DecorationImage(
                                           image: NetworkImage(profilePhotoLink),
                                           fit: BoxFit.cover),
                                       border: Border.all(
                                           width: ScreenUtil().setSp(0.5)),
-                                      borderRadius: BorderRadius.circular(50)),
+                                      borderRadius: BorderRadius.circular(100)),
                             ),
                             SizedBox(height: ScreenUtil().setSp(8)),
                             Row(

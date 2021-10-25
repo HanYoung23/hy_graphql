@@ -188,7 +188,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                                 height: ScreenUtil().setSp(101))
                                             : ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(50),
+                                                    BorderRadius.circular(100),
                                                 child: Image.network(
                                                     profilePhotoLink,
                                                     fit: BoxFit.cover,
@@ -199,7 +199,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                               )
                                         : ClipRRect(
                                             borderRadius:
-                                                BorderRadius.circular(50),
+                                                BorderRadius.circular(100),
                                             child: Image.file(
                                               File(pickedImage.path),
                                               width: ScreenUtil().setSp(101),

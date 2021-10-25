@@ -22,10 +22,10 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLName</key>
-        <string></string>
-        <key>CFBundleURLSchemes</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaobb7ebfb5b4cc388795bf68e8e69f3cc9</string>
 				<string>com.jjang.letsgotrip.naver</string>
@@ -41,49 +41,35 @@
 		<string>kakaobb7ebfb5b4cc388795bf68e8e69f3cc9</string>
 		<string>kakaokompassauth</string>
 		<string>kakaotalk-5.9.7</string>
-		<!-- naver -->
 		<string>naversearchapp</string>
-            <string>naversearchthirdlogin</string>
-			<!-- naver end -->
+		<string>naversearchthirdlogin</string>
 	</array>
-	<!-- naver -->
-        <key>kServiceAppUrlScheme</key>
-        <string>com.jjang.letsgotrip.naver</string>
-        <key>kConsumerKey</key>
-        <string>lYqxXzWsxilVPsR5i6Ux</string>
-        <key>kConsumerSecret</key>
-        <string>RNR1JUfDb2</string>
-        <key>kServiceAppName</key>
-        <string>letsgotrip</string>
-
-        <!-- http allows configurations -->
-        <key>NSAppTransportSecurity</key>
-        <dict>
-           <key>NSAllowsArbitraryLoads</key>
-           <true/>
-           <key>NSExceptionDomains</key>
-           <dict>
-              <key>naver.com</key>
-              <dict>
-                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                 <true/>
-                 <key>NSExceptionRequiresForwardSecrecy</key>
-                 <false/>
-                 <key>NSIncludesSubdomains</key>
-                 <true/>
-              </dict>
-              <key>naver.net</key>
-              <dict>
-                 <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                 <true/>
-                 <key>NSExceptionRequiresForwardSecrecy</key>
-                 <false/>
-                 <key>NSIncludesSubdomains</key>
-                 <true/>
-              </dict>
-           </dict>
-        </dict>
-			  <!-- naver end -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>naver.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+			<key>naver.net</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>위치서비스를 허용 후 서비스 이용 할 수 있습니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -115,6 +101,13 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<string>YES</string>
-	<!-- <true/> -->
+	<key>kConsumerKey</key>
+	<string>lYqxXzWsxilVPsR5i6Ux</string>
+	<key>kConsumerSecret</key>
+	<string>RNR1JUfDb2</string>
+	<key>kServiceAppName</key>
+	<string>letsgotrip</string>
+	<key>kServiceAppUrlScheme</key>
+	<string>com.jjang.letsgotrip.naver</string>
 </dict>
 </plist>

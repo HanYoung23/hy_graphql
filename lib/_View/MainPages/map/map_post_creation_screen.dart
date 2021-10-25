@@ -385,7 +385,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
               width: ScreenUtil().setSp(20),
               height: ScreenUtil().setSp(20),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50), color: app_grey),
+                  borderRadius: BorderRadius.circular(100), color: app_grey),
               child: Icon(Icons.close,
                   size: ScreenUtil().setSp(16), color: Colors.white),
             ),

@@ -244,7 +244,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         profilePhotoLink.length == 0
                                             ? ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(50),
+                                                    BorderRadius.circular(100),
                                                 child: pickedImage == null
                                                     ? Image.asset(
                                                         "assets/images/profileSettings/thumbnail_default.png",
@@ -262,7 +262,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                       ))
                                             : ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(50),
+                                                    BorderRadius.circular(100),
                                                 child: pickedImage == null
                                                     ? Image.network(
                                                         profilePhotoLink,

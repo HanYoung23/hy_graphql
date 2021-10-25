@@ -49,14 +49,14 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
     return SafeArea(
         child: Container(
       width: ScreenUtil().screenWidth,
-      height: ScreenUtil().screenHeight * 0.9,
+      height: ScreenUtil().setSp(640),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Column(
         children: [
-          SizedBox(height: ScreenUtil().setSp(40)),
+          SizedBox(height: ScreenUtil().setHeight(40)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
             child: Row(
@@ -91,7 +91,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               ],
             ),
           ),
-          SizedBox(height: ScreenUtil().setSp(30)),
+          SizedBox(height: ScreenUtil().setHeight(30)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(32)),
             child: Column(
@@ -116,7 +116,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                     ],
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setSp(14)),
+                SizedBox(height: ScreenUtil().setHeight(14)),
                 InkWell(
                   onTap: () {
                     setState(() {
@@ -140,52 +140,88 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               ],
             ),
           ),
-          SizedBox(height: ScreenUtil().setSp(14)),
-          Row(
-            children: [
-              SizedBox(width: ScreenUtil().setSp(20)),
-              rangeTag("일주일"),
-              Spacer(),
-              rangeTag("1개월"),
-              Spacer(),
-              rangeTag("3개월"),
-              Spacer(),
-              rangeTag("6개월"),
-              SizedBox(width: ScreenUtil().setSp(20)),
-            ],
-          ),
-          SizedBox(height: ScreenUtil().setSp(14)),
-          Row(
-            children: [
-              SizedBox(width: ScreenUtil().setSp(30)),
-              selectedDate(leftDate),
-              Spacer(),
-              Text("~",
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(18),
-                    letterSpacing: -0.45,
-                  )),
-              Spacer(),
-              selectedDate(rightDate),
-              SizedBox(width: ScreenUtil().setSp(30)),
-            ],
-          ),
+          // SizedBox(height: ScreenUtil().setHeight(14)),
           Spacer(),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(34)),
-            child: SfDateRangePicker(
-              onSelectionChanged: _onSelectionChanged,
-              selectionMode: DateRangePickerSelectionMode.range,
-              todayHighlightColor: Colors.transparent,
-              startRangeSelectionColor: app_blue_calendar,
-              headerStyle:
-                  DateRangePickerHeaderStyle(textAlign: TextAlign.center),
-              // initialSelectedRange: PickerDateRange(
-              //     DateTime.now().subtract(const Duration(days: 4)),
-              //     DateTime.now().add(const Duration(days: 3))),
-              // monthFormat: "MM.",
-            ),
-          ),
+          !isWhole
+              ? Row(
+                  children: [
+                    SizedBox(width: ScreenUtil().setSp(20)),
+                    rangeTag("일주일"),
+                    Spacer(),
+                    rangeTag("1개월"),
+                    Spacer(),
+                    rangeTag("3개월"),
+                    Spacer(),
+                    rangeTag("6개월"),
+                    SizedBox(width: ScreenUtil().setSp(20)),
+                  ],
+                )
+              : Container(),
+          // SizedBox(height: ScreenUtil().setHeight(14)),
+          Spacer(),
+          !isWhole
+              ? Row(
+                  children: [
+                    SizedBox(width: ScreenUtil().setSp(30)),
+                    selectedDate("leftDate"),
+                    Spacer(),
+                    Text("~",
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(18),
+                          letterSpacing: -0.45,
+                        )),
+                    Spacer(),
+                    selectedDate("rightDate"),
+                    SizedBox(width: ScreenUtil().setSp(30)),
+                  ],
+                )
+              : Container(),
+          Spacer(),
+          !isWhole
+              ? Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(34)),
+                  child: SfDateRangePicker(
+                    onSelectionChanged: _onSelectionChanged,
+                    selectionMode: DateRangePickerSelectionMode.range,
+                    todayHighlightColor: Colors.transparent,
+                    startRangeSelectionColor: app_blue_calendar,
+                    headerStyle: DateRangePickerHeaderStyle(
+                        textAlign: TextAlign.center,
+                        textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: ScreenUtil().setSp(18),
+                          letterSpacing: -0.45,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    monthViewSettings: DateRangePickerMonthViewSettings(
+                        viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: ScreenUtil().setSp(16),
+                                letterSpacing: -0.4))),
+                    selectionTextStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4),
+                    rangeTextStyle: TextStyle(
+                        color: app_blue,
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4),
+                    monthCellStyle: DateRangePickerMonthCellStyle(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: ScreenUtil().setSp(16),
+                          letterSpacing: -0.4),
+                      todayTextStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: ScreenUtil().setSp(16),
+                          letterSpacing: -0.4),
+                    ),
+                  ),
+                )
+              : Container(),
+          Spacer(),
           Spacer(),
         ],
       ),
@@ -204,7 +240,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       ),
       child: Center(
         child: Text(
-          title,
+          title == "leftDate" ? leftDate : rightDate,
           style: TextStyle(
             fontSize: ScreenUtil().setSp(16),
             letterSpacing: -0.4,
@@ -219,7 +255,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       width: ScreenUtil().setSp(74),
       height: ScreenUtil().setSp(28),
       decoration: BoxDecoration(
-          color: app_grey_tag, borderRadius: BorderRadius.circular(50)),
+          color: app_grey_tag, borderRadius: BorderRadius.circular(100)),
       child: Center(
         child: Text(
           title,
@@ -238,7 +274,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       height: ScreenUtil().setSp(30),
       decoration: BoxDecoration(
         border: Border.all(width: ScreenUtil().setSp(1), color: Colors.grey),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(100),
       ),
     );
   }
@@ -249,13 +285,13 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       height: ScreenUtil().setSp(30),
       decoration: BoxDecoration(
         border: Border.all(width: ScreenUtil().setSp(1), color: Colors.black),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(100),
       ),
       child: Container(
         decoration: BoxDecoration(
           color: app_blue,
           border: Border.all(width: ScreenUtil().setSp(6), color: Colors.white),
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(100),
         ),
       ),
     );

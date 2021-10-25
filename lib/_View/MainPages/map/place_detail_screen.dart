@@ -173,7 +173,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                               color:
                                                   Colors.black.withOpacity(0.3),
                                               borderRadius:
-                                                  BorderRadius.circular(50)),
+                                                  BorderRadius.circular(100)),
                                           child: Center(
                                             child: Text(
                                               "$currentIndex/${imageLink.length}",
@@ -262,7 +262,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         decoration: BoxDecoration(
                                             color: app_grey,
                                             borderRadius:
-                                                BorderRadius.circular(50)),
+                                                BorderRadius.circular(100)),
                                         padding: EdgeInsets.symmetric(
                                           horizontal: ScreenUtil().setSp(14),
                                           vertical: ScreenUtil().setSp(6),

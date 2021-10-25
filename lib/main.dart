@@ -8,11 +8,15 @@ import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
+import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
+
+import 'homepage.dart';
 
 void main() {
   runApp(GraphQLProvider(

@@ -354,11 +354,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 decoration: photo == null
                     ? BoxDecoration(
                         color: app_grey,
-                        borderRadius: BorderRadius.circular(50))
+                        borderRadius: BorderRadius.circular(100))
                     : BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover, image: NetworkImage(photo)),
-                        borderRadius: BorderRadius.circular(50)),
+                        borderRadius: BorderRadius.circular(100)),
               ),
               SizedBox(width: ScreenUtil().setSp(6)),
               Expanded(
@@ -460,11 +460,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 decoration: photo == null
                     ? BoxDecoration(
                         color: app_grey,
-                        borderRadius: BorderRadius.circular(50))
+                        borderRadius: BorderRadius.circular(100))
                     : BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover, image: NetworkImage(photo)),
-                        borderRadius: BorderRadius.circular(50)),
+                        borderRadius: BorderRadius.circular(100)),
               ),
               SizedBox(width: ScreenUtil().setSp(6)),
               Expanded(
