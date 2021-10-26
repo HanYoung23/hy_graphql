@@ -54,7 +54,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
             Map resultData = result.data["mypage"][0];
-            print("🚨 mypage result : $resultData");
+            // print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
             String profileText = resultData["profile_text"];
@@ -111,15 +111,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                   (dynamic resultData) {
                                                 if (resultData["change_profile"]
                                                     ["result"]) {
-                                                  //   print(
-                                                  // "🚨 changeProfile result : $resultData");
                                                   widget.callbackRefetch();
+                                                  Get.back();
                                                 }
                                               }),
                                           builder: (RunMutation runMutation,
                                               QueryResult queryResult) {
-                                            print(
-                                                "🚨 changeProfile queryResult : $queryResult");
                                             return InkWell(
                                               onTap: () async {
                                                 int customerId = int.parse(
@@ -241,7 +238,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     },
                                     child: Column(
                                       children: [
-                                        profilePhotoLink.length == 0
+                                        profilePhotoLink == null
                                             ? ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(100),

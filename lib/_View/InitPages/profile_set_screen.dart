@@ -192,7 +192,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             cursorColor: Colors.black,
                             keyboardType: TextInputType.text,
                             onChanged: (value) {
-                              if (value.length > 0) {
+                              if (value.length > 0 && value.length < 13) {
                                 String typedData = value[value.length - 1];
                                 if (!validChar.hasMatch(typedData) ||
                                     typedData == " ") {
@@ -214,6 +214,12 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     currentColor = focusColor;
                                   });
                                 }
+                              } else if (value.length > 12) {
+                                setState(() {
+                                  isValid = false;
+                                  inputMessage = "12자 이상은 사용 불가합니다.";
+                                  currentColor = errorColor;
+                                });
                               } else {
                                 setState(() {
                                   isValid = false;

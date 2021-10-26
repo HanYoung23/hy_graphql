@@ -490,6 +490,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             letterSpacing: -0.35),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       )
                     : Container()
               ],
