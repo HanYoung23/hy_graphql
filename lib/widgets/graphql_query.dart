@@ -82,6 +82,7 @@ class Queries {
           regist_date
           edit_date
           profile_photo_link
+          check_flag
         }
     }
 """;

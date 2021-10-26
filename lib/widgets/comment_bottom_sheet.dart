@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/comment_cupertino_bottom_sheet.dart';
@@ -153,27 +154,24 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                               String nickname = comment["nick_name"];
                               String profilePhotoLInk =
                                   comment["profile_photo_link"];
-                              String date = comment["regist_date"]
-                                  .replaceAll(RegExp(r'-'), ".")
-                                  .substring(0, 10);
-                              // String hour = comment["regist_date"]
-                              //     .replaceAll(RegExp(r'-'), ".")
-                              //     .substring(12, 14);
-                              // String min = comment["regist_date"]
-                              //     .replaceAll(RegExp(r'-'), ".")
-                              //     .substring(15, 17);
+                              //
+                              DateTime dateTime =
+                                  DateTime.parse(comment["regist_date"]);
+                              var formatter =
+                                  new DateFormat('yyyy MMM dd, a h:m');
+                              String date = formatter.format(dateTime);
+                              //
                               String content = comment["coment_text"];
                               int comentsId = comment["coments_id"];
                               int comentsIdLink = comment["coments_id_link"];
+                              int checkFlag = comment["check_flag"];
 
-                              ///
                               List replyList = [];
                               comentsList.map((e) {
                                 if (e["coments_id_link"] == comentsId) {
                                   replyList.add(e);
                                 }
                               }).toList();
-                              // print("🚨 replyList : $replyList");
 
                               return comentsIdLink == null
                                   ? Column(
@@ -185,23 +183,25 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             content,
                                             comentsId,
                                             comentsIdLink,
-                                            refetch),
+                                            refetch,
+                                            checkFlag),
                                         Column(
                                           children: replyList.map((e) {
                                             String _nickname = e["nick_name"];
                                             String _profilePhotoLInk =
                                                 e["profile_photo_link"];
-                                            String _date = e["regist_date"]
-                                                .replaceAll(RegExp(r'-'), ".")
-                                                .substring(0, 10);
-                                            // String _hour = e["regist_date"]
-                                            //     .replaceAll(RegExp(r'-'), ".")
-                                            //     .substring(12, 14);
-                                            // String _min = e["regist_date"]
-                                            //     .replaceAll(RegExp(r'-'), ".")
-                                            //     .substring(15, 17);
+                                            //
+                                            DateTime _dateTime = DateTime.parse(
+                                                e["regist_date"]);
+                                            var formatter = new DateFormat(
+                                                'yyyy MMM dd, a h:m');
+                                            String _date =
+                                                formatter.format(_dateTime);
+                                            //
                                             String _content = e["coment_text"];
                                             int _comentsId = e["coments_id"];
+                                            int _checkFlag = e["check_flag"];
+
                                             return commentReplyForm(
                                                 _profilePhotoLInk,
                                                 nickname,
@@ -210,7 +210,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                                 _content,
                                                 comentsId,
                                                 _comentsId,
-                                                refetch);
+                                                refetch,
+                                                _checkFlag);
                                           }).toList(),
                                         )
                                       ],
@@ -344,7 +345,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   Column commentForm(String photo, String nickname, String date, String content,
-      int comentsId, int comentsIdLink, Function refetch) {
+      int comentsId, int comentsIdLink, Function refetch, int checkFlag) {
     return Column(
       children: [
         SizedBox(height: ScreenUtil().setSp(20)),
@@ -401,9 +402,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       ),
                       SizedBox(height: ScreenUtil().setSp(6)),
                       Text(
-                        content,
+                        checkFlag != 2 ? content : "삭제된 댓글입니다.",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
+                            color:
+                                checkFlag != 2 ? Colors.black : app_font_grey,
                             letterSpacing: -0.35),
                       ),
                       SizedBox(height: ScreenUtil().setSp(8)),
@@ -467,7 +470,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       String content,
       int comentsId,
       int _comentsId,
-      Function refetch) {
+      Function refetch,
+      int _checkFlag) {
     String replyText =
         content.substring(replyNickname.length + 1, content.length);
     return Column(
@@ -535,10 +539,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 color: app_blue),
                             children: [
                               TextSpan(
-                                text: replyText,
+                                text: _checkFlag != 2
+                                    ? " $replyText"
+                                    : " 삭제된 댓글입니다.",
                                 style: TextStyle(
                                     letterSpacing: -0.35,
-                                    color: Colors.black,
+                                    color: _checkFlag != 2
+                                        ? Colors.black
+                                        : app_font_grey,
                                     fontSize: ScreenUtil().setSp(14)),
                               )
                             ]),
