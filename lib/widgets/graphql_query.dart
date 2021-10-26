@@ -75,6 +75,7 @@ class Queries {
     query coments_list(\$contents_id: Int!, \$sequence: Int!) {
       coments_list(contents_id: \$contents_id, sequence: \$sequence) 
       {
+          customer_id
           coments_id
           nick_name
           coment_text

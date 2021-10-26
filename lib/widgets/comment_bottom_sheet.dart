@@ -69,7 +69,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            // print("🚨 comments : ${result.data["coments_list"][0]}");
+            print("🚨 comments : ${result.data["coments_list"][0]}");
 
             List comentsList = result.data["coments_list"];
 
@@ -182,10 +182,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                       ? comment["regist_date"]
                                       : comment["edit_date"]);
                               var formatter =
-                                  new DateFormat('yyyy MMM dd, a h:m');
+                                  new DateFormat('yyyy MMM dd, a h:mm');
                               String date = formatter.format(dateTime);
                               //
                               String content = comment["coment_text"];
+                              int commentCustomerId = comment["customer_id"];
                               int comentsId = comment["coments_id"];
                               int comentsIdLink = comment["coments_id_link"];
                               int checkFlag = comment["check_flag"];
@@ -201,6 +202,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                   ? Column(
                                       children: [
                                         commentForm(
+                                            commentCustomerId,
                                             profilePhotoLInk,
                                             nickname,
                                             date,
@@ -220,15 +222,18 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                                     ? e["regist_date"]
                                                     : e["edit_date"]);
                                             var formatter = new DateFormat(
-                                                'yyyy MMM dd, a h:m');
+                                                'yyyy MMM dd, a h:mm');
                                             String _date =
                                                 formatter.format(_dateTime);
                                             //
                                             String _content = e["coment_text"];
+                                            int _commentCustomerId =
+                                                comment["customer_id"];
                                             int _comentsId = e["coments_id"];
                                             int _checkFlag = e["check_flag"];
 
                                             return commentReplyForm(
+                                                _commentCustomerId,
                                                 _profilePhotoLInk,
                                                 nickname,
                                                 _nickname,
@@ -268,8 +273,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  refetch();
                   widget.callbackRefetch();
+                  refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
               return TextFormField(
@@ -367,8 +372,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.changeComent),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  refetch();
                   widget.callbackRefetch();
+                  refetch();
                   setState(() {
                     editCommentId = null;
                     editCommentText = null;
@@ -457,8 +462,16 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             }));
   }
 
-  Column commentForm(String photo, String nickname, String date, String content,
-      int comentsId, int comentsIdLink, Function refetch, int checkFlag) {
+  Column commentForm(
+      int commentCustomerId,
+      String photo,
+      String nickname,
+      String date,
+      String content,
+      int comentsId,
+      int comentsIdLink,
+      Function refetch,
+      int checkFlag) {
     return Column(
       children: [
         SizedBox(height: ScreenUtil().setSp(20)),
@@ -549,16 +562,19 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        CommentCupertinoBottomSheet(
-                            comentsId: comentsId,
-                            comentText: content,
-                            refetchCallback: refetch,
-                            editCommentCallback: (id, text) =>
-                                commentEditCallback(id, text)),
-                  );
+                  print("$customerId , $commentCustomerId");
+                  if (customerId != commentCustomerId) {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          CommentCupertinoBottomSheet(
+                              comentsId: comentsId,
+                              comentText: content,
+                              refetchCallback: refetch,
+                              editCommentCallback: (id, text) =>
+                                  commentEditCallback(id, text)),
+                    );
+                  }
                 },
                 child: Image.asset("assets/images/comment_toggle_button.png",
                     width: ScreenUtil().setSp(28),
@@ -578,6 +594,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   Column commentReplyForm(
+      int commentCustomerId,
       String photo,
       String replyNickname,
       String nickname,
