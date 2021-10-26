@@ -10,11 +10,13 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
   final int comentsId;
   final String comentText;
   final Function refetchCallback;
+  final Function editCommentCallback;
   const CommentCupertinoBottomSheet({
     Key key,
     @required this.comentsId,
     @required this.comentText,
     @required this.refetchCallback,
+    @required this.editCommentCallback,
   }) : super(key: key);
 
   @override
@@ -43,7 +45,10 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                       color: app_blue_cupertino,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    editCommentCallback(comentsId, comentText);
+                    Get.back();
+                  },
                 ),
                 CupertinoActionSheetAction(
                   child: Text(
@@ -55,8 +60,7 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // print("$comentText");
-                    // print("$comentsId");
+                    editCommentCallback(null, null);
                     runMutation({
                       "type": "del",
                       "coments_id": comentsId,
@@ -75,6 +79,7 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+                  editCommentCallback(null, null);
                   Get.back();
                 },
               ));

@@ -26,8 +26,24 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   FocusNode focusNode;
   bool isLeft = true;
   bool isValid = false;
+  int editCommentId;
+  String editCommentText;
   int replyCommentId = 0;
   String replyCommentNickname = "";
+
+  commentEditCallback(commentId, commentText) {
+    if (commentId != null) {
+      setState(() {
+        editCommentId = commentId;
+        editCommentText = commentText;
+      });
+      commentController.text = commentText;
+    } else {
+      setState(() {
+        replyCommentNickname = "";
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -237,7 +253,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
         child: Mutation(
             options: MutationOptions(
-                document: gql(Mutations.createComents),
+                document: gql(editCommentId == null
+                    ? Mutations.createComents
+                    : Mutations.changeComent),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
                   refetch();
@@ -275,21 +293,32 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   hintStyle: TextStyle(
                       color: Color.fromRGBO(188, 192, 193, 1),
                       fontSize: ScreenUtil().setSp(14)),
+                  // prefixText: "@$replyCommentNickname",
                   suffixIcon: InkWell(
                     onTap: () async {
                       String customerId = await storage.read(key: "customerId");
+                      String inputValue = commentController.text;
                       if (isValid) {
-                        if (replyCommentId != 0) {
-                          String inputValue = commentController.text;
-                          int nicknameLength = replyCommentNickname.length + 1;
-                          if (inputValue.substring(0, nicknameLength) ==
-                              "@$replyCommentNickname") {
-                            runMutation({
-                              "contents_id": widget.contentsId,
-                              "customer_id": int.parse(customerId),
-                              "coment_text": commentController.text,
-                              "coments_id_link": replyCommentId,
-                            });
+                        if (editCommentId == null) {
+                          if (replyCommentId != 0) {
+                            int nicknameLength =
+                                replyCommentNickname.length + 1;
+                            if (inputValue.substring(0, nicknameLength) ==
+                                "@$replyCommentNickname") {
+                              runMutation({
+                                "contents_id": widget.contentsId,
+                                "customer_id": int.parse(customerId),
+                                "coment_text": commentController.text,
+                                "coments_id_link": replyCommentId,
+                              });
+                            } else {
+                              runMutation({
+                                "contents_id": widget.contentsId,
+                                "customer_id": int.parse(customerId),
+                                "coment_text": commentController.text,
+                                "coments_id_link": replyCommentId,
+                              });
+                            }
                           } else {
                             runMutation({
                               "contents_id": widget.contentsId,
@@ -299,18 +328,41 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             });
                           }
                         } else {
-                          runMutation({
-                            "contents_id": widget.contentsId,
-                            "customer_id": int.parse(customerId),
-                            "coment_text": commentController.text,
-                            "coments_id_link": replyCommentId,
-                          });
+                          if (replyCommentNickname != "") {
+                            if (inputValue.substring(
+                                    0, editCommentText.length) ==
+                                "@$replyCommentNickname") {
+                              print(
+                                  "🚨 not reply edit : $editCommentId, coment_text: $editCommentText");
+                              runMutation({
+                                "type": "edit",
+                                "coments_id": editCommentId,
+                                "coment_text": commentController.text,
+                              });
+                            } else {
+                              runMutation({
+                                "contents_id": widget.contentsId,
+                                "customer_id": int.parse(customerId),
+                                "coment_text": commentController.text,
+                                "coments_id_link": replyCommentId,
+                              });
+                            }
+                          } else {
+                            print(
+                                "🚨 reply edit : $editCommentId, coment_text: $editCommentText");
+                            runMutation({
+                              "type": "edit",
+                              "coments_id": editCommentId,
+                              "coment_text": commentController.text,
+                            });
+                          }
                         }
-
                         commentController.text = "";
                         setState(() {
                           replyCommentId = 0;
                           replyCommentNickname = "";
+                          editCommentId = null;
+                          editCommentText = null;
                           isValid = false;
                         });
                         FocusScope.of(context).unfocus();
@@ -417,6 +469,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             replyCommentNickname = nickname;
                           });
                           commentController.text = "@$nickname ";
+                          // commentController.text = "";
                           commentController.selection =
                               TextSelection.fromPosition(TextPosition(
                                   offset: commentController.text.length));
@@ -442,7 +495,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         CommentCupertinoBottomSheet(
                             comentsId: comentsId,
                             comentText: content,
-                            refetchCallback: refetch),
+                            refetchCallback: refetch,
+                            editCommentCallback: (id, text) =>
+                                commentEditCallback(id, text)),
                   );
                 },
                 child: Image.asset("assets/images/comment_toggle_button.png",
@@ -585,8 +640,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       comentsId: _comentsId,
                       comentText: content,
                       refetchCallback: refetch,
+                      editCommentCallback: (id, text) =>
+                          commentEditCallback(id, text),
                     ),
                   );
+                  setState(() {
+                    replyNickname = replyNickname;
+                  });
                 },
                 child: Image.asset("assets/images/comment_toggle_button.png",
                     width: ScreenUtil().setSp(28),
