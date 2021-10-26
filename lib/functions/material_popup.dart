@@ -258,14 +258,14 @@ logOutPopup(BuildContext context) {
                       InkWell(
                           onTap: () {
                             seeValue("loginType").then((loginType) async {
-                              switch (loginType) {
-                                case "kakao":
-                                  await kakaoLogout();
-                                  break;
-                                case "naver":
-                                  await naverLogout();
-                                  break;
-                              }
+                              // switch (loginType) {
+                              //   case "kakao":
+                              //     await kakaoLogout();
+                              //     break;
+                              //   case "naver":
+                              //     await naverLogout();
+                              //     break;
+                              // }
                               await deleteUserData("userId");
                               await deleteUserData("customerId");
                               await deleteUserData("loginType");

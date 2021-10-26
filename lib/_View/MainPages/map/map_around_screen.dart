@@ -64,13 +64,18 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               int contentsId = int.parse("${resultData["contents_id"]}");
               String imageUrl = "${resultData["image_link"]}";
               List urlList = imageUrl.split(",");
-              for (String url in urlList) {
-                Map mapData = {
-                  "contentsId": contentsId,
-                  "imageLink": url,
-                };
-                imageMaps.add(mapData);
-              }
+              Map mapData = {
+                "contentsId": contentsId,
+                "imageLink": urlList[0],
+              };
+              imageMaps.add(mapData);
+              // for (String url in urlList) {
+              //   Map mapData = {
+              //     "contentsId": contentsId,
+              //     "imageLink": url,
+              //   };
+              //   imageMaps.add(mapData);
+              // }
             }
             // print("🚨 imageMaps : ${imageMaps.length}");
             // print("🚨 result : $result");

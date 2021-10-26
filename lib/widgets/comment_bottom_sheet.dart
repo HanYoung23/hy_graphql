@@ -26,10 +26,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   FocusNode focusNode;
   bool isLeft = true;
   bool isValid = false;
+  //
   int editCommentId;
   String editCommentText;
   int replyCommentId = 0;
   String replyCommentNickname = "";
+  //
+  int customerId;
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -48,6 +51,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   @override
   void initState() {
     focusNode = FocusNode();
+    seeValue("customerId").then((value) {
+      customerId = int.parse(value);
+    });
     super.initState();
   }
 
@@ -171,8 +177,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                               String profilePhotoLInk =
                                   comment["profile_photo_link"];
                               //
-                              DateTime dateTime =
-                                  DateTime.parse(comment["regist_date"]);
+                              DateTime dateTime = DateTime.parse(
+                                  comment["edit_date"] == null
+                                      ? comment["regist_date"]
+                                      : comment["edit_date"]);
                               var formatter =
                                   new DateFormat('yyyy MMM dd, a h:m');
                               String date = formatter.format(dateTime);
@@ -208,7 +216,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                                 e["profile_photo_link"];
                                             //
                                             DateTime _dateTime = DateTime.parse(
-                                                e["regist_date"]);
+                                                e["edit_date"] == null
+                                                    ? e["regist_date"]
+                                                    : e["edit_date"]);
                                             var formatter = new DateFormat(
                                                 'yyyy MMM dd, a h:m');
                                             String _date =
@@ -237,7 +247,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           ),
                         ),
                   comentsList.length != 0 ? Spacer() : Container(),
-                  textInput(context, refetch),
+                  editCommentId == null
+                      ? textInput(context, refetch)
+                      : editTextInput(context, refetch),
                   SizedBox(height: ScreenUtil().setSp(20))
                 ],
               ),
@@ -253,13 +265,114 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
         child: Mutation(
             options: MutationOptions(
-                document: gql(editCommentId == null
-                    ? Mutations.createComents
-                    : Mutations.changeComent),
+                document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
                   refetch();
                   widget.callbackRefetch();
+                }),
+            builder: (RunMutation runMutation, QueryResult queryResult) {
+              return TextFormField(
+                focusNode: focusNode,
+                controller: commentController,
+                cursorColor: Colors.black,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  if (commentController.text.length > 0) {
+                    setState(() {
+                      isValid = true;
+                    });
+                  } else {
+                    setState(() {
+                      replyCommentId = 0;
+                      replyCommentNickname = "";
+                      isValid = false;
+                    });
+                  }
+                },
+                style: TextStyle(
+                    fontSize: ScreenUtil().setSp(14), letterSpacing: -0.35),
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: 0, horizontal: ScreenUtil().setSp(10)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: app_grey_dark),
+                  ),
+                  hintText: replyCommentNickname == "" ? '의견을 남겨보세요' : "",
+                  hintStyle: TextStyle(
+                      color: Color.fromRGBO(188, 192, 193, 1),
+                      fontSize: ScreenUtil().setSp(14)),
+                  prefixText: replyCommentNickname != ""
+                      ? "@$replyCommentNickname"
+                      : "",
+                  suffixIcon: InkWell(
+                    onTap: () async {
+                      if (isValid) {
+                        String inputText = commentController.text;
+                        String commentText = replyCommentId != 0
+                            ? inputText.substring(1, inputText.length)
+                            : inputText;
+
+                        runMutation({
+                          "contents_id": widget.contentsId,
+                          "customer_id": customerId,
+                          "coment_text": commentText,
+                          "coments_id_link": replyCommentId,
+                        });
+                        commentController.text = "";
+                        setState(() {
+                          replyCommentId = 0;
+                          replyCommentNickname = "";
+                          isValid = false;
+                        });
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                    child: Container(
+                      width: ScreenUtil().setWidth(56),
+                      height: ScreenUtil().setHeight(34),
+                      margin: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(5),
+                          horizontal: ScreenUtil().setWidth(8)),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: isValid
+                            ? Color.fromRGBO(5, 138, 221, 1)
+                            : Color.fromRGBO(5, 138, 221, 0.3),
+                      ),
+                      child: Center(
+                          child: Text(
+                        "입력",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -0.35,
+                            color: Colors.white),
+                      )),
+                    ),
+                  ),
+                ),
+              );
+            }));
+  }
+
+  Container editTextInput(BuildContext context, Function refetch) {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
+        child: Mutation(
+            options: MutationOptions(
+                document: gql(Mutations.changeComent),
+                update: (GraphQLDataProxy proxy, QueryResult result) {},
+                onCompleted: (dynamic resultData) {
+                  refetch();
+                  widget.callbackRefetch();
+                  setState(() {
+                    editCommentId = null;
+                    editCommentText = null;
+                  });
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
               return TextFormField(
@@ -289,74 +402,22 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: app_grey_dark),
                   ),
-                  hintText: '의견을 남겨보세요',
+                  // hintText: '의견을 남겨보세요',
                   hintStyle: TextStyle(
                       color: Color.fromRGBO(188, 192, 193, 1),
                       fontSize: ScreenUtil().setSp(14)),
-                  // prefixText: "@$replyCommentNickname",
+                  prefixText: replyCommentNickname != ""
+                      ? "@$replyCommentNickname"
+                      : "",
                   suffixIcon: InkWell(
                     onTap: () async {
-                      String customerId = await storage.read(key: "customerId");
                       String inputValue = commentController.text;
                       if (isValid) {
-                        if (editCommentId == null) {
-                          if (replyCommentId != 0) {
-                            int nicknameLength =
-                                replyCommentNickname.length + 1;
-                            if (inputValue.substring(0, nicknameLength) ==
-                                "@$replyCommentNickname") {
-                              runMutation({
-                                "contents_id": widget.contentsId,
-                                "customer_id": int.parse(customerId),
-                                "coment_text": commentController.text,
-                                "coments_id_link": replyCommentId,
-                              });
-                            } else {
-                              runMutation({
-                                "contents_id": widget.contentsId,
-                                "customer_id": int.parse(customerId),
-                                "coment_text": commentController.text,
-                                "coments_id_link": replyCommentId,
-                              });
-                            }
-                          } else {
-                            runMutation({
-                              "contents_id": widget.contentsId,
-                              "customer_id": int.parse(customerId),
-                              "coment_text": commentController.text,
-                              "coments_id_link": replyCommentId,
-                            });
-                          }
-                        } else {
-                          if (replyCommentNickname != "") {
-                            if (inputValue.substring(
-                                    0, editCommentText.length) ==
-                                "@$replyCommentNickname") {
-                              print(
-                                  "🚨 not reply edit : $editCommentId, coment_text: $editCommentText");
-                              runMutation({
-                                "type": "edit",
-                                "coments_id": editCommentId,
-                                "coment_text": commentController.text,
-                              });
-                            } else {
-                              runMutation({
-                                "contents_id": widget.contentsId,
-                                "customer_id": int.parse(customerId),
-                                "coment_text": commentController.text,
-                                "coments_id_link": replyCommentId,
-                              });
-                            }
-                          } else {
-                            print(
-                                "🚨 reply edit : $editCommentId, coment_text: $editCommentText");
-                            runMutation({
-                              "type": "edit",
-                              "coments_id": editCommentId,
-                              "coment_text": commentController.text,
-                            });
-                          }
-                        }
+                        runMutation({
+                          "type": "edit",
+                          "coments_id": editCommentId,
+                          "coment_text": inputValue,
+                        });
                         commentController.text = "";
                         setState(() {
                           replyCommentId = 0;
@@ -382,7 +443,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       ),
                       child: Center(
                           child: Text(
-                        "입력",
+                        "수정",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             fontWeight: FontWeight.bold,
@@ -468,8 +529,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
                           });
-                          commentController.text = "@$nickname ";
-                          // commentController.text = "";
+                          commentController.text = " ";
                           commentController.selection =
                               TextSelection.fromPosition(TextPosition(
                                   offset: commentController.text.length));
@@ -527,8 +587,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       int _comentsId,
       Function refetch,
       int _checkFlag) {
-    String replyText =
-        content.substring(replyNickname.length + 1, content.length);
+    String replyText = content.substring(0, content.length);
     return Column(
       children: [
         SizedBox(height: ScreenUtil().setSp(20)),
@@ -613,7 +672,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
                           });
-                          commentController.text = "@$nickname ";
+                          commentController.text = " ";
                           commentController.selection =
                               TextSelection.fromPosition(TextPosition(
                                   offset: commentController.text.length));
