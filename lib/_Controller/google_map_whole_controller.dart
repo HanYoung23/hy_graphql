@@ -18,11 +18,11 @@ class GoogleMapWholeController extends GetxController {
 /////////////////////
   RxMap latlngBounds = {}.obs;
 
-  Future addMapCoord(Completer<GoogleMapController> mapCoordController) async {
-    await getMapCoord(mapCoordController).then((latlngMap) {
-      latlngBounds.value = latlngMap;
-    });
-  }
+  // Future addMapCoord(Completer<GoogleMapController> mapCoordController) async {
+  //   await getMapCoord(mapCoordController).then((latlngMap) {
+  //     latlngBounds.value = latlngMap;
+  //   });
+  // }
 
 /////////////////////
   List photoListMap = []; // 전체 사진 데이터

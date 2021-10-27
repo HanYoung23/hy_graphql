@@ -14,9 +14,17 @@ class MapHelper {
     String url, {
     int targetWidth,
   }) async {
-    final File markerImageFile = await DefaultCacheManager().getSingleFile(url);
-
-    return convertImageFileToBitmapDescriptor(markerImageFile);
+    File markerImageFile;
+    try {
+      markerImageFile = await DefaultCacheManager().getSingleFile(url);
+      return convertImageFileToBitmapDescriptor(markerImageFile);
+    } catch (error) {
+      print("🚨 map helper file error url : $url");
+      print("🚨 map helper file error : $error");
+      markerImageFile = await DefaultCacheManager().getSingleFile(
+          "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-26+17%3A58%3A06.350087.png");
+      return convertImageFileToBitmapDescriptor(markerImageFile);
+    }
   }
 
   Future loadUiImage() async {
@@ -29,35 +37,42 @@ class MapHelper {
 
   static Future<BitmapDescriptor> convertImageFileToBitmapDescriptor(
       File imageFile) async {
-    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-    final Canvas canvas = Canvas(pictureRecorder);
+    try {
+      // if (imageFile != null) {
+      final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+      final Canvas canvas = Canvas(pictureRecorder);
 
-    int size = 120;
+      int size = 120;
 
-    Paint paint = Paint();
-    paint.color = Colors.white;
+      Paint paint = Paint();
+      paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
-    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
+      final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
 
-    //paintImage
-    final Uint8List imageUint8List = await imageFile.readAsBytes();
-    // final Uint8List imageUint8ListBig = await _resizeImageBytes(imageUint8List, 100);
-    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
-        targetWidth: size - 15, targetHeight: size - 15);
-    final ui.FrameInfo imageFI = await codec.getNextFrame();
-    paintImage(
-        canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
-        image: imageFI.image,
-        alignment: Alignment.center);
+      //paintImage
+      final Uint8List imageUint8List = await imageFile.readAsBytes();
+      // final Uint8List imageUint8ListBig = await _resizeImageBytes(imageUint8List, 100);
+      final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
+          targetWidth: size - 15, targetHeight: size - 15);
+      final ui.FrameInfo imageFI = await codec.getNextFrame();
+      paintImage(
+          canvas: canvas,
+          rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+          image: imageFI.image,
+          alignment: Alignment.center);
 
-    //convert canvas as PNG bytes
-    final _image = await pictureRecorder.endRecording().toImage(size, size);
-    final data = await _image.toByteData(format: ui.ImageByteFormat.png);
+      //convert canvas as PNG bytes
+      final _image = await pictureRecorder.endRecording().toImage(size, size);
+      final data = await _image.toByteData(format: ui.ImageByteFormat.png);
 
-    //convert PNG bytes as BitmapDescriptor
-    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+      //convert PNG bytes as BitmapDescriptor
+      return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+    } catch (error) {
+      print("🚨 map helper error : $error");
+      return null;
+    }
   }
 
   static Future<BitmapDescriptor> _getClusterMarker(

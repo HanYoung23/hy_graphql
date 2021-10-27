@@ -180,14 +180,8 @@ class _MapScreenState extends State<MapScreen> {
                         SizedBox(width: ScreenUtil().setWidth(8)),
                         InkWell(
                           onTap: () {
-                            // Get.to(() => MapAroundScreen(),
-                            //     transition: Transition.noTransition);
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MapAroundScreen()),
-                            );
+                            Get.to(() => MapAroundScreen(),
+                                transition: Transition.noTransition);
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,

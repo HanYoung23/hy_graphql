@@ -58,64 +58,64 @@ class MyApp extends StatelessWidget {
     final GoogleMapWholeController gmWholeController =
         Get.put(GoogleMapWholeController());
 
-    return Query(
-        options: QueryOptions(
-          document: gql(Queries.photoListMap),
-          variables: {
-            "latitude1": "-87.71179927260242",
-            "latitude2": "89.45016124669523",
-            "longitude1": "-180",
-            "longitude2": "180",
-          },
-        ),
-        builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
-            List<Map> photoMapList = [];
-            for (Map resultData in result.data["photo_list_map"]) {
-              int customerId = int.parse("${resultData["customer_id"]}");
-              int contentsId = int.parse("${resultData["contents_id"]}");
-              int categoryId = int.parse("${resultData["category_id"]}");
-              List<String> imageLink =
-                  ("${resultData["image_link"]}").split(",");
-              List<String> tags = ("${resultData["tags"]}").split(",");
-              List<int> starRating = [
-                resultData["star_rating1"],
-                resultData["star_rating2"],
-                resultData["star_rating3"],
-                resultData["star_rating4"]
-              ];
-              double latitude = double.parse("${resultData["latitude"]}");
-              double longitude = double.parse("${resultData["longitude"]}");
+    // return Query(
+    //     options: QueryOptions(
+    // document: gql(Queries.photoListMap),
+    //       variables: {
+    //         "latitude1": "-87.71179927260242",
+    //         "latitude2": "89.45016124669523",
+    //         "longitude1": "-180",
+    //         "longitude2": "180",
+    //       },
+    //     ),
+    //     builder: (result, {refetch, fetchMore}) {
+    //       if (!result.isLoading) {
+    //         List<Map> photoMapList = [];
+    //         for (Map resultData in result.data["photo_list_map"]) {
+    //           int customerId = int.parse("${resultData["customer_id"]}");
+    //           int contentsId = int.parse("${resultData["contents_id"]}");
+    //           int categoryId = int.parse("${resultData["category_id"]}");
+    //           List<String> imageLink =
+    //               ("${resultData["image_link"]}").split(",");
+    //           List<String> tags = ("${resultData["tags"]}").split(",");
+    //           List<int> starRating = [
+    //             resultData["star_rating1"],
+    //             resultData["star_rating2"],
+    //             resultData["star_rating3"],
+    //             resultData["star_rating4"]
+    //           ];
+    //           double latitude = double.parse("${resultData["latitude"]}");
+    //           double longitude = double.parse("${resultData["longitude"]}");
 
-              Map<dynamic, dynamic> photoDataMap = {
-                "customerId": customerId,
-                "contentsId": contentsId,
-                "categoryId": categoryId,
-                "contentsTitle": "${resultData["contents_title"]}",
-                "locationLink": "${resultData["location_link"]}",
-                "imageLink": imageLink,
-                "mainText": "${resultData["main_text"]}",
-                "tags": tags,
-                "starRating": starRating,
-                "latitude": latitude,
-                "longitude": longitude,
-                "registDate": "${resultData["regist_date"]}"
-              };
+    //           Map<dynamic, dynamic> photoDataMap = {
+    //             "customerId": customerId,
+    //             "contentsId": contentsId,
+    //             "categoryId": categoryId,
+    //             "contentsTitle": "${resultData["contents_title"]}",
+    //             "locationLink": "${resultData["location_link"]}",
+    //             "imageLink": imageLink,
+    //             "mainText": "${resultData["main_text"]}",
+    //             "tags": tags,
+    //             "starRating": starRating,
+    //             "latitude": latitude,
+    //             "longitude": longitude,
+    //             "registDate": "${resultData["regist_date"]}"
+    //           };
 
-              photoMapList.add(photoDataMap);
-            }
-            gmWholeController.setPhotoListMap(photoMapList);
-          }
-          return ScreenUtilInit(
-              designSize: Size(375, 667),
-              // allowFontScaling: false,
-              builder: () => FutureBuilder(
-                    future: Future.delayed(Duration(seconds: 1)),
-                    builder: (context, snapshot) {
-                      return ScreenFilter();
-                    },
-                  ));
-        });
+    //           photoMapList.add(photoDataMap);
+    //         }
+    //         gmWholeController.setPhotoListMap(photoMapList);
+    //       }
+    return ScreenUtilInit(
+        designSize: Size(375, 667),
+        // allowFontScaling: false,
+        builder: () => FutureBuilder(
+              future: Future.delayed(Duration(seconds: 1)),
+              builder: (context, snapshot) {
+                return ScreenFilter();
+              },
+            ));
+    // });
   }
 }
 
