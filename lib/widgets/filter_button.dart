@@ -87,8 +87,8 @@ class FilterBtnOptions extends StatelessWidget {
         }
       },
       child: Container(
-        width: ScreenUtil().setSp(82),
-        height: ScreenUtil().setSp(42),
+        width: ScreenUtil().setSp(90),
+        height: ScreenUtil().setSp(44),
         alignment: Alignment.centerLeft,
         child: Text(
           "$title",

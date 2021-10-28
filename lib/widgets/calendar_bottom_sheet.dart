@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
-  const CalendarBottomSheet({Key key}) : super(key: key);
+  final Function refetchCallback;
+  const CalendarBottomSheet({Key key, @required this.refetchCallback})
+      : super(key: key);
 
   @override
   _CalendarBottomSheetState createState() => _CalendarBottomSheetState();
 }
 
 class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
-  // String _selectedDate = '';
-  // String _dateCount = '';
-  // String _range = '';
-  // String _rangeCount = '';
+  FloatingButtonController calendarController =
+      Get.put(FloatingButtonController());
+  int selectedDateRange = 0;
 
   bool isWhole = false;
   String leftDate = "";
@@ -31,16 +33,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
             .format(args.value.endDate ?? args.value.startDate)
             .toString();
       }
-      // else if (args.value is DateTime) {
-      //   _selectedDate = args.value.toString();
-      //   print("🚨 _selectedDate : $_selectedDate");
-      // } else if (args.value is List<DateTime>) {
-      //   _dateCount = args.value.length.toString();
-      //   print("🚨 _dateCount : $_dateCount");
-      // } else {
-      //   _rangeCount = args.value.length.toString();
-      //   print("🚨 _rangeCount : $_rangeCount");
-      // }
+      selectedDateRange = 0;
     });
   }
 
@@ -49,7 +42,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
     return SafeArea(
         child: Container(
       width: ScreenUtil().screenWidth,
-      height: ScreenUtil().setSp(640),
+      height: ScreenUtil().screenHeight * 0.9,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -81,12 +74,23 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                       letterSpacing: -0.4,
                       fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  "적용",
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(16),
-                      letterSpacing: -0.4,
-                      fontWeight: FontWeight.bold),
+                InkWell(
+                  onTap: () {
+                    if (isWhole || leftDate == "") {
+                      calendarController.dateUpdate("2021.01.01", "3021.09.23");
+                    } else {
+                      calendarController.dateUpdate(leftDate, rightDate);
+                    }
+                    widget.refetchCallback();
+                    Get.back();
+                  },
+                  child: Text(
+                    "적용",
+                    style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                        fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
@@ -146,13 +150,13 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               ? Row(
                   children: [
                     SizedBox(width: ScreenUtil().setSp(20)),
-                    rangeTag("일주일"),
+                    rangeTag("일주일", 7),
                     Spacer(),
-                    rangeTag("1개월"),
+                    rangeTag("1개월", 30),
                     Spacer(),
-                    rangeTag("3개월"),
+                    rangeTag("3개월", 90),
                     Spacer(),
-                    rangeTag("6개월"),
+                    rangeTag("6개월", 180),
                     SizedBox(width: ScreenUtil().setSp(20)),
                   ],
                 )
@@ -177,55 +181,70 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                 )
               : Container(),
           Spacer(),
-          !isWhole
-              ? Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(34)),
-                  child: SfDateRangePicker(
-                    onSelectionChanged: _onSelectionChanged,
-                    selectionMode: DateRangePickerSelectionMode.range,
-                    todayHighlightColor: Colors.transparent,
-                    startRangeSelectionColor: app_blue_calendar,
-                    headerStyle: DateRangePickerHeaderStyle(
-                        textAlign: TextAlign.center,
-                        textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: ScreenUtil().setSp(18),
-                          letterSpacing: -0.45,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    monthViewSettings: DateRangePickerMonthViewSettings(
-                        viewHeaderStyle: DateRangePickerViewHeaderStyle(
-                            textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: ScreenUtil().setSp(16),
-                                letterSpacing: -0.4))),
-                    selectionTextStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4),
-                    rangeTextStyle: TextStyle(
-                        color: app_blue,
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4),
-                    monthCellStyle: DateRangePickerMonthCellStyle(
-                      textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: ScreenUtil().setSp(16),
-                          letterSpacing: -0.4),
-                      todayTextStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: ScreenUtil().setSp(16),
-                          letterSpacing: -0.4),
-                    ),
-                  ),
-                )
-              : Container(),
+          if (!isWhole)
+            Column(
+              children: [
+                selectedDateRange == 0 ? calendar(0) : Container(),
+                selectedDateRange == 7 ? calendar(7) : Container(),
+                selectedDateRange == 30 ? calendar(30) : Container(),
+                selectedDateRange == 90 ? calendar(90) : Container(),
+                selectedDateRange == 180 ? calendar(180) : Container(),
+              ],
+            )
+          else
+            Container(),
           Spacer(),
           Spacer(),
         ],
       ),
     ));
+  }
+
+  Container calendar(int rangeDate) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(34)),
+      child: SfDateRangePicker(
+        onSelectionChanged: _onSelectionChanged,
+        selectionMode: DateRangePickerSelectionMode.range,
+        todayHighlightColor: Colors.transparent,
+        startRangeSelectionColor: app_blue_calendar,
+        headerStyle: DateRangePickerHeaderStyle(
+            textAlign: TextAlign.center,
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: ScreenUtil().setSp(18),
+              letterSpacing: -0.45,
+              fontWeight: FontWeight.bold,
+            )),
+        monthViewSettings: DateRangePickerMonthViewSettings(
+            viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                textStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: ScreenUtil().setSp(16),
+                    letterSpacing: -0.4))),
+        selectionTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: ScreenUtil().setSp(16),
+            letterSpacing: -0.4),
+        rangeTextStyle: TextStyle(
+            color: app_blue,
+            fontSize: ScreenUtil().setSp(16),
+            letterSpacing: -0.4),
+        monthCellStyle: DateRangePickerMonthCellStyle(
+          textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: ScreenUtil().setSp(16),
+              letterSpacing: -0.4),
+          todayTextStyle: TextStyle(
+              color: Colors.black,
+              fontSize: ScreenUtil().setSp(16),
+              letterSpacing: -0.4),
+        ),
+        initialSelectedRange: PickerDateRange(
+            DateTime.now().subtract(Duration(days: rangeDate)),
+            DateTime.now().add(Duration(days: 0))),
+      ),
+    );
   }
 
   Container selectedDate(String title) {
@@ -250,18 +269,57 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
     );
   }
 
-  Container rangeTag(String title) {
-    return Container(
-      width: ScreenUtil().setSp(74),
-      height: ScreenUtil().setSp(28),
-      decoration: BoxDecoration(
-          color: app_grey_tag, borderRadius: BorderRadius.circular(100)),
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: ScreenUtil().setSp(12),
-            letterSpacing: -0.3,
+  InkWell rangeTag(String title, int selectedDate) {
+    return InkWell(
+      onTap: () {
+        switch (title) {
+          case "일주일":
+            setState(() {
+              selectedDateRange = 7;
+            });
+            break;
+          case "1개월":
+            setState(() {
+              selectedDateRange = 30;
+            });
+            break;
+          case "3개월":
+            setState(() {
+              selectedDateRange = 90;
+            });
+            break;
+          case "6개월":
+            setState(() {
+              selectedDateRange = 180;
+            });
+            break;
+          default:
+        }
+        setState(() {
+          leftDate = DateFormat('yyyy.MM.dd')
+              .format(DateTime.now().subtract(Duration(days: selectedDate)))
+              .toString();
+          rightDate = DateFormat('yyyy.MM.dd')
+              .format(DateTime.now().add(Duration(days: 0)))
+              .toString();
+        });
+      },
+      child: Container(
+        width: ScreenUtil().setSp(74),
+        height: ScreenUtil().setSp(28),
+        decoration: BoxDecoration(
+            color: selectedDate == selectedDateRange ? app_blue : app_grey_tag,
+            borderRadius: BorderRadius.circular(100)),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: selectedDate == selectedDateRange
+                  ? Colors.white
+                  : Colors.black,
+              fontSize: ScreenUtil().setSp(12),
+              letterSpacing: -0.3,
+            ),
           ),
         ),
       ),

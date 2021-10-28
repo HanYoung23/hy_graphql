@@ -9,8 +9,8 @@ import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
-import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
+import 'package:letsgotrip/widgets/calendar_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/filter_button.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
@@ -33,15 +33,9 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool isMapLoading = true;
-  // int customerId;
 
   @override
   void initState() {
-    // seeValue("customerId").then((value) {
-    //   setState(() {
-    //     customerId = int.parse(value);
-    //   });
-    // });
     super.initState();
   }
 
@@ -81,8 +75,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               //   imageMaps.add(mapData);
               // }
             }
-            print("🚨 category : ${fliterValue.category.value}");
-            print("🚨 imageMaps : ${imageMaps.length}");
+            print(
+                "🚨 photomaplist around : ${result.data["photo_list_map"].length}");
             // print("🚨 result : $result");
             return GestureDetector(
               onTap: () {
@@ -173,7 +167,14 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                     ),
                                     SizedBox(width: ScreenUtil().setWidth(59)),
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (_) => CalendarBottomSheet(
+                                                refetchCallback: () => refetch),
+                                            isScrollControlled: true);
+                                      },
                                       child: Image.asset(
                                           "assets/images/locationTap/calender_button.png",
                                           width: ScreenUtil().setSp(28),
@@ -234,6 +235,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                                 child: CachedNetworkImage(
                                                   imageUrl: imageMaps[index]
                                                       ["imageLink"],
+                                                  fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
                                                       CupertinoActivityIndicator(),
                                                   errorWidget:
@@ -394,7 +396,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   ];
   void _onBtmItemClick(int index) {
     if (this.mounted) {
-      Get.to(() => HomePage(),
+      Get.off(() => HomePage(),
           arguments: index, transition: Transition.noTransition);
     }
     // Navigator.push(

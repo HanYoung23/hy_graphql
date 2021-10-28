@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -171,13 +172,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               customerId: customerId,
                             ));
                       },
-                      child: Image.network(
-                        imageLink[0],
+                      // child: Image.network(
+                      //   imageLink[0],
+                      //   fit: BoxFit.cover,
+                      //   loadingBuilder: (context, child, loadingProgress) {
+                      //     if (loadingProgress == null) return child;
+                      //     return CupertinoActivityIndicator();
+                      //   },
+                      // ),
+                      child: CachedNetworkImage(
+                        imageUrl: imageLink[0],
                         fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return CupertinoActivityIndicator();
-                        },
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     );
                   }),

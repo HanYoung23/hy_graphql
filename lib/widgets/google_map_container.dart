@@ -43,8 +43,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   final int _maxClusterZoom = 19;
   Fluster<MapMarker> _clusterManager;
   double _currentZoom = 13;
-  int markerNum = -1;
-  //
+  // int markerNum = -1;
+  // //
   List<MapMarker> mapMarkerList = [];
   //
   int customerId;
@@ -52,21 +52,25 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   void _onMapCreated(GoogleMapController controller) {
     setMapMarker(widget.photoMapList);
     _mapController.complete(controller);
-    if (markerNum == -1) {
-      Timer.periodic(Duration(milliseconds: 2000), (timer) {
-        if (markerNum == mapMarkerList.length && markerNum != 0) {
-          print("🚨 timer canceled");
-          timer.cancel();
-        }
-        print("🚨 marker : $markerNum");
-        print("🚨 images : ${mapMarkerList.length}");
-        setState(() {
-          markerNum = mapMarkerList.length;
-        });
-        _initMarkers();
-      });
+    // if (markerNum == -1) {
+    // Timer.periodic(Duration(milliseconds: 1000), (timer) {
+    //   if (markerNum == mapMarkerList.length) {
+    //     print("🚨 timer canceled");
+    //     timer.cancel();
+    //   }
+    //   print("🚨 marker : $markerNum");
+    //   print("🚨 images : ${mapMarkerList.length}");
+    //   setState(() {
+    //     markerNum = mapMarkerList.length;
+    //   });
+    //   _initMarkers();
+    // });
+    // }
+    int i = 0;
+    while (i == 10000) {
+      i++;
+      _initMarkers();
     }
-    _initMarkers();
   }
 
   _initMarkers() async {
@@ -100,12 +104,12 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     setState(() {});
   }
 
-  Future<List<MapMarker>> setMapMarker(List dataList) async {
+  setMapMarker(List dataList) {
     print("🚨 photomaplist : ${dataList.length}");
     List<MapMarker> mapMarkers = [];
     if (dataList.length > 0) {
       for (Map data in dataList) {
-        await MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
+        MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
             .then((markerImage) {
           mapMarkers.add(
             // Marker(
@@ -128,10 +132,13 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               icon: markerImage,
             ),
           );
+          _initMarkers();
         });
       }
     }
-    mapMarkerList = mapMarkers;
+    setState(() {
+      mapMarkerList = mapMarkers;
+    });
     return mapMarkers;
   }
 
@@ -142,7 +149,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         customerId = int.parse(customerId);
       });
     });
-    // setMapMarker(widget.photoMapList);
+    setMapMarker(widget.photoMapList);
     super.initState();
   }
 

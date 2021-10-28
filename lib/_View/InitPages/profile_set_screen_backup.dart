@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -189,13 +190,26 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                             : ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(100),
-                                                child: Image.network(
-                                                    profilePhotoLink,
-                                                    fit: BoxFit.cover,
-                                                    width:
-                                                        ScreenUtil().setSp(101),
-                                                    height: ScreenUtil()
-                                                        .setSp(101)),
+                                                // child: Image.network(
+                                                //     profilePhotoLink,
+                                                //     fit: BoxFit.cover,
+                                                //     width:
+                                                //         ScreenUtil().setSp(101),
+                                                //     height: ScreenUtil()
+                                                //         .setSp(101)),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: profilePhotoLink,
+                                                  fit: BoxFit.cover,
+                                                  width:
+                                                      ScreenUtil().setSp(101),
+                                                  height:
+                                                      ScreenUtil().setSp(101),
+                                                  placeholder: (context, url) =>
+                                                      CircularProgressIndicator(),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
+                                                ),
                                               )
                                         : ClipRRect(
                                             borderRadius:

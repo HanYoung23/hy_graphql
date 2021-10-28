@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -134,10 +135,22 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                   Positioned(
                                     child: CarouselSlider(
                                         items: imageLink.map((url) {
-                                          return Image.network(url,
-                                              width: ScreenUtil().screenWidth,
-                                              height: ScreenUtil().screenWidth,
-                                              fit: BoxFit.cover);
+                                          // return Image.network(url,
+                                          //     width: ScreenUtil().screenWidth,
+                                          //     height: ScreenUtil().screenWidth,
+                                          //     fit: BoxFit.cover);
+
+                                          return CachedNetworkImage(
+                                            imageUrl: url,
+                                            width: ScreenUtil().screenWidth,
+                                            height: ScreenUtil().screenWidth,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          );
                                         }).toList(),
                                         options: CarouselOptions(
                                           aspectRatio: 1,

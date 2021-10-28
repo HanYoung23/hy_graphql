@@ -15,16 +15,8 @@ class MapHelper {
     int targetWidth,
   }) async {
     File markerImageFile;
-    try {
-      markerImageFile = await DefaultCacheManager().getSingleFile(url);
-      return convertImageFileToBitmapDescriptor(markerImageFile);
-    } catch (error) {
-      print("🚨 map helper file error url : $url");
-      print("🚨 map helper file error : $error");
-      markerImageFile = await DefaultCacheManager().getSingleFile(
-          "https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-10-26+17%3A58%3A06.350087.png");
-      return convertImageFileToBitmapDescriptor(markerImageFile);
-    }
+    markerImageFile = await DefaultCacheManager().getSingleFile(url);
+    return convertImageFileToBitmapDescriptor(markerImageFile);
   }
 
   Future loadUiImage() async {

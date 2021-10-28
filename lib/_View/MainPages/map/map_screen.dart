@@ -261,7 +261,8 @@ class _MapScreenState extends State<MapScreen> {
                                     showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         context: context,
-                                        builder: (_) => CalendarBottomSheet(),
+                                        builder: (_) => CalendarBottomSheet(
+                                            refetchCallback: () => refetch),
                                         isScrollControlled: true);
                                   },
                                   child: Image.asset(
@@ -310,10 +311,15 @@ class _MapScreenState extends State<MapScreen> {
                   Obx(() => floatingBtn.isFilterActive.value ||
                           floatingBtn.isAddActive.value
                       ? Positioned(
+                          child: InkWell(
+                          onTap: () {
+                            floatingBtnController.allBtnCancel();
+                          },
                           child: Container(
-                          width: ScreenUtil().screenWidth,
-                          height: ScreenUtil().screenHeight,
-                          color: Colors.black.withOpacity(0.7),
+                            width: ScreenUtil().screenWidth,
+                            height: ScreenUtil().screenHeight,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
                         ))
                       : Container()),
                   Obx(() => floatingBtn.isFilterActive.value
