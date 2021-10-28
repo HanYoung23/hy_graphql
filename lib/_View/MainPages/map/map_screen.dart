@@ -7,6 +7,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
+import 'package:letsgotrip/_View/MainPages/map/__maparoundscreenbackup.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/user_location.dart';
@@ -34,6 +35,7 @@ class _MapScreenState extends State<MapScreen> {
   GoogleMapWholeController gmWholeController =
       Get.put(GoogleMapWholeController());
   GoogleMapWholeController gmWholeImages = Get.find();
+  GoogleMapWholeController gmWholeLatLng = Get.find();
   GoogleMapWholeController gmPosition = Get.find();
 
   FloatingButtonController floatingBtnController =
@@ -96,15 +98,16 @@ class _MapScreenState extends State<MapScreen> {
             "date2": fliterValue.dateEnd.value,
           },
         ),
-        // "category_id": fliterValue.category.value,
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            List<Map> photoMapList = [];
+            List<Map> photoMapMarkerList = [];
+            // List<Map> photoMapImageList = [];
             // print(
             //     "🚨 photomaplist parent : ${result.data["photo_list_map"].length}");
             // print("🚨 category : ${fliterValue.category.value}");
             // print("🚨 date1 : ${fliterValue.dateStart.value}");
             // print("🚨 date2 : ${fliterValue.dateEnd.value}");
+
             for (Map resultData in result.data["photo_list_map"]) {
               int customerId = int.parse("${resultData["customer_id"]}");
               int contentsId = int.parse("${resultData["contents_id"]}");
@@ -136,7 +139,7 @@ class _MapScreenState extends State<MapScreen> {
                 "registDate": "${resultData["regist_date"]}"
               };
 
-              photoMapList.add(photoDataMap);
+              photoMapMarkerList.add(photoDataMap);
             }
 
             return SafeArea(
@@ -208,12 +211,20 @@ class _MapScreenState extends State<MapScreen> {
                                     // Get.to(() => MapAroundScreen(),
                                     //     transition: Transition.noTransition);
 
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              MapAroundScreen()),
-                                    );
+                                    if (this.mounted) {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   PageRouteBuilder(
+                                      //       pageBuilder: (context, _, __) =>
+                                      //           MapAroundScreen(
+                                      //               customerId: customerId),
+                                      //       transitionDuration: Duration.zero),
+                                      // );
+                                      Get.to(
+                                          () => MapAroundScreen(
+                                              customerId: customerId),
+                                          transition: Transition.noTransition);
+                                    }
                                   },
                                   child: Column(
                                     mainAxisAlignment:
@@ -269,17 +280,17 @@ class _MapScreenState extends State<MapScreen> {
                                           ? true
                                           : false,
                                   child: Expanded(
-                                      child: Obx(() => GoogleMapContainer(
-                                            photoMapList: photoMapList,
-                                            userPosition: userPosition,
-                                            currentCameraPosition: gmPosition
-                                                .currentCameraPosition.value,
-                                            category:
-                                                fliterValue.category.value,
-                                            dateStart:
-                                                fliterValue.dateStart.value,
-                                            dateEnd: fliterValue.dateEnd.value,
-                                          ))))
+                                    child: Obx(() => GoogleMapContainer(
+                                          photoMapList: photoMapMarkerList,
+                                          userPosition: userPosition,
+                                          currentCameraPosition: gmPosition
+                                              .currentCameraPosition.value,
+                                          category: fliterValue.category.value,
+                                          dateStart:
+                                              fliterValue.dateStart.value,
+                                          dateEnd: fliterValue.dateEnd.value,
+                                        )),
+                                  ))
                               : Expanded(
                                   child: Container(
                                       child: Text("위치 권한 허용 후 이용가능합니다."))),

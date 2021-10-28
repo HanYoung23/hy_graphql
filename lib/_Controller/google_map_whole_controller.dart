@@ -13,9 +13,12 @@ class GoogleMapWholeController extends GetxController {
     });
   }
 
-  var currentCameraPosition =
-      CameraPosition(bearing: 0.0, target: LatLng(0, 0), tilt: 0.0, zoom: 10)
-          .obs;
+  var currentCameraPosition = CameraPosition(
+          bearing: 0.0,
+          target: LatLng(37.55985294417329, 126.9875580444932),
+          tilt: 0.0,
+          zoom: 12)
+      .obs;
 
   setCameraPosition(CameraPosition cameraPosition) {
     currentCameraPosition.value = cameraPosition;

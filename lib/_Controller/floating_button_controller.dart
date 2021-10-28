@@ -24,7 +24,7 @@ class FloatingButtonController extends GetxController {
   //////////////////////////////////////////
 
   var category = 0.obs;
-  var dateStart = "2021.01.01".obs;
+  var dateStart = "1021.01.01".obs;
   var dateEnd = "3021.09.23".obs;
 
   categoryUpdate(int categoryId) {

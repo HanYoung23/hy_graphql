@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,9 +17,8 @@ import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
 
 class MapAroundScreen extends StatefulWidget {
-  const MapAroundScreen({
-    Key key,
-  }) : super(key: key);
+  final int customerId;
+  const MapAroundScreen({Key key, @required this.customerId}) : super(key: key);
 
   @override
   _MapAroundScreenState createState() => _MapAroundScreenState();
@@ -28,26 +28,27 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   FloatingButtonController floatingBtnController =
       Get.put(FloatingButtonController());
   FloatingButtonController floatingBtn = Get.find();
+  FloatingButtonController fliterValue = Get.find();
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool isMapLoading = true;
-  int customerId;
+  // int customerId;
 
   @override
   void initState() {
-    seeValue("customerId").then((value) {
-      setState(() {
-        customerId = int.parse(value);
-      });
-    });
+    // seeValue("customerId").then((value) {
+    //   setState(() {
+    //     customerId = int.parse(value);
+    //   });
+    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     GoogleMapWholeController gmWholeLatLng = Get.find();
-    return Query(
+    return Obx(() => Query(
         options: QueryOptions(
           document: gql(Queries.photoListMap),
           variables: {
@@ -55,6 +56,9 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             "latitude2": "${gmWholeLatLng.latlngBounds["neLat"]}",
             "longitude1": "${gmWholeLatLng.latlngBounds["swLng"]}",
             "longitude2": "${gmWholeLatLng.latlngBounds["neLng"]}",
+            "category_id": fliterValue.category.value,
+            "date1": fliterValue.dateStart.value,
+            "date2": fliterValue.dateEnd.value,
           },
         ),
         builder: (result, {refetch, fetchMore}) {
@@ -77,7 +81,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               //   imageMaps.add(mapData);
               // }
             }
-            // print("🚨 imageMaps : ${imageMaps.length}");
+            print("🚨 category : ${fliterValue.category.value}");
+            print("🚨 imageMaps : ${imageMaps.length}");
             // print("🚨 result : $result");
             return GestureDetector(
               onTap: () {
@@ -211,20 +216,29 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                                               contentsId: imageMaps[
                                                                       index][
                                                                   "contentsId"],
-                                                              customerId:
-                                                                  customerId,
+                                                              customerId: widget
+                                                                  .customerId,
                                                             )),
                                                   );
                                                 },
-                                                child: Image.network(
-                                                  imageMaps[index]["imageLink"],
-                                                  fit: BoxFit.cover,
-                                                  loadingBuilder: (context,
-                                                      child, loadingProgress) {
-                                                    if (loadingProgress == null)
-                                                      return child;
-                                                    return CupertinoActivityIndicator();
-                                                  },
+                                                // child: Image.network(
+                                                //   imageMaps[index]["imageLink"],
+                                                //   fit: BoxFit.cover,
+                                                //   loadingBuilder: (context,
+                                                //       child, loadingProgress) {
+                                                //     if (loadingProgress == null)
+                                                //       return child;
+                                                //     return CupertinoActivityIndicator();
+                                                //   },
+                                                // ),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: imageMaps[index]
+                                                      ["imageLink"],
+                                                  placeholder: (context, url) =>
+                                                      CupertinoActivityIndicator(),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
                                                 ),
                                               );
                                             }),
@@ -261,23 +275,23 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                 children: [
                                   FilterBtnOptions(
                                     title: '전체',
-                                    callback: null,
+                                    callback: () => refetch(),
                                   ),
                                   FilterBtnOptions(
                                     title: '바닷가',
-                                    callback: null,
+                                    callback: () => refetch(),
                                   ),
                                   FilterBtnOptions(
                                     title: '액티비티',
-                                    callback: null,
+                                    callback: () => refetch(),
                                   ),
                                   FilterBtnOptions(
                                     title: '맛집',
-                                    callback: null,
+                                    callback: () => refetch(),
                                   ),
                                   FilterBtnOptions(
                                     title: '숙소',
-                                    callback: null,
+                                    callback: () => refetch(),
                                   ),
                                 ],
                               ),
@@ -324,7 +338,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                       ],
                     );
                   }),
-                  drawer: MenuDrawer(customerId: customerId),
+                  drawer: MenuDrawer(customerId: widget.customerId),
                 ),
               ),
             );
@@ -347,7 +361,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               ),
             );
           }
-        });
+        }));
   }
 
   List<BottomNavigationBarItem> btmNavItems = [
@@ -379,8 +393,10 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
         label: "마이페이지"),
   ];
   void _onBtmItemClick(int index) {
-    Get.to(() => HomePage(),
-        arguments: index, transition: Transition.noTransition);
+    if (this.mounted) {
+      Get.to(() => HomePage(),
+          arguments: index, transition: Transition.noTransition);
+    }
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => HomePage()),

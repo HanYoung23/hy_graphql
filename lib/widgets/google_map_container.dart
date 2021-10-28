@@ -50,6 +50,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   int customerId;
 
   void _onMapCreated(GoogleMapController controller) {
+    setMapMarker(widget.photoMapList);
     _mapController.complete(controller);
     if (markerNum == -1) {
       Timer.periodic(Duration(milliseconds: 2000), (timer) {
@@ -99,12 +100,12 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     setState(() {});
   }
 
-  setMapMarker(List dataList) {
+  Future<List<MapMarker>> setMapMarker(List dataList) async {
     print("🚨 photomaplist : ${dataList.length}");
     List<MapMarker> mapMarkers = [];
     if (dataList.length > 0) {
       for (Map data in dataList) {
-        MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
+        await MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
             .then((markerImage) {
           mapMarkers.add(
             // Marker(
@@ -131,6 +132,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       }
     }
     mapMarkerList = mapMarkers;
+    return mapMarkers;
   }
 
   @override
@@ -140,7 +142,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         customerId = int.parse(customerId);
       });
     });
-    setMapMarker(widget.photoMapList);
+    // setMapMarker(widget.photoMapList);
     super.initState();
   }
 
