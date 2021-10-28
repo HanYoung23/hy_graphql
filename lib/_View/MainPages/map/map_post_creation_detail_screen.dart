@@ -178,6 +178,8 @@ class _MapPostCreationDetailScreenState
                                 ),
                                 onMapCreated: (GoogleMapController controller) {
                                   mapController = controller;
+                                  setState(() {});
+                                  createMarker();
                                 },
                                 markers: createMarker(),
                               ),

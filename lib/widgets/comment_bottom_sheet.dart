@@ -69,7 +69,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            print("🚨 comments : ${result.data["coments_list"][0]}");
+            // print("🚨 comments : ${result.data["coments_list"][0]}");
 
             List comentsList = result.data["coments_list"];
 
@@ -562,8 +562,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  print("$customerId , $commentCustomerId");
-                  if (customerId != commentCustomerId) {
+                  if (customerId == commentCustomerId) {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) =>

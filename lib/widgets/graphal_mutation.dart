@@ -89,7 +89,27 @@ class Mutations {
         }
     }
 """;
-// photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2)
+
+  static final String changeContents = """
+    mutation(\$type: String!, \$contents_id: Int!, \$category_id: Int!, \$contents_title: String!, \$location_link : String!, \$image_link : String!, \$main_text : String!, \$tags : String!, \$star_rating1 : Int!, \$star_rating2 : Int!, \$star_rating3 : Int!, \$star_rating4 : Int!, \$latitude : String!, \$longitude : String! ) {
+      change_contents(type : \$type, contents_id: \$contents_id, category_id: \$category_id, contents_title : \$contents_title, location_link:\$location_link, image_link:\$image_link, main_text:\$main_text, tags:\$tags, star_rating1:\$star_rating1,star_rating2:\$star_rating2,star_rating3:\$star_rating3,star_rating4:\$star_rating4, latitude:\$latitude, longitude:\$longitude)
+      {
+          result
+          msg
+        }
+    }
+""";
+
+  static final String deleteContents = """
+    mutation(\$type: String!, \$contents_id: Int!) {
+      change_contents(type : \$type, contents_id: \$contents_id)
+      {
+          result
+          msg
+        }
+    }
+""";
+
   static final String photoListMap = """
     mutation(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!) {
       photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2)

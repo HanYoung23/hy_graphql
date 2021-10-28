@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/widgets/comment_bottom_sheet.dart';
+import 'package:letsgotrip/widgets/comment_cupertino_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:letsgotrip/widgets/post_cupertino_bottom_sheet.dart';
 
 class PlaceDetailScreen extends StatefulWidget {
   final int contentsId;
@@ -146,7 +149,24 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                             height: ScreenUtil().screenWidth,
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) =>
-                                                CircularProgressIndicator(),
+                                                Container(
+                                                    width: ScreenUtil()
+                                                        .screenWidth,
+                                                    height: ScreenUtil()
+                                                        .screenHeight,
+                                                    child: Center(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          LoadingIndicator(),
+                                                        ],
+                                                      ),
+                                                    )),
                                             errorWidget:
                                                 (context, url, error) =>
                                                     Icon(Icons.error),
@@ -262,10 +282,26 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                           ),
                                           SizedBox(
                                               width: ScreenUtil().setSp(15)),
-                                          Image.asset(
-                                              "assets/images/three_dots_toggle_button.png",
-                                              width: ScreenUtil().setSp(28),
-                                              height: ScreenUtil().setSp(28)),
+                                          InkWell(
+                                            onTap: () {
+                                              print("object");
+                                              //                             if (customerId != commentCustomerId) {
+                                              showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    PostCupertinoBottomSheet(
+                                                  contentsId: widget.contentsId,
+                                                  refetchCallback: null,
+                                                ),
+                                              );
+                                              // }
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/three_dots_toggle_button.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height: ScreenUtil().setSp(28)),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -414,60 +450,40 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
         });
   }
 
-  Mutation comentsButton(int comentsCount, Function refetch) {
-    return Mutation(
-        options: MutationOptions(
-            document: gql(Mutations.createComents),
-            onCompleted: (dynamic resultData) {
-              if (resultData["add_bookmarks"]["result"]) {
-                // print("🚨 ${resultData["add_bookmarks"]}");
-                if (comentsNum == 0) {
-                  setState(() {
-                    comentsNum = 1;
-                  });
-                } else {
-                  setState(() {
-                    comentsNum = 0;
-                  });
-                }
-              } else {
-                Get.snackbar("error", resultData["add_likes"]["msg"]);
-              }
-            }),
-        builder: (RunMutation runMutation, QueryResult queryResult) {
-          return Expanded(
-            child: InkWell(
-              onTap: () {
-                // runMutation({
-                //   "customer_id": widget.customerId,
-                //   "contents_id": widget.contentsId,
-                //   "coment_text":
-                //       "text text text text text text text text text text text text text",
-                //   "coments_id_link": "",
-                // });
-                showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (_) => CommentBottomSheet(
-                        contentsId: widget.contentsId,
-                        callbackRefetch: () => refetch),
-                    isScrollControlled: true);
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("assets/images/reply.png",
-                      width: ScreenUtil().setSp(28),
-                      height: ScreenUtil().setSp(28)),
-                  Text(
-                    "댓글  ${comentsCount + comentsNum}",
-                    style: TextStyle(fontSize: ScreenUtil().setSp(12)),
-                  )
-                ],
-              ),
-            ),
-          );
-        });
+  Expanded comentsButton(int comentsCount, Function refetch) {
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          // runMutation({
+          //   "customer_id": widget.customerId,
+          //   "contents_id": widget.contentsId,
+          //   "coment_text":
+          //       "text text text text text text text text text text text text text",
+          //   "coments_id_link": "",
+          // });
+          if (this.mounted) {
+            showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (_) => CommentBottomSheet(
+                    contentsId: widget.contentsId,
+                    callbackRefetch: () => refetch()),
+                isScrollControlled: true);
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset("assets/images/reply.png",
+                width: ScreenUtil().setSp(28), height: ScreenUtil().setSp(28)),
+            Text(
+              "댓글  ${comentsCount + comentsNum}",
+              style: TextStyle(fontSize: ScreenUtil().setSp(12)),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Mutation bookmarkButton(int bookmarksCount, int bookmarks) {
