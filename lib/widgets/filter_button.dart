@@ -40,8 +40,8 @@ class FilterBtnOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GoogleMapWholeController gmCategoryMapController =
-        Get.put(GoogleMapWholeController());
+    // GoogleMapWholeController gmCategoryMapController =
+    //     Get.put(GoogleMapWholeController());
     FloatingButtonController floatingBtnController =
         Get.put(FloatingButtonController());
 
@@ -49,28 +49,38 @@ class FilterBtnOptions extends StatelessWidget {
       onTap: () {
         switch (title) {
           case "전체":
-            gmCategoryMapController.setCategoryMap(1);
-            callback(1);
+            // gmCategoryMapController.setCategoryMap(1);
+            floatingBtnController.categoryUpdate(0);
+            // callback(1);
+            callback();
             floatingBtnController.allBtnCancel();
             break;
           case "바닷가":
-            gmCategoryMapController.setCategoryMap(2);
-            callback(2);
+            // gmCategoryMapController.setCategoryMap(2);
+            floatingBtnController.categoryUpdate(1);
+            // callback(2);
+            callback();
             floatingBtnController.allBtnCancel();
             break;
           case "액티비티":
-            gmCategoryMapController.setCategoryMap(3);
-            callback(3);
+            // gmCategoryMapController.setCategoryMap(3);
+            floatingBtnController.categoryUpdate(2);
+            // callback(3);
+            callback();
             floatingBtnController.allBtnCancel();
             break;
           case "맛집":
-            gmCategoryMapController.setCategoryMap(4);
-            callback(4);
+            // gmCategoryMapController.setCategoryMap(4);
+            floatingBtnController.categoryUpdate(3);
+            // callback(4);
+            callback();
             floatingBtnController.allBtnCancel();
             break;
           case "숙소":
-            gmCategoryMapController.setCategoryMap(5);
-            callback(5);
+            // gmCategoryMapController.setCategoryMap(5);
+            floatingBtnController.categoryUpdate(4);
+            // callback(5);
+            callback();
             floatingBtnController.allBtnCancel();
             break;
           default:

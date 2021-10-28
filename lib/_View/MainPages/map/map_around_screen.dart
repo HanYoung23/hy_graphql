@@ -195,13 +195,26 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                                 int index) {
                                               return InkWell(
                                                 onTap: () {
-                                                  Get.to(() =>
-                                                      PlaceDetailScreen(
-                                                        contentsId:
-                                                            imageMaps[index]
-                                                                ["contentsId"],
-                                                        customerId: customerId,
-                                                      ));
+                                                  // Get.to(() =>
+                                                  //     PlaceDetailScreen(
+                                                  //       contentsId:
+                                                  //           imageMaps[index]
+                                                  //               ["contentsId"],
+                                                  //       customerId: customerId,
+                                                  //     ));
+
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PlaceDetailScreen(
+                                                              contentsId: imageMaps[
+                                                                      index][
+                                                                  "contentsId"],
+                                                              customerId:
+                                                                  customerId,
+                                                            )),
+                                                  );
                                                 },
                                                 child: Image.network(
                                                   imageMaps[index]["imageLink"],
@@ -368,5 +381,9 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   void _onBtmItemClick(int index) {
     Get.to(() => HomePage(),
         arguments: index, transition: Transition.noTransition);
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => HomePage()),
+    // );
   }
 }

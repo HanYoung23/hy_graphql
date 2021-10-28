@@ -20,4 +20,19 @@ class FloatingButtonController extends GetxController {
     isFilterActive.value = false;
     isAddActive.value = false;
   }
+
+  //////////////////////////////////////////
+
+  var category = 0.obs;
+  var dateStart = "2021.01.01".obs;
+  var dateEnd = "3021.09.23".obs;
+
+  categoryUpdate(int categoryId) {
+    category.value = categoryId;
+  }
+
+  dateUpdate(String startDate, String endDate) {
+    dateStart.value = startDate;
+    dateEnd.value = endDate;
+  }
 }

@@ -19,6 +19,5 @@ Future<Map> getMapCoord(
       "neLng": "${latlng.northeast.longitude.toString()}"
     };
   });
-
   return latlngBounds;
 }
