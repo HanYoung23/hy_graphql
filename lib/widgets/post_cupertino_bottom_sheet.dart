@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/map/edit_post_creation_screen.dart';
+import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class PostCupertinoBottomSheet extends StatelessWidget {
   final int contentsId;
@@ -22,9 +26,9 @@ class PostCupertinoBottomSheet extends StatelessWidget {
           document: gql(Mutations.deleteContents),
           update: (GraphQLDataProxy proxy, QueryResult result) {},
           onCompleted: (dynamic resultData) async {
-            print("🚨 change contents result : $resultData");
+            // print("🚨 change contents result : $resultData");
             if (resultData["change_contents"]["result"]) {
-              // refetchCallback();
+              refetchCallback();
               Get.back();
             }
           },
@@ -42,8 +46,11 @@ class PostCupertinoBottomSheet extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // editCommentCallback(comentsId, comentText);
-                    Get.back();
+                    seeValue("customerId").then((customerId) {
+                      Get.off(
+                        () => queryAndEditPostCreationScreen(customerId),
+                      );
+                    });
                   },
                 ),
                 CupertinoActionSheetAction(
@@ -76,6 +83,68 @@ class PostCupertinoBottomSheet extends StatelessWidget {
                   Get.back();
                 },
               ));
+        });
+  }
+
+  Query queryAndEditPostCreationScreen(customerId) {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.photoDetail),
+          variables: {
+            "contents_id": contentsId,
+            "customer_id": int.parse(customerId),
+          },
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading) {
+            print("🚨 photodetail result : ${result.data["photo_detail"]}");
+            Map resultData = result.data["photo_detail"];
+            int categoryId = resultData["category_id"];
+            String selectedCategory;
+            String images = resultData["image_link"];
+            List imageLink = images.split(",");
+            String mainText = resultData["main_text"];
+            String tags = resultData["tags"];
+            String contentsTitle = resultData["contents_title"];
+            List starRatingList = [
+              resultData["star_rating1"],
+              resultData["star_rating2"],
+              resultData["star_rating3"],
+              resultData["star_rating4"],
+            ];
+
+            switch (categoryId) {
+              case 1:
+                selectedCategory = "바닷가";
+                break;
+              case 2:
+                selectedCategory = "액티비티";
+                break;
+              case 3:
+                selectedCategory = "맛집";
+                break;
+              case 4:
+                selectedCategory = "숙소";
+                break;
+              default:
+            }
+
+            Map mapData = {
+              "contentsId": contentsId,
+              "categoryId": categoryId,
+              "selectedCategory": selectedCategory,
+              "imageLink": imageLink,
+              "mainText": mainText,
+              "tags": tags,
+              "contentsTitle": contentsTitle,
+              "starRatingList": starRatingList,
+            };
+            return EditPostCreationScreen(
+              mapData: mapData,
+            );
+          } else {
+            return Container();
+          }
         });
   }
 }

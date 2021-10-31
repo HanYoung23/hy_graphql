@@ -67,6 +67,7 @@ class Queries {
           profile_photo_link
           likes
           bookmarks
+          tags
         }
     }
 """;

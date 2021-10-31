@@ -216,7 +216,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       myLocationButtonEnabled: false,
       myLocationEnabled: false,
       zoomControlsEnabled: false,
-      initialCameraPosition: widget.currentCameraPosition == null
+      initialCameraPosition: widget.currentCameraPosition.target.latitude ==
+              37.55985294417329
           ? CameraPosition(
               target: LatLng(
                   widget.userPosition.latitude, widget.userPosition.longitude),

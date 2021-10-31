@@ -292,7 +292,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                         context) =>
                                                     PostCupertinoBottomSheet(
                                                   contentsId: widget.contentsId,
-                                                  refetchCallback: null,
+                                                  refetchCallback: () =>
+                                                      refetch(),
                                                 ),
                                               );
                                               // }
