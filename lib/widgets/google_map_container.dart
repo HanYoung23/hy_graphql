@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,10 +80,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             //   },
             // ),
             MapMarker(
-              id: "${data["contentsId"]}",
+              id: "${data["contentsId"]},${data["imageLink"][0]}",
               position: LatLng(data["latitude"], data["longitude"]),
               icon: markerImage,
-              imageUrl: "${data["imageLink"][0]}",
             ),
           );
           _initMarkers("${data["imageLink"][0]}");
@@ -122,6 +122,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
+
     setState(() {});
   }
 

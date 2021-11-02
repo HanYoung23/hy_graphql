@@ -3,12 +3,13 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'dart:ui' as ui;
-import 'package:bitmap/bitmap.dart';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
+import 'package:intl/intl.dart' as intl;
 
 class MapHelper {
   static Future<BitmapDescriptor> getMarkerImageFromUrl(String url) async {
@@ -37,7 +38,7 @@ class MapHelper {
       final Uint8List imageUint8List = await imageFile.readAsBytes();
       // final Uint8List imageUint8ListBig = await _resizeImageBytes(imageUint8List, 100);
       final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
-          targetWidth: size - 15, targetHeight: size - 15);
+          targetWidth: size - 8, targetHeight: size - 8);
       final ui.FrameInfo imageFI = await codec.getNextFrame();
       paintImage(
           canvas: canvas,
@@ -82,7 +83,6 @@ class MapHelper {
         clusterId: cluster.id,
         pointsSize: cluster.pointsSize,
         childMarkerId: cluster.childMarkerId,
-        imageUrl: imageUrl,
       ),
     );
   }
@@ -102,7 +102,6 @@ class MapHelper {
     ).map((mapMarker) async {
       if (mapMarker.isCluster) {
         mapMarker.icon = await _getClusterMarker(mapMarker);
-        // mapMarker.icon = mapMarker.icon;
       }
 
       return mapMarker.toMarker();
@@ -116,59 +115,81 @@ class MapHelper {
     final TextPainter textPainter = TextPainter(
       textDirection: TextDirection.ltr,
     );
-
-    final double radius = 40;
+    // final DecorationImagePainter
 
     // //
+    String imageUrl = mapMarker.childMarkerId.substring(
+        mapMarker.childMarkerId.indexOf(",") + 1,
+        mapMarker.childMarkerId.length);
+
     File markerImageFile;
-    markerImageFile =
-        await DefaultCacheManager().getSingleFile(mapMarker.imageUrl);
-    int size = 120;
+    markerImageFile = await DefaultCacheManager().getSingleFile(imageUrl);
+    int size = ScreenUtil().setSp(120).toInt();
+    int whitePadding = 8;
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
+    final rect = Rect.fromLTWH(0, 80, size.toDouble(), size.toDouble());
     canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
 
-    //paintImage
     final Uint8List imageUint8List = await markerImageFile.readAsBytes();
-    // final Uint8List imageUint8ListBig = await _resizeImageBytes(imageUint8List, 100);
+
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
-        targetWidth: size - 15, targetHeight: size - 15);
+        targetWidth: size - whitePadding, targetHeight: size - whitePadding);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
-        canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
-        image: imageFI.image,
-        alignment: Alignment.center);
+      canvas: canvas,
+      rect: Rect.fromLTWH(0, 80, size.toDouble(), size.toDouble()),
+      image: imageFI.image,
+      alignment: Alignment.center,
+    );
     // //
+    // int whitePadding = 8;
+    final double radius = 44;
 
     paint.color = Colors.blue;
 
-    canvas.drawCircle(
-      Offset(radius, radius),
-      radius,
-      paint,
-    );
+    String textNum = mapMarker.pointsSize.toString();
+    if (textNum.length > 3) {
+      textNum = intl.NumberFormat.compactCurrency(
+        decimalDigits: 2,
+        symbol:
+            '', // if you want to add currency symbol then pass that in this else leave it empty.
+        // ).format(int.parse(textNum));
+      ).format(int.parse(textNum));
+    }
+
+    int textLength = textNum.length;
+
+    double offsetX = 116 - (textLength * 12 + radius) / 2;
+
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(
+            Rect.fromLTWH(offsetX, 57, textLength * 12 + radius, radius + 10),
+            Radius.circular(50)),
+        paint);
+
+    double textSize = ScreenUtil().setSp(34);
 
     textPainter.text = TextSpan(
-      text: mapMarker.pointsSize.toString(),
+      text: textNum,
       style: TextStyle(
-        fontSize: radius - 5,
+        fontSize: textSize,
         fontWeight: FontWeight.bold,
         color: Colors.white,
+        backgroundColor: Colors.blue,
       ),
     );
 
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(radius - textPainter.width / 2, radius - textPainter.height / 2),
+      Offset(radius - textPainter.width / 2 + textSize * 2 + whitePadding,
+          radius - textPainter.height / 2 + textSize + whitePadding),
     );
 
     final image = await pictureRecorder.endRecording().toImage(
-          // radius.toInt() * 2,
-          // radius.toInt() * 2,
-          120, 120,
+          ScreenUtil().setSp(200).toInt(),
+          ScreenUtil().setSp(200).toInt(),
         );
     final data = await image.toByteData(format: ImageByteFormat.png);
 
