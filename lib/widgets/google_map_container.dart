@@ -43,65 +43,17 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   final int _maxClusterZoom = 19;
   Fluster<MapMarker> _clusterManager;
   double _currentZoom = 13;
-  // int markerNum = -1;
-  // //
+  //
   List<MapMarker> mapMarkerList = [];
   //
   int customerId;
+  //
+  CameraPosition currentPosition;
+  double currentZoom;
 
   void _onMapCreated(GoogleMapController controller) {
     setMapMarker(widget.photoMapList);
     _mapController.complete(controller);
-    // if (markerNum == -1) {
-    // Timer.periodic(Duration(milliseconds: 1000), (timer) {
-    //   if (markerNum == mapMarkerList.length) {
-    //     print("🚨 timer canceled");
-    //     timer.cancel();
-    //   }
-    //   print("🚨 marker : $markerNum");
-    //   print("🚨 images : ${mapMarkerList.length}");
-    //   setState(() {
-    //     markerNum = mapMarkerList.length;
-    //   });
-    //   _initMarkers();
-    // });
-    // }
-    int i = 0;
-    while (i == 10000) {
-      i++;
-      _initMarkers();
-    }
-  }
-
-  _initMarkers() async {
-    _clusterManager = await MapHelper.initClusterManager(
-      mapMarkerList,
-      _minClusterZoom,
-      _maxClusterZoom,
-    );
-    await _updateMarkers();
-  }
-
-  Future<void> _updateMarkers(
-      [double updatedZoom, CameraPosition cameraPosition]) async {
-    gmWholeImages.addMapCoord(_mapController);
-    if (cameraPosition != null) {
-      gmWholeImages.setCameraPosition(cameraPosition);
-    }
-
-    if (_clusterManager == null || updatedZoom == _currentZoom) return;
-    if (updatedZoom != null) {
-      _currentZoom = updatedZoom;
-    }
-    final updatedMarkers = await MapHelper.getClusterMarkers(
-      _clusterManager,
-      _currentZoom,
-      80,
-    );
-    _markers
-      ..clear()
-      ..addAll(updatedMarkers);
-    setState(() {});
   }
 
   setMapMarker(List dataList) {
@@ -130,16 +82,54 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               id: "${data["contentsId"]}",
               position: LatLng(data["latitude"], data["longitude"]),
               icon: markerImage,
+              imageUrl: "${data["imageLink"][0]}",
             ),
           );
-          _initMarkers();
+          _initMarkers("${data["imageLink"][0]}");
         });
       }
     }
     setState(() {
       mapMarkerList = mapMarkers;
     });
-    return mapMarkers;
+  }
+
+  _initMarkers(String imageUrl) async {
+    _clusterManager = await MapHelper.initClusterManager(
+      mapMarkerList,
+      _minClusterZoom,
+      _maxClusterZoom,
+      imageUrl,
+    );
+    await _updateMarkers();
+  }
+
+  Future<void> _updateMarkers(
+      [double updatedZoom, CameraPosition cameraPosition]) async {
+    gmWholeImages.addMapCoord(_mapController);
+    if (cameraPosition != null) {
+      gmWholeImages.setCameraPosition(cameraPosition);
+    }
+
+    if (_clusterManager == null || updatedZoom == _currentZoom) return;
+    if (updatedZoom != null) {
+      _currentZoom = updatedZoom;
+    }
+    final updatedMarkers = await MapHelper.getClusterMarkers(
+      _clusterManager,
+      _currentZoom,
+    );
+    _markers
+      ..clear()
+      ..addAll(updatedMarkers);
+    setState(() {});
+  }
+
+  onCameraMove(double zoom, CameraPosition position) {
+    setState(() {
+      currentPosition = position;
+      currentZoom = zoom;
+    });
   }
 
   @override
@@ -149,7 +139,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         customerId = int.parse(customerId);
       });
     });
-    setMapMarker(widget.photoMapList);
     super.initState();
   }
 
@@ -229,7 +218,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             ),
       markers: _markers,
       onMapCreated: (controller) => _onMapCreated(controller),
-      onCameraMove: (position) => _updateMarkers(position.zoom, position),
+      onCameraMove: (position) => onCameraMove(position.zoom, position),
+      onCameraIdle: () => _updateMarkers(currentZoom, currentPosition),
     );
     // });
   }

@@ -53,7 +53,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           if (!result.isLoading) {
             if (result.data["photo_detail"] != null) {
               Map resultData = result.data["photo_detail"];
-              // print("🚨 place detail result : $resultData");
+              print("🚨 place detail result : $resultData");
               // int contentsId = int.parse("${resultData["contents_id"]}");
               // int categoryId = int.parse("${resultData["category_id"]}");
               String contentsTitle = resultData["contents_title"];
@@ -284,19 +284,19 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                               width: ScreenUtil().setSp(15)),
                                           InkWell(
                                             onTap: () {
-                                              print("object");
-                                              //                             if (customerId != commentCustomerId) {
-                                              showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    PostCupertinoBottomSheet(
-                                                  contentsId: widget.contentsId,
-                                                  refetchCallback: () =>
-                                                      refetch(),
-                                                ),
-                                              );
-                                              // }
+                                              if (widget.customerId != 1) {
+                                                showCupertinoModalPopup(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      PostCupertinoBottomSheet(
+                                                    contentsId:
+                                                        widget.contentsId,
+                                                    refetchCallback: () =>
+                                                        refetch(),
+                                                  ),
+                                                );
+                                              }
                                             },
                                             child: Image.asset(
                                                 "assets/images/three_dots_toggle_button.png",

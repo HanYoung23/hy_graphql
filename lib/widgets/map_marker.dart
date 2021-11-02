@@ -11,12 +11,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapMarker extends Clusterable {
   final String id;
   final LatLng position;
+  final String imageUrl;
   BitmapDescriptor icon;
 
   MapMarker(
       {Key key,
       @required this.id,
       @required this.position,
+      @required this.imageUrl,
       this.icon,
       isCluster = false,
       clusterId,
