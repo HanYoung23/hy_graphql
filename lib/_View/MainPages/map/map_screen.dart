@@ -9,6 +9,7 @@ import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
@@ -61,17 +62,19 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     checkLocationPermission().then((permission) {
-      setState(() {
-        isPermission = permission;
-      });
-      getUserLocation().then((latlng) {
-        if (latlng != null) {
-          setState(() {
-            userPosition = latlng;
-            isMapLoading = false;
-          });
-        }
-      });
+      if (permission) {
+        getUserLocation().then((latlng) {
+          if (latlng != null) {
+            setState(() {
+              userPosition = latlng;
+              isMapLoading = false;
+              isPermission = permission;
+            });
+          }
+        });
+      } else {
+        permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
+      }
     });
     seeValue("customerId").then((value) {
       setState(() {

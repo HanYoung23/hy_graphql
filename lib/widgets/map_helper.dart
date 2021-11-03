@@ -20,42 +20,31 @@ class MapHelper {
 
   static Future<BitmapDescriptor> convertImageFileToBitmapDescriptor(
       File imageFile) async {
-    try {
-      // if (imageFile != null) {
-      final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
-      final Canvas canvas = Canvas(pictureRecorder);
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
 
-      int size = 120;
+    int size = ScreenUtil().setSp(120).toInt();
+    int whitePadding = 8;
 
-      Paint paint = Paint();
-      paint.color = Colors.white;
+    Paint paint = Paint();
+    paint.color = Colors.white;
 
-      final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
+    final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
+    final Uint8List imageUint8List = await imageFile.readAsBytes();
+    final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
+        targetWidth: size - whitePadding, targetHeight: size - whitePadding);
+    final ui.FrameInfo imageFI = await codec.getNextFrame();
+    paintImage(
+        canvas: canvas,
+        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        image: imageFI.image,
+        alignment: Alignment.center);
 
-      //paintImage
-      final Uint8List imageUint8List = await imageFile.readAsBytes();
-      // final Uint8List imageUint8ListBig = await _resizeImageBytes(imageUint8List, 100);
-      final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
-          targetWidth: size - 8, targetHeight: size - 8);
-      final ui.FrameInfo imageFI = await codec.getNextFrame();
-      paintImage(
-          canvas: canvas,
-          rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
-          image: imageFI.image,
-          alignment: Alignment.center);
+    final _image = await pictureRecorder.endRecording().toImage(size, size);
+    final data = await _image.toByteData(format: ui.ImageByteFormat.png);
 
-      //convert canvas as PNG bytes
-      final _image = await pictureRecorder.endRecording().toImage(size, size);
-      final data = await _image.toByteData(format: ui.ImageByteFormat.png);
-
-      //convert PNG bytes as BitmapDescriptor
-      return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
-    } catch (error) {
-      print("🚨 map helper error : $error");
-      return null;
-    }
+    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
   }
 
   static Future<Fluster<MapMarker>> initClusterManager(
@@ -67,7 +56,8 @@ class MapHelper {
     return Fluster<MapMarker>(
       minZoom: minZoom,
       maxZoom: maxZoom,
-      radius: 150,
+      // radius: 150,
+      radius: 300,
       extent: 2048,
       nodeSize: 64,
       points: markers,
@@ -134,16 +124,17 @@ class MapHelper {
     final Uint8List imageUint8List = await markerImageFile.readAsBytes();
 
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
-        targetWidth: size - whitePadding, targetHeight: size - whitePadding);
+        targetWidth: size - whitePadding,
+        targetHeight: size - whitePadding - 4);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
       canvas: canvas,
-      rect: Rect.fromLTWH(0, 80, size.toDouble(), size.toDouble()),
+      rect: Rect.fromLTWH(0, 78, size.toDouble(), size.toDouble()),
       image: imageFI.image,
       alignment: Alignment.center,
     );
     // //
-    // int whitePadding = 8;
+
     final double radius = 44;
 
     paint.color = Colors.blue;

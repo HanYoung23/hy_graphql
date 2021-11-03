@@ -460,7 +460,8 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
               }
             });
           } else {
-            Get.snackbar("error", "사진 접근 권한이 없습니다.");
+            permissionPopup(
+                context, "사진 접근이 허용되어있지 않습니다.\n설정에서 허용 후 이용 가능합니다.");
           }
         });
       },

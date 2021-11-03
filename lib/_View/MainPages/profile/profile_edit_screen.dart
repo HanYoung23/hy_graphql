@@ -12,6 +12,7 @@ import 'package:letsgotrip/_View/MainPages/profile/profile_edit_introduction_scr
 import 'package:letsgotrip/_View/MainPages/profile/profile_edit_nickname_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -232,8 +233,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                             }
                                           });
                                         } else {
-                                          Get.snackbar(
-                                              "error", "사진 접근 권한이 없습니다.");
+                                          permissionPopup(context,
+                                              "사진 접근이 허용되어있지 않있습니다.\n설정에서 허용 후 이용 가능합니다.");
                                         }
                                       });
                                     },

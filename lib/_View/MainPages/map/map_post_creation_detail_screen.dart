@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -79,17 +80,20 @@ class _MapPostCreationDetailScreenState
 
   @override
   void initState() {
-    print("🚨 ${widget.paramMap}");
-    getPlaceInfo();
     checkLocationPermission().then((permission) {
-      getUserLocation().then((latlng) {
-        if (latlng != null) {
-          setState(() {
-            photoLatLng = LatLng(latlng.latitude, latlng.longitude);
-          });
-        }
-      });
+      if (permission) {
+        getUserLocation().then((latlng) {
+          if (latlng != null) {
+            setState(() {
+              photoLatLng = LatLng(latlng.latitude, latlng.longitude);
+            });
+          }
+        });
+      } else {
+        permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
+      }
     });
+    getPlaceInfo();
     super.initState();
   }
 

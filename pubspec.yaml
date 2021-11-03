@@ -33,12 +33,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   app_settings: 4.1.0
 
-  geolocator: ^7.6.2
-  # rect_getter: ^1.0.0
+# etc
   graphql_flutter: ^5.0.0
-  fluster: ^1.2.0
-  google_maps_cluster_manager: ^3.0.0+1
-  flutter_cache_manager: ^3.1.2
   image_picker: ^0.8.4
   path_provider: ^2.0.4
   flutter_exif: ^1.0.1
@@ -46,12 +42,17 @@ dependencies:
   exif: ^3.0.0
   metadata: any
   webview_flutter: any
-  geocoder: ^0.2.1
   sign_in_with_apple: ^3.2.0
   syncfusion_flutter_datepicker: ^19.3.46
   intl: ^0.17.0
   cached_network_image: ^3.1.0
-  bitmap: ^0.1.2
+
+# google map
+  fluster: ^1.2.0
+  google_maps_cluster_manager: ^3.0.0+1
+  geocoder: ^0.2.1
+  flutter_cache_manager: ^3.1.2
+  geolocator: ^7.6.2
 
 # aws
   amplify_auth_cognito: any
@@ -84,7 +85,6 @@ dependencies:
   shared_preferences: ^2.0.5 # for kakao login
   platform: ^3.0.0 # for kakao login
   package_info_plus: ^1.0.4 # for kakao login
-
 
 dev_dependencies:
   flutter_test:

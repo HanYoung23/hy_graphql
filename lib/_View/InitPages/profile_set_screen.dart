@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
@@ -148,7 +149,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                 }
                               });
                             } else {
-                              Get.snackbar("error", "사진 접근 권한이 없습니다.");
+                              permissionPopup(context,
+                                  "사진 접근이 허용되어있지 않있습니다.\n설정에서 허용 후 이용 가능합니다.");
                             }
                           });
                         },

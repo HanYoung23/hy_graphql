@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -65,20 +64,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
             .then((markerImage) {
           mapMarkers.add(
-            // Marker(
-            //   markerId: MarkerId("${data["contentsId"]}"),
-            //   position: LatLng(data["latitude"], data["longitude"]),
-            //   icon: markerImage,
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) => PlaceDetailScreen(
-            //               contentsId: data["contentsId"],
-            //               customerId: customerId)),
-            //     );
-            //   },
-            // ),
             MapMarker(
               id: "${data["contentsId"]},${data["imageLink"][0]}",
               position: LatLng(data["latitude"], data["longitude"]),
@@ -106,7 +91,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
   Future<void> _updateMarkers(
       [double updatedZoom, CameraPosition cameraPosition]) async {
-    gmWholeImages.addMapCoord(_mapController);
+    await gmWholeImages.addMapCoord(_mapController);
     if (cameraPosition != null) {
       gmWholeImages.setCameraPosition(cameraPosition);
     }
@@ -122,7 +107,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
-
     setState(() {});
   }
 

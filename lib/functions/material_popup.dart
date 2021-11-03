@@ -5,10 +5,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/kakao_login.dart';
-import 'package:letsgotrip/functions/naver_login.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // void gpsNullPopup(BuildContext context) {
 //     showDialog(
@@ -418,6 +417,80 @@ signOutPopupSecond(BuildContext context) {
                       InkWell(
                           onTap: () {
                             Get.offAll(() => LoginScreen());
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+permissionPopup(BuildContext context, String content) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      content,
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            openAppSettings();
+                            Get.back();
                           },
                           child: Text(
                             "확인",
