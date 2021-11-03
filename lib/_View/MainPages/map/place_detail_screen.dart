@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/widgets/comment_bottom_sheet.dart';
-import 'package:letsgotrip/widgets/comment_cupertino_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:letsgotrip/widgets/post_cupertino_bottom_sheet.dart';
+import 'package:readmore/readmore.dart';
 
 class PlaceDetailScreen extends StatefulWidget {
   final int contentsId;
@@ -25,7 +25,6 @@ class PlaceDetailScreen extends StatefulWidget {
 }
 
 class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
-  bool isMoreText = false;
   int likesNum = 0;
   int bookmarksNum = 0;
   int comentsNum = 0;
@@ -362,35 +361,22 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       ],
                                     ),
                                     SizedBox(height: ScreenUtil().setSp(10)),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          isMoreText = !isMoreText;
-                                        });
-                                      },
-                                      child: RichText(
-                                        text: TextSpan(
-                                            text: mainText,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                letterSpacing: -0.35,
-                                                color: Colors.black),
-                                            children: [
-                                              TextSpan(
-                                                  text: isMoreText
-                                                      ? "  접기"
-                                                      : "  더보기",
-                                                  style: TextStyle(
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(14),
-                                                      letterSpacing: -0.35,
-                                                      color: app_font_grey))
-                                            ]),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: isMoreText ? null : 2,
-                                      ),
-                                    ),
+                                    ReadMoreText(mainText,
+                                        trimLines: 2,
+                                        colorClickableText: app_font_grey,
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(14),
+                                          letterSpacing: -0.35,
+                                          color: Colors.black,
+                                        ),
+                                        trimMode: TrimMode.Line,
+                                        trimCollapsedText: '더보기',
+                                        trimExpandedText: '접기',
+                                        moreStyle: TextStyle(
+                                          fontSize: ScreenUtil().setSp(14),
+                                          letterSpacing: -0.35,
+                                          color: app_font_grey,
+                                        )),
                                     SizedBox(height: ScreenUtil().setSp(20)),
                                     Row(
                                       children: [

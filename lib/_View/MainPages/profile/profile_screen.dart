@@ -11,6 +11,7 @@ import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/_View/MainPages/settings/menu_drawer_screen.dart';
+import 'package:readmore/readmore.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -150,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            // print("🚨 bookmarkslist : $result");
+            print("🚨 mypageContentsList : $result");
             List resultData = result.data["mypage_contents_list"];
 
             return Expanded(
@@ -316,6 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
+            print("my posts : $result");
             Map resultData = result.data["mypage_count"];
             int contentsCount = resultData["contents_count"];
             int bookmarksCount = resultData["bookmarks_count"];
@@ -493,14 +495,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ? SizedBox(height: ScreenUtil().setSp(10))
                     : Container(),
                 profileText.length > 0
-                    ? Text(
-                        profileText,
+                    ? ReadMoreText(profileText,
+                        trimLines: 2,
+                        colorClickableText: app_font_grey,
                         style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            letterSpacing: -0.35),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      )
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing: -0.35,
+                          color: Colors.black,
+                        ),
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText: '더보기',
+                        trimExpandedText: '접기',
+                        moreStyle: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing: -0.35,
+                          color: app_font_grey,
+                        ))
                     : Container()
               ],
             );

@@ -57,7 +57,7 @@ class MapHelper {
       minZoom: minZoom,
       maxZoom: maxZoom,
       // radius: 150,
-      radius: 300,
+      radius: 250,
       extent: 2048,
       nodeSize: 64,
       points: markers,

@@ -46,6 +46,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.3.46
   intl: ^0.17.0
   cached_network_image: ^3.1.0
+  readmore: ^2.1.0
 
 # google map
   fluster: ^1.2.0
