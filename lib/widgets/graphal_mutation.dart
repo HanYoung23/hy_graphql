@@ -100,6 +100,16 @@ class Mutations {
     }
 """;
 
+  static final String changeCheck = """
+    mutation(\$type: String!, \$check_id: Int!) {
+      change_check(type : \$type, check_id: \$check_id)
+      {
+          result
+          msg
+        }
+    }
+""";
+
   static final String deleteContents = """
     mutation(\$type: String!, \$contents_id: Int!) {
       change_contents(type : \$type, contents_id: \$contents_id)

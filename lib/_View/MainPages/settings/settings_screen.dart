@@ -2,15 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/signout_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/kakao_login.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
-import 'package:letsgotrip/functions/naver_login.dart';
-import 'package:letsgotrip/storage/storage.dart';
-import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class SettingsScreen extends StatefulWidget {
   final int customerId;

@@ -177,8 +177,22 @@ class Queries {
 """;
 
   static final String noticeList = """
-    query notice_list() {
-      notice_list() 
+    query notice_list(\$customer_id: Int!) {
+      notice_list(customer_id: \$customer_id) 
+      {
+          check_id
+          notice_id
+          notice_title
+          image_link
+          notice_text
+          regist_date
+        }
+    }
+""";
+
+  static final String notice = """
+    query notice(\$notice_id: Int!) {
+      notice(notice_id: \$notice_id) 
       {
           notice_id
           notice_title

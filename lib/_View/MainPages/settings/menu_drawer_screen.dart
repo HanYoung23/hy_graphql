@@ -6,7 +6,6 @@ import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/announce_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/notification_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/settings_screen.dart';
-import 'package:letsgotrip/_View/MainPages/store/post_promotion_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/channeltalk_bottom_sheet.dart';
@@ -60,7 +59,8 @@ class MenuDrawer extends StatelessWidget {
                         ),
                         builder: (result, {refetch, fetchMore}) {
                           if (!result.isLoading) {
-                            // print("🧾 settings result : $result");
+                            print(
+                                "🧾 settings result : ${result.data["check_list"]}");
                             List resultData = result.data["check_list"];
                             bool isNewNoti = false;
 
@@ -71,8 +71,9 @@ class MenuDrawer extends StatelessWidget {
                             }
                             return InkWell(
                               onTap: () {
-                                Get.to(() =>
-                                    NotificationScreen(checkList: resultData));
+                                Get.to(() => NotificationScreen(
+                                    checkList: resultData,
+                                    refetchCallback: () => refetch()));
                               },
                               child: Image.asset(
                                 !isNewNoti
@@ -227,7 +228,10 @@ class MenuDrawer extends StatelessWidget {
                             }
                             return InkWell(
                               onTap: () {
-                                Get.to(() => AnnounceScreen());
+                                Get.to(() => AnnounceScreen(
+                                      customerId: customerId,
+                                      refetchCallback: () => refetch(),
+                                    ));
                               },
                               child: Container(
                                 width: ScreenUtil().screenWidth,

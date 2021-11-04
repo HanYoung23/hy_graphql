@@ -14,7 +14,6 @@ import 'package:letsgotrip/_View/InitPages/profile_set_screen.dart';
 import 'package:letsgotrip/amplifyconfiguration.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_config.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
 
 import 'homepage.dart';
 

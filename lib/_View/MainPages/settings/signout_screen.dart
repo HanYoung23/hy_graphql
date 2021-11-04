@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
-import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/channeltalk_bottom_sheet.dart';
-import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class SignOutScreen extends StatelessWidget {
   const SignOutScreen({Key key}) : super(key: key);
