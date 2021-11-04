@@ -203,4 +203,14 @@ class Queries {
         }
     }
 """;
+
+  static final String versionCheck = """
+    query version_check() {
+      version_check() 
+      {
+          ios
+          android
+        }
+    }
+""";
 }
