@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/MainPages/map/edit_post_creation_screen.dart';
-import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -28,8 +28,7 @@ class PostCupertinoBottomSheet extends StatelessWidget {
           onCompleted: (dynamic resultData) async {
             // print("🚨 change contents result : $resultData");
             if (resultData["change_contents"]["result"]) {
-              refetchCallback();
-              Get.back();
+              Get.offAll(() => HomePage(), arguments: 2);
             }
           },
         ),

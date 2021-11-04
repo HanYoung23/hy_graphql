@@ -46,6 +46,18 @@ class Queries {
     }
 """;
 
+  static final String promotionsList = """
+    query promotions_list(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!) {
+      promotions_list(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2)
+      {
+          promotions_id
+          image_link
+          main_text
+          location_link 
+        }
+    }
+""";
+
   static final String photoDetail = """
     query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
       photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 

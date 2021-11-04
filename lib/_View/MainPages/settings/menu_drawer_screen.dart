@@ -6,6 +6,7 @@ import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/announce_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/notification_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/settings_screen.dart';
+import 'package:letsgotrip/_View/MainPages/store/post_promotion_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/channeltalk_bottom_sheet.dart';
@@ -59,7 +60,7 @@ class MenuDrawer extends StatelessWidget {
                         ),
                         builder: (result, {refetch, fetchMore}) {
                           if (!result.isLoading) {
-                            print("🧾 settings result : $result");
+                            // print("🧾 settings result : $result");
                             List resultData = result.data["check_list"];
                             bool isNewNoti = false;
 
@@ -192,16 +193,21 @@ class MenuDrawer extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      width: ScreenUtil().screenWidth,
-                      height: ScreenUtil().setSp(48),
-                      alignment: Alignment.centerLeft,
-                      child: Image.asset(
-                        "assets/images/settings/post_enterprise_text.png",
-                        width: ScreenUtil().setSp(104),
-                        height: ScreenUtil().setSp(24),
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap:(){
+                    //     Get.to(()=>PostPromotionScreen());
+                    //   },
+                    //   child: Container(
+                    //     width: ScreenUtil().screenWidth,
+                    //     height: ScreenUtil().setSp(48),
+                    //     alignment: Alignment.centerLeft,
+                    //     child: Image.asset(
+                    //       "assets/images/settings/post_enterprise_text.png",
+                    //       width: ScreenUtil().setSp(104),
+                    //       height: ScreenUtil().setSp(24),
+                    //     ),
+                    //   ),
+                    // ),
                     Query(
                         options: QueryOptions(
                           document: gql(Queries.checkList),
@@ -209,7 +215,7 @@ class MenuDrawer extends StatelessWidget {
                         ),
                         builder: (result, {refetch, fetchMore}) {
                           if (!result.isLoading) {
-                            print("🧾 settings result : $result");
+                            // print("🧾 settings result : $result");
                             List resultData = result.data["check_list"];
                             bool isNewNoti = false;
 

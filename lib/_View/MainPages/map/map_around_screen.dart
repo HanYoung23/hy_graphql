@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/_View/MainPages/map/place_detail_ad_screen.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
@@ -56,6 +59,11 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
           },
         ),
         builder: (result, {refetch, fetchMore}) {
+          String latitudeFirst = "${gmWholeLatLng.latlngBounds["swLat"]}";
+          String latitudeSecond = "${gmWholeLatLng.latlngBounds["neLat"]}";
+          String longitudeOne = "${gmWholeLatLng.latlngBounds["swLng"]}";
+          String longitudeSecond = "${gmWholeLatLng.latlngBounds["neLng"]}";
+
           if (!result.isLoading) {
             List<Map> imageMaps = [];
             for (Map resultData in result.data["photo_list_map"]) {
@@ -65,6 +73,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               Map mapData = {
                 "contentsId": contentsId,
                 "imageLink": urlList[0],
+                "isAd": false,
               };
               imageMaps.add(mapData);
               // for (String url in urlList) {
@@ -75,9 +84,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               //   imageMaps.add(mapData);
               // }
             }
-            print(
-                "🚨 photomaplist around : ${result.data["photo_list_map"].length}");
-            // print("🚨 result : $result");
+            // print(
+            //     "🚨 photomaplist around : ${result.data["photo_list_map"].length}");
             return GestureDetector(
               onTap: () {
                 floatingBtnController.allBtnCancel();
@@ -184,68 +192,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                 ),
                               ),
                               imageMaps.length > 0
-                                  ? Expanded(
-                                      child: Container(
-                                        child: GridView.builder(
-                                            itemCount: imageMaps.length,
-                                            gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              childAspectRatio: 1,
-                                              mainAxisSpacing:
-                                                  ScreenUtil().setSp(1),
-                                              crossAxisSpacing:
-                                                  ScreenUtil().setSp(1),
-                                            ),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return InkWell(
-                                                onTap: () {
-                                                  // Get.to(() =>
-                                                  //     PlaceDetailScreen(
-                                                  //       contentsId:
-                                                  //           imageMaps[index]
-                                                  //               ["contentsId"],
-                                                  //       customerId: customerId,
-                                                  //     ));
-
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            PlaceDetailScreen(
-                                                              contentsId: imageMaps[
-                                                                      index][
-                                                                  "contentsId"],
-                                                              customerId: widget
-                                                                  .customerId,
-                                                            )),
-                                                  );
-                                                },
-                                                // child: Image.network(
-                                                //   imageMaps[index]["imageLink"],
-                                                //   fit: BoxFit.cover,
-                                                //   loadingBuilder: (context,
-                                                //       child, loadingProgress) {
-                                                //     if (loadingProgress == null)
-                                                //       return child;
-                                                //     return CupertinoActivityIndicator();
-                                                //   },
-                                                // ),
-                                                child: CachedNetworkImage(
-                                                  imageUrl: imageMaps[index]
-                                                      ["imageLink"],
-                                                  fit: BoxFit.cover,
-                                                  placeholder: (context, url) =>
-                                                      CupertinoActivityIndicator(),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Icon(Icons.error),
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                    )
+                                  ? gridBuilder(latitudeFirst, latitudeSecond,
+                                      longitudeOne, longitudeSecond, imageMaps)
                                   : Expanded(
                                       child: Center(
                                           child: Image.asset(
@@ -364,6 +312,143 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             );
           }
         }));
+  }
+
+  Expanded gridBuilder(
+      String latitudeFirst,
+      String latitudeSecond,
+      String longitudeOne,
+      String longitudeSecond,
+      List<Map<dynamic, dynamic>> imageMaps) {
+    return Expanded(
+        child: Query(
+            options: QueryOptions(
+              document: gql(Queries.promotionsList),
+              variables: {
+                "latitude1": latitudeFirst,
+                "latitude2": latitudeSecond,
+                "longitude1": longitudeOne,
+                "longitude2": longitudeSecond,
+              },
+            ),
+            builder: (result, {refetch, fetchMore}) {
+              int i = 0;
+              if (!result.isLoading) {
+                // print(
+                //     "🚨 promotionslist result : ${result.data["promotions_list"]}");
+
+                for (Map resultData in result.data["promotions_list"]) {
+                  int promotionsId =
+                      int.parse("${resultData["promotions_id"]}");
+                  String adImageUrl = "${resultData["image_link"]}";
+                  List adUrlList = adImageUrl.split(",");
+                  String adMainText = "${resultData["main_text"]}";
+                  String adLocationLink = "${resultData["location_link"]}";
+                  Map adMapData = {
+                    "promotionsId": promotionsId,
+                    "imageLink": adUrlList,
+                    "mainText": adMainText,
+                    "locationLink": adLocationLink,
+                    "isAd": true,
+                  };
+
+                  if (imageMaps[i * 10] != null) {
+                    imageMaps.insert(i * 10, adMapData);
+                  }
+                  i++;
+                }
+
+                return Container(
+                  child: GridView.builder(
+                      itemCount: imageMaps.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 1,
+                        mainAxisSpacing: ScreenUtil().setSp(1),
+                        crossAxisSpacing: ScreenUtil().setSp(1),
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return !imageMaps[index]["isAd"]
+                            ? InkWell(
+                                onTap: () {
+                                  Get.to(() => PlaceDetailScreen(
+                                        contentsId: imageMaps[index]
+                                            ["contentsId"],
+                                        customerId: widget.customerId,
+                                      ));
+                                },
+                                child: CachedNetworkImage(
+                                  imageUrl: imageMaps[index]["imageLink"],
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      CupertinoActivityIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  Map mapData = {
+                                    "promotionsId": imageMaps[index]
+                                        ["promotionsId"],
+                                    "imageLink": imageMaps[index]["imageLink"],
+                                    "mainText": imageMaps[index]["mainText"],
+                                    "locationLink": imageMaps[index]
+                                        ["locationLink"],
+                                  };
+                                  Get.to(() => PlaceDetailAdScreen(
+                                        mapData: mapData,
+                                      ));
+                                },
+                                child: Stack(
+                                  children: [
+                                    Positioned(
+                                      child: CachedNetworkImage(
+                                        width: ScreenUtil().screenWidth,
+                                        height: ScreenUtil().screenHeight,
+                                        imageUrl: imageMaps[index]["imageLink"]
+                                            [0],
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            CupertinoActivityIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: ScreenUtil().setSp(4),
+                                      right: ScreenUtil().setSp(4),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: ScreenUtil().setSp(8),
+                                          vertical: ScreenUtil().setSp(2),
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: app_blue,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "AD",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: ScreenUtil().setSp(12),
+                                              letterSpacing: -0.35,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                      }),
+                );
+              } else {
+                return Container();
+              }
+            }));
   }
 
   List<BottomNavigationBarItem> btmNavItems = [

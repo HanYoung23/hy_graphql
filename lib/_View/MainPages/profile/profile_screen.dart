@@ -151,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            print("🚨 mypageContentsList : $result");
+            // print("🚨 mypageContentsList : $result");
             List resultData = result.data["mypage_contents_list"];
 
             return Expanded(
