@@ -170,7 +170,29 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                   SizedBox(height: ScreenUtil().setSp(10)),
                   InkWell(
                     onTap: () {
-                      deleteUserData("postSaveData");
+                      deleteUserData("postSaveData").then((value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                              '이전 게시물을 초기화합니다.',
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                letterSpacing: letter_spacing_small,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            elevation: 0,
+                            duration: Duration(seconds: 2),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(21),
+                            ),
+                            backgroundColor: Color(0xffb5b5b5),
+                            margin: EdgeInsets.only(
+                                bottom: ScreenUtil().setSp(90),
+                                left: ScreenUtil().setSp(80),
+                                right: ScreenUtil().setSp(80))));
+                      });
                       Get.back();
                     },
                     child: Container(
