@@ -56,12 +56,15 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _mapController.complete(controller);
   }
 
-  setMapMarker(List dataList) {
+  setMapMarker(List dataList) async {
     print("🚨 photomaplist : ${dataList.length}");
     List<MapMarker> mapMarkers = [];
+    // Get.snackbar("", "이미지를 불러오는 중입니다...",
+    //     duration: Duration(seconds: dataList.length),
+    // snackPosition: SnackPosition.BOTTOM);
     if (dataList.length > 0) {
       for (Map data in dataList) {
-        MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
+        await MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
             .then((markerImage) {
           mapMarkers.add(
             MapMarker(
@@ -70,21 +73,21 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               icon: markerImage,
             ),
           );
-          _initMarkers("${data["imageLink"][0]}");
         });
       }
     }
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     setState(() {
       mapMarkerList = mapMarkers;
     });
+    _initMarkers();
   }
 
-  _initMarkers(String imageUrl) async {
+  _initMarkers() async {
     _clusterManager = await MapHelper.initClusterManager(
       mapMarkerList,
       _minClusterZoom,
       _maxClusterZoom,
-      imageUrl,
     );
     await _updateMarkers();
   }

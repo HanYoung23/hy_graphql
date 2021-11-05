@@ -51,7 +51,6 @@ class MapHelper {
     List<MapMarker> markers,
     int minZoom,
     int maxZoom,
-    String imageUrl,
   ) async {
     return Fluster<MapMarker>(
       minZoom: minZoom,
@@ -115,31 +114,31 @@ class MapHelper {
     File markerImageFile;
     markerImageFile = await DefaultCacheManager().getSingleFile(imageUrl);
     int size = ScreenUtil().setSp(120).toInt();
-    int whitePadding = 8;
+    int whitePadding = ScreenUtil().setSp(8).toInt();
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, 80, size.toDouble(), size.toDouble());
+    final rect = Rect.fromLTWH(
+        0, ScreenUtil().setSp(80), size.toDouble(), size.toDouble());
     canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
 
     final Uint8List imageUint8List = await markerImageFile.readAsBytes();
 
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
         targetWidth: size - whitePadding,
-        targetHeight: size - whitePadding - 4);
+        targetHeight: size - whitePadding - ScreenUtil().setSp(4).toInt());
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
       canvas: canvas,
-      rect: Rect.fromLTWH(0, 78, size.toDouble(), size.toDouble()),
+      rect: Rect.fromLTWH(
+          0, ScreenUtil().setSp(78), size.toDouble(), size.toDouble()),
       image: imageFI.image,
       alignment: Alignment.center,
     );
     // //
-
-    final double radius = 44;
-
     paint.color = Colors.blue;
 
     String textNum = mapMarker.pointsSize.toString();
+    // String textNum = "12300";
     if (textNum.length > 3) {
       textNum = intl.NumberFormat.compactCurrency(
         decimalDigits: 2,
@@ -150,12 +149,16 @@ class MapHelper {
     }
 
     int textLength = textNum.length;
+    final double radius = ScreenUtil().setSp(44);
 
-    double offsetX = 116 - (textLength * 12 + radius) / 2;
+    double blueBoxWidth = textLength * ScreenUtil().setSp(16) + radius;
+    double blueBoxHeight = ScreenUtil().setSp(16) + radius;
+    double offsetX = size - blueBoxWidth / 2 - whitePadding / 2;
 
     canvas.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(offsetX, 57, textLength * 12 + radius, radius + 10),
+            Rect.fromLTWH(offsetX, blueBoxHeight - whitePadding, blueBoxWidth,
+                blueBoxHeight),
             Radius.circular(50)),
         paint);
 
@@ -167,15 +170,17 @@ class MapHelper {
         fontSize: textSize,
         fontWeight: FontWeight.bold,
         color: Colors.white,
-        backgroundColor: Colors.blue,
+        // backgroundColor: Colors.blue,
       ),
     );
 
     textPainter.layout();
     textPainter.paint(
       canvas,
-      Offset(radius - textPainter.width / 2 + textSize * 2 + whitePadding,
-          radius - textPainter.height / 2 + textSize + whitePadding),
+      // Offset(radius - textPainter.width / 2 + textSize * 2 + whitePadding,
+      //     radius - textPainter.height / 2 + textSize + whitePadding),
+      Offset(offsetX + blueBoxWidth / 2 - textPainter.width / 2,
+          blueBoxHeight + textSize / 4 - whitePadding),
     );
 
     final image = await pictureRecorder.endRecording().toImage(

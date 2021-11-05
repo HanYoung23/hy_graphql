@@ -206,16 +206,16 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                   ],
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {
-                                  fetchMore(opts);
-                                },
-                                child: Container(
-                                  width: ScreenUtil().screenWidth,
-                                  height: ScreenUtil().setSp(50),
-                                  color: Colors.red,
-                                ),
-                              ),
+                              // InkWell(
+                              //   onTap: () {
+                              //     fetchMore(opts);
+                              //   },
+                              //   child: Container(
+                              //     width: ScreenUtil().screenWidth,
+                              //     height: ScreenUtil().setSp(50),
+                              //     color: Colors.red,
+                              //   ),
+                              // ),
                               imageMaps.length > 0
                                   ? gridBuilder(latitudeFirst, latitudeSecond,
                                       longitudeOne, longitudeSecond, imageMaps)
@@ -359,8 +359,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             builder: (result, {refetch, fetchMore}) {
               int i = 0;
               if (!result.isLoading) {
-                // print(
-                //     "🚨 promotionslist result : ${result.data["promotions_list"]}");
+                print(
+                    "🚨 promotionslist result : ${result.data["promotions_list"]}");
 
                 for (Map resultData in result.data["promotions_list"]) {
                   int promotionsId =
@@ -377,7 +377,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                     "isAd": true,
                   };
 
-                  if (imageMaps[i * 10] != null) {
+                  if (imageMaps.length > i * 10 - 1) {
                     imageMaps.insert(i * 10, adMapData);
                   }
                   i++;
