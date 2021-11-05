@@ -47,18 +47,18 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FetchMoreOptions opts = FetchMoreOptions(
-      variables: {'start': start, 'limit': limit},
-      updateQuery: (previousResultData, fetchMoreResultData) {
-        // 이렇게 하면 fetchMore한 결과와 원래의 쿼리 결과를 합쳐서 가져올 수 있습니다.
-        final List<dynamic> allPosts = [
-          ...previousResultData['photoListMap'] as List<dynamic>,
-          ...fetchMoreResultData['photoListMap'] as List<dynamic>
-        ];
-        fetchMoreResultData['photoListMap'] = allPosts;
-        return fetchMoreResultData;
-      },
-    );
+    // FetchMoreOptions opts = FetchMoreOptions(
+    //   variables: {'start': start, 'limit': limit},
+    //   updateQuery: (previousResultData, fetchMoreResultData) {
+    //     // 이렇게 하면 fetchMore한 결과와 원래의 쿼리 결과를 합쳐서 가져올 수 있습니다.
+    //     final List<dynamic> allPosts = [
+    //       ...previousResultData['photoListMap'] as List<dynamic>,
+    //       ...fetchMoreResultData['photoListMap'] as List<dynamic>
+    //     ];
+    //     fetchMoreResultData['photoListMap'] = allPosts;
+    //     return fetchMoreResultData;
+    //   },
+    // );
 
     return Obx(() => Query(
         options: QueryOptions(
@@ -71,6 +71,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             "category_id": fliterValue.category.value,
             "date1": fliterValue.dateStart.value,
             "date2": fliterValue.dateEnd.value,
+            "page": 1
           },
         ),
         builder: (result, {refetch, fetchMore}) {

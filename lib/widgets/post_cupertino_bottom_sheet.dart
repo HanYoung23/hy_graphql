@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/MainPages/map/edit_post_creation_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
@@ -28,7 +29,7 @@ class PostCupertinoBottomSheet extends StatelessWidget {
           onCompleted: (dynamic resultData) async {
             // print("🚨 change contents result : $resultData");
             if (resultData["change_contents"]["result"]) {
-              Get.offAll(() => HomePage(), arguments: 2);
+              Get.off(() => HomePage(), arguments: 2);
             }
           },
         ),
@@ -62,10 +63,12 @@ class PostCupertinoBottomSheet extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    runMutation({
-                      "type": "del",
-                      "contents_id": contentsId,
-                    });
+                    deletePostPopup(
+                        context,
+                        () => runMutation({
+                              "type": "del",
+                              "contents_id": contentsId,
+                            }));
                   },
                 ),
               ],

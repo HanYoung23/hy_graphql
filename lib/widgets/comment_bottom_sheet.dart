@@ -65,6 +65,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           variables: {
             "contents_id": widget.contentsId,
             "sequence": isLeft ? 1 : 2,
+            "page": 1
           },
         ),
         builder: (result, {refetch, fetchMore}) {

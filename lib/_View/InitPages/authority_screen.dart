@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/_View/InitPages/walkthrough_screen.dart';
+import 'package:letsgotrip/constants/common_value.dart';
 
 class AuthorityScreen extends StatelessWidget {
   const AuthorityScreen({
@@ -140,13 +141,20 @@ class AuthorityScreen extends StatelessWidget {
                   Get.offAll(() => WalkthroughScreen());
                 },
                 child: Container(
-                  width: ScreenUtil().screenWidth,
-                  height: ScreenUtil().setHeight(54),
-                  color: Color.fromRGBO(5, 138, 221, 1),
-                  child: Image.asset(
-                    "assets/images/authority_confirm_button.png",
-                  ),
-                ),
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setHeight(54),
+                    color: Color.fromRGBO(5, 138, 221, 1),
+                    child: Center(
+                      child: Text(
+                        "확인",
+                        style: TextStyle(
+                          fontFamily: "NotoSans",
+                          fontSize: ScreenUtil().setSp(16),
+                          color: Colors.white,
+                          letterSpacing: letter_spacing,
+                        ),
+                      ),
+                    )),
               )
             ],
           ),

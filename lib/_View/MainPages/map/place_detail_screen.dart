@@ -79,6 +79,9 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               String date =
                   registDate.replaceAll(RegExp(r'-'), ".").substring(0, 10);
               String profilePhotoLink = resultData["profile_photo_link"];
+              String tags = resultData["tags"];
+              List tagList = tags.split("#").sublist(1);
+              // int customerId = resultData["customer_id"];
               int bookmarksCount = resultData["bookmarks_count"];
               int likesCount = resultData["likes_count"];
               int comentsCount = resultData["coments_count"];
@@ -199,9 +202,14 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         aspectRatio: 1,
                                         viewportFraction: 1,
                                         initialPage: 0,
-                                        enableInfiniteScroll: true,
+                                        enableInfiniteScroll:
+                                            imageLink.length != 1
+                                                ? true
+                                                : false,
                                         reverse: false,
-                                        autoPlay: true,
+                                        autoPlay: imageLink.length != 1
+                                            ? true
+                                            : false,
                                         autoPlayInterval: Duration(seconds: 3),
                                         autoPlayAnimationDuration:
                                             Duration(milliseconds: 800),
@@ -301,18 +309,37 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         SizedBox(width: ScreenUtil().setSp(15)),
                                         InkWell(
                                           onTap: () {
-                                            if (widget.customerId != 1) {
-                                              showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    PostCupertinoBottomSheet(
-                                                  contentsId: widget.contentsId,
-                                                  refetchCallback: () =>
-                                                      refetch(),
-                                                ),
-                                              );
-                                            }
+                                            showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  PostCupertinoBottomSheet(
+                                                contentsId: widget.contentsId,
+                                                refetchCallback: () =>
+                                                    refetch(),
+                                              ),
+                                            );
+                                            // if (widget.customerId !=
+                                            //     customerId) {
+                                            //   showCupertinoModalPopup(
+                                            //     context: context,
+                                            //     builder: (BuildContext
+                                            //             context) =>
+                                            //         ReportCupertinoBottomSheet(
+                                            //             contentsId:
+                                            //                 widget.contentsId),
+                                            //   );
+                                            // } else {
+                                            //   showCupertinoModalPopup(
+                                            //     context: context,
+                                            //     builder: (BuildContext
+                                            //             context) =>
+                                            //         PostCupertinoBottomSheet(
+                                            //       contentsId: widget.contentsId,
+                                            //       refetchCallback: () =>
+                                            //           refetch(),
+                                            //     ),
+                                            //   );
+                                            // }
                                           },
                                           child: Image.asset(
                                               "assets/images/three_dots_toggle_button.png",
@@ -392,6 +419,17 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         letterSpacing: -0.35,
                                         color: app_font_grey,
                                       )),
+                                  SizedBox(height: ScreenUtil().setSp(10)),
+                                  Wrap(
+                                    direction: Axis.horizontal,
+                                    children: tagList.map((tag) {
+                                      return Text("#$tag  ",
+                                          style: TextStyle(
+                                              fontSize: ScreenUtil().setSp(14),
+                                              letterSpacing: -0.35,
+                                              color: Color(0xff1A4F79)));
+                                    }).toList(),
+                                  ),
                                   SizedBox(height: ScreenUtil().setSp(20)),
                                   Row(
                                     children: [

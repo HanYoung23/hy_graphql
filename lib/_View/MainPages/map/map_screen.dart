@@ -97,6 +97,7 @@ class _MapScreenState extends State<MapScreen> {
             "category_id": fliterValue.category.value,
             "date1": fliterValue.dateStart.value,
             "date2": fliterValue.dateEnd.value,
+            "page": 1
           },
         ),
         builder: (result, {refetch, fetchMore}) {

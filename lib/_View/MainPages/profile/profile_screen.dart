@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Query(
         options: QueryOptions(
           document: gql(Queries.mypageContentsList),
-          variables: {"customer_id": customerId},
+          variables: {"customer_id": customerId, "page": 1},
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
@@ -201,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Query(
         options: QueryOptions(
           document: gql(Queries.mypageComentsList),
-          variables: {"customer_id": customerId},
+          variables: {"customer_id": customerId, "page": 1},
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
@@ -266,7 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Query(
         options: QueryOptions(
           document: gql(Queries.mypageBookmarksList),
-          variables: {"customer_id": customerId},
+          variables: {"customer_id": customerId, "page": 1},
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {

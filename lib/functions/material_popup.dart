@@ -507,3 +507,225 @@ permissionPopup(BuildContext context, String content) {
             ),
           ));
 }
+
+deleteCommentPopup(BuildContext context, Function runMutationCallback) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "등록하신 댓글이 삭제됩니다.\n삭제 하시겠습니까?",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            runMutationCallback();
+                            Get.back();
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+deletePostPopup(BuildContext context, Function runMutationCallback) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "등록하신 게시물이 삭제됩니다.\n삭제 하시겠습니까?",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            runMutationCallback();
+                            Get.back();
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+reportPostPopup(BuildContext context, Function runMutationCallback) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "등록하신 댓글이 삭제됩니다.\n삭제 하시겠습니까?",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: -0.4,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            runMutationCallback();
+                            Get.back();
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: -0.4,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}

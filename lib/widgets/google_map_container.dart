@@ -76,7 +76,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         });
       }
     }
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     setState(() {
       mapMarkerList = mapMarkers;
     });

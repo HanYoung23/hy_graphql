@@ -24,8 +24,8 @@ class Queries {
 """;
 
   static final String photoListMap = """
-    query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!) {
-      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2)
+    query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!, \$page: Int!) {
+      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2, page:\$page)
       {
           contents_id
           category_id
@@ -62,6 +62,7 @@ class Queries {
     query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
       photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
       {
+          customer_id
           contents_id
           category_id
           contents_title
@@ -85,8 +86,8 @@ class Queries {
 """;
 
   static final String comentsList = """
-    query coments_list(\$contents_id: Int!, \$sequence: Int!) {
-      coments_list(contents_id: \$contents_id, sequence: \$sequence) 
+    query coments_list(\$contents_id: Int!, \$sequence: Int!, \$page: Int!) {
+      coments_list(contents_id: \$contents_id, sequence: \$sequence,page: \$page) 
       {
           customer_id
           coments_id
@@ -114,8 +115,8 @@ class Queries {
 """;
 
   static final String mypageContentsList = """
-    query mypage_contents_list(\$customer_id: Int!) {
-      mypage_contents_list(customer_id: \$customer_id) 
+    query mypage_contents_list(\$customer_id: Int!, \$page: Int!) {
+      mypage_contents_list(customer_id: \$customer_id, page:\$page) 
       {
           contents_id
           image_link
@@ -125,8 +126,8 @@ class Queries {
 """;
 
   static final String mypageComentsList = """
-    query mypage_coments_list(\$customer_id: Int!) {
-      mypage_coments_list(customer_id: \$customer_id) 
+    query mypage_coments_list(\$customer_id: Int!,\$page: Int!) {
+      mypage_coments_list(customer_id: \$customer_id, page: \$page) 
       {
           contents_id
           coments_id
@@ -137,8 +138,8 @@ class Queries {
 """;
 
   static final String mypageBookmarksList = """
-    query mypage_bookmarks_list(\$customer_id: Int!) {
-      mypage_bookmarks_list(customer_id: \$customer_id) 
+    query mypage_bookmarks_list(\$customer_id: Int!,\$page: Int!) {
+      mypage_bookmarks_list(customer_id: \$customer_id, page: \$page) 
       {
         bookmarks_id
         contents_id
