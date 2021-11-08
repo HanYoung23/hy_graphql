@@ -317,7 +317,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            print("my posts : $result");
             Map resultData = result.data["mypage_count"];
             int contentsCount = resultData["contents_count"];
             int bookmarksCount = resultData["bookmarks_count"];

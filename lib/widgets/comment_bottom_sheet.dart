@@ -563,7 +563,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  if (customerId == commentCustomerId) {
+                  if (customerId == commentCustomerId && checkFlag == 1) {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) =>
@@ -709,20 +709,22 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        CommentCupertinoBottomSheet(
-                      comentsId: _comentsId,
-                      comentText: content,
-                      refetchCallback: refetch,
-                      editCommentCallback: (id, text) =>
-                          commentEditCallback(id, text),
-                    ),
-                  );
-                  setState(() {
-                    replyNickname = replyNickname;
-                  });
+                  if (customerId == commentCustomerId && _checkFlag == 1) {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          CommentCupertinoBottomSheet(
+                        comentsId: _comentsId,
+                        comentText: content,
+                        refetchCallback: refetch,
+                        editCommentCallback: (id, text) =>
+                            commentEditCallback(id, text),
+                      ),
+                    );
+                    setState(() {
+                      replyNickname = replyNickname;
+                    });
+                  }
                 },
                 child: Image.asset("assets/images/comment_toggle_button.png",
                     width: ScreenUtil().setSp(28),

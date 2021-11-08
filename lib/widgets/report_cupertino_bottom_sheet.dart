@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
@@ -40,6 +41,8 @@ class ReportCupertinoBottomSheet extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    Get.back();
+                    reportPostPopup(context, null);
                     // runMutation({
                     //   "type": "del",
                     //   "contents_id": contentsId,

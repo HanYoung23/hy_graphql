@@ -101,7 +101,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
             textAlign: TextAlign.center,
           ),
           elevation: 0,
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(21),
@@ -136,7 +136,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
           textAlign: TextAlign.center,
         ),
         elevation: 0,
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(21),

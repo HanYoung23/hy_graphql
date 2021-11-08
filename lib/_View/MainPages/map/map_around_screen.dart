@@ -387,6 +387,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                 return Container(
                   child: GridView.builder(
                       itemCount: imageMaps.length,
+                      physics: ClampingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         childAspectRatio: 1,

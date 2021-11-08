@@ -59,9 +59,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   setMapMarker(List dataList) async {
     print("🚨 photomaplist : ${dataList.length}");
     List<MapMarker> mapMarkers = [];
-    // Get.snackbar("", "이미지를 불러오는 중입니다...",
-    //     duration: Duration(seconds: dataList.length),
-    // snackPosition: SnackPosition.BOTTOM);
     if (dataList.length > 0) {
       for (Map data in dataList) {
         await MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
@@ -75,11 +72,18 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
           );
         });
       }
+      if (this.mounted) {
+        setState(() {
+          mapMarkerList = mapMarkers;
+        });
+        _initMarkers();
+      }
     }
-    setState(() {
-      mapMarkerList = mapMarkers;
-    });
-    _initMarkers();
+    if (this.mounted) {
+      _updateMarkers(
+          gmWholeController.currentCameraPosition.value.zoom - 0.000001,
+          gmWholeController.currentCameraPosition.value);
+    }
   }
 
   _initMarkers() async {
@@ -193,7 +197,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       myLocationEnabled: false,
       zoomControlsEnabled: false,
       initialCameraPosition: widget.currentCameraPosition.target.latitude ==
-              37.55985294417329
+              37.55985294417329 // inital latitude
           ? CameraPosition(
               target: LatLng(
                   widget.userPosition.latitude, widget.userPosition.longitude),

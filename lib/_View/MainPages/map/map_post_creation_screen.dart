@@ -96,7 +96,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
             textAlign: TextAlign.center,
           ),
           elevation: 0,
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(21),
@@ -131,7 +131,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
           textAlign: TextAlign.center,
         ),
         elevation: 0,
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(21),
@@ -165,8 +165,11 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
             child: Container(
-              height: ScreenUtil().screenHeight * 0.9,
+              height: ScreenUtil().screenHeight -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom,
               margin: EdgeInsets.all(ScreenUtil().setSp(20)),
               child: Column(
                 children: [
@@ -414,15 +417,10 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                             width: ScreenUtil().setWidth(335),
                             height: ScreenUtil().setHeight(50),
                           ))
-                      : InkWell(
-                          onTap: () {
-                            Get.off(() => HomePage());
-                          },
-                          child: Image.asset(
-                            "assets/images/next_button_grey.png",
-                            width: ScreenUtil().setWidth(335),
-                            height: ScreenUtil().setHeight(50),
-                          ),
+                      : Image.asset(
+                          "assets/images/next_button_grey.png",
+                          width: ScreenUtil().setWidth(335),
+                          height: ScreenUtil().setHeight(50),
                         ),
                   SizedBox(height: ScreenUtil().setHeight(14)),
                 ],

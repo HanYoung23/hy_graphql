@@ -97,51 +97,50 @@ class _MapScreenState extends State<MapScreen> {
             "category_id": fliterValue.category.value,
             "date1": fliterValue.dateStart.value,
             "date2": fliterValue.dateEnd.value,
-            "page": 1
+            "page": 2
           },
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
             List<Map> photoMapMarkerList = [];
-            // List<Map> photoMapImageList = [];
-            // print(
-            //     "🚨 photomaplist parent : ${result.data["photo_list_map"].length}");
-            // print("🚨 category : ${fliterValue.category.value}");
-            // print("🚨 date1 : ${fliterValue.dateStart.value}");
-            // print("🚨 date2 : ${fliterValue.dateEnd.value}");
+            print("🚨 result photo : ${result.data}");
 
-            for (Map resultData in result.data["photo_list_map"]) {
-              int customerId = int.parse("${resultData["customer_id"]}");
-              int contentsId = int.parse("${resultData["contents_id"]}");
-              int categoryId = int.parse("${resultData["category_id"]}");
-              List<String> imageLink =
-                  ("${resultData["image_link"]}").split(",");
-              List<String> tags = ("${resultData["tags"]}").split(",");
-              List<int> starRating = [
-                resultData["star_rating1"],
-                resultData["star_rating2"],
-                resultData["star_rating3"],
-                resultData["star_rating4"]
-              ];
-              double latitude = double.parse("${resultData["latitude"]}");
-              double longitude = double.parse("${resultData["longitude"]}");
+            if (result.data != null) {
+              if (result.data["photo_list_map"].length > 0) {
+                for (Map resultData in result.data["photo_list_map"]) {
+                  int customerId = int.parse("${resultData["customer_id"]}");
+                  int contentsId = int.parse("${resultData["contents_id"]}");
+                  int categoryId = int.parse("${resultData["category_id"]}");
+                  List<String> imageLink =
+                      ("${resultData["image_link"]}").split(",");
+                  List<String> tags = ("${resultData["tags"]}").split(",");
+                  List<int> starRating = [
+                    resultData["star_rating1"],
+                    resultData["star_rating2"],
+                    resultData["star_rating3"],
+                    resultData["star_rating4"],
+                  ];
+                  double latitude = double.parse("${resultData["latitude"]}");
+                  double longitude = double.parse("${resultData["longitude"]}");
 
-              Map<dynamic, dynamic> photoDataMap = {
-                "customerId": customerId,
-                "contentsId": contentsId,
-                "categoryId": categoryId,
-                "contentsTitle": "${resultData["contents_title"]}",
-                "locationLink": "${resultData["location_link"]}",
-                "imageLink": imageLink,
-                "mainText": "${resultData["main_text"]}",
-                "tags": tags,
-                "starRating": starRating,
-                "latitude": latitude,
-                "longitude": longitude,
-                "registDate": "${resultData["regist_date"]}"
-              };
+                  Map<dynamic, dynamic> photoDataMap = {
+                    "customerId": customerId,
+                    "contentsId": contentsId,
+                    "categoryId": categoryId,
+                    "contentsTitle": "${resultData["contents_title"]}",
+                    "locationLink": "${resultData["location_link"]}",
+                    "imageLink": imageLink,
+                    "mainText": "${resultData["main_text"]}",
+                    "tags": tags,
+                    "starRating": starRating,
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "registDate": "${resultData["regist_date"]}"
+                  };
 
-              photoMapMarkerList.add(photoDataMap);
+                  photoMapMarkerList.add(photoDataMap);
+                }
+              }
             }
 
             return SafeArea(
@@ -210,18 +209,7 @@ class _MapScreenState extends State<MapScreen> {
                                 SizedBox(width: ScreenUtil().setWidth(8)),
                                 InkWell(
                                   onTap: () {
-                                    // Get.to(() => MapAroundScreen(),
-                                    //     transition: Transition.noTransition);
-
                                     if (this.mounted) {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   PageRouteBuilder(
-                                      //       pageBuilder: (context, _, __) =>
-                                      //           MapAroundScreen(
-                                      //               customerId: customerId),
-                                      //       transitionDuration: Duration.zero),
-                                      // );
                                       Get.to(
                                           () => MapAroundScreen(
                                               customerId: customerId),
@@ -337,9 +325,7 @@ class _MapScreenState extends State<MapScreen> {
                                   });
                                 },
                                 child: FilterBtnOptions(
-                                    title: '전체',
-                                    // callback: (int) => filterBtnCallback(int)),
-                                    callback: () => refetch()),
+                                    title: '전체', callback: () => refetch()),
                               ),
                               InkWell(
                                 onTap: () {
@@ -348,9 +334,7 @@ class _MapScreenState extends State<MapScreen> {
                                   });
                                 },
                                 child: FilterBtnOptions(
-                                    title: '바닷가',
-                                    // callback: (int) => filterBtnCallback(int)),
-                                    callback: () => refetch()),
+                                    title: '바닷가', callback: () => refetch()),
                               ),
                               InkWell(
                                 onTap: () {
@@ -359,9 +343,7 @@ class _MapScreenState extends State<MapScreen> {
                                   });
                                 },
                                 child: FilterBtnOptions(
-                                    title: '액티비티',
-                                    // callback: (int) => filterBtnCallback(int)),
-                                    callback: () => refetch()),
+                                    title: '액티비티', callback: () => refetch()),
                               ),
                               InkWell(
                                 onTap: () {
@@ -370,9 +352,7 @@ class _MapScreenState extends State<MapScreen> {
                                   });
                                 },
                                 child: FilterBtnOptions(
-                                    title: '맛집',
-                                    // callback: (int) => filterBtnCallback(int)),
-                                    callback: () => refetch()),
+                                    title: '맛집', callback: () => refetch()),
                               ),
                               InkWell(
                                 onTap: () {
@@ -381,9 +361,7 @@ class _MapScreenState extends State<MapScreen> {
                                   });
                                 },
                                 child: FilterBtnOptions(
-                                    title: '숙소',
-                                    // callback: (int) => filterBtnCallback(int)),
-                                    callback: () => refetch()),
+                                    title: '숙소', callback: () => refetch()),
                               ),
                             ],
                           ),

@@ -7,6 +7,7 @@ import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:letsgotrip/widgets/report_dialog_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // void gpsNullPopup(BuildContext context) {
@@ -182,7 +183,7 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                               textAlign: TextAlign.center,
                             ),
                             elevation: 0,
-                            duration: Duration(seconds: 2),
+                            duration: Duration(seconds: 3),
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(21),
@@ -678,7 +679,20 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
           ));
 }
 
-reportPostPopup(BuildContext context, Function runMutationCallback) {
+reportPostPopup(BuildContext context, Function postChoiceCallback) {
+  showDialog(
+      context: context,
+      // barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: ReportDialogScreen(),
+          ));
+}
+
+reportPostDonePopup(BuildContext context) {
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -703,7 +717,7 @@ reportPostPopup(BuildContext context, Function runMutationCallback) {
                   ),
                   Container(
                     child: Text(
-                      "등록하신 댓글이 삭제됩니다.\n삭제 하시겠습니까?",
+                      "신고가 정상적으로 접수되었습니다.\n확인후 신속하게 처리하겠습니다.",
                       style: TextStyle(
                         fontSize: ScreenUtil().setSp(16),
                         letterSpacing: -0.4,
@@ -717,23 +731,6 @@ reportPostPopup(BuildContext context, Function runMutationCallback) {
                       Spacer(),
                       InkWell(
                           onTap: () {
-                            Get.back();
-                          },
-                          child: Text(
-                            "취소",
-                            style: TextStyle(
-                              fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
-                              color: app_font_grey,
-                            ),
-                          )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            runMutationCallback();
                             Get.back();
                           },
                           child: Text(

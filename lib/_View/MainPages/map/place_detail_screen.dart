@@ -11,6 +11,7 @@ import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:letsgotrip/widgets/post_cupertino_bottom_sheet.dart';
+import 'package:letsgotrip/widgets/report_cupertino_bottom_sheet.dart';
 import 'package:readmore/readmore.dart';
 
 class PlaceDetailScreen extends StatefulWidget {
@@ -81,7 +82,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               String profilePhotoLink = resultData["profile_photo_link"];
               String tags = resultData["tags"];
               List tagList = tags.split("#").sublist(1);
-              // int customerId = resultData["customer_id"];
+              int postCustomerId = resultData["customer_id"];
               int bookmarksCount = resultData["bookmarks_count"];
               int likesCount = resultData["likes_count"];
               int comentsCount = resultData["coments_count"];
@@ -309,37 +310,28 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         SizedBox(width: ScreenUtil().setSp(15)),
                                         InkWell(
                                           onTap: () {
-                                            showCupertinoModalPopup(
-                                              context: context,
-                                              builder: (BuildContext context) =>
-                                                  PostCupertinoBottomSheet(
-                                                contentsId: widget.contentsId,
-                                                refetchCallback: () =>
-                                                    refetch(),
-                                              ),
-                                            );
-                                            // if (widget.customerId !=
-                                            //     customerId) {
-                                            //   showCupertinoModalPopup(
-                                            //     context: context,
-                                            //     builder: (BuildContext
-                                            //             context) =>
-                                            //         ReportCupertinoBottomSheet(
-                                            //             contentsId:
-                                            //                 widget.contentsId),
-                                            //   );
-                                            // } else {
-                                            //   showCupertinoModalPopup(
-                                            //     context: context,
-                                            //     builder: (BuildContext
-                                            //             context) =>
-                                            //         PostCupertinoBottomSheet(
-                                            //       contentsId: widget.contentsId,
-                                            //       refetchCallback: () =>
-                                            //           refetch(),
-                                            //     ),
-                                            //   );
-                                            // }
+                                            if (widget.customerId !=
+                                                postCustomerId) {
+                                              showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    ReportCupertinoBottomSheet(
+                                                        contentsId:
+                                                            widget.contentsId),
+                                              );
+                                            } else {
+                                              showCupertinoModalPopup(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    PostCupertinoBottomSheet(
+                                                  contentsId: widget.contentsId,
+                                                  refetchCallback: () =>
+                                                      refetch(),
+                                                ),
+                                              );
+                                            }
                                           },
                                           child: Image.asset(
                                               "assets/images/three_dots_toggle_button.png",

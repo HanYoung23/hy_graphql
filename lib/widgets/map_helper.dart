@@ -24,7 +24,7 @@ class MapHelper {
     final Canvas canvas = Canvas(pictureRecorder);
 
     int size = ScreenUtil().setSp(120).toInt();
-    int whitePadding = 8;
+    int whitePadding = ScreenUtil().setSp(8).toInt();
 
     Paint paint = Paint();
     paint.color = Colors.white;
@@ -130,7 +130,7 @@ class MapHelper {
     paintImage(
       canvas: canvas,
       rect: Rect.fromLTWH(
-          0, ScreenUtil().setSp(78), size.toDouble(), size.toDouble()),
+          0, ScreenUtil().setSp(80), size.toDouble(), size.toDouble()),
       image: imageFI.image,
       alignment: Alignment.center,
     );
@@ -138,13 +138,10 @@ class MapHelper {
     paint.color = Colors.blue;
 
     String textNum = mapMarker.pointsSize.toString();
-    // String textNum = "12300";
     if (textNum.length > 3) {
       textNum = intl.NumberFormat.compactCurrency(
         decimalDigits: 2,
-        symbol:
-            '', // if you want to add currency symbol then pass that in this else leave it empty.
-        // ).format(int.parse(textNum));
+        symbol: '',
       ).format(int.parse(textNum));
     }
 
@@ -180,7 +177,7 @@ class MapHelper {
       // Offset(radius - textPainter.width / 2 + textSize * 2 + whitePadding,
       //     radius - textPainter.height / 2 + textSize + whitePadding),
       Offset(offsetX + blueBoxWidth / 2 - textPainter.width / 2,
-          blueBoxHeight + textSize / 4 - whitePadding),
+          blueBoxHeight + textSize / 4 - whitePadding / 2),
     );
 
     final image = await pictureRecorder.endRecording().toImage(

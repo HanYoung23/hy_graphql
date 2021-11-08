@@ -48,12 +48,12 @@ class MapMarker extends Clusterable {
       onTap: () {
         seeValue("customerId").then((value) {
           int contentsId;
-          if (id.contains(",")) {
-            contentsId = int.parse(id.substring(0, id.indexOf(",")));
+          if (childMarkerId.contains(",")) {
+            contentsId = int.parse(
+                childMarkerId.substring(0, childMarkerId.indexOf(",")));
           } else {
             contentsId = int.parse(value);
           }
-          // print("🚨 contentsId : $contentsId");
           Get.to(() => PlaceDetailScreen(
               contentsId: contentsId, customerId: int.parse(value)));
         });
