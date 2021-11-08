@@ -103,7 +103,7 @@ class _MapScreenState extends State<MapScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
             List<Map> photoMapMarkerList = [];
-            print("🚨 result photo : ${result.data}");
+            // print("🚨 result photo : ${result.data}");
 
             if (result.data != null) {
               if (result.data["photo_list_map"].length > 0) {

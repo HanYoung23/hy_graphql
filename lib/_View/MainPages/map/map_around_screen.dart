@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +37,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   bool isMapLoading = true;
 
   int start = 0, limit = 10;
+  int page = 1;
 
   @override
   void initState() {
@@ -47,19 +46,6 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // FetchMoreOptions opts = FetchMoreOptions(
-    //   variables: {'start': start, 'limit': limit},
-    //   updateQuery: (previousResultData, fetchMoreResultData) {
-    //     // 이렇게 하면 fetchMore한 결과와 원래의 쿼리 결과를 합쳐서 가져올 수 있습니다.
-    //     final List<dynamic> allPosts = [
-    //       ...previousResultData['photoListMap'] as List<dynamic>,
-    //       ...fetchMoreResultData['photoListMap'] as List<dynamic>
-    //     ];
-    //     fetchMoreResultData['photoListMap'] = allPosts;
-    //     return fetchMoreResultData;
-    //   },
-    // );
-
     return Obx(() => Query(
         options: QueryOptions(
           document: gql(Queries.photoListMap),
@@ -100,6 +86,28 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               //   imageMaps.add(mapData);
               // }
             }
+            FetchMoreOptions opts = FetchMoreOptions(
+              variables: {
+                "latitude1": "${gmWholeLatLng.latlngBounds["swLat"]}",
+                "latitude2": "${gmWholeLatLng.latlngBounds["neLat"]}",
+                "longitude1": "${gmWholeLatLng.latlngBounds["swLng"]}",
+                "longitude2": "${gmWholeLatLng.latlngBounds["neLng"]}",
+                "category_id": fliterValue.category.value,
+                "date1": fliterValue.dateStart.value,
+                "date2": fliterValue.dateEnd.value,
+                "page": 1 + page
+              },
+              updateQuery: (previousResultData, fetchMoreResultData) {
+                final List<dynamic> allPosts = [
+                  ...previousResultData['photo_list_map'] as List<dynamic>,
+                  ...fetchMoreResultData['photo_list_map'] as List<dynamic>
+                ];
+                fetchMoreResultData['photo_list_map'] = allPosts;
+                print("🚨 fetch more : $page, ${allPosts.length}");
+                return fetchMoreResultData;
+              },
+            );
+
             // print(
             //     "🚨 photomaplist around : ${result.data["photo_list_map"].length}");
             return GestureDetector(
@@ -227,7 +235,20 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                         width: ScreenUtil().setSp(260),
                                         height: ScreenUtil().setSp(48),
                                       )),
-                                    )
+                                    ),
+                              InkWell(
+                                onTap: () {
+                                  // fetchMore(opts);
+                                  // setState(() {
+                                  //   page = page + 1;
+                                  // });
+                                },
+                                child: Container(
+                                  width: ScreenUtil().screenWidth,
+                                  height: ScreenUtil().setSp(50),
+                                  color: Colors.red,
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -360,8 +381,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             builder: (result, {refetch, fetchMore}) {
               int i = 0;
               if (!result.isLoading) {
-                print(
-                    "🚨 promotionslist result : ${result.data["promotions_list"]}");
+                // print(
+                //     "🚨 promotionslist result : ${result.data["promotions_list"]}");
 
                 for (Map resultData in result.data["promotions_list"]) {
                   int promotionsId =

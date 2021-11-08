@@ -26,6 +26,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   int customerId;
   int currentTap = 1;
+  List pages = [1];
+
+  bool onNotification(ScrollEndNotification t) {
+    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+      print('I am at the end');
+    } else {
+      print('I am at the start');
+    }
+    return true;
+  }
 
   @override
   void initState() {
@@ -117,7 +127,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     currentTap == 1 ? mypageContentsListQuery() : Container(),
                     currentTap == 2 ? mypageComentsListQuery() : Container(),
-                    currentTap == 3 ? mypageBookmarksListQuery() : Container(),
+                    currentTap == 3
+                        ? Flexible(
+                            child: NotificationListener(
+                              onNotification: onNotification,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: pages.map((page) {
+                                  return mypageBookmarksListQuery(page);
+                                }).toList(),
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -168,10 +190,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     return InkWell(
                       onTap: () {
-                        Get.to(() => PlaceDetailScreen(
-                              contentsId: resultData[index]["contents_id"],
-                              customerId: customerId,
-                            ));
+                        // Get.to(() => PlaceDetailScreen(
+                        //       contentsId: resultData[index]["contents_id"],
+                        //       customerId: customerId,
+                        //     ));
                       },
                       // child: Image.network(
                       //   imageLink[0],
@@ -262,49 +284,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  Query mypageBookmarksListQuery() {
+  Query mypageBookmarksListQuery(int page) {
     return Query(
         options: QueryOptions(
           document: gql(Queries.mypageBookmarksList),
-          variables: {"customer_id": customerId, "page": 1},
+          variables: {"customer_id": customerId, "page": page},
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading) {
-            // print("🚨 bookmarkslist : $result");
-            List resultData = result.data["mypage_bookmarks_list"];
-
-            return Expanded(
-              child: GridView.builder(
-                  itemCount: resultData.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1,
-                    mainAxisSpacing: ScreenUtil().setSp(1),
-                    crossAxisSpacing: ScreenUtil().setSp(1),
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    List imageLink = resultData[index]["image_link"].split(",");
-
+            if (result.data != null) {
+              List resultData = result.data["mypage_bookmarks_list"];
+              print("🚨 bookmarkslist : ${resultData.length}");
+              return Wrap(
+                  spacing: ScreenUtil().setSp(1),
+                  runSpacing: ScreenUtil().setSp(1),
+                  direction: Axis.horizontal,
+                  children: resultData.map((item) {
+                    List imageLink = item["image_link"].split(",");
                     return InkWell(
                       onTap: () {
-                        Get.to(() => PlaceDetailScreen(
-                              contentsId: resultData[index]["contents_id"],
-                              customerId: customerId,
-                            ));
+                        // Get.to(() => PlaceDetailScreen(
+                        //       contentsId: resultData[index]["contents_id"],
+                        //       customerId: customerId,
+                        //     ));
+                        List newPages = pages;
+                        newPages.add(page + 1);
+                        setState(() {
+                          pages = newPages;
+                        });
                       },
-                      child: Image.network(
-                        imageLink[0],
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return CupertinoActivityIndicator();
-                        },
+                      child: Container(
+                        width: ScreenUtil().screenWidth / 3 -
+                            ScreenUtil().setSp(2),
+                        height: ScreenUtil().screenWidth / 3 -
+                            ScreenUtil().setSp(2),
+                        child: Image.network(
+                          imageLink[0],
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return CupertinoActivityIndicator();
+                          },
+                        ),
                       ),
                     );
-                  }),
-            );
+                  }).toList());
+              // Expanded(
+              //   child: GridView.builder(
+              //       itemCount: resultData.length,
+              //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //         crossAxisCount: 3,
+              //         childAspectRatio: 1,
+              //         mainAxisSpacing: ScreenUtil().setSp(1),
+              //         crossAxisSpacing: ScreenUtil().setSp(1),
+              //       ),
+              //       itemBuilder: (BuildContext context, int index) {
+              //         List imageLink =
+              //             resultData[index]["image_link"].split(",");
+
+              //         return InkWell(
+              //           onTap: () {
+              //             // Get.to(() => PlaceDetailScreen(
+              //             //       contentsId: resultData[index]["contents_id"],
+              //             //       customerId: customerId,
+              //             //     ));
+              //             List newPages = pages;
+              //             newPages.add(page + 1);
+              //             setState(() {
+              //               pages = newPages;
+              //             });
+              //           },
+              //           child: Image.network(
+              //             imageLink[0],
+              //             fit: BoxFit.cover,
+              //             loadingBuilder: (context, child, loadingProgress) {
+              //               if (loadingProgress == null) return child;
+              //               return CupertinoActivityIndicator();
+              //             },
+              //           ),
+              //         );
+              //       }),
+              // );
+            } else {
+              return Container();
+            }
           } else {
-            return Container();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         });
   }
