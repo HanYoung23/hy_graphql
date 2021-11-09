@@ -69,7 +69,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           },
         ),
         builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             if (result.data["photo_detail"] != null) {
               Map resultData = result.data["photo_detail"];
               print("🚨 place detail result : $resultData");

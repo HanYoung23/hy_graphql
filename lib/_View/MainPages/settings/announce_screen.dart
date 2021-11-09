@@ -29,7 +29,7 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
           },
         ),
         builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             print("🚨 noticeList : $result");
             List noticeList = result.data["notice_list"];
 

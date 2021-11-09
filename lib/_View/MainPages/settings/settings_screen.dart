@@ -114,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     variables: {},
                   ),
                   builder: (result, {refetch, fetchMore}) {
-                    if (!result.isLoading) {
+                    if (!result.isLoading && result.data != null) {
                       // print(
                       //     "🚨 version result : ${result.data["version_check"]}");
                       Map resultData = result.data["version_check"][0];

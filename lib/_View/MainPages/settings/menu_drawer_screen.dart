@@ -58,7 +58,7 @@ class MenuDrawer extends StatelessWidget {
                           variables: {"customer_id": customerId},
                         ),
                         builder: (result, {refetch, fetchMore}) {
-                          if (!result.isLoading) {
+                          if (!result.isLoading && result.data != null) {
                             print(
                                 "🧾 settings result : ${result.data["check_list"]}");
                             List resultData = result.data["check_list"];
@@ -100,7 +100,7 @@ class MenuDrawer extends StatelessWidget {
                       variables: {"customer_id": customerId},
                     ),
                     builder: (result, {refetch, fetchMore}) {
-                      if (!result.isLoading) {
+                      if (!result.isLoading && result.data != null) {
                         // print("🚨 mypage query : $result");
                         Map resultData = result.data["mypage"][0];
                         String nickname = resultData["nick_name"];
@@ -215,7 +215,7 @@ class MenuDrawer extends StatelessWidget {
                           variables: {"customer_id": customerId},
                         ),
                         builder: (result, {refetch, fetchMore}) {
-                          if (!result.isLoading) {
+                          if (!result.isLoading && result.data != null) {
                             // print("🧾 settings result : $result");
                             List resultData = result.data["check_list"];
                             bool isNewNoti = false;
@@ -296,5 +296,5 @@ class MenuDrawer extends StatelessWidget {
 //           },
 //         ),
 //                   builder: (result, {refetch, fetchMore}) {
-//           if (!result.isLoading) {}}
+//           if (!result.isLoading && result.data != null) {}}
 //                   ),

@@ -66,7 +66,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
           String longitudeOne = "${gmWholeLatLng.latlngBounds["swLng"]}";
           String longitudeSecond = "${gmWholeLatLng.latlngBounds["neLng"]}";
 
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             List<Map> imageMaps = [];
             for (Map resultData in result.data["photo_list_map"]) {
               int contentsId = int.parse("${resultData["contents_id"]}");
@@ -380,7 +380,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             ),
             builder: (result, {refetch, fetchMore}) {
               int i = 0;
-              if (!result.isLoading) {
+              if (!result.isLoading && result.data != null) {
                 // print(
                 //     "🚨 promotionslist result : ${result.data["promotions_list"]}");
 

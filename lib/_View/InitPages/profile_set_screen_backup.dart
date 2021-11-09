@@ -60,7 +60,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
           },
         ),
         builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             // print("🚨 query : $result");
             Map resultData = result.data["Login"];
             int customerId = resultData["customer_id"];

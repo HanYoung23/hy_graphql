@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
     //       },
     //     ),
     //     builder: (result, {refetch, fetchMore}) {
-    //       if (!result.isLoading) {
+    //       if (!result.isLoading && result.data != null) {
     //         List<MapMarker> markers = [];
     //         List<String> markerImages = [];
 

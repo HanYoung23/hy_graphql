@@ -183,7 +183,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
     //       },
     //     ),
     //     builder: (result, {refetch, fetchMore}) {
-    //       if (!result.isLoading) {
+    //       if (!result.isLoading && result.data != null) {
     //         print("🚨 photodetail result : ${result.data["photo_detail"]}");
     //         Map resultData = result.data["photo_detail"];
     //         int categoryId = resultData["category_id"];

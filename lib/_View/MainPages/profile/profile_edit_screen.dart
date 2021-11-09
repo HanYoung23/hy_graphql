@@ -54,7 +54,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           variables: {"customer_id": widget.customerId},
         ),
         builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             Map resultData = result.data["mypage"][0];
             // print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];

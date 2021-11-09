@@ -28,7 +28,7 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
           variables: {"notice_id": widget.noticeId},
         ),
         builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             print("🚨 notice : $result");
 
             Map resultData = result.data["notice"][0];

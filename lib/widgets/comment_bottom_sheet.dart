@@ -69,7 +69,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
           },
         ),
         builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading) {
+          if (!result.isLoading && result.data != null) {
             // print("🚨 comments : ${result.data["coments_list"][0]}");
 
             List comentsList = result.data["coments_list"];
