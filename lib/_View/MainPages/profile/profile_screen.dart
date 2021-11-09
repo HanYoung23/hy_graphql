@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -341,45 +340,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
-            if (result.data != null) {
-              List resultData = result.data["mypage_bookmarks_list"];
-              print("🚨 bookmarkslist : ${resultData.length}");
-              return Wrap(
-                  spacing: ScreenUtil().setSp(1),
-                  runSpacing: ScreenUtil().setSp(1),
-                  direction: Axis.horizontal,
-                  children: resultData.map((item) {
-                    List imageLink = item["image_link"].split(",");
-                    return InkWell(
-                      onTap: () {
-                        Get.to(() => PlaceDetailScreen(
-                              contentsId: item["contents_id"],
-                              customerId: customerId,
-                            ));
-                      },
-                      child: Container(
-                        width: ScreenUtil().screenWidth / 3 -
-                            ScreenUtil().setSp(2),
-                        height: ScreenUtil().screenWidth / 3 -
-                            ScreenUtil().setSp(2),
-                        child: Image.network(
-                          imageLink[0],
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return CupertinoActivityIndicator();
-                          },
-                        ),
+            List resultData = result.data["mypage_bookmarks_list"];
+            print("🚨 bookmarkslist : ${resultData.length}");
+            return Wrap(
+                spacing: ScreenUtil().setSp(1),
+                runSpacing: ScreenUtil().setSp(1),
+                direction: Axis.horizontal,
+                children: resultData.map((item) {
+                  List imageLink = item["image_link"].split(",");
+                  return InkWell(
+                    onTap: () {
+                      Get.to(() => PlaceDetailScreen(
+                            contentsId: item["contents_id"],
+                            customerId: customerId,
+                          ));
+                    },
+                    child: Container(
+                      width:
+                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                      height:
+                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                      child: Image.network(
+                        imageLink[0],
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return CupertinoActivityIndicator();
+                        },
                       ),
-                    );
-                  }).toList());
-            } else {
-              return Container();
-            }
+                    ),
+                  );
+                }).toList());
           } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Container();
           }
         });
   }
