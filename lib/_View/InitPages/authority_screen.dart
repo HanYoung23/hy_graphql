@@ -15,6 +15,7 @@ class AuthorityScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
+          width: ScreenUtil().screenWidth,
           height: ScreenUtil().screenHeight -
               MediaQuery.of(context).padding.top -
               MediaQuery.of(context).padding.bottom,

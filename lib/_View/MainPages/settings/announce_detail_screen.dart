@@ -193,10 +193,10 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                                           vertical: ScreenUtil().setSp(4),
                                         ),
                                         decoration: BoxDecoration(
-                                            color:
-                                                Colors.black.withOpacity(0.3),
-                                            borderRadius:
-                                                BorderRadius.circular(100)),
+                                          color: Colors.black.withOpacity(0.3),
+                                          borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setSp(100)),
+                                        ),
                                         child: Center(
                                           child: Text(
                                             "$currentIndex/${imageLink.length}",

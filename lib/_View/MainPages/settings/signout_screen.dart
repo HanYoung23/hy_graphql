@@ -133,7 +133,7 @@ class SignOutScreen extends StatelessWidget {
                   height: ScreenUtil().setSp(50),
                   decoration: BoxDecoration(
                     color: app_blue,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
                   ),
                   child: Center(
                     child: Text("회원탈퇴",

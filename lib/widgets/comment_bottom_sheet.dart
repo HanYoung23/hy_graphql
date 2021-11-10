@@ -12,9 +12,7 @@ import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class CommentBottomSheet extends StatefulWidget {
   final int contentsId;
-  final Function callbackRefetch;
-  const CommentBottomSheet(
-      {Key key, @required this.contentsId, @required this.callbackRefetch})
+  const CommentBottomSheet({Key key, @required this.contentsId})
       : super(key: key);
 
   @override
@@ -33,6 +31,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   String replyCommentNickname = "";
   //
   int customerId;
+  //
+  List commentPages = [1];
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -46,6 +46,20 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         replyCommentNickname = "";
       });
     }
+  }
+
+  bool onCommentNotification(ScrollEndNotification t) {
+    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+      List newPages = commentPages;
+      int lastPage = newPages.length;
+      newPages.add(lastPage + 1);
+      setState(() {
+        commentPages = newPages;
+      });
+    } else {
+      // print('I am at the start');
+    }
+    return true;
   }
 
   @override
@@ -172,84 +186,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           height: ScreenUtil().screenHeight * 0.9 -
                               ScreenUtil().setSp(180) -
                               MediaQuery.of(context).viewInsets.bottom,
-                          child: ListView(
-                            children: comentsList.map((comment) {
-                              String nickname = comment["nick_name"];
-                              String profilePhotoLInk =
-                                  comment["profile_photo_link"];
-                              //
-                              DateTime dateTime = DateTime.parse(
-                                  comment["edit_date"] == null
-                                      ? comment["regist_date"]
-                                      : comment["edit_date"]);
-                              var formatter =
-                                  new DateFormat('yyyy MMM dd, a h:mm');
-                              String date = formatter.format(dateTime);
-                              //
-                              String content = comment["coment_text"];
-                              int commentCustomerId = comment["customer_id"];
-                              int comentsId = comment["coments_id"];
-                              int comentsIdLink = comment["coments_id_link"];
-                              int checkFlag = comment["check_flag"];
-
-                              List replyList = [];
-                              comentsList.map((e) {
-                                if (e["coments_id_link"] == comentsId) {
-                                  replyList.add(e);
-                                }
-                              }).toList();
-
-                              return comentsIdLink == null
-                                  ? Column(
-                                      children: [
-                                        commentForm(
-                                            commentCustomerId,
-                                            profilePhotoLInk,
-                                            nickname,
-                                            date,
-                                            content,
-                                            comentsId,
-                                            comentsIdLink,
-                                            refetch,
-                                            checkFlag),
-                                        Column(
-                                          children: replyList.map((e) {
-                                            String _nickname = e["nick_name"];
-                                            String _profilePhotoLInk =
-                                                e["profile_photo_link"];
-                                            //
-                                            DateTime _dateTime = DateTime.parse(
-                                                e["edit_date"] == null
-                                                    ? e["regist_date"]
-                                                    : e["edit_date"]);
-                                            var formatter = new DateFormat(
-                                                'yyyy MMM dd, a h:mm');
-                                            String _date =
-                                                formatter.format(_dateTime);
-                                            //
-                                            String _content = e["coment_text"];
-                                            int _commentCustomerId =
-                                                comment["customer_id"];
-                                            int _comentsId = e["coments_id"];
-                                            int _checkFlag = e["check_flag"];
-
-                                            return commentReplyForm(
-                                                _commentCustomerId,
-                                                _profilePhotoLInk,
-                                                nickname,
-                                                _nickname,
-                                                _date,
-                                                _content,
-                                                comentsId,
-                                                _comentsId,
-                                                refetch,
-                                                _checkFlag);
-                                          }).toList(),
-                                        )
-                                      ],
-                                    )
-                                  : Container();
-                            }).toList(),
+                          child: NotificationListener(
+                            onNotification: onCommentNotification,
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: commentPages.map((page) {
+                                return commentsListView(page, refetch);
+                              }).toList(),
+                            ),
                           ),
                         ),
                   comentsList.length != 0 ? Spacer() : Container(),
@@ -266,6 +210,102 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         });
   }
 
+  Query commentsListView(int page, Refetch refetch) {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.comentsList),
+          variables: {
+            "contents_id": widget.contentsId,
+            "sequence": isLeft ? 1 : 2,
+            "page": page
+          },
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading && result.data != null) {
+            // print("🚨 comments : ${result.data["coments_list"][0]}");
+
+            List comentsList = result.data["coments_list"];
+
+            return Wrap(
+              children: comentsList.map((comment) {
+                String nickname = comment["nick_name"];
+                String profilePhotoLInk = comment["profile_photo_link"];
+                //
+                DateTime dateTime = DateTime.parse(comment["edit_date"] == null
+                    ? comment["regist_date"]
+                    : comment["edit_date"]);
+                var formatter = new DateFormat('yyyy MMM dd, a h:mm');
+                String date = formatter.format(dateTime);
+                //
+                String content = comment["coment_text"];
+                int commentCustomerId = comment["customer_id"];
+                int comentsId = comment["coments_id"];
+                int comentsIdLink = comment["coments_id_link"];
+                int checkFlag = comment["check_flag"];
+
+                List replyList = [];
+                comentsList.map((e) {
+                  if (e["coments_id_link"] == comentsId) {
+                    replyList.add(e);
+                  }
+                }).toList();
+
+                return comentsIdLink == null
+                    ? Column(
+                        children: [
+                          commentForm(
+                              commentCustomerId,
+                              profilePhotoLInk,
+                              nickname,
+                              date,
+                              content,
+                              comentsId,
+                              comentsIdLink,
+                              refetch,
+                              checkFlag),
+                          Column(
+                            children: replyList.map((e) {
+                              String _nickname = e["nick_name"];
+                              String _profilePhotoLInk =
+                                  e["profile_photo_link"];
+                              //
+                              DateTime _dateTime = DateTime.parse(
+                                  e["edit_date"] == null
+                                      ? e["regist_date"]
+                                      : e["edit_date"]);
+                              var formatter =
+                                  new DateFormat('yyyy MMM dd, a h:mm');
+                              String _date = formatter.format(_dateTime);
+                              //
+                              String _content = e["coment_text"];
+                              int _commentCustomerId = comment["customer_id"];
+                              int _comentsId = e["coments_id"];
+                              int _checkFlag = e["check_flag"];
+
+                              return commentReplyForm(
+                                  _commentCustomerId,
+                                  _profilePhotoLInk,
+                                  nickname,
+                                  _nickname,
+                                  _date,
+                                  _content,
+                                  comentsId,
+                                  _comentsId,
+                                  refetch,
+                                  _checkFlag);
+                            }).toList(),
+                          )
+                        ],
+                      )
+                    : Container();
+              }).toList(),
+            );
+          } else {
+            return Container();
+          }
+        });
+  }
+
   Container textInput(BuildContext context, Function refetch) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
@@ -274,7 +314,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  widget.callbackRefetch();
+                  // widget.callbackRefetch();
                   refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -344,7 +384,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           vertical: ScreenUtil().setHeight(5),
                           horizontal: ScreenUtil().setWidth(8)),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(5)),
                         color: isValid
                             ? Color.fromRGBO(5, 138, 221, 1)
                             : Color.fromRGBO(5, 138, 221, 0.3),
@@ -373,7 +414,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.changeComent),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  widget.callbackRefetch();
+                  // widget.callbackRefetch();
                   refetch();
                   setState(() {
                     editCommentId = null;
@@ -442,7 +483,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           vertical: ScreenUtil().setHeight(5),
                           horizontal: ScreenUtil().setWidth(8)),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(5)),
                         color: isValid
                             ? Color.fromRGBO(5, 138, 221, 1)
                             : Color.fromRGBO(5, 138, 221, 0.3),
@@ -488,11 +530,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 decoration: photo == null
                     ? BoxDecoration(
                         color: app_grey,
-                        borderRadius: BorderRadius.circular(100))
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(100)),
+                      )
                     : BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover, image: NetworkImage(photo)),
-                        borderRadius: BorderRadius.circular(100)),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(100)),
+                      ),
               ),
               SizedBox(width: ScreenUtil().setSp(6)),
               Expanded(
@@ -621,11 +667,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 decoration: photo == null
                     ? BoxDecoration(
                         color: app_grey,
-                        borderRadius: BorderRadius.circular(100))
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(100)),
+                      )
                     : BoxDecoration(
                         image: DecorationImage(
                             fit: BoxFit.cover, image: NetworkImage(photo)),
-                        borderRadius: BorderRadius.circular(100)),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(100)),
+                      ),
               ),
               SizedBox(width: ScreenUtil().setSp(6)),
               Expanded(

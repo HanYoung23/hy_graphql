@@ -33,9 +33,7 @@ class _EditPostCreationDetailScreenState
   Completer mapCompleter = Completer();
 
   final locationTextController = TextEditingController();
-  // Position userPosition;
   LatLng photoLatLng;
-  // bool isCoord = false;
   bool isAllFilled = false;
   String address = "";
 
@@ -109,181 +107,211 @@ class _EditPostCreationDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: Container(
-            height: ScreenUtil().screenHeight -
-                MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom,
-            margin: EdgeInsets.all(ScreenUtil().setSp(20)),
-            child: SingleChildScrollView(
-              physics: ClampingScrollPhysics(),
-              child: Column(
-                children: [
-                  Container(
-                    width: ScreenUtil().setWidth(375),
-                    height: ScreenUtil().setHeight(44),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            // width: ScreenUtil().setSp(appbar_title_size * 3),
-                            alignment: Alignment.centerLeft,
-                            child: InkWell(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Image.asset(
-                                    "assets/images/arrow_back.png",
-                                    width: ScreenUtil().setSp(arrow_back_size),
-                                    height:
-                                        ScreenUtil().setSp(arrow_back_size))),
-                          ),
-                        ),
-                        Text(
-                          "장소 설정",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(appbar_title_size),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          toolbarHeight: 0,
+          elevation: 0,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+        ),
+        body: Container(
+          height: ScreenUtil().screenHeight -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom,
+          margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Column(
+              children: [
+                Container(
+                  width: ScreenUtil().setSp(375),
+                  height: ScreenUtil().setSp(44),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          // width: ScreenUtil().setSp(appbar_title_size * 3),
+                          alignment: Alignment.centerLeft,
+                          child: InkWell(
                               onTap: () {
-                                Get.to(() => PostalWeb(
-                                      callback: (address) =>
-                                          callBackAddress(address),
-                                    ));
+                                Get.back();
                               },
-                              child: Text(
-                                "위치 검색",
-                                style: TextStyle(
-                                    color: app_font_grey,
-                                    fontSize:
-                                        ScreenUtil().setSp(appbar_title_size),
-                                    fontWeight: FontWeight.bold),
+                              child: Image.asset("assets/images/arrow_back.png",
+                                  width: ScreenUtil().setSp(arrow_back_size),
+                                  height: ScreenUtil().setSp(arrow_back_size))),
+                        ),
+                      ),
+                      Text(
+                        "장소 설정",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          fontSize: ScreenUtil().setSp(appbar_title_size),
+                          letterSpacing: letter_spacing,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(() => PostalWeb(
+                                    callback: (address) =>
+                                        callBackAddress(address),
+                                  ));
+                            },
+                            child: Text(
+                              "위치 검색",
+                              style: TextStyle(
+                                color: app_font_grey,
+                                fontFamily: "NotoSansCJKkrBold",
+                                fontSize: ScreenUtil().setSp(appbar_title_size),
+                                letterSpacing: letter_spacing,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: ScreenUtil().setHeight(10)),
-                  Container(
-                      width: ScreenUtil().screenWidth,
-                      height: ScreenUtil().setHeight(240),
-                      child: photoLatLng != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: GoogleMap(
-                                mapToolbarEnabled: false,
-                                zoomGesturesEnabled: true,
-                                myLocationButtonEnabled: false,
-                                myLocationEnabled: false,
-                                zoomControlsEnabled: false,
-                                initialCameraPosition: CameraPosition(
-                                  target: photoLatLng,
-                                  zoom: 13,
-                                ),
-                                onMapCreated: (GoogleMapController controller) {
-                                  mapCompleter.complete(controller);
-                                  createMarker();
-                                },
-                                markers: createMarker(),
+                ),
+                SizedBox(height: ScreenUtil().setSp(10)),
+                Container(
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setSp(240),
+                    child: photoLatLng != null
+                        ? ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(10)),
+                            child: GoogleMap(
+                              mapToolbarEnabled: false,
+                              zoomGesturesEnabled: true,
+                              myLocationButtonEnabled: false,
+                              myLocationEnabled: false,
+                              zoomControlsEnabled: false,
+                              initialCameraPosition: CameraPosition(
+                                target: photoLatLng,
+                                zoom: 13,
                               ),
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LoadingIndicator(),
-                              ],
-                            )),
-                  SizedBox(height: ScreenUtil().setHeight(4)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                          address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: address != "" ? Colors.black : Colors.red),
-                          overflow: TextOverflow.fade),
-                    ],
-                  ),
-                  SizedBox(height: ScreenUtil().setHeight(8)),
-                  Text(
-                      "선택된 위치가 다른 경우 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          color: app_font_grey)),
-                  SizedBox(height: ScreenUtil().setHeight(24)),
-                  Row(
-                    children: [
-                      Text("장소명 입력",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(14),
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  SizedBox(height: ScreenUtil().setHeight(5)),
-                  TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: locationTextController,
-                      minLines: 1,
-                      maxLines: 1,
-                      onChanged: (String value) {
-                        checkIsAllFilled();
-                      },
-                      style: TextStyle(
-                          fontSize: ScreenUtil().setSp(14),
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: app_grey)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)),
-                          hintText: "해당 장소명을 남겨주세요.",
-                          hintStyle: TextStyle(
-                              color: app_font_grey,
-                              fontSize: ScreenUtil().setSp(14)))),
-                  Spacer(),
-                  (locationTextController.text.length > 0 && address != "")
-                      ? InkWell(
-                          onTap: () {
-                            widget.paramMap["locationLink"] = address;
-                            widget.paramMap["latitude"] = photoLatLng.latitude;
-                            widget.paramMap["longitude"] =
-                                photoLatLng.longitude;
-                            widget.paramMap["contentsTitle"] =
-                                "${locationTextController.text}";
-                            // print("🚨 map : ${widget.paramMap}");
+                              onMapCreated: (GoogleMapController controller) {
+                                mapCompleter.complete(controller);
+                                createMarker();
+                              },
+                              markers: createMarker(),
+                            ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LoadingIndicator(),
+                            ],
+                          )),
+                SizedBox(height: ScreenUtil().setSp(4)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
+                        style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
+                            letterSpacing: letter_spacing_small,
+                            fontSize: ScreenUtil().setSp(12),
+                            color: address != "" ? Colors.black : Colors.red),
+                        overflow: TextOverflow.fade),
+                  ],
+                ),
+                SizedBox(height: ScreenUtil().setSp(8)),
+                Text(
+                    "선택된 위치가 다른 경우 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
+                    style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
+                      letterSpacing: letter_spacing_small,
+                      fontSize: ScreenUtil().setSp(14),
+                      color: app_font_grey,
+                    ),
+                    overflow: TextOverflow.fade),
+                SizedBox(height: ScreenUtil().setSp(24)),
+                Row(
+                  children: [
+                    Text("장소명 입력",
+                        style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            letterSpacing: letter_spacing_small,
+                            fontSize: ScreenUtil().setSp(14),
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                SizedBox(height: ScreenUtil().setSp(5)),
+                TextFormField(
+                    keyboardType: TextInputType.text,
+                    controller: locationTextController,
+                    minLines: 1,
+                    maxLines: 1,
+                    onChanged: (String value) {
+                      checkIsAllFilled();
+                    },
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        letterSpacing: letter_spacing_small,
+                        fontSize: ScreenUtil().setSp(14),
+                        color: Colors.black),
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: app_grey)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black)),
+                        hintText: "해당 장소명을 남겨주세요.",
+                        hintStyle: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
+                            letterSpacing: letter_spacing_small,
+                            color: app_font_grey,
+                            fontSize: ScreenUtil().setSp(14)))),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    if (locationTextController.text.length > 0 &&
+                        address != "") {
+                      widget.paramMap["locationLink"] = address;
+                      widget.paramMap["latitude"] = photoLatLng.latitude;
+                      widget.paramMap["longitude"] = photoLatLng.longitude;
+                      widget.paramMap["contentsTitle"] =
+                          "${locationTextController.text}";
+                      // print("🚨 map : ${widget.paramMap}");
 
-                            Get.to(() => EditPostReviewScreen(
-                                  paramMap: widget.paramMap,
-                                  mapData: widget.mapData,
-                                ));
-                          },
-                          child: Image.asset(
-                            "assets/images/next_button.png",
-                            width: ScreenUtil().setWidth(335),
-                            height: ScreenUtil().setHeight(50),
-                          ))
-                      : Image.asset(
-                          "assets/images/next_button_grey.png",
-                          width: ScreenUtil().setWidth(335),
-                          height: ScreenUtil().setHeight(50),
+                      Get.to(() => EditPostReviewScreen(
+                            paramMap: widget.paramMap,
+                            mapData: widget.mapData,
+                          ));
+                    }
+                  },
+                  child: Container(
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().setSp(50),
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(10)),
+                        color: (locationTextController.text.length > 0 &&
+                                address != "")
+                            ? app_blue
+                            : app_blue_light_button,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "다음",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          fontSize: ScreenUtil().setSp(16),
+                          letterSpacing: letter_spacing,
+                          color: Colors.white,
                         ),
-                  SizedBox(height: ScreenUtil().setHeight(14)),
-                ],
-              ),
+                      )),
+                ),
+                SizedBox(height: ScreenUtil().setSp(14)),
+              ],
             ),
           ),
         ),

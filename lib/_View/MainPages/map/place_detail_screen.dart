@@ -100,6 +100,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                 child: Scaffold(
                   backgroundColor: Colors.black,
                   body: Container(
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().screenHeight,
                       color: Colors.white,
                       child: SingleChildScrollView(
                         controller: _scrollController,
@@ -108,8 +110,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: ScreenUtil().setWidth(375),
-                              height: ScreenUtil().setHeight(44),
+                              width: ScreenUtil().screenWidth,
+                              height: ScreenUtil().setSp(44),
                               padding: EdgeInsets.symmetric(
                                   horizontal: ScreenUtil().setSp(20)),
                               margin:
@@ -137,9 +139,11 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                   Text(
                                     "게시물",
                                     style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(appbar_title_size),
-                                        fontWeight: FontWeight.bold),
+                                      fontFamily: "NotoSansCJKkrBold",
+                                      fontSize:
+                                          ScreenUtil().setSp(appbar_title_size),
+                                      letterSpacing: letter_spacing,
+                                    ),
                                   ),
                                   Expanded(
                                     child: Image.asset(
@@ -224,25 +228,24 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       )),
                                 ),
                                 Positioned(
-                                  bottom: 8,
+                                  bottom: ScreenUtil().setSp(8),
                                   child: Container(
                                     width: ScreenUtil().screenWidth,
                                     alignment: Alignment.center,
                                     child: Container(
                                         width: ScreenUtil().setSp(48),
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: ScreenUtil().setSp(4),
-                                        ),
+                                        height: ScreenUtil().setSp(22),
                                         decoration: BoxDecoration(
-                                            color:
-                                                Colors.black.withOpacity(0.3),
-                                            borderRadius:
-                                                BorderRadius.circular(100)),
+                                          color: Colors.black.withOpacity(0.3),
+                                          borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setSp(100)),
+                                        ),
                                         child: Center(
                                           child: Text(
                                             "$currentIndex/${imageLink.length}",
                                             style: TextStyle(
                                                 color: Colors.white,
+                                                fontFamily: "NotoSansCJKkrBold",
                                                 fontSize:
                                                     ScreenUtil().setSp(12)),
                                           ),
@@ -270,7 +273,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                 ? BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            50),
+                                                            ScreenUtil()
+                                                                .setSp(50)),
                                                     image: DecorationImage(
                                                         image: NetworkImage(
                                                             profilePhotoLink),
@@ -279,7 +283,9 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                     color: app_grey,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            50))),
+                                                            ScreenUtil()
+                                                                .setSp(50)),
+                                                  )),
                                         SizedBox(width: ScreenUtil().setSp(15)),
                                         Expanded(
                                           child: Column(
@@ -291,15 +297,20 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                               Text(
                                                 nickName,
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize:
-                                                        ScreenUtil().setSp(14)),
+                                                  fontFamily:
+                                                      "NotoSansCJKkrBold",
+                                                  fontSize:
+                                                      ScreenUtil().setSp(14),
+                                                  letterSpacing: letter_spacing,
+                                                ),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                               ),
                                               Text(
                                                 date,
                                                 style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrRegular",
                                                     color: app_font_grey,
                                                     fontSize:
                                                         ScreenUtil().setSp(12)),
@@ -343,18 +354,21 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                   ),
                                   SizedBox(height: ScreenUtil().setHeight(10)),
                                   Container(
-                                      decoration: BoxDecoration(
-                                          color: app_grey,
-                                          borderRadius:
-                                              BorderRadius.circular(100)),
                                       padding: EdgeInsets.symmetric(
-                                        horizontal: ScreenUtil().setSp(14),
-                                        vertical: ScreenUtil().setSp(6),
+                                          horizontal: ScreenUtil().setSp(16),
+                                          vertical: ScreenUtil().setSp(8)),
+                                      decoration: BoxDecoration(
+                                        color: app_grey,
+                                        borderRadius: BorderRadius.circular(
+                                            ScreenUtil().setSp(50)),
                                       ),
                                       child: Text(
                                         contentsTitle,
                                         style: TextStyle(
-                                            fontSize: ScreenUtil().setSp(12)),
+                                          fontFamily: "NotoSansCJKkrRegular",
+                                          fontSize: ScreenUtil().setSp(12),
+                                          letterSpacing: letter_spacing_small,
+                                        ),
                                       )),
                                   SizedBox(height: ScreenUtil().setHeight(10)),
                                   Row(
@@ -399,16 +413,17 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       trimLines: 2,
                                       colorClickableText: app_font_grey,
                                       style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrRegular",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: -0.35,
-                                        color: Colors.black,
+                                        letterSpacing: letter_spacing_small,
                                       ),
                                       trimMode: TrimMode.Line,
                                       trimCollapsedText: '더보기',
                                       trimExpandedText: '접기',
                                       moreStyle: TextStyle(
+                                        fontFamily: "NotoSansCJKkrRegular",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: -0.35,
+                                        letterSpacing: letter_spacing_small,
                                         color: app_font_grey,
                                       )),
                                   SizedBox(height: ScreenUtil().setSp(10)),
@@ -417,8 +432,11 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                     children: tagList.map((tag) {
                                       return Text("#$tag  ",
                                           style: TextStyle(
+                                              fontFamily:
+                                                  "NotoSansCJKkrRegular",
                                               fontSize: ScreenUtil().setSp(14),
-                                              letterSpacing: -0.35,
+                                              letterSpacing:
+                                                  letter_spacing_small,
                                               color: Color(0xff1A4F79)));
                                     }).toList(),
                                   ),
@@ -493,22 +511,33 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           // });
           if (this.mounted) {
             showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (_) => CommentBottomSheet(
-                    contentsId: widget.contentsId,
-                    callbackRefetch: () => refetch()),
-                isScrollControlled: true);
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (_) => CommentBottomSheet(contentsId: widget.contentsId),
+              isScrollControlled: true,
+            ).then((value) {
+              refetch();
+            });
           }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/images/reply.png",
-                width: ScreenUtil().setSp(28), height: ScreenUtil().setSp(28)),
+            Container(
+              width: ScreenUtil().setSp(18),
+              height: ScreenUtil().setSp(18),
+              child: Image.asset(
+                "assets/images/reply.png",
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(width: ScreenUtil().setSp(6)),
             Text(
               "댓글  ${comentsCount + comentsNum}",
-              style: TextStyle(fontSize: ScreenUtil().setSp(12)),
+              style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
+                  letterSpacing: letter_spacing_x_small,
+                  fontSize: ScreenUtil().setSp(12)),
             )
           ],
         ),
@@ -560,22 +589,30 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  bookmarks == 1
-                      ? Image.asset(
-                          bookmarksNum == 0
-                              ? "assets/images/bookmark.png"
-                              : "assets/images/bookmark_active.png",
-                          width: ScreenUtil().setSp(28),
-                          height: ScreenUtil().setSp(28))
-                      : Image.asset(
-                          bookmarksNum != 0
-                              ? "assets/images/bookmark.png"
-                              : "assets/images/bookmark_active.png",
-                          width: ScreenUtil().setSp(28),
-                          height: ScreenUtil().setSp(28)),
+                  Container(
+                    width: ScreenUtil().setSp(18),
+                    height: ScreenUtil().setSp(18),
+                    child: bookmarks == 1
+                        ? Image.asset(
+                            bookmarksNum == 0
+                                ? "assets/images/bookmark.png"
+                                : "assets/images/bookmark_active.png",
+                            fit: BoxFit.contain,
+                          )
+                        : Image.asset(
+                            bookmarksNum != 0
+                                ? "assets/images/bookmark.png"
+                                : "assets/images/bookmark_active.png",
+                            fit: BoxFit.contain,
+                          ),
+                  ),
+                  SizedBox(width: ScreenUtil().setSp(6)),
                   Text(
                     "북마크  ${bookmarksCount + bookmarksNum}",
-                    style: TextStyle(fontSize: ScreenUtil().setSp(12)),
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        letterSpacing: letter_spacing_x_small,
+                        fontSize: ScreenUtil().setSp(12)),
                   )
                 ],
               ),
@@ -628,22 +665,30 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  likes == 1
-                      ? Image.asset(
-                          likesNum == 0
-                              ? "assets/images/like.png"
-                              : "assets/images/like_active.png",
-                          width: ScreenUtil().setSp(28),
-                          height: ScreenUtil().setSp(28))
-                      : Image.asset(
-                          likesNum != 0
-                              ? "assets/images/like.png"
-                              : "assets/images/like_active.png",
-                          width: ScreenUtil().setSp(28),
-                          height: ScreenUtil().setSp(28)),
+                  Container(
+                    width: ScreenUtil().setSp(18),
+                    height: ScreenUtil().setSp(18),
+                    child: likes == 1
+                        ? Image.asset(
+                            likesNum == 0
+                                ? "assets/images/like.png"
+                                : "assets/images/like_active.png",
+                            fit: BoxFit.contain,
+                          )
+                        : Image.asset(
+                            likesNum != 0
+                                ? "assets/images/like.png"
+                                : "assets/images/like_active.png",
+                            fit: BoxFit.contain,
+                          ),
+                  ),
+                  SizedBox(width: ScreenUtil().setSp(6)),
                   Text(
                     "좋아요  ${likesCount + likesNum}",
-                    style: TextStyle(fontSize: ScreenUtil().setSp(12)),
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        letterSpacing: letter_spacing_x_small,
+                        fontSize: ScreenUtil().setSp(12)),
                   )
                 ],
               ),
@@ -660,7 +705,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               alignment: Alignment.centerLeft,
               height: ScreenUtil().setSp(18),
               child: Text(title,
-                  style: TextStyle(fontSize: ScreenUtil().setSp(12)))),
+                  style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
+                      letterSpacing: letter_spacing_x_small,
+                      fontSize: ScreenUtil().setSp(12)))),
         ),
         Expanded(
           child: Container(

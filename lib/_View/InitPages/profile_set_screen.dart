@@ -159,7 +159,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     width: ScreenUtil().setSp(101),
                                     height: ScreenUtil().setSp(101))
                                 : ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setSp(50)),
                                     child: Image.file(
                                       File(pickedImage.path),
                                       width: ScreenUtil().setSp(101),
@@ -275,11 +276,11 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                       vertical: ScreenUtil().setHeight(5),
                                       horizontal: ScreenUtil().setSp(8)),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: isValid
-                                        ? Color.fromRGBO(5, 138, 221, 1)
-                                        : Color.fromRGBO(5, 138, 221, 0.3),
-                                  ),
+                                      borderRadius: BorderRadius.circular(
+                                          ScreenUtil().setSp(5)),
+                                      color: isValid
+                                          ? app_blue
+                                          : app_blue_light_button),
                                   child: Center(
                                       child: Text(
                                     "적용",
@@ -363,9 +364,10 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                               vertical: ScreenUtil().setHeight(13)),
                           decoration: BoxDecoration(
                               color: isAllFilled
-                                  ? Color.fromRGBO(5, 138, 221, 1)
-                                  : Color.fromRGBO(5, 138, 221, 0.3),
-                              borderRadius: BorderRadius.circular(10)),
+                                  ? app_blue
+                                  : app_blue_light_button,
+                              borderRadius: BorderRadius.circular(
+                                  ScreenUtil().setSp(10))),
                           child: Center(
                             child: Text(
                               "회원가입 완료",

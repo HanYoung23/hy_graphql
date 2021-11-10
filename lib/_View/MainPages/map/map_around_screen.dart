@@ -38,7 +38,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   List pages = [1];
 
   bool onNotification(ScrollEndNotification t) {
-    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+    if (t.metrics.pixels > 0 && t.metrics.atEdge && this.mounted) {
       List newPages = pages;
       int lastPage = newPages.length;
       newPages.add(lastPage + 1);
@@ -504,7 +504,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: app_blue,
-                            borderRadius: BorderRadius.circular(50),
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(50)),
                           ),
                           child: Center(
                             child: Text(

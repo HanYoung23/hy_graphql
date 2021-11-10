@@ -20,28 +20,29 @@ void main() {
   runApp(GraphQLProvider(
     client: GraphQlConfig.initClient(),
     child: GetMaterialApp(
-        builder: (context, child) {
-          return MediaQuery(
-            child: child,
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          );
-        }, // text size fix
-        localizationsDelegates: [
-          //  LocalizationsDelegateClass(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ], // for datepicker korean
-        supportedLocales: [
-          const Locale('ko', 'KO'),
-          const Locale('en', 'US'),
-        ], // for datepicker korean
-        debugShowCheckedModeBanner: false,
-        // navigatorObservers: [
-        //   FirebaseAnalyticsObserver(analytics: analytics),
-        // ],
-        home: MyApp(),
-        theme: ThemeData(primaryColor: Colors.white, fontFamily: 'Oxygen')),
+      builder: (context, child) {
+        return MediaQuery(
+          child: child,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      }, // text size fix
+      localizationsDelegates: [
+        //  LocalizationsDelegateClass(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ], // for datepicker korean
+      supportedLocales: [
+        const Locale('ko', 'KO'),
+        const Locale('en', 'US'),
+      ], // for datepicker korean
+      debugShowCheckedModeBanner: false,
+      // navigatorObservers: [
+      //   FirebaseAnalyticsObserver(analytics: analytics),
+      // ],
+      home: MyApp(),
+      theme: ThemeData(primaryColor: Colors.white),
+    ),
   ));
 }
 

@@ -31,6 +31,10 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Container(
+            width: ScreenUtil().screenWidth,
+            height: ScreenUtil().screenHeight -
+                MediaQuery.of(context).padding.top -
+                MediaQuery.of(context).padding.bottom,
             margin: EdgeInsets.symmetric(
                 horizontal:
                     currentScreenIndex != 2 ? ScreenUtil().setSp(20) : 0),
@@ -99,7 +103,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 width: ScreenUtil().setSp(336),
                 height: ScreenUtil().setSp(50),
                 decoration: BoxDecoration(
-                    color: app_blue, borderRadius: BorderRadius.circular(10)),
+                    color: app_blue,
+                    borderRadius:
+                        BorderRadius.circular(ScreenUtil().setSp(10))),
                 child: Center(
                   child: Text(
                     "다음",
@@ -180,7 +186,9 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 width: ScreenUtil().setSp(336),
                 height: ScreenUtil().setSp(50),
                 decoration: BoxDecoration(
-                    color: app_blue, borderRadius: BorderRadius.circular(10)),
+                    color: app_blue,
+                    borderRadius:
+                        BorderRadius.circular(ScreenUtil().setSp(10))),
                 child: Center(
                   child: Text(
                     "다음",
@@ -242,7 +250,8 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(50),
               decoration: BoxDecoration(
-                  color: app_blue, borderRadius: BorderRadius.circular(10)),
+                  color: app_blue,
+                  borderRadius: BorderRadius.circular(ScreenUtil().setSp(10))),
               child: Center(
                 child: Text(
                   "시작하기",

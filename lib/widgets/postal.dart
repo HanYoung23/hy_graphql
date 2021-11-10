@@ -17,25 +17,68 @@ class PostalWeb extends StatelessWidget {
     WebViewController _webViewController;
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "주소 검색",
-            style: TextStyle(
-                fontSize: ScreenUtil().setSp(appbar_title_size),
-                fontWeight: FontWeight.bold),
-          ),
+          toolbarHeight: 0,
           elevation: 0,
-          centerTitle: true,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
         ),
-        body: WebView(
-          initialUrl: 'https://campung.github.io/addressAPI/',
-          // initialUrl: "http://plinic.cafe24app.com/api/daumFlutterPost",
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _webViewController = webViewController;
-          },
-          javascriptChannels: <JavascriptChannel>{
-            _toasterJavascriptChannel(context),
-          },
+        body: SingleChildScrollView(
+          child: Container(
+            width: ScreenUtil().screenWidth,
+            // height: ScreenUtil().screenHeight,
+            child: Column(
+              children: [
+                SizedBox(height: ScreenUtil().setSp(20)),
+                Container(
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().setSp(44),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Image.asset("assets/images/arrow_back.png",
+                              width: ScreenUtil().setSp(arrow_back_size),
+                              height: ScreenUtil().setSp(arrow_back_size))),
+                      Text(
+                        "장소 설정",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          fontSize: ScreenUtil().setSp(appbar_title_size),
+                          letterSpacing: letter_spacing,
+                        ),
+                      ),
+                      Image.asset("assets/images/arrow_back.png",
+                          color: Colors.transparent,
+                          width: ScreenUtil().setSp(arrow_back_size),
+                          height: ScreenUtil().setSp(arrow_back_size)),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: ScreenUtil().screenHeight -
+                      ScreenUtil().setSp(64) -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom,
+                  child: WebView(
+                    initialUrl: 'https://campung.github.io/addressAPI/',
+                    // initialUrl: "http://plinic.cafe24app.com/api/daumFlutterPost",
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      _webViewController = webViewController;
+                    },
+                    javascriptChannels: <JavascriptChannel>{
+                      _toasterJavascriptChannel(context),
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ));
   }
 

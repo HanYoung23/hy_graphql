@@ -36,8 +36,9 @@ savePostPopup(BuildContext context, Function saveDataCallback) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -110,8 +111,9 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(348),
@@ -153,7 +155,8 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                       width: ScreenUtil().setSp(296),
                       height: ScreenUtil().setSp(44),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(5)),
                         color: app_blue,
                       ),
                       child: Center(
@@ -186,7 +189,8 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                             duration: Duration(seconds: 3),
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(21),
+                              borderRadius:
+                                  BorderRadius.circular(ScreenUtil().setSp(21)),
                             ),
                             backgroundColor: Color(0xffb5b5b5),
                             margin: EdgeInsets.only(
@@ -200,7 +204,8 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                       width: ScreenUtil().setSp(296),
                       height: ScreenUtil().setSp(44),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(5)),
                         border: Border.all(
                           width: ScreenUtil().setSp(1),
                           color: app_font_grey,
@@ -231,8 +236,9 @@ logOutPopup(BuildContext context) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -317,8 +323,9 @@ signOutPopupFirst(BuildContext context) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -407,8 +414,9 @@ signOutPopupSecond(BuildContext context) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -464,8 +472,9 @@ permissionPopup(BuildContext context, String content) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -538,8 +547,9 @@ deleteCommentPopup(BuildContext context, Function runMutationCallback) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -612,8 +622,9 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),
@@ -686,8 +697,9 @@ reportPostPopup(BuildContext context, int contentsId) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: ReportDialogScreen(contentsId: contentsId),
           ));
 }
@@ -699,8 +711,9 @@ reportPostDonePopup(BuildContext context) {
       builder: (_) => AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
             content: Container(
               width: ScreenUtil().setSp(336),
               height: ScreenUtil().setSp(156),

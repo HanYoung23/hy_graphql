@@ -72,7 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
             body: SafeArea(
               child: Container(
                 width: ScreenUtil().screenWidth,
-                height: ScreenUtil().screenHeight,
+                height: ScreenUtil().screenHeight -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom,
                 margin: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setSp(side_gap),
                     vertical: ScreenUtil().setHeight(94)),
@@ -133,7 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             bottom: ScreenUtil().setHeight(5)),
                         decoration: BoxDecoration(
                             color: Color.fromRGBO(2554, 229, 0, 1),
-                            borderRadius: BorderRadius.circular(5)),
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(5))),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -188,7 +191,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             bottom: ScreenUtil().setHeight(5)),
                         decoration: BoxDecoration(
                             color: Color.fromRGBO(3, 199, 90, 1),
-                            borderRadius: BorderRadius.circular(5)),
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(5))),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -242,7 +246,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             bottom: ScreenUtil().setHeight(5)),
                         decoration: BoxDecoration(
                             color: Colors.black,
-                            borderRadius: BorderRadius.circular(5)),
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(5))),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

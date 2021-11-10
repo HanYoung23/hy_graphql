@@ -89,7 +89,8 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
                     decoration: BoxDecoration(
                       color:
                           currentChoice != 0 ? app_blue : app_blue_light_button,
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius:
+                          BorderRadius.circular(ScreenUtil().setSp(5)),
                     ),
                     child: Center(
                       child: Text(
@@ -115,7 +116,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
               decoration: BoxDecoration(
                 border: Border.all(
                     width: ScreenUtil().setSp(1), color: app_font_grey),
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(ScreenUtil().setSp(5)),
               ),
               child: Center(
                 child: Text(
@@ -272,7 +273,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(width: ScreenUtil().setSp(1), color: app_font_grey),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
       ),
     );
   }
@@ -284,7 +285,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(width: ScreenUtil().setSp(1), color: Colors.black),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
       ),
       child: Container(
         width: ScreenUtil().setSp(30),
@@ -292,7 +293,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
         decoration: BoxDecoration(
           color: app_blue,
           border: Border.all(width: ScreenUtil().setSp(7), color: Colors.white),
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
         ),
       ),
     );

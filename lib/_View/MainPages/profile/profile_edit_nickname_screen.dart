@@ -251,7 +251,8 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                       vertical: ScreenUtil().setHeight(5),
                                       horizontal: ScreenUtil().setWidth(8)),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setSp(5)),
                                     color: isValid
                                         ? Color.fromRGBO(5, 138, 221, 1)
                                         : Color.fromRGBO(5, 138, 221, 0.3),

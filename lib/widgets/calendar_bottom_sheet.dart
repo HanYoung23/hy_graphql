@@ -255,7 +255,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
         border: Border.all(
             width: ScreenUtil().setSp(1),
             color: title == "leftDate" ? Colors.grey : Colors.black),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
       ),
       child: Center(
         child: Text(
@@ -308,8 +308,9 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
         width: ScreenUtil().setSp(74),
         height: ScreenUtil().setSp(28),
         decoration: BoxDecoration(
-            color: selectedDate == selectedDateRange ? app_blue : app_grey_tag,
-            borderRadius: BorderRadius.circular(100)),
+          color: selectedDate == selectedDateRange ? app_blue : app_grey_tag,
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(100)),
+        ),
         child: Center(
           child: Text(
             title,
@@ -332,7 +333,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       height: ScreenUtil().setSp(30),
       decoration: BoxDecoration(
         border: Border.all(width: ScreenUtil().setSp(1), color: Colors.grey),
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(ScreenUtil().setSp(100)),
       ),
     );
   }
@@ -343,13 +344,13 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
       height: ScreenUtil().setSp(30),
       decoration: BoxDecoration(
         border: Border.all(width: ScreenUtil().setSp(1), color: Colors.black),
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(ScreenUtil().setSp(100)),
       ),
       child: Container(
         decoration: BoxDecoration(
           color: app_blue,
           border: Border.all(width: ScreenUtil().setSp(6), color: Colors.white),
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(100)),
         ),
       ),
     );

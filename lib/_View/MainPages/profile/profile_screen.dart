@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int customerId;
   int currentTap = 1;
   List postPages = [1];
-  List replyPages = [1];
+  List commentPages = [1];
   List bookmarkPages = [1];
 
   bool onPostNotification(ScrollEndNotification t) {
@@ -43,13 +43,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return true;
   }
 
-  bool onReplyNotification(ScrollEndNotification t) {
+  bool onCommentNotification(ScrollEndNotification t) {
     if (t.metrics.pixels > 0 && t.metrics.atEdge) {
-      List newPages = replyPages;
+      List newPages = commentPages;
       int lastPage = newPages.length;
       newPages.add(lastPage + 1);
       setState(() {
-        replyPages = newPages;
+        commentPages = newPages;
       });
     } else {
       // print('I am at the start');
@@ -175,10 +175,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     currentTap == 2
                         ? Flexible(
                             child: NotificationListener(
-                              onNotification: onReplyNotification,
+                              onNotification: onCommentNotification,
                               child: ListView(
                                 shrinkWrap: true,
-                                children: replyPages.map((page) {
+                                children: commentPages.map((page) {
                                   return mypageComentsListQuery(page);
                                 }).toList(),
                               ),
@@ -190,6 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: NotificationListener(
                               onNotification: onBookmarkNotification,
                               child: ListView(
+                                // cacheExtent: 9999,
                                 shrinkWrap: true,
                                 children: bookmarkPages.map((page) {
                                   return mypageBookmarksListQuery(page);
@@ -520,12 +521,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: profilePhotoLink == null
                             ? BoxDecoration(
                                 color: app_grey,
-                                borderRadius: BorderRadius.circular(100))
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setSp(100)),
+                              )
                             : BoxDecoration(
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(profilePhotoLink)),
-                                borderRadius: BorderRadius.circular(100)),
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setSp(100)),
+                              ),
                       ),
                       SizedBox(width: ScreenUtil().setSp(10)),
                       Column(

@@ -20,17 +20,18 @@ class _HomePageState extends State<HomePage> {
 
   List<BottomNavigationBarItem> btmNavItems = [
     BottomNavigationBarItem(
-        activeIcon: Image.asset(
-          "assets/images/nav_store.png",
-          width: ScreenUtil().setSp(30),
-          height: ScreenUtil().setSp(30),
-        ),
-        icon: Image.asset(
-          "assets/images/nav_store_grey.png",
-          width: ScreenUtil().setSp(30),
-          height: ScreenUtil().setSp(30),
-        ),
-        label: "스토어"),
+      activeIcon: Image.asset(
+        "assets/images/nav_store.png",
+        width: ScreenUtil().setSp(30),
+        height: ScreenUtil().setSp(30),
+      ),
+      icon: Image.asset(
+        "assets/images/nav_store_grey.png",
+        width: ScreenUtil().setSp(30),
+        height: ScreenUtil().setSp(30),
+      ),
+      label: "스토어",
+    ),
     BottomNavigationBarItem(
         activeIcon: Image.asset(
           "assets/images/nav_location.png",
@@ -81,7 +82,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      bottom: true,
       child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+            backgroundColor: Colors.black,
+            brightness: Brightness.dark,
+          ),
           body: IndexedStack(
             index: _selectedIndex,
             children: _screens,
@@ -99,6 +108,16 @@ class _HomePageState extends State<HomePage> {
                       onTap: _onBtmItemClick,
                       showSelectedLabels: true,
                       elevation: 0,
+                      selectedLabelStyle: TextStyle(
+                        fontFamily: "NotoSansCJKkrMedium",
+                        fontSize: ScreenUtil().setSp(10),
+                        letterSpacing: ScreenUtil().setSp(-0.25),
+                      ),
+                      unselectedLabelStyle: TextStyle(
+                        fontFamily: "NotoSansCJKkrMedium",
+                        fontSize: ScreenUtil().setSp(10),
+                        letterSpacing: ScreenUtil().setSp(-0.25),
+                      ),
                     ),
                   ),
                   floatingBtn.isFilterActive.value ||

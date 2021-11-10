@@ -46,8 +46,8 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: ScreenUtil().setWidth(375),
-                height: ScreenUtil().setHeight(44),
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().setSp(44),
                 padding:
                     EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
                 margin: EdgeInsets.only(top: ScreenUtil().setSp(20)),
@@ -70,8 +70,10 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                     Text(
                       "게시물",
                       style: TextStyle(
-                          fontSize: ScreenUtil().setSp(appbar_title_size),
-                          fontWeight: FontWeight.bold),
+                        fontFamily: "NotoSansCJKkrBold",
+                        fontSize: ScreenUtil().setSp(appbar_title_size),
+                        letterSpacing: letter_spacing,
+                      ),
                     ),
                     Expanded(
                       child: Image.asset("assets/images/arrow_back.png",
@@ -129,23 +131,24 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                         )),
                   ),
                   Positioned(
-                    bottom: 8,
+                    bottom: ScreenUtil().setSp(8),
                     child: Container(
                       width: ScreenUtil().screenWidth,
                       alignment: Alignment.center,
                       child: Container(
                           width: ScreenUtil().setSp(48),
-                          padding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setSp(4),
-                          ),
+                          height: ScreenUtil().setSp(22),
                           decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(100)),
+                            color: Colors.black.withOpacity(0.3),
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(100)),
+                          ),
                           child: Center(
                             child: Text(
                               "$currentIndex/${imageLink.length}",
                               style: TextStyle(
                                   color: Colors.white,
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(12)),
                             ),
                           )),
@@ -160,35 +163,41 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: ScreenUtil().setHeight(10)),
+                    SizedBox(height: ScreenUtil().setSp(10)),
                     Container(
-                        decoration: BoxDecoration(
-                            color: app_grey,
-                            borderRadius: BorderRadius.circular(100)),
                         padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setSp(14),
-                          vertical: ScreenUtil().setSp(6),
+                            horizontal: ScreenUtil().setSp(16),
+                            vertical: ScreenUtil().setSp(8)),
+                        decoration: BoxDecoration(
+                          color: app_grey,
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().setSp(50)),
                         ),
                         child: Text(
-                          mainText,
-                          style: TextStyle(fontSize: ScreenUtil().setSp(12)),
+                          locationLink,
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
+                            fontSize: ScreenUtil().setSp(12),
+                            letterSpacing: letter_spacing_small,
+                          ),
                         )),
-                    SizedBox(height: ScreenUtil().setHeight(10)),
+                    SizedBox(height: ScreenUtil().setSp(10)),
                     SizedBox(height: ScreenUtil().setSp(10)),
                     ReadMoreText(mainText,
                         trimLines: 2,
                         colorClickableText: app_font_grey,
                         style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: -0.35,
-                          color: Colors.black,
+                          letterSpacing: letter_spacing_small,
                         ),
                         trimMode: TrimMode.Line,
                         trimCollapsedText: '더보기',
                         trimExpandedText: '접기',
                         moreStyle: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: -0.35,
+                          letterSpacing: letter_spacing_small,
                           color: app_font_grey,
                         )),
                     SizedBox(height: ScreenUtil().setSp(20)),

@@ -19,31 +19,35 @@ class _MapPostCreationBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: ScreenUtil().screenHeight * 0.4,
-      padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(40)),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      child: Column(
-        children: [
-          Container(
-              margin: EdgeInsets.only(
-                  top: ScreenUtil().setHeight(20),
-                  bottom: ScreenUtil().setHeight(20)),
-              child: Text(
-                "카테고리 설정",
-                style: TextStyle(
+    return SafeArea(
+      child: Container(
+        height: ScreenUtil().setSp(280),
+        padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(40)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Column(
+          children: [
+            Container(
+                margin: EdgeInsets.only(
+                    top: ScreenUtil().setSp(20),
+                    bottom: ScreenUtil().setSp(20)),
+                child: Text(
+                  "카테고리 설정",
+                  style: TextStyle(
+                    fontFamily: "NotoSansCJKkrBold",
                     fontSize: ScreenUtil().setSp(16),
-                    fontWeight: FontWeight.bold),
-              )),
-          Column(
-              children: categoryList.map((category) {
-            return categoryItem(category);
-          }).toList())
-          // categoryItem()
-        ],
+                    letterSpacing: letter_spacing,
+                  ),
+                )),
+            Column(
+                children: categoryList.map((category) {
+              return categoryItem(category);
+            }).toList())
+            // categoryItem()
+          ],
+        ),
       ),
     );
   }
@@ -55,11 +59,13 @@ class _MapPostCreationBottomSheetState
       },
       child: Container(
         width: ScreenUtil().screenWidth,
-        padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(14)),
+        padding: EdgeInsets.symmetric(vertical: ScreenUtil().setSp(10)),
         child: Text(
           "$title",
           style: TextStyle(
+              fontFamily: "NotoSansCJKkrRegular",
               fontSize: ScreenUtil().setSp(16),
+              letterSpacing: letter_spacing,
               color: currentCategory == "$title" ? Colors.black : app_font_grey,
               fontWeight: currentCategory == "$title"
                   ? FontWeight.bold
