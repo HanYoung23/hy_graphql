@@ -40,164 +40,169 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        top: false,
+        bottom: true,
         child: Container(
-      width: ScreenUtil().screenWidth,
-      height: ScreenUtil().screenHeight * 0.9,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      child: Column(
-        children: [
-          SizedBox(height: ScreenUtil().setHeight(40)),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Text(
-                    "취소",
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(
-                  "게시물 설정",
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(16),
-                      letterSpacing: -0.4,
-                      fontWeight: FontWeight.bold),
-                ),
-                InkWell(
-                  onTap: () {
-                    if (isWhole || leftDate == "") {
-                      calendarController.dateUpdate("2021.01.01", "3021.09.23");
-                    } else {
-                      calendarController.dateUpdate(leftDate, rightDate);
-                    }
-                    widget.refetchCallback();
-                    Get.back();
-                  },
-                  child: Text(
-                    "적용",
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: ScreenUtil().setHeight(30)),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(32)),
-            child: Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      isWhole = true;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      isWhole ? checkedButton() : nonCheckedButton(),
-                      SizedBox(width: ScreenUtil().setSp(10)),
-                      Text(
-                        "전체 기간",
+          width: ScreenUtil().screenWidth,
+          height: ScreenUtil().screenHeight * 0.9,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          child: Column(
+            children: [
+              SizedBox(height: ScreenUtil().setHeight(40)),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Text(
+                        "취소",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(16),
                             letterSpacing: -0.4,
-                            color: isWhole ? Colors.black : Colors.grey),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: ScreenUtil().setHeight(14)),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      isWhole = false;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      !isWhole ? checkedButton() : nonCheckedButton(),
-                      SizedBox(width: ScreenUtil().setSp(10)),
-                      Text(
-                        "원하는 기간 게시물만 모아보기",
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Text(
+                      "게시물 설정",
+                      style: TextStyle(
+                          fontSize: ScreenUtil().setSp(16),
+                          letterSpacing: -0.4,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (isWhole || leftDate == "") {
+                          calendarController.dateUpdate(
+                              "2021.01.01", "3021.09.23");
+                        } else {
+                          calendarController.dateUpdate(leftDate, rightDate);
+                        }
+                        widget.refetchCallback();
+                        Get.back();
+                      },
+                      child: Text(
+                        "적용",
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(16),
                             letterSpacing: -0.4,
-                            color: !isWhole ? Colors.black : Colors.grey),
-                      )
-                    ],
-                  ),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(30)),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(32)),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isWhole = true;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          isWhole ? checkedButton() : nonCheckedButton(),
+                          SizedBox(width: ScreenUtil().setSp(10)),
+                          Text(
+                            "전체 기간",
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(16),
+                                letterSpacing: -0.4,
+                                color: isWhole ? Colors.black : Colors.grey),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: ScreenUtil().setHeight(14)),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isWhole = false;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          !isWhole ? checkedButton() : nonCheckedButton(),
+                          SizedBox(width: ScreenUtil().setSp(10)),
+                          Text(
+                            "원하는 기간 게시물만 모아보기",
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(16),
+                                letterSpacing: -0.4,
+                                color: !isWhole ? Colors.black : Colors.grey),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              // SizedBox(height: ScreenUtil().setHeight(14)),
+              Spacer(),
+              !isWhole
+                  ? Row(
+                      children: [
+                        SizedBox(width: ScreenUtil().setSp(20)),
+                        rangeTag("일주일", 7),
+                        Spacer(),
+                        rangeTag("1개월", 30),
+                        Spacer(),
+                        rangeTag("3개월", 90),
+                        Spacer(),
+                        rangeTag("6개월", 180),
+                        SizedBox(width: ScreenUtil().setSp(20)),
+                      ],
+                    )
+                  : Container(),
+              // SizedBox(height: ScreenUtil().setHeight(14)),
+              Spacer(),
+              !isWhole
+                  ? Row(
+                      children: [
+                        SizedBox(width: ScreenUtil().setSp(30)),
+                        selectedDate("leftDate"),
+                        Spacer(),
+                        Text("~",
+                            style: TextStyle(
+                              fontSize: ScreenUtil().setSp(18),
+                              letterSpacing: -0.45,
+                            )),
+                        Spacer(),
+                        selectedDate("rightDate"),
+                        SizedBox(width: ScreenUtil().setSp(30)),
+                      ],
+                    )
+                  : Container(),
+              Spacer(),
+              if (!isWhole)
+                Column(
+                  children: [
+                    selectedDateRange == 0 ? calendar(0) : Container(),
+                    selectedDateRange == 7 ? calendar(7) : Container(),
+                    selectedDateRange == 30 ? calendar(30) : Container(),
+                    selectedDateRange == 90 ? calendar(90) : Container(),
+                    selectedDateRange == 180 ? calendar(180) : Container(),
+                  ],
                 )
-              ],
-            ),
+              else
+                Container(),
+              Spacer(),
+              Spacer(),
+            ],
           ),
-          // SizedBox(height: ScreenUtil().setHeight(14)),
-          Spacer(),
-          !isWhole
-              ? Row(
-                  children: [
-                    SizedBox(width: ScreenUtil().setSp(20)),
-                    rangeTag("일주일", 7),
-                    Spacer(),
-                    rangeTag("1개월", 30),
-                    Spacer(),
-                    rangeTag("3개월", 90),
-                    Spacer(),
-                    rangeTag("6개월", 180),
-                    SizedBox(width: ScreenUtil().setSp(20)),
-                  ],
-                )
-              : Container(),
-          // SizedBox(height: ScreenUtil().setHeight(14)),
-          Spacer(),
-          !isWhole
-              ? Row(
-                  children: [
-                    SizedBox(width: ScreenUtil().setSp(30)),
-                    selectedDate("leftDate"),
-                    Spacer(),
-                    Text("~",
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(18),
-                          letterSpacing: -0.45,
-                        )),
-                    Spacer(),
-                    selectedDate("rightDate"),
-                    SizedBox(width: ScreenUtil().setSp(30)),
-                  ],
-                )
-              : Container(),
-          Spacer(),
-          if (!isWhole)
-            Column(
-              children: [
-                selectedDateRange == 0 ? calendar(0) : Container(),
-                selectedDateRange == 7 ? calendar(7) : Container(),
-                selectedDateRange == 30 ? calendar(30) : Container(),
-                selectedDateRange == 90 ? calendar(90) : Container(),
-                selectedDateRange == 180 ? calendar(180) : Container(),
-              ],
-            )
-          else
-            Container(),
-          Spacer(),
-          Spacer(),
-        ],
-      ),
-    ));
+        ));
   }
 
   Container calendar(int rangeDate) {

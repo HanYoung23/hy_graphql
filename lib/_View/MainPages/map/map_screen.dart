@@ -392,8 +392,16 @@ class _MapScreenState extends State<MapScreen> {
             );
           } else {
             return SafeArea(
+              top: false,
+              bottom: true,
               child: Scaffold(
                 backgroundColor: Colors.white,
+                appBar: AppBar(
+                  toolbarHeight: 0,
+                  elevation: 0,
+                  backgroundColor: Colors.black,
+                  brightness: Brightness.dark,
+                ),
                 body: Container(
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().screenHeight,

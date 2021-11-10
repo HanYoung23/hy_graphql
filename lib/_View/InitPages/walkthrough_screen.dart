@@ -28,13 +28,19 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      bottom: true,
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          toolbarHeight: 0,
+          elevation: 0,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+        ),
         body: Container(
             width: ScreenUtil().screenWidth,
-            height: ScreenUtil().screenHeight -
-                MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom,
+            height: ScreenUtil().screenHeight,
             margin: EdgeInsets.symmetric(
                 horizontal:
                     currentScreenIndex != 2 ? ScreenUtil().setSp(20) : 0),

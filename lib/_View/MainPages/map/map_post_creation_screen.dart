@@ -158,12 +158,20 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      bottom: true,
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
           checkIsAllFilled();
         },
         child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+            backgroundColor: Colors.black,
+            brightness: Brightness.dark,
+          ),
           body: Container(
             height: ScreenUtil().screenHeight -
                 MediaQuery.of(context).padding.top -

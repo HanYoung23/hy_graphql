@@ -172,59 +172,23 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return Query(
-    //     options: QueryOptions(
-    //       document: gql(Queries.photoDetail),
-    //       variables: {
-    //         "contents_id": widget.contentsId,
-    //         "customer_id": widget.customerId,
-    //       },
-    //     ),
-    //     builder: (result, {refetch, fetchMore}) {
-    //       if (!result.isLoading && result.data != null) {
-    //         print("🚨 photodetail result : ${result.data["photo_detail"]}");
-    //         Map resultData = result.data["photo_detail"];
-    //         int categoryId = resultData["category_id"];
-    //         String categoryName;
-    //         String images = resultData["image_link"];
-    //         List imageLink = images.split(",");
-    //         String mainText = resultData["main_text"];
-    //         String tags = resultData["tags"];
-    //         String contentsTitle = resultData["contents_title"];
-    //         List starRatingList = [
-    //           resultData["star_rating1"],
-    //           resultData["star_rating2"],
-    //           resultData["star_rating3"],
-    //           resultData["star_rating4"],
-    //         ];
-
-    //         switch (categoryId) {
-    //           case 1:
-    //             categoryName = "바닷가";
-    //             break;
-    //           case 2:
-    //             categoryName = "액티비티";
-    //             break;
-    //           case 3:
-    //             categoryName = "맛집";
-    //             break;
-    //           case 4:
-    //             categoryName = "숙소";
-    //             break;
-    //           default:
-    //         }
-
     return SafeArea(
+      top: false,
+      bottom: true,
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
           checkIsAllFilled();
         },
         child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+            backgroundColor: Colors.black,
+            brightness: Brightness.dark,
+          ),
           body: Container(
-            height: ScreenUtil().screenHeight -
-                MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom,
+            height: ScreenUtil().screenHeight,
             margin: EdgeInsets.all(ScreenUtil().setSp(20)),
             child: Column(
               children: [

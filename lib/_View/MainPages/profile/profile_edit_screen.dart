@@ -62,12 +62,20 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             String profileText = resultData["profile_text"];
 
             return SafeArea(
+                top: false,
+                bottom: true,
                 child: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).unfocus();
                     },
                     child: Scaffold(
                         backgroundColor: Colors.white,
+                        appBar: AppBar(
+                          toolbarHeight: 0,
+                          elevation: 0,
+                          backgroundColor: Colors.black,
+                          brightness: Brightness.dark,
+                        ),
                         body: SingleChildScrollView(
                             child: Column(
                           children: [

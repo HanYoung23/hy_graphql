@@ -99,10 +99,18 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                 floatingBtnController.allBtnCancel();
               },
               child: SafeArea(
+                top: false,
+                bottom: true,
                 child: NotificationListener(
                   onNotification: onNotification,
                   child: Scaffold(
                     key: scaffoldKey,
+                    appBar: AppBar(
+                      toolbarHeight: 0,
+                      elevation: 0,
+                      backgroundColor: Colors.black,
+                      brightness: Brightness.dark,
+                    ),
                     body: Stack(
                       children: [
                         Positioned(
@@ -363,8 +371,16 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             );
           } else {
             return SafeArea(
+              top: false,
+              bottom: true,
               child: Scaffold(
                 backgroundColor: Colors.white,
+                appBar: AppBar(
+                  toolbarHeight: 0,
+                  elevation: 0,
+                  backgroundColor: Colors.black,
+                  brightness: Brightness.dark,
+                ),
                 body: Container(
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().screenHeight,

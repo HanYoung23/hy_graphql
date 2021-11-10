@@ -89,12 +89,20 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
+            top: false,
+            bottom: true,
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
               },
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
+                appBar: AppBar(
+                  toolbarHeight: 0,
+                  elevation: 0,
+                  backgroundColor: Colors.black,
+                  brightness: Brightness.dark,
+                ),
                 body: Container(
                   margin: EdgeInsets.all(ScreenUtil().setSp(20)),
                   child: Column(

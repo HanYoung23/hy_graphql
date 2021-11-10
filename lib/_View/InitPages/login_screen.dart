@@ -67,14 +67,19 @@ class _LoginScreenState extends State<LoginScreen> {
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: SafeArea(
-              child: Container(
+          return SafeArea(
+            top: false,
+            bottom: true,
+            child: Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 0,
+                elevation: 0,
+                backgroundColor: Colors.black,
+                brightness: Brightness.dark,
+              ),
+              body: Container(
                 width: ScreenUtil().screenWidth,
-                height: ScreenUtil().screenHeight -
-                    MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom,
+                height: ScreenUtil().screenHeight,
                 margin: EdgeInsets.symmetric(
                     horizontal: ScreenUtil().setSp(side_gap),
                     vertical: ScreenUtil().setHeight(94)),

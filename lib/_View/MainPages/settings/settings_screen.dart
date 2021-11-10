@@ -37,9 +37,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      bottom: true,
       child: Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          toolbarHeight: 0,
+          elevation: 0,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+        ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
           margin: EdgeInsets.only(top: ScreenUtil().setSp(20)),

@@ -45,8 +45,16 @@ class _ProfileEditIntroductionScreenState
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      top: false,
+      bottom: true,
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          toolbarHeight: 0,
+          elevation: 0,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+        ),
         body: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.all(ScreenUtil().setSp(20)),

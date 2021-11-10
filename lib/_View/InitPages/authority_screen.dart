@@ -12,13 +12,19 @@ class AuthorityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
+    return SafeArea(
+      top: false,
+      bottom: true,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          elevation: 0,
+          backgroundColor: Colors.black,
+          brightness: Brightness.dark,
+        ),
+        body: Container(
           width: ScreenUtil().screenWidth,
-          height: ScreenUtil().screenHeight -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom,
+          height: ScreenUtil().screenHeight,
           color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -85,129 +85,147 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return customerId != null
         ? SafeArea(
+            top: false,
+            bottom: true,
             child: Scaffold(
-            key: scaffoldKey,
-            backgroundColor: Colors.white,
-            body: SingleChildScrollView(
-              child: Container(
-                width: ScreenUtil().screenWidth,
-                height: ScreenUtil().screenHeight,
-                child: Column(
-                  children: [
-                    SizedBox(height: ScreenUtil().setSp(20)),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setSp(20)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: ScreenUtil().setWidth(375),
-                            height: ScreenUtil().setHeight(44),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: InkWell(
-                                        onTap: () {
-                                          scaffoldKey.currentState.openDrawer();
-                                        },
-                                        child: Image.asset(
-                                            "assets/images/hamburger_button.png",
-                                            width: ScreenUtil().setSp(28),
-                                            height: ScreenUtil().setSp(28))),
+              key: scaffoldKey,
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                toolbarHeight: 0,
+                elevation: 0,
+                backgroundColor: Colors.black,
+                brightness: Brightness.dark,
+              ),
+              body: SingleChildScrollView(
+                child: Container(
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().screenHeight,
+                  child: Column(
+                    children: [
+                      SizedBox(height: ScreenUtil().setSp(20)),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(20)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: ScreenUtil().setWidth(375),
+                              height: ScreenUtil().setHeight(44),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: InkWell(
+                                          onTap: () {
+                                            scaffoldKey.currentState
+                                                .openDrawer();
+                                          },
+                                          child: Image.asset(
+                                              "assets/images/hamburger_button.png",
+                                              width: ScreenUtil().setSp(28),
+                                              height: ScreenUtil().setSp(28))),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "마이페이지",
-                                  style: TextStyle(
-                                      fontSize:
-                                          ScreenUtil().setSp(appbar_title_size),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Expanded(
-                                  child: Image.asset(
-                                    "assets/images/hamburger_button.png",
-                                    width: ScreenUtil().setSp(28),
-                                    height: ScreenUtil().setSp(28),
-                                    color: Colors.transparent,
+                                  Text(
+                                    "마이페이지",
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil()
+                                            .setSp(appbar_title_size),
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: Image.asset(
+                                      "assets/images/hamburger_button.png",
+                                      width: ScreenUtil().setSp(28),
+                                      height: ScreenUtil().setSp(28),
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: ScreenUtil().setSp(20)),
-                          mypageQuery(),
-                          SizedBox(height: ScreenUtil().setSp(20)),
-                          Text(
-                            "개인활동",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(16),
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: -0.4),
-                          ),
-                          SizedBox(height: ScreenUtil().setSp(10)),
-                          mypageCountQuery(),
-                          SizedBox(height: ScreenUtil().setSp(10)),
-                        ],
+                            SizedBox(height: ScreenUtil().setSp(20)),
+                            mypageQuery(),
+                            SizedBox(height: ScreenUtil().setSp(20)),
+                            Text(
+                              "개인활동",
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(16),
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.4),
+                            ),
+                            SizedBox(height: ScreenUtil().setSp(10)),
+                            mypageCountQuery(),
+                            SizedBox(height: ScreenUtil().setSp(10)),
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      color: app_grey_light,
-                      width: ScreenUtil().screenWidth,
-                      height: ScreenUtil().setSp(10),
-                    ),
-                    currentTap == 1
-                        ? Flexible(
-                            child: NotificationListener(
-                              onNotification: onPostNotification,
-                              child: ListView(
-                                shrinkWrap: true,
-                                children: postPages.map((page) {
-                                  return mypageContentsListQuery(page);
-                                }).toList(),
+                      Container(
+                        color: app_grey_light,
+                        width: ScreenUtil().screenWidth,
+                        height: ScreenUtil().setSp(10),
+                      ),
+                      currentTap == 1
+                          ? Flexible(
+                              child: NotificationListener(
+                                onNotification: onPostNotification,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  children: postPages.map((page) {
+                                    return mypageContentsListQuery(page);
+                                  }).toList(),
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                    currentTap == 2
-                        ? Flexible(
-                            child: NotificationListener(
-                              onNotification: onCommentNotification,
-                              child: ListView(
-                                shrinkWrap: true,
-                                children: commentPages.map((page) {
-                                  return mypageComentsListQuery(page);
-                                }).toList(),
+                            )
+                          : Container(),
+                      currentTap == 2
+                          ? Flexible(
+                              child: NotificationListener(
+                                onNotification: onCommentNotification,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  children: commentPages.map((page) {
+                                    return mypageComentsListQuery(page);
+                                  }).toList(),
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                    currentTap == 3
-                        ? Flexible(
-                            child: NotificationListener(
-                              onNotification: onBookmarkNotification,
-                              child: ListView(
-                                // cacheExtent: 9999,
-                                shrinkWrap: true,
-                                children: bookmarkPages.map((page) {
-                                  return mypageBookmarksListQuery(page);
-                                }).toList(),
+                            )
+                          : Container(),
+                      currentTap == 3
+                          ? Flexible(
+                              child: NotificationListener(
+                                onNotification: onBookmarkNotification,
+                                child: ListView(
+                                  // cacheExtent: 9999,
+                                  shrinkWrap: true,
+                                  children: bookmarkPages.map((page) {
+                                    return mypageBookmarksListQuery(page);
+                                  }).toList(),
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            drawer: MenuDrawer(customerId: customerId),
-          ))
+              drawer: MenuDrawer(customerId: customerId),
+            ))
         : SafeArea(
+            top: false,
+            bottom: true,
             child: Scaffold(
               backgroundColor: Colors.white,
+              appBar: AppBar(
+                toolbarHeight: 0,
+                elevation: 0,
+                backgroundColor: Colors.black,
+                brightness: Brightness.dark,
+              ),
               body: Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().screenHeight,
