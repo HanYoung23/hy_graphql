@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -414,7 +412,6 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               ),
               builder: (result, {refetch, fetchMore}) {
                 if (!result.isLoading && result.data != null) {
-                  print("🚨 $page, ${result.data["photo_list_map"].length}");
                   List<Map> imageMaps = [];
                   for (Map resultData in result.data["photo_list_map"]) {
                     int contentsId = int.parse("${resultData["contents_id"]}");
@@ -434,7 +431,6 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                       imageMaps.insert((num + i) * 10, adMapList[num + i]);
                     }
                   }
-
                   return gridBuilder(imageMaps, page);
                 } else {
                   return Container();

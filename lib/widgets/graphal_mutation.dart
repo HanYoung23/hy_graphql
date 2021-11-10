@@ -142,4 +142,14 @@ class Mutations {
         }
     }
 """;
+
+  static final String report = """
+    mutation(\$customer_id: Int!, \$contents_id: Int!) {
+      report(customer_id : \$customer_id, contents_id: \$contents_id)
+      {
+          result
+          msg
+        }
+    }
+""";
 }

@@ -33,8 +33,11 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         body: Container(
             margin: EdgeInsets.symmetric(
                 horizontal:
-                    currentScreenIndex != 2 ? ScreenUtil().setWidth(20) : 0,
-                vertical: ScreenUtil().setHeight(30)),
+                    currentScreenIndex != 2 ? ScreenUtil().setSp(20) : 0),
+            padding: EdgeInsets.only(
+              top: ScreenUtil().setSp(30),
+              bottom: ScreenUtil().setSp(34),
+            ),
             child: currentScreenIndex == 1
                 ? firstScreen()
                 : currentScreenIndex == 2
@@ -49,6 +52,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
       children: [
         Row(children: [
           Image.asset("assets/images/arrow_back.png",
+              color: Colors.transparent,
               width: ScreenUtil().setSp(arrow_back_size),
               height: ScreenUtil().setSp(arrow_back_size)),
           Spacer(),
@@ -56,23 +60,26 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             onTap: () {
               Get.to(() => LoginScreen());
             },
-            child: Image.asset("assets/images/walkthroughFirst/skip_button.png",
-                width: ScreenUtil().setWidth(58),
-                height: ScreenUtil().setHeight(24)),
+            child: Text(
+              "건너뛰기",
+              style: TextStyle(
+                fontFamily: "NotoSansCJKkrBold",
+                fontSize: ScreenUtil().setSp(16),
+                color: app_font_grey,
+                letterSpacing: letter_spacing,
+              ),
+            ),
           )
         ]),
         SizedBox(height: ScreenUtil().setHeight(40)),
         Image.asset("assets/images/walkthroughFirst/dot.png",
-            width: ScreenUtil().setWidth(40),
-            height: ScreenUtil().setHeight(8)),
+            width: ScreenUtil().setSp(40), height: ScreenUtil().setSp(8)),
         SizedBox(height: ScreenUtil().setHeight(14)),
         Image.asset("assets/images/walkthroughFirst/title.png",
-            width: ScreenUtil().setWidth(335),
-            height: ScreenUtil().setHeight(33)),
+            width: ScreenUtil().setSp(335), height: ScreenUtil().setSp(33)),
         SizedBox(height: ScreenUtil().setHeight(10)),
         Image.asset("assets/images/walkthroughFirst/content.png",
-            width: ScreenUtil().setWidth(300),
-            height: ScreenUtil().setHeight(54)),
+            width: ScreenUtil().setSp(300), height: ScreenUtil().setSp(54)),
         SizedBox(height: ScreenUtil().setHeight(47)),
         Container(
             width: ScreenUtil().setSp(340),
@@ -88,11 +95,22 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 currentScreenIndex = 2;
               });
             },
-            child: Image.asset(
-              "assets/images/walkthroughFirst/next_button.png",
-              width: ScreenUtil().setWidth(335),
-              height: ScreenUtil().setHeight(50),
-            ))
+            child: Container(
+                width: ScreenUtil().setSp(336),
+                height: ScreenUtil().setSp(50),
+                decoration: BoxDecoration(
+                    color: app_blue, borderRadius: BorderRadius.circular(10)),
+                child: Center(
+                  child: Text(
+                    "다음",
+                    style: TextStyle(
+                      fontFamily: "NotoSansCJKkrBold",
+                      fontSize: ScreenUtil().setSp(16),
+                      color: Colors.white,
+                      letterSpacing: letter_spacing,
+                    ),
+                  ),
+                )))
       ],
     );
   }
@@ -101,7 +119,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
           child: Row(
             children: [
               InkWell(
@@ -118,26 +136,28 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 onTap: () {
                   Get.to(() => LoginScreen());
                 },
-                child: Image.asset(
-                    "assets/images/walkthroughSecond/skip_button.png",
-                    width: ScreenUtil().setWidth(58),
-                    height: ScreenUtil().setHeight(24)),
+                child: Text(
+                  "건너뛰기",
+                  style: TextStyle(
+                    fontFamily: "NotoSansCJKkrBold",
+                    fontSize: ScreenUtil().setSp(16),
+                    color: app_font_grey,
+                    letterSpacing: letter_spacing,
+                  ),
+                ),
               ),
             ],
           ),
         ),
         SizedBox(height: ScreenUtil().setHeight(40)),
         Image.asset("assets/images/walkthroughSecond/dot.png",
-            width: ScreenUtil().setWidth(40),
-            height: ScreenUtil().setHeight(8)),
+            width: ScreenUtil().setSp(40), height: ScreenUtil().setSp(8)),
         SizedBox(height: ScreenUtil().setHeight(14)),
         Image.asset("assets/images/walkthroughSecond/title.png",
-            width: ScreenUtil().setWidth(335),
-            height: ScreenUtil().setHeight(33)),
+            width: ScreenUtil().setSp(335), height: ScreenUtil().setSp(33)),
         SizedBox(height: ScreenUtil().setHeight(10)),
         Image.asset("assets/images/walkthroughSecond/content.png",
-            width: ScreenUtil().setWidth(300),
-            height: ScreenUtil().setHeight(80)),
+            width: ScreenUtil().setSp(300), height: ScreenUtil().setSp(80)),
         SizedBox(height: ScreenUtil().setHeight(10)),
         Container(
             child: Image.asset(
@@ -149,17 +169,29 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         )),
         Spacer(),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
           child: InkWell(
             onTap: () {
               setState(() {
                 currentScreenIndex = 3;
               });
             },
-            child: Image.asset(
-                "assets/images/walkthroughSecond/next_button.png",
-                width: ScreenUtil().setWidth(335),
-                height: ScreenUtil().setHeight(50)),
+            child: Container(
+                width: ScreenUtil().setSp(336),
+                height: ScreenUtil().setSp(50),
+                decoration: BoxDecoration(
+                    color: app_blue, borderRadius: BorderRadius.circular(10)),
+                child: Center(
+                  child: Text(
+                    "다음",
+                    style: TextStyle(
+                      fontFamily: "NotoSansCJKkrBold",
+                      fontSize: ScreenUtil().setSp(16),
+                      color: Colors.white,
+                      letterSpacing: letter_spacing,
+                    ),
+                  ),
+                )),
           ),
         ),
       ],
@@ -185,16 +217,13 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         ),
         SizedBox(height: ScreenUtil().setHeight(40)),
         Image.asset("assets/images/walkthroughThird/dot.png",
-            width: ScreenUtil().setWidth(40),
-            height: ScreenUtil().setHeight(8)),
+            width: ScreenUtil().setSp(40), height: ScreenUtil().setSp(8)),
         SizedBox(height: ScreenUtil().setHeight(14)),
         Image.asset("assets/images/walkthroughThird/title.png",
-            width: ScreenUtil().setWidth(335),
-            height: ScreenUtil().setHeight(33)),
+            width: ScreenUtil().setSp(335), height: ScreenUtil().setSp(33)),
         SizedBox(height: ScreenUtil().setHeight(10)),
         Image.asset("assets/images/walkthroughThird/content.png",
-            width: ScreenUtil().setWidth(300),
-            height: ScreenUtil().setHeight(102)),
+            width: ScreenUtil().setSp(300), height: ScreenUtil().setSp(102)),
         Container(
             width: ScreenUtil().setSp(305),
             height: ScreenUtil().setSp(250),
@@ -209,9 +238,22 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
               Get.to(() => LoginScreen());
             });
           },
-          child: Image.asset("assets/images/walkthroughThird/start_button.png",
-              width: ScreenUtil().setWidth(335),
-              height: ScreenUtil().setHeight(50)),
+          child: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(50),
+              decoration: BoxDecoration(
+                  color: app_blue, borderRadius: BorderRadius.circular(10)),
+              child: Center(
+                child: Text(
+                  "시작하기",
+                  style: TextStyle(
+                    fontFamily: "NotoSansCJKkrBold",
+                    fontSize: ScreenUtil().setSp(16),
+                    color: Colors.white,
+                    letterSpacing: letter_spacing,
+                  ),
+                ),
+              )),
         ),
       ],
     );

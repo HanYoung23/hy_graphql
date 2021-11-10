@@ -2,12 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
+import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class ReportDialogScreen extends StatefulWidget {
+  final int contentsId;
   const ReportDialogScreen({
     Key key,
+    @required this.contentsId,
   }) : super(key: key);
 
   @override
@@ -54,30 +59,51 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
           choiceFifth("기타 사유"),
           Spacer(),
           Spacer(),
-          InkWell(
-            onTap: () {
-              Get.back();
-              reportPostDonePopup(context);
-            },
-            child: Container(
-              width: ScreenUtil().screenWidth,
-              height: ScreenUtil().setSp(44),
-              decoration: BoxDecoration(
-                color: app_blue,
-                borderRadius: BorderRadius.circular(5),
+          Mutation(
+              options: MutationOptions(
+                document: gql(Mutations.report),
+                update: (GraphQLDataProxy proxy, QueryResult result) {},
+                onCompleted: (dynamic resultData) async {
+                  // print("🚨 report result : $resultData");
+                  if (resultData["report"]["result"]) {
+                    Get.back();
+                    reportPostDonePopup(context);
+                  }
+                },
               ),
-              child: Center(
-                child: Text(
-                  "신고하기",
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14),
-                    color: Colors.white,
-                    letterSpacing: letter_spacing_small,
+              builder: (RunMutation runMutation, QueryResult queryResult) {
+                return InkWell(
+                  onTap: () {
+                    if (currentChoice != 0) {
+                      seeValue("customerId").then((customerId) {
+                        runMutation({
+                          "customer_id": int.parse(customerId),
+                          "contents_id": widget.contentsId
+                        });
+                      });
+                    }
+                  },
+                  child: Container(
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setSp(44),
+                    decoration: BoxDecoration(
+                      color:
+                          currentChoice != 0 ? app_blue : app_blue_light_button,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "신고하기",
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          color: Colors.white,
+                          letterSpacing: letter_spacing_small,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
+                );
+              }),
           SizedBox(height: ScreenUtil().setSp(12)),
           InkWell(
             onTap: () {

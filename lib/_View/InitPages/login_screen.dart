@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             document: gql(Mutations.createCustomer),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) async {
-              print("🚨 login result : $resultData");
+              // print("🚨 login result : $resultData");
               if (resultData["createCustomer"]["result"]) {
                 String customerId = "${resultData["createCustomer"]["msg2"]}";
                 await storeUserData("customerId", customerId);
@@ -71,8 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: Colors.white,
             body: SafeArea(
               child: Container(
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().screenHeight,
                 margin: EdgeInsets.symmetric(
-                    horizontal: ScreenUtil().setWidth(common_side_gap),
+                    horizontal: ScreenUtil().setSp(side_gap),
                     vertical: ScreenUtil().setHeight(94)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,12 +97,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: ScreenUtil().setHeight(70)),
                     Padding(
-                      padding: EdgeInsets.only(top: ScreenUtil().setHeight(46)),
-                      child: Image(
-                          image: AssetImage("assets/images/sns_login_text.png"),
-                          width: ScreenUtil().setSp(255),
-                          height: ScreenUtil().setSp(18)),
-                    ),
+                        padding:
+                            EdgeInsets.only(top: ScreenUtil().setHeight(46)),
+                        child: Text("SNS 주소로 간편로그인 하기",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
+                              fontSize: ScreenUtil().setSp(12),
+                              letterSpacing: letter_spacing_small,
+                              color: app_grey_login,
+                            ))),
                     Spacer(),
                     InkWell(
                       onTap: () {
@@ -119,10 +124,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                       child: Container(
-                        width: ScreenUtil().setWidth(305),
+                        width: ScreenUtil().setSp(305),
                         padding: EdgeInsets.symmetric(
                             vertical: ScreenUtil().setHeight(13),
-                            horizontal: ScreenUtil().setWidth(16)),
+                            horizontal: ScreenUtil().setSp(16)),
                         margin: EdgeInsets.only(
                             top: ScreenUtil().setHeight(10),
                             bottom: ScreenUtil().setHeight(5)),
@@ -135,13 +140,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              child:
-                                  Image.asset("assets/images/kakao_logo.png"),
+                              child: Image.asset(
+                                "assets/images/kakao_logo.png",
+                                fit: BoxFit.fill,
+                              ),
                             ),
                             Text(
                               "카카오 계정으로 로그인",
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(16)),
+                              style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
+                                fontSize: ScreenUtil().setSp(16),
+                                color: Color.fromRGBO(25, 25, 25, 1),
+                              ),
                             ),
                             Container(
                               width: ScreenUtil().setSp(19.8),
@@ -169,10 +179,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                       child: Container(
-                        width: ScreenUtil().setWidth(305),
+                        width: ScreenUtil().setSp(305),
                         padding: EdgeInsets.symmetric(
                             vertical: ScreenUtil().setHeight(13),
-                            horizontal: ScreenUtil().setWidth(16)),
+                            horizontal: ScreenUtil().setSp(16)),
                         margin: EdgeInsets.only(
                             top: ScreenUtil().setHeight(12),
                             bottom: ScreenUtil().setHeight(5)),
@@ -185,14 +195,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              child:
-                                  Image.asset("assets/images/naver_logo.png"),
+                              child: Image.asset(
+                                "assets/images/naver_logo.png",
+                                fit: BoxFit.fill,
+                              ),
                             ),
                             Text(
                               "네이버 계정으로 로그인",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  color: Colors.white),
+                                fontFamily: "NotoSansCJKkrRegular",
+                                fontSize: ScreenUtil().setSp(16),
+                                color: Colors.white,
+                              ),
                             ),
                             Container(
                               width: ScreenUtil().setSp(19.8),
@@ -219,10 +233,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                       child: Container(
-                        width: ScreenUtil().setWidth(305),
+                        width: ScreenUtil().setSp(305),
                         padding: EdgeInsets.symmetric(
                             vertical: ScreenUtil().setHeight(13),
-                            horizontal: ScreenUtil().setWidth(16)),
+                            horizontal: ScreenUtil().setSp(16)),
                         margin: EdgeInsets.only(
                             top: ScreenUtil().setHeight(10),
                             bottom: ScreenUtil().setHeight(5)),
@@ -235,14 +249,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              child:
-                                  Image.asset("assets/images/apple_logo.png"),
+                              child: Image.asset(
+                                "assets/images/apple_logo.png",
+                                fit: BoxFit.fill,
+                              ),
                             ),
                             Text(
-                              "애플 계정으로 로그인",
+                              "Apple로 로그인",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  color: Colors.white),
+                                fontFamily: "NotoSansCJKkrRegular",
+                                fontSize: ScreenUtil().setSp(16),
+                                color: Colors.white,
+                              ),
                             ),
                             Container(
                               width: ScreenUtil().setSp(19.8),

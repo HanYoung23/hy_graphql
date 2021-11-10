@@ -679,7 +679,7 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
           ));
 }
 
-reportPostPopup(BuildContext context, Function postChoiceCallback) {
+reportPostPopup(BuildContext context, int contentsId) {
   showDialog(
       context: context,
       // barrierDismissible: false,
@@ -688,7 +688,7 @@ reportPostPopup(BuildContext context, Function postChoiceCallback) {
             contentPadding: EdgeInsets.zero,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            content: ReportDialogScreen(),
+            content: ReportDialogScreen(contentsId: contentsId),
           ));
 }
 

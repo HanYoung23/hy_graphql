@@ -12,58 +12,58 @@ class AuthorityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var safePadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Container(
-          height: ScreenUtil().screenHeight,
+          height: ScreenUtil().screenHeight -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom,
           color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Spacer(),
               Container(
                 width: ScreenUtil().screenWidth,
-                color: Colors.white,
-                padding:
-                    EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenUtil().setSp(side_gap)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        margin: EdgeInsets.only(
-                            top: ScreenUtil().setHeight(safePadding + 93)),
+                        // margin:
+                        //     EdgeInsets.only(top: ScreenUtil().setHeight(94)),
                         child: Image.asset("assets/images/authority_title.png",
-                            width: ScreenUtil().setSp(225),
+                            width: ScreenUtil().setSp(226),
                             height: ScreenUtil().setSp(36))),
                     Container(
                         margin: EdgeInsets.only(
-                            top: ScreenUtil().setHeight(10),
-                            bottom: ScreenUtil().setHeight(41)),
+                            top: ScreenUtil().setSp(10),
+                            bottom: ScreenUtil().setSp(42)),
                         child: Image.asset(
                             "assets/images/authority_content.png",
-                            width: ScreenUtil().setSp(271),
+                            width: ScreenUtil().setSp(272),
                             height: ScreenUtil().setSp(60))),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin:
-                              EdgeInsets.only(right: ScreenUtil().setWidth(10)),
+                              EdgeInsets.only(right: ScreenUtil().setSp(10)),
                           child: Image.asset(
                               "assets/images/authority_device.png",
-                              width: ScreenUtil().setSp(47),
-                              height: ScreenUtil().setSp(47)),
+                              width: ScreenUtil().setSp(48),
+                              height: ScreenUtil().setSp(48)),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                                 margin: EdgeInsets.only(
-                                    bottom: ScreenUtil().setHeight(3)),
+                                    bottom: ScreenUtil().setSp(4)),
                                 child: Image.asset(
                                     "assets/images/authority_device_title.png",
-                                    width: ScreenUtil().setSp(139),
+                                    width: ScreenUtil().setSp(130),
                                     height: ScreenUtil().setSp(24))),
                             Image.asset(
                                 "assets/images/authority_device_content.png",
@@ -73,24 +73,24 @@ class AuthorityScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(height: ScreenUtil().setHeight(20)),
+                    SizedBox(height: ScreenUtil().setSp(20)),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin:
-                              EdgeInsets.only(right: ScreenUtil().setWidth(10)),
+                              EdgeInsets.only(right: ScreenUtil().setSp(10)),
                           child: Image.asset(
                               "assets/images/authority_location.png",
-                              width: ScreenUtil().setSp(47),
-                              height: ScreenUtil().setSp(47)),
+                              width: ScreenUtil().setSp(48),
+                              height: ScreenUtil().setSp(48)),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                                 margin: EdgeInsets.only(
-                                    bottom: ScreenUtil().setHeight(3)),
+                                    bottom: ScreenUtil().setSp(4)),
                                 child: Image.asset(
                                     "assets/images/authority_location_title.png",
                                     width: ScreenUtil().setSp(72),
@@ -103,52 +103,54 @@ class AuthorityScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    SizedBox(height: ScreenUtil().setHeight(20)),
+                    SizedBox(height: ScreenUtil().setSp(20)),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin:
-                              EdgeInsets.only(right: ScreenUtil().setWidth(10)),
+                              EdgeInsets.only(right: ScreenUtil().setSp(10)),
                           child: Image.asset(
                               "assets/images/authority_gallery.png",
-                              width: ScreenUtil().setSp(47),
-                              height: ScreenUtil().setSp(47)),
+                              width: ScreenUtil().setSp(48),
+                              height: ScreenUtil().setSp(48)),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                                 margin: EdgeInsets.only(
-                                    bottom: ScreenUtil().setHeight(3)),
+                                    bottom: ScreenUtil().setSp(4)),
                                 child: Image.asset(
                                     "assets/images/authority_gallery_title.png",
-                                    width: ScreenUtil().setSp(101),
+                                    width: ScreenUtil().setSp(102),
                                     height: ScreenUtil().setSp(24))),
                             Image.asset(
                                 "assets/images/authority_gallery_content.png",
                                 width: ScreenUtil().setSp(256),
                                 height: ScreenUtil().setSp(40)),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
+              SizedBox(height: ScreenUtil().setSp(30)),
+              Spacer(),
               InkWell(
                 onTap: () {
                   Get.offAll(() => WalkthroughScreen());
                 },
                 child: Container(
                     width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setHeight(54),
-                    color: Color.fromRGBO(5, 138, 221, 1),
+                    height: ScreenUtil().setSp(54),
+                    color: app_blue,
                     child: Center(
                       child: Text(
                         "확인",
                         style: TextStyle(
-                          fontFamily: "NotoSans",
+                          fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),
                           color: Colors.white,
                           letterSpacing: letter_spacing,

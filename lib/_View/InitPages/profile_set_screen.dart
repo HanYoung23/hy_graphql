@@ -13,8 +13,6 @@ import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
-import 'package:letsgotrip/widgets/loading_indicator.dart';
 
 class ProfileSetScreen extends StatefulWidget {
   final String userId;
@@ -96,14 +94,13 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                 FocusScope.of(context).unfocus();
               },
               child: Scaffold(
-                backgroundColor: Colors.white,
                 resizeToAvoidBottomInset: false,
                 body: Container(
                   margin: EdgeInsets.all(ScreenUtil().setSp(20)),
                   child: Column(
                     children: [
                       Container(
-                        width: ScreenUtil().setWidth(375),
+                        width: ScreenUtil().screenWidth,
                         height: ScreenUtil().setHeight(44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,10 +116,10 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             Text(
                               "프로필 설정",
                               style: TextStyle(
-                                  fontSize:
-                                      ScreenUtil().setSp(appbar_title_size),
-                                  letterSpacing: -0.4,
-                                  fontWeight: appbar_title_weight),
+                                fontFamily: "NotoSansCJKkrBold",
+                                fontSize: ScreenUtil().setSp(appbar_title_size),
+                                letterSpacing: letter_spacing,
+                              ),
                             ),
                             Image.asset("assets/images/arrow_back.png",
                                 color: Colors.transparent,
@@ -170,10 +167,15 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                       fit: BoxFit.cover,
                                     )),
                             SizedBox(height: ScreenUtil().setHeight(3)),
-                            Image.asset(
-                                "assets/images/profileSettings/change_button.png",
-                                width: ScreenUtil().setWidth(44),
-                                height: ScreenUtil().setHeight(18)),
+                            Text(
+                              "변경하기",
+                              style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
+                                fontSize: ScreenUtil().setSp(12),
+                                letterSpacing: letter_spacing_x_small,
+                                color: app_grey_dark,
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -181,10 +183,15 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Image.asset(
-                                "assets/images/profileSettings/profile_nickname.png",
-                                width: ScreenUtil().setWidth(66),
-                                height: ScreenUtil().setHeight(20))
+                            Text(
+                              "프로필 별명",
+                              style: TextStyle(
+                                fontFamily: "NotoSansCJKkrBold",
+                                fontSize: ScreenUtil().setSp(14),
+                                letterSpacing: letter_spacing_small,
+                                color: Colors.black,
+                              ),
+                            )
                           ]),
                       SizedBox(height: ScreenUtil().setHeight(5)),
                       Container(
@@ -262,11 +269,11 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                   }
                                 },
                                 child: Container(
-                                  width: ScreenUtil().setWidth(56),
+                                  width: ScreenUtil().setSp(56),
                                   height: ScreenUtil().setHeight(34),
                                   margin: EdgeInsets.symmetric(
                                       vertical: ScreenUtil().setHeight(5),
-                                      horizontal: ScreenUtil().setWidth(8)),
+                                      horizontal: ScreenUtil().setSp(8)),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                     color: isValid
@@ -277,8 +284,9 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                       child: Text(
                                     "적용",
                                     style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrBold",
                                         fontSize: ScreenUtil().setSp(14),
-                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: letter_spacing_small,
                                         color: Colors.white),
                                   )),
                                 ),
@@ -289,7 +297,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(width: ScreenUtil().setWidth(10)),
+                          SizedBox(width: ScreenUtil().setSp(10)),
                           Text(
                             "$inputMessage",
                             style: TextStyle(
@@ -304,11 +312,16 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(width: ScreenUtil().setSp(10)),
-                          Image.asset(
-                            "assets/images/profileSettings/content.png",
-                            width: ScreenUtil().setSp(284),
-                            height: ScreenUtil().setSp(40),
+                          SizedBox(width: ScreenUtil().setSp(14)),
+                          Text(
+                            "한글 2~12자, 영문 대소문자, 숫자 2~20자에 한하여\n사용가능합니다(혼용 가능)",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
+                              fontSize: ScreenUtil().setSp(14),
+                              letterSpacing: letter_spacing_small,
+                              color: app_grey_login,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
@@ -345,7 +358,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                           });
                         },
                         child: Container(
-                          width: ScreenUtil().setWidth(335),
+                          width: ScreenUtil().screenWidth,
                           padding: EdgeInsets.symmetric(
                               vertical: ScreenUtil().setHeight(13)),
                           decoration: BoxDecoration(
@@ -357,13 +370,16 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             child: Text(
                               "회원가입 완료",
                               style: TextStyle(
-                                  fontSize: ScreenUtil().setSp(16),
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                fontFamily: "NotoSansCJKkrBold",
+                                fontSize: ScreenUtil().setSp(16),
+                                color: Colors.white,
+                                letterSpacing: letter_spacing,
+                              ),
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: ScreenUtil().setSp(14)),
                     ],
                   ),
                 ),

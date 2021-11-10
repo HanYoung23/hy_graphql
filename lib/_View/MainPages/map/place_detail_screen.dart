@@ -72,7 +72,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           if (!result.isLoading && result.data != null) {
             if (result.data["photo_detail"] != null) {
               Map resultData = result.data["photo_detail"];
-              print("🚨 place detail result : $resultData");
+              // print("🚨 place detail result : $resultData");
               String contentsTitle = resultData["contents_title"];
               String nickName = resultData["nick_name"];
               String mainText = resultData["main_text"];
