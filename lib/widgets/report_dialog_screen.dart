@@ -98,7 +98,8 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
                         style: TextStyle(
                           fontSize: ScreenUtil().setSp(14),
                           color: Colors.white,
-                          letterSpacing: letter_spacing_small,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                         ),
                       ),
                     ),
@@ -124,7 +125,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(14),
                     color: Color(0xff191919),
-                    letterSpacing: letter_spacing_small,
+                    letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   ),
                 ),
               ),
@@ -153,7 +154,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             Text(title,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(14),
-                  letterSpacing: letter_spacing_small,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
                 ))
           ],
@@ -179,7 +180,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             Text(title,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(14),
-                  letterSpacing: letter_spacing_small,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
                 ))
           ],
@@ -205,7 +206,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             Text(title,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(14),
-                  letterSpacing: letter_spacing_small,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
                 ))
           ],
@@ -231,7 +232,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             Text(title,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(14),
-                  letterSpacing: letter_spacing_small,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
                 ))
           ],
@@ -257,7 +258,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             Text(title,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(14),
-                  letterSpacing: letter_spacing_small,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
                 ))
           ],

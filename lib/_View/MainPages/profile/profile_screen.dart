@@ -110,8 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: ScreenUtil().setWidth(375),
-                              height: ScreenUtil().setHeight(44),
+                              width: ScreenUtil().screenWidth,
+                              height: ScreenUtil().setSp(44),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

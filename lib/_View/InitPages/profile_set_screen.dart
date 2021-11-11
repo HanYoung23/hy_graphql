@@ -109,7 +109,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                     children: [
                       Container(
                         width: ScreenUtil().screenWidth,
-                        height: ScreenUtil().setHeight(44),
+                        height: ScreenUtil().setSp(44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -126,7 +126,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                               style: TextStyle(
                                 fontFamily: "NotoSansCJKkrBold",
                                 fontSize: ScreenUtil().setSp(appbar_title_size),
-                                letterSpacing: letter_spacing,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                               ),
                             ),
                             Image.asset("assets/images/arrow_back.png",
@@ -181,7 +182,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                               style: TextStyle(
                                 fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(12),
-                                letterSpacing: letter_spacing_x_small,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_x_small),
                                 color: app_grey_dark,
                               ),
                             )
@@ -197,7 +199,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                               style: TextStyle(
                                 fontFamily: "NotoSansCJKkrBold",
                                 fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: letter_spacing_small,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: Colors.black,
                               ),
                             )
@@ -295,7 +298,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     style: TextStyle(
                                         fontFamily: "NotoSansCJKkrBold",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: letter_spacing_small,
+                                        letterSpacing: ScreenUtil()
+                                            .setSp(letter_spacing_small),
                                         color: Colors.white),
                                   )),
                                 ),
@@ -327,7 +331,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             style: TextStyle(
                               fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(14),
-                              letterSpacing: letter_spacing_small,
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_small),
                               color: app_grey_login,
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -383,7 +388,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                 fontFamily: "NotoSansCJKkrBold",
                                 fontSize: ScreenUtil().setSp(16),
                                 color: Colors.white,
-                                letterSpacing: letter_spacing,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                               ),
                             ),
                           ),

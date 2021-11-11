@@ -19,8 +19,8 @@ class PostPromotionScreen extends StatelessWidget {
           children: [
             SizedBox(height: ScreenUtil().setSp(20)),
             Container(
-              width: ScreenUtil().setWidth(375),
-              height: ScreenUtil().setHeight(44),
+              width: ScreenUtil().screenWidth,
+              height: ScreenUtil().setSp(44),
               padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

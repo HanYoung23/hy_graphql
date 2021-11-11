@@ -92,7 +92,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
             style: TextStyle(
               fontFamily: "NotoSansCJKkrRegular",
               fontSize: ScreenUtil().setSp(14),
-              letterSpacing: letter_spacing_small,
+              letterSpacing: ScreenUtil().setSp(letter_spacing_small),
               color: Colors.white,
             ),
             textAlign: TextAlign.center,
@@ -128,7 +128,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
           style: TextStyle(
             fontFamily: "NotoSansCJKkrRegular",
             fontSize: ScreenUtil().setSp(14),
-            letterSpacing: letter_spacing_small,
+            letterSpacing: ScreenUtil().setSp(letter_spacing_small),
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
@@ -215,7 +215,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: letter_spacing,
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
                         ),
                       ),
                       Expanded(
@@ -229,7 +229,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                               "임시저장",
                               style: TextStyle(
                                 fontFamily: "NotoSansCJKkrBold",
-                                letterSpacing: letter_spacing,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                                 fontSize: ScreenUtil().setSp(appbar_title_size),
                                 color: app_font_grey,
                               ),
@@ -261,7 +262,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                         style: TextStyle(
                             fontFamily: "NotoSansCJKkrRegular",
                             fontSize: ScreenUtil().setSp(14),
-                            letterSpacing: letter_spacing_small,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             color: selectedCategory == ""
                                 ? app_font_grey
                                 : Colors.black)),
@@ -278,7 +280,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                       style: TextStyle(
                           fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: letter_spacing_small,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                           color: app_font_grey)),
                 ),
                 SizedBox(height: ScreenUtil().setSp(4)),
@@ -353,7 +356,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                             style: TextStyle(
                                 fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: letter_spacing_small,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: Colors.black),
                             decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -364,7 +368,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                                   color: app_font_grey,
                                   fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: letter_spacing_small,
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
                                 ))))
                   ],
                 ),
@@ -412,7 +417,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                             style: TextStyle(
                                 fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: letter_spacing_small,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: Colors.black),
                             decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -421,7 +427,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                                   color: app_font_grey,
                                   fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: letter_spacing_small,
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
                                 ))))
                   ],
                 ),
@@ -460,7 +467,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),
                           color: Colors.white,
-                          letterSpacing: letter_spacing_small,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                         ),
                       ),
                     )),

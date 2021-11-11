@@ -80,7 +80,7 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                       style: TextStyle(
                         fontFamily: "NotoSansCJKkrBold",
                         fontSize: ScreenUtil().setSp(appbar_title_size),
-                        letterSpacing: letter_spacing,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                     ),
                     Expanded(
@@ -186,7 +186,8 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                           style: TextStyle(
                             fontFamily: "NotoSansCJKkrRegular",
                             fontSize: ScreenUtil().setSp(12),
-                            letterSpacing: letter_spacing_small,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                           ),
                         )),
                     SizedBox(height: ScreenUtil().setSp(10)),
@@ -197,7 +198,8 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: letter_spacing_small,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                         ),
                         trimMode: TrimMode.Line,
                         trimCollapsedText: '더보기',
@@ -205,7 +207,8 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                         moreStyle: TextStyle(
                           fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: letter_spacing_small,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                           color: app_font_grey,
                         )),
                     SizedBox(height: ScreenUtil().setSp(20)),

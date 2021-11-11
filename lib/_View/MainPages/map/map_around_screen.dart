@@ -118,10 +118,10 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                             color: Colors.white,
                             child: Column(
                               children: [
-                                SizedBox(height: ScreenUtil().setHeight(20)),
+                                SizedBox(height: ScreenUtil().setSp(20)),
                                 Container(
                                   width: ScreenUtil().screenWidth,
-                                  height: ScreenUtil().setHeight(46),
+                                  height: ScreenUtil().setSp(46),
                                   padding: EdgeInsets.symmetric(
                                       vertical: ScreenUtil().setSp(8),
                                       horizontal: ScreenUtil().setSp(20)),
@@ -136,8 +136,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                             width: ScreenUtil().setSp(28),
                                             height: ScreenUtil().setSp(28)),
                                       ),
-                                      SizedBox(
-                                          width: ScreenUtil().setWidth(56)),
+                                      Spacer(),
                                       InkWell(
                                         onTap: () {
                                           Get.back();
@@ -152,21 +151,24 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                                 child: Center(
                                                   child: Text("지도",
                                                       style: TextStyle(
+                                                          fontFamily:
+                                                              "NotoSansCJKkrBold",
                                                           color: app_font_grey,
                                                           fontSize: ScreenUtil()
-                                                              .setSp(16),
-                                                          fontWeight:
-                                                              FontWeight.w700,
+                                                              .setSp(
+                                                                  appbar_title_size),
                                                           letterSpacing:
-                                                              ScreenUtil()
-                                                                  .setSp(
-                                                                      -0.4))),
+                                                              ScreenUtil().setSp(
+                                                                  letter_spacing))),
                                                 )),
-                                            Container()
+                                            Container(
+                                              width: ScreenUtil().setSp(60),
+                                              height: ScreenUtil().setSp(3),
+                                            )
                                           ],
                                         ),
                                       ),
-                                      SizedBox(width: ScreenUtil().setWidth(8)),
+                                      SizedBox(width: ScreenUtil().setSp(8)),
                                       Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
@@ -177,14 +179,15 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                               child: Center(
                                                 child: Text("둘러보기",
                                                     style: TextStyle(
+                                                        fontFamily:
+                                                            "NotoSansCJKkrBold",
                                                         color: app_font_black,
                                                         fontSize: ScreenUtil()
-                                                            .setSp(16),
-                                                        fontWeight:
-                                                            FontWeight.w700,
+                                                            .setSp(
+                                                                appbar_title_size),
                                                         letterSpacing:
-                                                            ScreenUtil()
-                                                                .setSp(-0.4))),
+                                                            ScreenUtil().setSp(
+                                                                letter_spacing))),
                                               )),
                                           Container(
                                             color: app_blue,
@@ -193,8 +196,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                           )
                                         ],
                                       ),
-                                      SizedBox(
-                                          width: ScreenUtil().setWidth(59)),
+                                      Spacer(),
                                       InkWell(
                                         onTap: () {
                                           showModalBottomSheet(
@@ -272,10 +274,18 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                         })
                                     : Expanded(
                                         child: Center(
-                                            child: Image.asset(
-                                          "assets/images/map_around_content.png",
-                                          width: ScreenUtil().setSp(260),
-                                          height: ScreenUtil().setSp(48),
+                                            child: Text(
+                                          "조건에 맞는 게시물이 없습니다.\n다른 조건으로 검색해보시는건 어떠세요?",
+                                          style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrRegular",
+                                            fontSize: ScreenUtil().setSp(16),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing),
+                                            color: Color.fromRGBO(
+                                                185, 185, 185, 1),
+                                          ),
+                                          overflow: TextOverflow.fade,
+                                          textAlign: TextAlign.center,
                                         )),
                                       ),
                               ],
@@ -527,9 +537,11 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                             child: Text(
                               "AD",
                               style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
                                 color: Colors.white,
                                 fontSize: ScreenUtil().setSp(12),
-                                letterSpacing: -0.35,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                               ),
                             ),
                           ),

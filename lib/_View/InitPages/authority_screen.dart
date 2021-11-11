@@ -160,7 +160,7 @@ class AuthorityScreen extends StatelessWidget {
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),
                           color: Colors.white,
-                          letterSpacing: letter_spacing,
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
                         ),
                       ),
                     )),

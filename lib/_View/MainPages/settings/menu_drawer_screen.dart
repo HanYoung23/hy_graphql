@@ -61,8 +61,8 @@ class MenuDrawer extends StatelessWidget {
                           ),
                           builder: (result, {refetch, fetchMore}) {
                             if (!result.isLoading && result.data != null) {
-                              print(
-                                  "🧾 settings result : ${result.data["check_list"]}");
+                              // print(
+                              //     "🧾 settings result : ${result.data["check_list"]}");
                               List resultData = result.data["check_list"];
                               bool isNewNoti = false;
 
@@ -142,9 +142,11 @@ class MenuDrawer extends StatelessWidget {
                                     child: Text(
                                       nickname,
                                       style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(18),
-                                          letterSpacing: -0.45,
-                                          fontWeight: FontWeight.bold),
+                                        fontFamily: "NotoSansCJKkrBold",
+                                        fontSize: ScreenUtil().setSp(18),
+                                        letterSpacing:
+                                            ScreenUtil().setSp(-0.45),
+                                      ),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                     ),
@@ -153,8 +155,10 @@ class MenuDrawer extends StatelessWidget {
                                   Text(
                                     "님",
                                     style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrRegular",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: -0.35),
+                                        letterSpacing:
+                                            ScreenUtil().setSp(-0.35)),
                                   ),
                                 ],
                               ),
@@ -165,10 +169,12 @@ class MenuDrawer extends StatelessWidget {
                         }
                       }),
                   SizedBox(height: ScreenUtil().setSp(4)),
-                  Image.asset(
-                    "assets/images/settings/welcome_text.png",
-                    width: ScreenUtil().setSp(128),
-                    height: ScreenUtil().setSp(20),
+                  Text(
+                    "오늘도 좋은 하루되세요",
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(14),
+                        letterSpacing: ScreenUtil().setSp(-0.35)),
                   )
                 ],
               ),
@@ -194,10 +200,13 @@ class MenuDrawer extends StatelessWidget {
                           width: ScreenUtil().screenWidth,
                           height: ScreenUtil().setSp(48),
                           alignment: Alignment.centerLeft,
-                          child: Image.asset(
-                            "assets/images/settings/post_text.png",
-                            width: ScreenUtil().setSp(44),
-                            height: ScreenUtil().setSp(24),
+                          child: Text(
+                            "글쓰기",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              fontSize: ScreenUtil().setSp(16),
+                            ),
                           ),
                         ),
                       ),
@@ -272,10 +281,13 @@ class MenuDrawer extends StatelessWidget {
                           width: ScreenUtil().screenWidth,
                           height: ScreenUtil().setSp(48),
                           alignment: Alignment.centerLeft,
-                          child: Image.asset(
-                            "assets/images/settings/counsel_text.png",
-                            width: ScreenUtil().setSp(82),
-                            height: ScreenUtil().setSp(24),
+                          child: Text(
+                            "1:1 고객문의",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              fontSize: ScreenUtil().setSp(16),
+                            ),
                           ),
                         ),
                       ),

@@ -110,7 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(12),
-                              letterSpacing: letter_spacing_small,
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_small),
                               color: app_grey_login,
                             ))),
                     Spacer(),

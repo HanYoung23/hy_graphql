@@ -40,8 +40,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             children: [
               SizedBox(height: ScreenUtil().setSp(20)),
               Container(
-                width: ScreenUtil().setWidth(375),
-                height: ScreenUtil().setHeight(44),
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().setSp(44),
                 padding:
                     EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
                 child: Row(
@@ -58,9 +58,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Text(
                       "알림",
                       style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: -0.4,
-                          fontWeight: appbar_title_weight),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing)),
                     ),
                     Image.asset("assets/images/arrow_back.png",
                         color: Colors.transparent,
@@ -159,24 +159,25 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                     ? "새로운 공지사항이 있습니다"
                                                     : "게시물에 새로운 댓글이 달렸습니다",
                                                 style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrRegular",
                                                     fontSize:
                                                         ScreenUtil().setSp(16),
-                                                    letterSpacing: -0.4)),
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(
+                                                            letter_spacing))),
                                             SizedBox(
                                                 height: ScreenUtil().setSp(6)),
-                                            date != null
-                                                ? Text("$month일 $ampm $time",
-                                                    style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                        color: app_font_grey,
-                                                        letterSpacing: -0.35))
-                                                : Text("null",
-                                                    style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                        color: app_font_grey,
-                                                        letterSpacing: -0.35)),
+                                            Text("$month일 $ampm $time",
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrRegular",
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14),
+                                                    color: app_font_grey,
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(
+                                                            letter_spacing_small))),
                                             SizedBox(
                                                 height: ScreenUtil().setSp(4)),
                                           ],

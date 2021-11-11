@@ -180,7 +180,8 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                               '이전 게시물을 초기화합니다.',
                               style: TextStyle(
                                 fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: letter_spacing_small,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: Colors.white,
                               ),
                               textAlign: TextAlign.center,

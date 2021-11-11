@@ -30,7 +30,7 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
-            print("🚨 noticeList : $result");
+            // print("🚨 noticeList : $result");
             List noticeList = result.data["notice_list"];
 
             return SafeArea(
@@ -49,8 +49,8 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                     children: [
                       SizedBox(height: ScreenUtil().setSp(20)),
                       Container(
-                        width: ScreenUtil().setWidth(375),
-                        height: ScreenUtil().setHeight(44),
+                        width: ScreenUtil().screenWidth,
+                        height: ScreenUtil().setSp(44),
                         padding: EdgeInsets.symmetric(
                             horizontal: ScreenUtil().setSp(20)),
                         child: Row(
@@ -67,10 +67,11 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                             Text(
                               "공지사항",
                               style: TextStyle(
-                                  fontSize:
-                                      ScreenUtil().setSp(appbar_title_size),
-                                  letterSpacing: -0.4,
-                                  fontWeight: appbar_title_weight),
+                                fontFamily: "NotoSansCJKkrBold",
+                                fontSize: ScreenUtil().setSp(appbar_title_size),
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
+                              ),
                             ),
                             Image.asset("assets/images/arrow_back.png",
                                 color: Colors.transparent,
@@ -101,8 +102,8 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                                               QueryResult result) {},
                                           onCompleted:
                                               (dynamic resultData) async {
-                                            print(
-                                                "🚨 changeCheck result : $resultData");
+                                            // print(
+                                            //     "🚨 changeCheck result : $resultData");
                                             if (resultData["change_check"]
                                                 ["result"]) {
                                               widget.refetchCallback();
@@ -138,9 +139,13 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                                                     Text(
                                                       noticeTitle,
                                                       style: TextStyle(
+                                                          fontFamily:
+                                                              "NotoSansCJKkrRegular",
                                                           fontSize: ScreenUtil()
                                                               .setSp(16),
-                                                          letterSpacing: -0.4),
+                                                          letterSpacing:
+                                                              ScreenUtil().setSp(
+                                                                  letter_spacing)),
                                                       overflow:
                                                           TextOverflow.clip,
                                                       maxLines: 2,
@@ -148,27 +153,18 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                                                     SizedBox(
                                                         height: ScreenUtil()
                                                             .setSp(6)),
-                                                    date != null
-                                                        ? Text(date,
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            14),
-                                                                color:
-                                                                    app_font_grey,
-                                                                letterSpacing:
-                                                                    -0.35))
-                                                        : Text("null",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            14),
-                                                                color:
-                                                                    app_font_grey,
-                                                                letterSpacing:
-                                                                    -0.35)),
+                                                    Text(date,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansCJKkrRegular",
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(14),
+                                                            color:
+                                                                app_font_grey,
+                                                            letterSpacing:
+                                                                ScreenUtil().setSp(
+                                                                    letter_spacing_small))),
                                                     SizedBox(
                                                         height: ScreenUtil()
                                                             .setSp(4)),
@@ -186,7 +182,20 @@ class _AnnounceScreenState extends State<AnnounceScreen> {
                                 }).toList(),
                               ),
                             )
-                          : Container()
+                          : Expanded(
+                              child: Center(
+                                child: Text(
+                                  "공지사항이 없습니다.",
+                                  style: TextStyle(
+                                      fontFamily: "NotoSansCJKkrRegular",
+                                      fontSize: ScreenUtil().setSp(14),
+                                      color: app_font_grey,
+                                      letterSpacing: ScreenUtil()
+                                          .setSp(letter_spacing_small)),
+                                  overflow: TextOverflow.fade,
+                                ),
+                              ),
+                            )
                     ],
                   ),
                 ),

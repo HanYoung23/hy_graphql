@@ -106,7 +106,8 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                                   "장소 평가",
                                   style: TextStyle(
                                     fontFamily: "NotoSansCJKkrBold",
-                                    letterSpacing: letter_spacing,
+                                    letterSpacing:
+                                        ScreenUtil().setSp(letter_spacing),
                                     fontSize:
                                         ScreenUtil().setSp(appbar_title_size),
                                   ),
@@ -144,7 +145,7 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                             style: TextStyle(
                               fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: letter_spacing,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                             overflow: TextOverflow.fade,
@@ -215,7 +216,8 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                                   color: Colors.white,
                                   fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(16),
-                                  letterSpacing: letter_spacing,
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing),
                                 ),
                               ),
                             ),
@@ -233,7 +235,8 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                             Text("업로드 중 ...",
                                 style: TextStyle(
                                     fontFamily: "NotoSansCJKkrRegular",
-                                    letterSpacing: letter_spacing_small,
+                                    letterSpacing: ScreenUtil()
+                                        .setSp(letter_spacing_small),
                                     fontSize: ScreenUtil().setSp(16)))
                           ],
                         ))),

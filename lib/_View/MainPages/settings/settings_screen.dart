@@ -50,13 +50,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
-          margin: EdgeInsets.only(top: ScreenUtil().setSp(20)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: ScreenUtil().setSp(20)),
               Container(
-                width: ScreenUtil().setWidth(375),
-                height: ScreenUtil().setHeight(44),
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().setSp(44),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -75,9 +75,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Text(
                       "설정",
                       style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: -0.35),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small)),
                     ),
                     Expanded(
                       child: Image.asset("assets/images/arrow_back.png",
@@ -89,28 +90,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               SizedBox(height: ScreenUtil().setSp(20)),
+              Text("기타",
+                  style: TextStyle(
+                    fontFamily: "NotoSansCJKkrBold",
+                    fontSize: ScreenUtil().setSp(14),
+                    letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                  )),
+              SizedBox(height: ScreenUtil().setSp(10)),
               Container(
-                padding: EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
-                child: Image.asset("assets/images/settings/policy_text.png",
-                    width: ScreenUtil().setSp(108),
-                    height: ScreenUtil().setSp(24)),
-              ),
+                  padding:
+                      EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
+                  child: Text("이용약관 및 정책",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      ))),
               Row(
                 children: [
                   Container(
                     padding:
                         EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
-                    child: Image.asset(
-                        "assets/images/settings/language_text.png",
-                        width: ScreenUtil().setSp(62),
-                        height: ScreenUtil().setSp(24)),
+                    child: Text("언어 설정",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(16),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                        )),
                   ),
                   Spacer(),
                   Text(
                     "한국어",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(16),
-                      letterSpacing: -0.4,
+                      letterSpacing: ScreenUtil().setSp(letter_spacing),
                       color: app_blue,
                     ),
                   )
@@ -133,24 +147,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: ScreenUtil().setSp(16)),
-                            child: Image.asset(
-                                "assets/images/settings/version_text.png",
-                                width: ScreenUtil().setSp(58),
-                                height: ScreenUtil().setSp(24)),
+                            child: Text("버전정보",
+                                style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
+                                  fontSize: ScreenUtil().setSp(16),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing),
+                                )),
                           ),
                           Spacer(),
-                          appVersion != queryVersion
-                              ? Image.asset(
-                                  "assets/images/settings/new_version_text.png",
+                          appVersion == queryVersion
+                              ? Container(
                                   width: ScreenUtil().setSp(130),
-                                  height: ScreenUtil().setSp(32))
+                                  height: ScreenUtil().setSp(32),
+                                  decoration: BoxDecoration(
+                                    color: app_blue,
+                                    borderRadius: BorderRadius.circular(
+                                        ScreenUtil().setSp(100)),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text("새로운 버전이 있습니다",
+                                      style: TextStyle(
+                                          fontFamily: "NotoSansCJKkrBold",
+                                          fontSize: ScreenUtil().setSp(12),
+                                          letterSpacing: ScreenUtil()
+                                              .setSp(letter_spacing_x_small),
+                                          color: Colors.white)),
+                                )
                               : Container(),
                           SizedBox(width: ScreenUtil().setSp(10)),
                           Text(
                             appVersion != null ? "$appVersion" : "",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_blue,
                             ),
                           )
@@ -167,9 +198,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Container(
                   padding:
                       EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
-                  child: Image.asset("assets/images/settings/logout_text.png",
-                      width: ScreenUtil().setSp(58),
-                      height: ScreenUtil().setSp(24)),
+                  child: Text("로그아웃",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      )),
                 ),
               ),
               InkWell(
@@ -179,9 +213,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Container(
                   padding:
                       EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
-                  child: Image.asset("assets/images/settings/signout_text.png",
-                      width: ScreenUtil().setSp(58),
-                      height: ScreenUtil().setSp(24)),
+                  child: Text("회원탈퇴",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      )),
                 ),
               )
             ],

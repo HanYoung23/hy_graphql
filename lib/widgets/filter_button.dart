@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
-import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 
 class FilterBtn extends StatelessWidget {
   final String isActive;
@@ -24,8 +23,9 @@ class FilterBtn extends StatelessWidget {
             isActive == "active"
                 ? "assets/images/filter_button_active.png"
                 : "assets/images/filter_button.png",
-            width: ScreenUtil().setSp(56),
-            height: ScreenUtil().setSp(56),
+            width: ScreenUtil().setSp(60),
+            height: ScreenUtil().setSp(60),
+            fit: BoxFit.cover,
           ),
         ));
   }
@@ -93,8 +93,8 @@ class FilterBtnOptions extends StatelessWidget {
         child: Text(
           "$title",
           style: TextStyle(
+            fontFamily: "NotoSansCJKkrBold",
             fontSize: ScreenUtil().setSp(16),
-            fontWeight: FontWeight.bold,
             color: Colors.white,
             letterSpacing: ScreenUtil().setSp(-0.45),
           ),

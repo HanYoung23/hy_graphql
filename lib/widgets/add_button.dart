@@ -23,8 +23,9 @@ class AddBtn extends StatelessWidget {
             isActive == "active"
                 ? "assets/images/add_button_active.png"
                 : "assets/images/add_button.png",
-            width: ScreenUtil().setSp(56),
-            height: ScreenUtil().setSp(56),
+            width: ScreenUtil().setSp(60),
+            height: ScreenUtil().setSp(60),
+            fit: BoxFit.cover,
           ),
         ));
   }
@@ -48,8 +49,8 @@ class AddBtnOptions extends StatelessWidget {
         child: Text(
           "$title",
           style: TextStyle(
+            fontFamily: "NotoSansCJKkrBold",
             fontSize: ScreenUtil().setSp(16),
-            fontWeight: FontWeight.bold,
             color: Colors.white,
             letterSpacing: ScreenUtil().setSp(-0.45),
           ),

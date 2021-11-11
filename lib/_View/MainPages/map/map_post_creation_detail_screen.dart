@@ -145,7 +145,7 @@ class _MapPostCreationDetailScreenState
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: letter_spacing,
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
                         ),
                       ),
                       Expanded(
@@ -164,7 +164,8 @@ class _MapPostCreationDetailScreenState
                                 color: app_font_grey,
                                 fontFamily: "NotoSansCJKkrBold",
                                 fontSize: ScreenUtil().setSp(appbar_title_size),
-                                letterSpacing: letter_spacing,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                               ),
                             ),
                           ),
@@ -211,7 +212,8 @@ class _MapPostCreationDetailScreenState
                     Text(address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
                         style: TextStyle(
                             fontFamily: "NotoSansCJKkrRegular",
-                            letterSpacing: letter_spacing_small,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             fontSize: ScreenUtil().setSp(12),
                             color: address != "" ? Colors.black : Colors.red),
                         overflow: TextOverflow.fade),
@@ -222,7 +224,7 @@ class _MapPostCreationDetailScreenState
                     "선택된 위치가 다른 경우 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
                     style: TextStyle(
                       fontFamily: "NotoSansCJKkrRegular",
-                      letterSpacing: letter_spacing_small,
+                      letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                       fontSize: ScreenUtil().setSp(14),
                       color: app_font_grey,
                     ),
@@ -233,7 +235,8 @@ class _MapPostCreationDetailScreenState
                     Text("장소명 입력",
                         style: TextStyle(
                             fontFamily: "NotoSansCJKkrBold",
-                            letterSpacing: letter_spacing_small,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             fontSize: ScreenUtil().setSp(14),
                             fontWeight: FontWeight.bold)),
                   ],
@@ -249,7 +252,7 @@ class _MapPostCreationDetailScreenState
                     },
                     style: TextStyle(
                         fontFamily: "NotoSansCJKkrRegular",
-                        letterSpacing: letter_spacing_small,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                         fontSize: ScreenUtil().setSp(14),
                         color: Colors.black),
                     decoration: InputDecoration(
@@ -260,7 +263,8 @@ class _MapPostCreationDetailScreenState
                         hintText: "해당 장소명을 남겨주세요.",
                         hintStyle: TextStyle(
                             fontFamily: "NotoSansCJKkrRegular",
-                            letterSpacing: letter_spacing_small,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             color: app_font_grey,
                             fontSize: ScreenUtil().setSp(14)))),
                 Spacer(),
@@ -296,7 +300,7 @@ class _MapPostCreationDetailScreenState
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),
-                          letterSpacing: letter_spacing,
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
                           color: Colors.white,
                         ),
                       )),

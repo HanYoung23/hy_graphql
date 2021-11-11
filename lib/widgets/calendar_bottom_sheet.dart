@@ -44,14 +44,17 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
         bottom: true,
         child: Container(
           width: ScreenUtil().screenWidth,
-          height: ScreenUtil().screenHeight * 0.9,
+          height: ScreenUtil().screenHeight * 0.9 -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                  topLeft: Radius.circular(ScreenUtil().setSp(20)),
+                  topRight: Radius.circular(ScreenUtil().setSp(20)))),
           child: Column(
             children: [
-              SizedBox(height: ScreenUtil().setHeight(40)),
+              SizedBox(height: ScreenUtil().setSp(40)),
               Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
@@ -65,17 +68,17 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                       child: Text(
                         "취소",
                         style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
                             fontSize: ScreenUtil().setSp(16),
-                            letterSpacing: -0.4,
-                            fontWeight: FontWeight.bold),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing)),
                       ),
                     ),
                     Text(
                       "게시물 설정",
                       style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),
-                          letterSpacing: -0.4,
-                          fontWeight: FontWeight.bold),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing)),
                     ),
                     InkWell(
                       onTap: () {
@@ -91,15 +94,18 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                       child: Text(
                         "적용",
                         style: TextStyle(
+                            color: (isWhole || leftDate == "")
+                                ? app_font_grey
+                                : Colors.black,
+                            fontFamily: "NotoSansCJKkrBold",
                             fontSize: ScreenUtil().setSp(16),
-                            letterSpacing: -0.4,
-                            fontWeight: FontWeight.bold),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing)),
                       ),
                     )
                   ],
                 ),
               ),
-              SizedBox(height: ScreenUtil().setHeight(30)),
+              SizedBox(height: ScreenUtil().setSp(30)),
               Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(32)),
@@ -118,14 +124,16 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                           Text(
                             "전체 기간",
                             style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(16),
-                                letterSpacing: -0.4,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                                 color: isWhole ? Colors.black : Colors.grey),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: ScreenUtil().setHeight(14)),
+                    SizedBox(height: ScreenUtil().setSp(14)),
                     InkWell(
                       onTap: () {
                         setState(() {
@@ -139,8 +147,10 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                           Text(
                             "원하는 기간 게시물만 모아보기",
                             style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(16),
-                                letterSpacing: -0.4,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                                 color: !isWhole ? Colors.black : Colors.grey),
                           )
                         ],
@@ -149,7 +159,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                   ],
                 ),
               ),
-              // SizedBox(height: ScreenUtil().setHeight(14)),
+              // SizedBox(height: ScreenUtil().setSp(14)),
               Spacer(),
               !isWhole
                   ? Row(
@@ -166,7 +176,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                       ],
                     )
                   : Container(),
-              // SizedBox(height: ScreenUtil().setHeight(14)),
+              // SizedBox(height: ScreenUtil().setSp(14)),
               Spacer(),
               !isWhole
                   ? Row(
@@ -176,8 +186,9 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                         Spacer(),
                         Text("~",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(18),
-                              letterSpacing: -0.45,
+                              letterSpacing: ScreenUtil().setSp(-0.45),
                             )),
                         Spacer(),
                         selectedDate("rightDate"),
@@ -208,42 +219,50 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   Container calendar(int rangeDate) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(34)),
+      height: ScreenUtil().setSp(292),
       child: SfDateRangePicker(
         onSelectionChanged: _onSelectionChanged,
         selectionMode: DateRangePickerSelectionMode.range,
         todayHighlightColor: Colors.transparent,
         startRangeSelectionColor: app_blue_calendar,
+        headerHeight: ScreenUtil().setSp(60),
         headerStyle: DateRangePickerHeaderStyle(
             textAlign: TextAlign.center,
             textStyle: TextStyle(
+              fontFamily: "NotoSansCJKkrBold",
               color: Colors.black,
               fontSize: ScreenUtil().setSp(18),
-              letterSpacing: -0.45,
+              letterSpacing: ScreenUtil().setSp(-0.45),
               fontWeight: FontWeight.bold,
             )),
         monthViewSettings: DateRangePickerMonthViewSettings(
             viewHeaderStyle: DateRangePickerViewHeaderStyle(
                 textStyle: TextStyle(
+                    fontFamily: "NotoSansCJKkrRegular",
                     color: Colors.black,
                     fontSize: ScreenUtil().setSp(16),
-                    letterSpacing: -0.4))),
+                    letterSpacing: ScreenUtil().setSp(letter_spacing)))),
         selectionTextStyle: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
             color: Colors.white,
             fontSize: ScreenUtil().setSp(16),
-            letterSpacing: -0.4),
+            letterSpacing: ScreenUtil().setSp(letter_spacing)),
         rangeTextStyle: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
             color: app_blue,
             fontSize: ScreenUtil().setSp(16),
-            letterSpacing: -0.4),
+            letterSpacing: ScreenUtil().setSp(letter_spacing)),
         monthCellStyle: DateRangePickerMonthCellStyle(
           textStyle: TextStyle(
+              fontFamily: "NotoSansCJKkrRegular",
               color: Colors.black,
               fontSize: ScreenUtil().setSp(16),
-              letterSpacing: -0.4),
+              letterSpacing: ScreenUtil().setSp(letter_spacing)),
           todayTextStyle: TextStyle(
+              fontFamily: "NotoSansCJKkrRegular",
               color: Colors.black,
               fontSize: ScreenUtil().setSp(16),
-              letterSpacing: -0.4),
+              letterSpacing: ScreenUtil().setSp(letter_spacing)),
         ),
         initialSelectedRange: PickerDateRange(
             DateTime.now().subtract(Duration(days: rangeDate)),
@@ -254,20 +273,27 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
 
   Container selectedDate(String title) {
     return Container(
-      width: ScreenUtil().setSp(140),
+      width: ScreenUtil().setWidth(140),
       height: ScreenUtil().setSp(40),
       decoration: BoxDecoration(
         border: Border.all(
             width: ScreenUtil().setSp(1),
-            color: title == "leftDate" ? Colors.grey : Colors.black),
+            color: title == "leftDate"
+                ? leftDate == ""
+                    ? Colors.grey
+                    : Colors.black
+                : rightDate == ""
+                    ? Colors.grey
+                    : Colors.black),
         borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
       ),
       child: Center(
         child: Text(
           title == "leftDate" ? leftDate : rightDate,
           style: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
             fontSize: ScreenUtil().setSp(16),
-            letterSpacing: -0.4,
+            letterSpacing: ScreenUtil().setSp(letter_spacing),
           ),
         ),
       ),
@@ -310,7 +336,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
         });
       },
       child: Container(
-        width: ScreenUtil().setSp(74),
+        width: ScreenUtil().setWidth(74),
         height: ScreenUtil().setSp(28),
         decoration: BoxDecoration(
           color: selectedDate == selectedDateRange ? app_blue : app_grey_tag,

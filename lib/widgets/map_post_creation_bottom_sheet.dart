@@ -40,7 +40,7 @@ class _MapPostCreationBottomSheetState
                   style: TextStyle(
                     fontFamily: "NotoSansCJKkrBold",
                     fontSize: ScreenUtil().setSp(16),
-                    letterSpacing: letter_spacing,
+                    letterSpacing: ScreenUtil().setSp(letter_spacing),
                   ),
                 )),
             Column(
@@ -67,7 +67,7 @@ class _MapPostCreationBottomSheetState
           style: TextStyle(
               fontFamily: "NotoSansCJKkrRegular",
               fontSize: ScreenUtil().setSp(16),
-              letterSpacing: letter_spacing,
+              letterSpacing: ScreenUtil().setSp(letter_spacing),
               color: currentCategory == "$title" ? Colors.black : app_font_grey,
               fontWeight: currentCategory == "$title"
                   ? FontWeight.bold

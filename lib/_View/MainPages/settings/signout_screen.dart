@@ -29,8 +29,8 @@ class SignOutScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: ScreenUtil().setWidth(375),
-                height: ScreenUtil().setHeight(44),
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().setSp(44),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -45,9 +45,9 @@ class SignOutScreen extends StatelessWidget {
                     Text(
                       "회원탈퇴",
                       style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: -0.4,
-                          fontWeight: appbar_title_weight),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing)),
                     ),
                     Image.asset("assets/images/arrow_back.png",
                         color: Colors.transparent,
@@ -60,9 +60,9 @@ class SignOutScreen extends StatelessWidget {
               Text(
                 "떠나시는건가요?",
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrBold",
                   fontSize: ScreenUtil().setSp(20),
-                  letterSpacing: -0.5,
-                  fontWeight: FontWeight.bold,
+                  letterSpacing: ScreenUtil().setSp(-0.5),
                 ),
               ),
               SizedBox(height: ScreenUtil().setSp(16)),
@@ -80,17 +80,21 @@ class SignOutScreen extends StatelessWidget {
                         text:
                             "앱 서비스를 이용하시면서 불편하셨던 점이나 이를 보완할 수 있는 방안을 알려주시면 서비스 개선에 적극적으로 반영하도록 하겠습니다. ",
                         style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           color: Colors.grey,
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: -0.35,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                         ),
                         children: [
                       TextSpan(
                         text: "1:1 고객문의",
                         style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           color: app_blue,
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: -0.35,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                           fontWeight: FontWeight.bold,
                         ),
                       )
@@ -100,26 +104,28 @@ class SignOutScreen extends StatelessWidget {
               Text(
                 "여행사진지도 내에서 활동했던 모든 활동이 삭제됩니다.\n삭제된 정보는 다시 복구할 수 없습니다.",
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
                   color: Colors.grey,
                   fontSize: ScreenUtil().setSp(14),
-                  letterSpacing: -0.35,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                 ),
               ),
-              SizedBox(height: ScreenUtil().setSp(180)),
+              Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "여행사진지도를 이용해주셔서 감사합니다.",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       color: app_font_grey,
                       fontSize: ScreenUtil().setSp(14),
-                      letterSpacing: -0.35,
+                      letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                     ),
                   ),
                 ],
               ),
-              Spacer(),
+              SizedBox(height: ScreenUtil().setSp(46)),
               // Mutation(
               //     options: MutationOptions(
               //         document: gql(Mutations.secession),
@@ -137,21 +143,20 @@ class SignOutScreen extends StatelessWidget {
                   signOutPopupFirst(context);
                 },
                 child: Container(
-                  width: ScreenUtil().setSp(336),
+                  width: ScreenUtil().screenWidth,
                   height: ScreenUtil().setSp(50),
                   decoration: BoxDecoration(
                     color: app_blue,
                     borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
                   ),
-                  child: Center(
-                    child: Text("회원탈퇴",
-                        style: TextStyle(
-                          fontSize: ScreenUtil().setSp(16),
-                          letterSpacing: -0.4,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ),
+                  alignment: Alignment.center,
+                  child: Text("회원탈퇴",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrBold",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                        color: Colors.white,
+                      )),
                 ),
               ),
               // }),

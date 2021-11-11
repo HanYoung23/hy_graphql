@@ -62,8 +62,8 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                       children: [
                         SizedBox(height: ScreenUtil().setSp(20)),
                         Container(
-                          width: ScreenUtil().setWidth(375),
-                          height: ScreenUtil().setHeight(44),
+                          width: ScreenUtil().screenWidth,
+                          height: ScreenUtil().setSp(44),
                           padding: EdgeInsets.symmetric(
                               horizontal: ScreenUtil().setSp(20)),
                           child: Row(
@@ -82,10 +82,11 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                               Text(
                                 "공지사항",
                                 style: TextStyle(
+                                    fontFamily: "NotoSansCJKkrBold",
                                     fontSize:
                                         ScreenUtil().setSp(appbar_title_size),
-                                    letterSpacing: -0.4,
-                                    fontWeight: appbar_title_weight),
+                                    letterSpacing:
+                                        ScreenUtil().setSp(letter_spacing)),
                               ),
                               Image.asset("assets/images/arrow_back.png",
                                   color: Colors.transparent,
@@ -108,23 +109,21 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                                   Text(
                                     noticeTitle,
                                     style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrBold",
                                         fontSize: ScreenUtil().setSp(16),
-                                        letterSpacing: -0.4),
+                                        letterSpacing:
+                                            ScreenUtil().setSp(letter_spacing)),
                                     overflow: TextOverflow.clip,
                                     maxLines: 2,
                                   ),
                                   SizedBox(height: ScreenUtil().setSp(6)),
-                                  date != null
-                                      ? Text(date,
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(14),
-                                              color: app_font_grey,
-                                              letterSpacing: -0.35))
-                                      : Text("null",
-                                          style: TextStyle(
-                                              fontSize: ScreenUtil().setSp(14),
-                                              color: app_font_grey,
-                                              letterSpacing: -0.35)),
+                                  Text(date,
+                                      style: TextStyle(
+                                          fontFamily: "NotoSansCJKkrRegular",
+                                          fontSize: ScreenUtil().setSp(14),
+                                          color: app_font_grey,
+                                          letterSpacing: ScreenUtil()
+                                              .setSp(letter_spacing_small))),
                                   SizedBox(height: ScreenUtil().setSp(4)),
                                 ],
                               ),
@@ -197,9 +196,7 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                                     alignment: Alignment.center,
                                     child: Container(
                                         width: ScreenUtil().setSp(48),
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: ScreenUtil().setSp(4),
-                                        ),
+                                        height: ScreenUtil().setSp(22),
                                         decoration: BoxDecoration(
                                           color: Colors.black.withOpacity(0.3),
                                           borderRadius: BorderRadius.circular(
@@ -209,6 +206,7 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                                           child: Text(
                                             "$currentIndex/${imageLink.length}",
                                             style: TextStyle(
+                                                fontFamily: "NotoSansCJKkrBold",
                                                 color: Colors.white,
                                                 fontSize:
                                                     ScreenUtil().setSp(12)),
@@ -224,8 +222,10 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
                               child: Text(
                                 noticeText,
                                 style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: -0.35,
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
                                 ),
                               ),
                             )

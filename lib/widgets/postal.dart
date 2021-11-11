@@ -49,7 +49,7 @@ class PostalWeb extends StatelessWidget {
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: letter_spacing,
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
                         ),
                       ),
                       Image.asset("assets/images/arrow_back.png",

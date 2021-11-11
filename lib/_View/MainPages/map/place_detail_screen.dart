@@ -150,7 +150,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       fontFamily: "NotoSansCJKkrBold",
                                       fontSize:
                                           ScreenUtil().setSp(appbar_title_size),
-                                      letterSpacing: letter_spacing,
+                                      letterSpacing:
+                                          ScreenUtil().setSp(letter_spacing),
                                     ),
                                   ),
                                   Expanded(
@@ -309,7 +310,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                       "NotoSansCJKkrBold",
                                                   fontSize:
                                                       ScreenUtil().setSp(14),
-                                                  letterSpacing: letter_spacing,
+                                                  letterSpacing: ScreenUtil()
+                                                      .setSp(letter_spacing),
                                                 ),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
@@ -375,7 +377,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                         style: TextStyle(
                                           fontFamily: "NotoSansCJKkrRegular",
                                           fontSize: ScreenUtil().setSp(12),
-                                          letterSpacing: letter_spacing_small,
+                                          letterSpacing: ScreenUtil()
+                                              .setSp(letter_spacing_small),
                                         ),
                                       )),
                                   SizedBox(height: ScreenUtil().setHeight(10)),
@@ -423,7 +426,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       style: TextStyle(
                                         fontFamily: "NotoSansCJKkrRegular",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: letter_spacing_small,
+                                        letterSpacing: ScreenUtil()
+                                            .setSp(letter_spacing_small),
                                       ),
                                       trimMode: TrimMode.Line,
                                       trimCollapsedText: '더보기',
@@ -431,7 +435,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                       moreStyle: TextStyle(
                                         fontFamily: "NotoSansCJKkrRegular",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: letter_spacing_small,
+                                        letterSpacing: ScreenUtil()
+                                            .setSp(letter_spacing_small),
                                         color: app_font_grey,
                                       )),
                                   SizedBox(height: ScreenUtil().setSp(10)),
@@ -560,7 +565,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               "댓글  ${comentsCount + comentsNum}",
               style: TextStyle(
                   fontFamily: "NotoSansCJKkrRegular",
-                  letterSpacing: letter_spacing_x_small,
+                  letterSpacing: ScreenUtil().setSp(letter_spacing_x_small),
                   fontSize: ScreenUtil().setSp(12)),
             )
           ],
@@ -635,7 +640,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                     "북마크  ${bookmarksCount + bookmarksNum}",
                     style: TextStyle(
                         fontFamily: "NotoSansCJKkrRegular",
-                        letterSpacing: letter_spacing_x_small,
+                        letterSpacing:
+                            ScreenUtil().setSp(letter_spacing_x_small),
                         fontSize: ScreenUtil().setSp(12)),
                   )
                 ],
@@ -711,7 +717,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                     "좋아요  ${likesCount + likesNum}",
                     style: TextStyle(
                         fontFamily: "NotoSansCJKkrRegular",
-                        letterSpacing: letter_spacing_x_small,
+                        letterSpacing:
+                            ScreenUtil().setSp(letter_spacing_x_small),
                         fontSize: ScreenUtil().setSp(12)),
                   )
                 ],
@@ -731,7 +738,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
               child: Text(title,
                   style: TextStyle(
                       fontFamily: "NotoSansCJKkrRegular",
-                      letterSpacing: letter_spacing_x_small,
+                      letterSpacing: ScreenUtil().setSp(letter_spacing_x_small),
                       fontSize: ScreenUtil().setSp(12)))),
         ),
         Expanded(
