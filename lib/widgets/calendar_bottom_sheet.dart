@@ -346,11 +346,12 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
           child: Text(
             title,
             style: TextStyle(
+              fontFamily: "NotoSansCJKkrRegular",
               color: selectedDate == selectedDateRange
                   ? Colors.white
                   : Colors.black,
               fontSize: ScreenUtil().setSp(12),
-              letterSpacing: -0.3,
+              letterSpacing: ScreenUtil().setSp(letter_spacing_x_small),
             ),
           ),
         ),

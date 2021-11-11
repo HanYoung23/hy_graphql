@@ -9,12 +9,15 @@ class ChanneltalkBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: ScreenUtil().screenHeight * 0.9,
+        height: ScreenUtil().screenHeight * 0.9 -
+            MediaQuery.of(context).padding.top -
+            MediaQuery.of(context).padding.bottom,
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: ClipRRect(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                topLeft: Radius.circular(ScreenUtil().setSp(20)),
+                topRight: Radius.circular(ScreenUtil().setSp(20))),
             child: WebView(
               initialUrl: 'https://letsgotrip.channel.io',
               javascriptMode: JavascriptMode.unrestricted,

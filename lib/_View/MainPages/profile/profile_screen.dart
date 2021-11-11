@@ -72,6 +72,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     seeValue("customerId").then((value) {
       setState(() {
@@ -119,20 +124,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: InkWell(
-                                          onTap: () {
-                                            scaffoldKey.currentState
-                                                .openDrawer();
-                                          },
-                                          child: Image.asset(
-                                              "assets/images/hamburger_button.png",
-                                              width: ScreenUtil().setSp(28),
-                                              height: ScreenUtil().setSp(28))),
-                                    ),
-                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        scaffoldKey.currentState.openDrawer();
+                                      },
+                                      child: Image.asset(
+                                          "assets/images/hamburger_button.png",
+                                          width: ScreenUtil().setSp(28),
+                                          height: ScreenUtil().setSp(28))),
                                   Text(
                                     "마이페이지",
                                     style: TextStyle(
@@ -142,13 +141,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         letterSpacing:
                                             ScreenUtil().setSp(letter_spacing)),
                                   ),
-                                  Expanded(
-                                    child: Image.asset(
-                                      "assets/images/hamburger_button.png",
-                                      width: ScreenUtil().setSp(28),
-                                      height: ScreenUtil().setSp(28),
-                                      color: Colors.transparent,
-                                    ),
+                                  Image.asset(
+                                    "assets/images/hamburger_button.png",
+                                    width: ScreenUtil().setSp(28),
+                                    height: ScreenUtil().setSp(28),
+                                    color: Colors.transparent,
                                   ),
                                 ],
                               ),
