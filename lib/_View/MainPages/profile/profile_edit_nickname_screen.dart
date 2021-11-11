@@ -102,7 +102,7 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                 ),
                 resizeToAvoidBottomInset: false,
                 body: Container(
-                  margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+                  padding: EdgeInsets.all(ScreenUtil().setSp(20)),
                   child: Column(
                     children: [
                       Container(
@@ -127,10 +127,12 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                               child: Text(
                                 "프로필 별명",
                                 style: TextStyle(
-                                    fontSize:
-                                        ScreenUtil().setSp(appbar_title_size),
-                                    letterSpacing: -0.4,
-                                    fontWeight: FontWeight.bold),
+                                  fontFamily: "NotoSansCJKkrBold",
+                                  fontSize:
+                                      ScreenUtil().setSp(appbar_title_size),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing),
+                                ),
                               ),
                             ),
                             InkWell(
@@ -145,29 +147,31 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                 child: Text(
                                   "완료",
                                   style: TextStyle(
-                                      fontSize:
-                                          ScreenUtil().setSp(appbar_title_size),
-                                      letterSpacing: -0.4,
-                                      color: inputMessage == "사용 가능한 별명입니다 :)"
-                                          ? Colors.black
-                                          : app_font_grey,
-                                      fontWeight: FontWeight.bold),
+                                    fontFamily: "NotoSansCJKkrBold",
+                                    fontSize:
+                                        ScreenUtil().setSp(appbar_title_size),
+                                    letterSpacing:
+                                        ScreenUtil().setSp(letter_spacing),
+                                    color: inputMessage == "사용 가능한 별명입니다 :)"
+                                        ? Colors.black
+                                        : app_font_grey,
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: ScreenUtil().setHeight(30)),
+                      SizedBox(height: ScreenUtil().setSp(30)),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Image.asset(
                                 "assets/images/profileSettings/profile_nickname.png",
-                                width: ScreenUtil().setWidth(66),
-                                height: ScreenUtil().setHeight(20))
+                                width: ScreenUtil().setSp(66),
+                                height: ScreenUtil().setSp(20))
                           ]),
-                      SizedBox(height: ScreenUtil().setHeight(5)),
+                      SizedBox(height: ScreenUtil().setSp(5)),
                       Container(
                           alignment: Alignment.bottomLeft,
                           child: TextFormField(
@@ -233,8 +237,10 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                               ),
                               hintText: '별명을 입력해주세요',
                               hintStyle: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   color: Color.fromRGBO(188, 192, 193, 1),
-                                  letterSpacing: -0.35,
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
                                   fontSize: ScreenUtil().setSp(14)),
                               suffixIcon: InkWell(
                                 onTap: () {
@@ -253,11 +259,11 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                   }
                                 },
                                 child: Container(
-                                  width: ScreenUtil().setWidth(56),
-                                  height: ScreenUtil().setHeight(34),
+                                  width: ScreenUtil().setSp(56),
+                                  height: ScreenUtil().setSp(34),
                                   margin: EdgeInsets.symmetric(
-                                      vertical: ScreenUtil().setHeight(5),
-                                      horizontal: ScreenUtil().setWidth(8)),
+                                      vertical: ScreenUtil().setSp(5),
+                                      horizontal: ScreenUtil().setSp(8)),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                         ScreenUtil().setSp(5)),
@@ -269,40 +275,49 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                       child: Text(
                                     "적용",
                                     style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrBold",
                                         fontSize: ScreenUtil().setSp(14),
-                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: ScreenUtil()
+                                            .setSp(letter_spacing_small),
                                         color: Colors.white),
                                   )),
                                 ),
                               ),
                             ),
                           )),
-                      SizedBox(height: ScreenUtil().setHeight(5)),
+                      SizedBox(height: ScreenUtil().setSp(5)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(width: ScreenUtil().setWidth(10)),
+                          SizedBox(width: ScreenUtil().setSp(10)),
                           Text(
                             "$inputMessage",
                             style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(14),
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: inputMessage != ""
                                     ? currentColor
                                     : Colors.transparent),
                           ),
                         ],
                       ),
-                      SizedBox(height: ScreenUtil().setHeight(15)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: ScreenUtil().setSp(10)),
-                          Image.asset(
-                            "assets/images/profileSettings/content.png",
-                            width: ScreenUtil().setSp(284),
-                            height: ScreenUtil().setSp(40),
+                      SizedBox(height: ScreenUtil().setSp(15)),
+                      Container(
+                        padding: EdgeInsets.only(left: ScreenUtil().setSp(10)),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "한글 2~12자, 영문 대소문자, 숫자 2~20자에 한하여\n사용 가능합니다(혼용가능)",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
+                            fontSize: ScreenUtil().setSp(14),
+                            color: app_font_grey,
                           ),
-                        ],
+                          overflow: TextOverflow.fade,
+                        ),
                       ),
                       Spacer(),
                     ],

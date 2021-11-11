@@ -80,7 +80,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             child: Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+                              padding: EdgeInsets.all(ScreenUtil().setSp(20)),
                               child: Column(children: [
                                 Container(
                                   width: ScreenUtil().screenWidth,
@@ -106,10 +106,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       Text(
                                         "프로필 수정",
                                         style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrBold",
                                             fontSize: ScreenUtil()
                                                 .setSp(appbar_title_size),
-                                            letterSpacing: -0.4,
-                                            fontWeight: FontWeight.bold),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing)),
                                       ),
                                       Mutation(
                                           options: MutationOptions(
@@ -209,12 +210,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                 child: Text(
                                                   "완료",
                                                   style: TextStyle(
-                                                      fontSize: ScreenUtil()
-                                                          .setSp(
-                                                              appbar_title_size),
-                                                      letterSpacing: -0.4,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    fontFamily:
+                                                        "NotoSansCJKkrBold",
+                                                    fontSize: ScreenUtil()
+                                                        .setSp(
+                                                            appbar_title_size),
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(letter_spacing),
+                                                  ),
                                                 ),
                                               ),
                                             );
@@ -307,12 +310,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                             .setSp(101),
                                                         fit: BoxFit.cover,
                                                       )),
-                                        SizedBox(
-                                            height: ScreenUtil().setHeight(3)),
-                                        Image.asset(
-                                            "assets/images/profileSettings/change_button.png",
-                                            width: ScreenUtil().setWidth(44),
-                                            height: ScreenUtil().setHeight(18)),
+                                        SizedBox(height: ScreenUtil().setSp(3)),
+                                        Text(
+                                          "변경하기",
+                                          style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrRegular",
+                                            fontSize: ScreenUtil().setSp(12),
+                                            color: app_font_grey,
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing_x_small),
+                                          ),
+                                        )
                                       ],
                                     )),
                               ]),
@@ -343,9 +351,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       Text(
                                         "프로필 별명",
                                         style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrBold",
                                             fontSize: ScreenUtil().setSp(16),
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: -0.4),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing)),
                                       ),
                                       SizedBox(height: ScreenUtil().setSp(10)),
                                       Text(
@@ -353,9 +362,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                             ? nickname
                                             : newNickname,
                                         style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrRegular",
                                             fontSize: ScreenUtil().setSp(16),
                                             color: app_font_grey,
-                                            letterSpacing: -0.4),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing)),
                                       ),
                                       SizedBox(height: ScreenUtil().setSp(10)),
                                       Container(
@@ -385,9 +396,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       Text(
                                         "프로필 소개",
                                         style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrBold",
                                             fontSize: ScreenUtil().setSp(16),
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: -0.4),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing)),
                                       ),
                                       SizedBox(height: ScreenUtil().setSp(10)),
                                       Text(
@@ -395,9 +407,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                             ? profileText
                                             : newIntroduction,
                                         style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrRegular",
                                             fontSize: ScreenUtil().setSp(16),
                                             color: app_font_grey,
-                                            letterSpacing: -0.4),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing)),
                                       ),
                                       SizedBox(height: ScreenUtil().setSp(10)),
                                       Container(

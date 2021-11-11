@@ -97,9 +97,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 brightness: Brightness.dark,
               ),
               body: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
                 child: Container(
                   width: ScreenUtil().screenWidth,
-                  height: ScreenUtil().screenHeight,
+                  height: ScreenUtil().screenHeight -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom,
                   child: Column(
                     children: [
                       SizedBox(height: ScreenUtil().setSp(20)),
@@ -133,9 +136,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Text(
                                     "마이페이지",
                                     style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrBold",
                                         fontSize: ScreenUtil()
                                             .setSp(appbar_title_size),
-                                        fontWeight: FontWeight.bold),
+                                        letterSpacing:
+                                            ScreenUtil().setSp(letter_spacing)),
                                   ),
                                   Expanded(
                                     child: Image.asset(
@@ -154,9 +159,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Text(
                               "개인활동",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing)),
                             ),
                             SizedBox(height: ScreenUtil().setSp(10)),
                             mypageCountQuery(),
@@ -325,13 +331,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(height: ScreenUtil().setSp(10)),
                           Text(commentsText,
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: -0.35)),
+                                  letterSpacing: ScreenUtil()
+                                      .setSp(letter_spacing_small))),
                           SizedBox(height: ScreenUtil().setSp(6)),
                           Text(mainText,
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: -0.35,
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
                                   color: app_font_grey),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2),
@@ -410,7 +420,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             int comentsCount = resultData["coments_count"];
 
             return Container(
-              height: ScreenUtil().setSp(46),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -426,13 +435,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text("내가 쓴 글",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: -0.35)),
+                                  letterSpacing: ScreenUtil()
+                                      .setSp(letter_spacing_small))),
                           Text("$contentsCount",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4)),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing))),
+                          SizedBox(height: ScreenUtil().setSp(4)),
                           Container(
                               color: currentTap == 1
                                   ? Colors.black
@@ -455,13 +468,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text("남긴 댓글",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: -0.35)),
+                                  letterSpacing: ScreenUtil()
+                                      .setSp(letter_spacing_small))),
                           Text("$comentsCount",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4)),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing))),
+                          SizedBox(height: ScreenUtil().setSp(4)),
                           Container(
                               color: currentTap == 2
                                   ? Colors.black
@@ -484,13 +501,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text("보관함",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
                                   fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: -0.35)),
+                                  letterSpacing: ScreenUtil()
+                                      .setSp(letter_spacing_small))),
                           Text("$bookmarksCount",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4)),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing))),
+                          SizedBox(height: ScreenUtil().setSp(4)),
                           Container(
                               color: currentTap == 3
                                   ? Colors.black
@@ -557,9 +578,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text(nickname,
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(16),
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.4),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing)),
                               overflow: TextOverflow.fade,
                               maxLines: 1),
                           SizedBox(height: ScreenUtil().setSp(5)),
@@ -571,10 +593,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                             child: Text("프로필 편집",
                                 style: TextStyle(
+                                    fontFamily: "NotoSansCJKkrRegular",
                                     fontSize: ScreenUtil().setSp(14),
-                                    // fontWeight: FontWeight.bold,
                                     color: app_font_grey,
-                                    letterSpacing: -0.35)),
+                                    letterSpacing: ScreenUtil()
+                                        .setSp(letter_spacing_small))),
                           ),
                         ],
                       )
@@ -589,16 +612,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         trimLines: 2,
                         colorClickableText: app_font_grey,
                         style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: -0.35,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                           color: Colors.black,
                         ),
                         trimMode: TrimMode.Line,
                         trimCollapsedText: '더보기',
                         trimExpandedText: '접기',
                         moreStyle: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
-                          letterSpacing: -0.35,
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
                           color: app_font_grey,
                         ))
                     : Container()

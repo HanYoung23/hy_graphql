@@ -57,7 +57,7 @@ class _ProfileEditIntroductionScreenState
         ),
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+            padding: EdgeInsets.all(ScreenUtil().setSp(20)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -83,9 +83,9 @@ class _ProfileEditIntroductionScreenState
                       Text(
                         "소개",
                         style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
                             fontSize: ScreenUtil().setSp(appbar_title_size),
-                            letterSpacing: -0.4,
-                            fontWeight: FontWeight.bold),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing)),
                       ),
                       Expanded(
                         child: InkWell(
@@ -98,10 +98,11 @@ class _ProfileEditIntroductionScreenState
                             child: Text(
                               "완료",
                               style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
                                   fontSize:
                                       ScreenUtil().setSp(appbar_title_size),
-                                  letterSpacing: -0.4,
-                                  fontWeight: FontWeight.bold),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing)),
                             ),
                           ),
                         ),
@@ -117,8 +118,9 @@ class _ProfileEditIntroductionScreenState
                   child: Text(
                     "${150 - textLength}",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(18),
-                      letterSpacing: -0.45,
+                      letterSpacing: ScreenUtil().setSp(-0.45),
                     ),
                   ),
                 ),
@@ -132,11 +134,17 @@ class _ProfileEditIntroductionScreenState
                     },
                     maxLength: 150,
                     style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14), color: Colors.black),
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(14),
+                        letterSpacing:
+                            ScreenUtil().setSp(letter_spacing_small)),
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "프로필을 소개해보세요",
                         hintStyle: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             color: app_font_grey,
                             fontSize: ScreenUtil().setSp(14)),
                         counterText: ""))
