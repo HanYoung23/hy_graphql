@@ -43,11 +43,11 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             child: Text(
               "신고하시는 이유를 알려주세요",
               style: TextStyle(
+                fontFamily: "NotoSansCJKkrBold",
                 fontSize: ScreenUtil().setSp(16),
-                letterSpacing: -0.4,
-                fontWeight: FontWeight.bold,
+                letterSpacing: ScreenUtil().setSp(-0.4),
               ),
-              overflow: TextOverflow.clip,
+              overflow: TextOverflow.fade,
             ),
           ),
           Spacer(),
@@ -96,6 +96,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
                       child: Text(
                         "신고하기",
                         style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
                           fontSize: ScreenUtil().setSp(14),
                           color: Colors.white,
                           letterSpacing:
@@ -123,6 +124,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
                 child: Text(
                   "취소",
                   style: TextStyle(
+                    fontFamily: "NotoSansCJKkrRegular",
                     fontSize: ScreenUtil().setSp(14),
                     color: Color(0xff191919),
                     letterSpacing: ScreenUtil().setSp(letter_spacing_small),
@@ -153,6 +155,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             SizedBox(width: ScreenUtil().setSp(12)),
             Text(title,
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
                   fontSize: ScreenUtil().setSp(14),
                   letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
@@ -179,6 +182,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             SizedBox(width: ScreenUtil().setSp(12)),
             Text(title,
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
                   fontSize: ScreenUtil().setSp(14),
                   letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
@@ -205,6 +209,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             SizedBox(width: ScreenUtil().setSp(12)),
             Text(title,
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
                   fontSize: ScreenUtil().setSp(14),
                   letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
@@ -231,6 +236,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             SizedBox(width: ScreenUtil().setSp(12)),
             Text(title,
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
                   fontSize: ScreenUtil().setSp(14),
                   letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),
@@ -257,6 +263,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
             SizedBox(width: ScreenUtil().setSp(12)),
             Text(title,
                 style: TextStyle(
+                  fontFamily: "NotoSansCJKkrRegular",
                   fontSize: ScreenUtil().setSp(14),
                   letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   color: Color(0xff191919),

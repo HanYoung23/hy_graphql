@@ -2,7 +2,6 @@ import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/storage/storage.dart';
 

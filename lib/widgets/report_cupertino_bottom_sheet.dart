@@ -20,8 +20,9 @@ class ReportCupertinoBottomSheet extends StatelessWidget {
             child: Text(
               "신고하기",
               style: TextStyle(
+                fontFamily: "NotoSansCJKkrRegular",
                 fontSize: ScreenUtil().setSp(20),
-                letterSpacing: -0.48,
+                letterSpacing: ScreenUtil().setSp(-0.48),
                 color: app_red_cupertino,
               ),
             ),
@@ -35,8 +36,9 @@ class ReportCupertinoBottomSheet extends StatelessWidget {
           child: Text(
             "취소",
             style: TextStyle(
+              fontFamily: "NotoSansCJKkrRegular",
               fontSize: ScreenUtil().setSp(20),
-              letterSpacing: -0.48,
+              letterSpacing: ScreenUtil().setSp(-0.48),
               color: app_blue_cupertino_cancel,
             ),
           ),

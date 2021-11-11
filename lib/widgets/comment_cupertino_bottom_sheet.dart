@@ -26,7 +26,7 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
           document: gql(Mutations.changeComent),
           update: (GraphQLDataProxy proxy, QueryResult result) {},
           onCompleted: (dynamic resultData) async {
-            print("🚨 change comment result : $resultData");
+            // print("🚨 change comment result : $resultData");
             if (resultData["change_coment"]["result"]) {
               refetchCallback();
               Get.back();
@@ -40,8 +40,9 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                   child: Text(
                     "댓글 수정하기",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(20),
-                      letterSpacing: -0.48,
+                      letterSpacing: ScreenUtil().setSp(-0.48),
                       color: app_blue_cupertino,
                     ),
                   ),
@@ -54,8 +55,9 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                   child: Text(
                     "삭제하기",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(20),
-                      letterSpacing: -0.48,
+                      letterSpacing: ScreenUtil().setSp(-0.48),
                       color: app_red_cupertino,
                     ),
                   ),
@@ -73,8 +75,9 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                 child: Text(
                   "취소",
                   style: TextStyle(
+                    fontFamily: "NotoSansCJKkrRegular",
                     fontSize: ScreenUtil().setSp(20),
-                    letterSpacing: -0.48,
+                    letterSpacing: ScreenUtil().setSp(-0.48),
                     color: app_blue_cupertino_cancel,
                   ),
                 ),

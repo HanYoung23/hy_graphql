@@ -40,8 +40,9 @@ class PostCupertinoBottomSheet extends StatelessWidget {
                   child: Text(
                     "게시물 수정",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(20),
-                      letterSpacing: -0.48,
+                      letterSpacing: ScreenUtil().setSp(-0.48),
                       color: app_blue_cupertino,
                     ),
                   ),
@@ -57,8 +58,9 @@ class PostCupertinoBottomSheet extends StatelessWidget {
                   child: Text(
                     "삭제하기",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(20),
-                      letterSpacing: -0.48,
+                      letterSpacing: ScreenUtil().setSp(-0.48),
                       color: app_red_cupertino,
                     ),
                   ),
@@ -76,8 +78,9 @@ class PostCupertinoBottomSheet extends StatelessWidget {
                 child: Text(
                   "취소",
                   style: TextStyle(
+                    fontFamily: "NotoSansCJKkrRegular",
                     fontSize: ScreenUtil().setSp(20),
-                    letterSpacing: -0.48,
+                    letterSpacing: ScreenUtil().setSp(-0.48),
                     color: app_blue_cupertino_cancel,
                   ),
                 ),

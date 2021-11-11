@@ -57,8 +57,9 @@ savePostPopup(BuildContext context, Function saveDataCallback) {
                     child: Text(
                       "임시저장 하시겠습니까?\n다음 게시물 작성 시 불러올 수 있습니다.",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -74,9 +75,9 @@ savePostPopup(BuildContext context, Function saveDataCallback) {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                           )),
@@ -91,9 +92,9 @@ savePostPopup(BuildContext context, Function saveDataCallback) {
                           child: Text(
                             "확인",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],
@@ -128,9 +129,10 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                   Text(
                     "이전에 임시저장했던 게시물이 있습니다.\n이어서 작성하시겠습니까?",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(16),
-                      letterSpacing: -0.4,
-                      height: 1.4,
+                      letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      height: ScreenUtil().setSp(1.4),
                     ),
                     overflow: TextOverflow.clip,
                   ),
@@ -138,10 +140,11 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                   Text(
                     "새롭게 작성하게 되면 임시저장된 게시물은\n초기화됩니다.",
                     style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(16),
-                      letterSpacing: -0.4,
+                      letterSpacing: ScreenUtil().setSp(letter_spacing),
                       color: app_font_grey,
-                      height: 1.4,
+                      height: ScreenUtil().setSp(1.4),
                     ),
                     overflow: TextOverflow.clip,
                   ),
@@ -163,8 +166,10 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                         child: Text(
                           "네, 이어서 작성할게요.",
                           style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
                             fontSize: ScreenUtil().setSp(14),
-                            letterSpacing: -0.35,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             color: Colors.white,
                           ),
                         ),
@@ -179,6 +184,7 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                             content: Text(
                               '이전 게시물을 초기화합니다.',
                               style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(14),
                                 letterSpacing:
                                     ScreenUtil().setSp(letter_spacing_small),
@@ -216,8 +222,10 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                         child: Text(
                           "아니요, 새롭게 작성할게요.",
                           style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
                             fontSize: ScreenUtil().setSp(14),
-                            letterSpacing: -0.35,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                           ),
                         ),
                       ),
@@ -258,8 +266,9 @@ logOutPopup(BuildContext context) {
                     child: Text(
                       "로그아웃 하시겠습니까?",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -275,9 +284,9 @@ logOutPopup(BuildContext context) {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                           )),
@@ -304,9 +313,9 @@ logOutPopup(BuildContext context) {
                           child: Text(
                             "로그아웃",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],
@@ -345,8 +354,9 @@ signOutPopupFirst(BuildContext context) {
                     child: Text(
                       "버튼을 누르시면 정상적으로 진행됩니다.\n탈퇴하시겠습니까?",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -362,9 +372,9 @@ signOutPopupFirst(BuildContext context) {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                           )),
@@ -394,9 +404,10 @@ signOutPopupFirst(BuildContext context) {
                                 child: Text(
                                   "탈퇴하기",
                                   style: TextStyle(
+                                    fontFamily: "NotoSansCJKkrBold",
                                     fontSize: ScreenUtil().setSp(16),
-                                    letterSpacing: -0.4,
-                                    fontWeight: FontWeight.bold,
+                                    letterSpacing:
+                                        ScreenUtil().setSp(letter_spacing),
                                   ),
                                 ));
                           })
@@ -436,8 +447,9 @@ signOutPopupSecond(BuildContext context) {
                     child: Text(
                       "탈퇴되었습니다.\n로그인 화면으로 돌아갑니다.",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -453,9 +465,9 @@ signOutPopupSecond(BuildContext context) {
                           child: Text(
                             "확인",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],
@@ -494,8 +506,9 @@ permissionPopup(BuildContext context, String content) {
                     child: Text(
                       content,
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -511,9 +524,9 @@ permissionPopup(BuildContext context, String content) {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                           )),
@@ -528,9 +541,9 @@ permissionPopup(BuildContext context, String content) {
                           child: Text(
                             "확인",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],
@@ -569,8 +582,9 @@ deleteCommentPopup(BuildContext context, Function runMutationCallback) {
                     child: Text(
                       "등록하신 댓글이 삭제됩니다.\n삭제 하시겠습니까?",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -586,9 +600,9 @@ deleteCommentPopup(BuildContext context, Function runMutationCallback) {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                           )),
@@ -603,9 +617,9 @@ deleteCommentPopup(BuildContext context, Function runMutationCallback) {
                           child: Text(
                             "확인",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],
@@ -644,8 +658,9 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
                     child: Text(
                       "등록하신 게시물이 삭제됩니다.\n삭제 하시겠습니까?",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -661,9 +676,9 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
                           child: Text(
                             "취소",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                               color: app_font_grey,
                             ),
                           )),
@@ -678,9 +693,9 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
                           child: Text(
                             "확인",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],
@@ -733,8 +748,9 @@ reportPostDonePopup(BuildContext context) {
                     child: Text(
                       "신고가 정상적으로 접수되었습니다.\n확인후 신속하게 처리하겠습니다.",
                       style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: -0.4,
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
                       ),
                       overflow: TextOverflow.clip,
                     ),
@@ -750,9 +766,9 @@ reportPostDonePopup(BuildContext context) {
                           child: Text(
                             "확인",
                             style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),
-                              letterSpacing: -0.4,
-                              fontWeight: FontWeight.bold,
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
                             ),
                           )),
                     ],

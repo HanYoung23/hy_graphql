@@ -29,7 +29,8 @@ class MapHelper {
     Paint paint = Paint();
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble());
+    final rect =
+        Rect.fromLTWH(0, 0, ScreenUtil().setSp(120), ScreenUtil().setSp(120));
     canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
     final Uint8List imageUint8List = await imageFile.readAsBytes();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
@@ -37,7 +38,8 @@ class MapHelper {
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
         canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
+        rect: Rect.fromLTWH(
+            0, 0, ScreenUtil().setSp(120), ScreenUtil().setSp(120)),
         image: imageFI.image,
         alignment: Alignment.center);
 
@@ -117,8 +119,8 @@ class MapHelper {
     int whitePadding = ScreenUtil().setSp(8).toInt();
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(
-        0, ScreenUtil().setSp(80), size.toDouble(), size.toDouble());
+    final rect = Rect.fromLTWH(0, ScreenUtil().setSp(80),
+        ScreenUtil().setSp(120), ScreenUtil().setSp(120));
     canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
 
     final Uint8List imageUint8List = await markerImageFile.readAsBytes();
@@ -129,8 +131,8 @@ class MapHelper {
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
       canvas: canvas,
-      rect: Rect.fromLTWH(
-          0, ScreenUtil().setSp(80), size.toDouble(), size.toDouble()),
+      rect: Rect.fromLTWH(0, ScreenUtil().setSp(80), ScreenUtil().setSp(120),
+          ScreenUtil().setSp(120)),
       image: imageFI.image,
       alignment: Alignment.center,
     );
