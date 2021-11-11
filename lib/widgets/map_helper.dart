@@ -31,7 +31,9 @@ class MapHelper {
 
     final rect =
         Rect.fromLTWH(0, 0, ScreenUtil().setSp(120), ScreenUtil().setSp(120));
-    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, Radius.circular(ScreenUtil().setSp(10))),
+        paint);
     final Uint8List imageUint8List = await imageFile.readAsBytes();
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
         targetWidth: size - whitePadding, targetHeight: size - whitePadding);
@@ -58,9 +60,9 @@ class MapHelper {
       minZoom: minZoom,
       maxZoom: maxZoom,
       // radius: 150,
-      radius: 250,
-      extent: 2048,
-      nodeSize: 64,
+      radius: ScreenUtil().setSp(250).toInt(),
+      extent: ScreenUtil().setSp(2048).toInt(),
+      nodeSize: ScreenUtil().setSp(64).toInt(),
       points: markers,
       createCluster: (
         BaseCluster cluster,
@@ -121,7 +123,9 @@ class MapHelper {
 
     final rect = Rect.fromLTWH(0, ScreenUtil().setSp(80),
         ScreenUtil().setSp(120), ScreenUtil().setSp(120));
-    canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(10)), paint);
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, Radius.circular(ScreenUtil().setSp(10))),
+        paint);
 
     final Uint8List imageUint8List = await markerImageFile.readAsBytes();
 
@@ -158,7 +162,7 @@ class MapHelper {
         RRect.fromRectAndRadius(
             Rect.fromLTWH(offsetX, blueBoxHeight - whitePadding, blueBoxWidth,
                 blueBoxHeight),
-            Radius.circular(50)),
+            Radius.circular(ScreenUtil().setSp(50))),
         paint);
 
     double textSize = ScreenUtil().setSp(34);
@@ -179,7 +183,7 @@ class MapHelper {
       // Offset(radius - textPainter.width / 2 + textSize * 2 + whitePadding,
       //     radius - textPainter.height / 2 + textSize + whitePadding),
       Offset(offsetX + blueBoxWidth / 2 - textPainter.width / 2,
-          blueBoxHeight + textSize / 4 - whitePadding / 2),
+          blueBoxHeight - whitePadding + textPainter.height / 4),
     );
 
     final image = await pictureRecorder.endRecording().toImage(

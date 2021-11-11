@@ -88,7 +88,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Obx(() => Query(
         options: QueryOptions(
-          document: gql(Queries.photoListMap),
+          document: gql(Queries.photoListMapWhole),
           variables: {
             "latitude1": "-87.71179927260242",
             "latitude2": "89.45016124669523",
@@ -97,7 +97,6 @@ class _MapScreenState extends State<MapScreen> {
             "category_id": fliterValue.category.value,
             "date1": fliterValue.dateStart.value,
             "date2": fliterValue.dateEnd.value,
-            "page": 1
           },
         ),
         builder: (result, {refetch, fetchMore}) {

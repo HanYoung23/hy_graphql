@@ -46,6 +46,29 @@ class Queries {
     }
 """;
 
+  static final String photoListMapWhole = """
+    query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!) {
+      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2)
+      {
+          contents_id
+          category_id
+          contents_title
+          location_link
+          image_link
+          main_text
+          tags
+          customer_id
+          star_rating1
+          star_rating2
+          star_rating3
+          star_rating4
+          latitude
+          longitude
+          regist_date
+        }
+    }
+""";
+
   static final String promotionsList = """
     query promotions_list(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!) {
       promotions_list(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2)

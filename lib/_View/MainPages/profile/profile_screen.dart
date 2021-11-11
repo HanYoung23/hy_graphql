@@ -23,50 +23,64 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
   int customerId;
   int currentTap = 1;
   List postPages = [1];
   List commentPages = [1];
   List bookmarkPages = [1];
+  bool isRefreshing = false;
+
+  refresh() {
+    setState(() {
+      isRefreshing = true;
+    });
+    Future.delayed(Duration(seconds: 1), () {
+      int tap = currentTap;
+      setState(() {
+        isRefreshing = false;
+      });
+    });
+  }
 
   bool onPostNotification(ScrollEndNotification t) {
-    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+    if (t.metrics.pixels > 0 && t.metrics.atEdge && this.mounted) {
       List newPages = postPages;
       int lastPage = newPages.length;
       newPages.add(lastPage + 1);
       setState(() {
         postPages = newPages;
       });
-    } else {
-      // print('I am at the start');
+    } else if (t.metrics.pixels == 0 && t.metrics.atEdge && this.mounted) {
+      refresh();
     }
     return true;
   }
 
   bool onCommentNotification(ScrollEndNotification t) {
-    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+    if (t.metrics.pixels > 0 && t.metrics.atEdge && this.mounted) {
       List newPages = commentPages;
       int lastPage = newPages.length;
       newPages.add(lastPage + 1);
       setState(() {
         commentPages = newPages;
       });
-    } else {
-      // print('I am at the start');
+    } else if (t.metrics.pixels == 0 && t.metrics.atEdge && this.mounted) {
+      refresh();
     }
     return true;
   }
 
   bool onBookmarkNotification(ScrollEndNotification t) {
-    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+    if (t.metrics.pixels > 0 && t.metrics.atEdge && this.mounted) {
       List newPages = bookmarkPages;
       int lastPage = newPages.length;
       newPages.add(lastPage + 1);
       setState(() {
         bookmarkPages = newPages;
       });
-    } else {
-      // print('I am at the start');
+    } else if (t.metrics.pixels == 0 && t.metrics.atEdge && this.mounted) {
+      refresh();
     }
     return true;
   }
@@ -172,6 +186,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: ScreenUtil().screenWidth,
                         height: ScreenUtil().setSp(10),
                       ),
+                      isRefreshing
+                          ? Container(
+                              width: ScreenUtil().screenWidth,
+                              height: ScreenUtil().setSp(42),
+                              child: Center(
+                                child: CupertinoActivityIndicator(),
+                              ))
+                          : Container(),
                       currentTap == 1
                           ? Flexible(
                               child: NotificationListener(

@@ -94,7 +94,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                       child: Text(
                         "적용",
                         style: TextStyle(
-                            color: (isWhole || leftDate == "")
+                            color: (!isWhole && leftDate == "")
                                 ? app_font_grey
                                 : Colors.black,
                             fontFamily: "NotoSansCJKkrBold",

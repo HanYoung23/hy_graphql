@@ -73,141 +73,143 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Query(
-        options: QueryOptions(
-          document: gql(Queries.comentsList),
-          variables: {
-            "contents_id": widget.contentsId,
-            "sequence": isLeft ? 1 : 2,
-            "page": 1
-          },
-        ),
-        builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading && result.data != null) {
-            // print("🚨 comments : ${result.data["coments_list"][0]}");
+    return Container(
+        width: ScreenUtil().screenWidth,
+        height: ScreenUtil().screenHeight * 0.9,
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Query(
+            options: QueryOptions(
+              document: gql(Queries.comentsList),
+              variables: {
+                "contents_id": widget.contentsId,
+                "sequence": isLeft ? 1 : 2,
+                "page": 1
+              },
+            ),
+            builder: (result, {refetch, fetchMore}) {
+              if (!result.isLoading && result.data != null) {
+                // print("🚨 comments : ${result.data["coments_list"][0]}");
 
-            List comentsList = result.data["coments_list"];
-
-            return Container(
-              width: ScreenUtil().screenWidth,
-              height: ScreenUtil().screenHeight * 0.9,
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              child: Column(
-                children: [
-                  SizedBox(height: ScreenUtil().setSp(30)),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setSp(20)),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text("댓글 ${comentsList.length}",
-                                style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(16),
-                                    letterSpacing: -0.4,
-                                    fontWeight: FontWeight.bold)),
-                            Spacer(),
-                            InkWell(
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: Text("닫기",
+                List comentsList = result.data["coments_list"];
+                return Column(
+                  children: [
+                    SizedBox(height: ScreenUtil().setSp(30)),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setSp(20)),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text("댓글 ${comentsList.length}",
                                   style: TextStyle(
                                       fontSize: ScreenUtil().setSp(16),
                                       letterSpacing: -0.4,
                                       fontWeight: FontWeight.bold)),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: ScreenUtil().setSp(10)),
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isLeft = true;
-                                });
-                                refetch();
-                              },
-                              child: Text("등록순",
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(14),
-                                      letterSpacing: -0.35,
-                                      color:
-                                          isLeft ? Colors.black : app_font_grey,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            SizedBox(width: ScreenUtil().setSp(10)),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isLeft = false;
-                                });
-                                refetch();
-                              },
-                              child: Text("최신순",
-                                  style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(14),
-                                      letterSpacing: -0.35,
-                                      color: !isLeft
-                                          ? Colors.black
-                                          : app_font_grey,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ],
-                        ),
-                      ],
+                              Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Text("닫기",
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(16),
+                                        letterSpacing: -0.4,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: ScreenUtil().setSp(10)),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isLeft = true;
+                                  });
+                                  refetch();
+                                },
+                                child: Text("등록순",
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(14),
+                                        letterSpacing: -0.35,
+                                        color: isLeft
+                                            ? Colors.black
+                                            : app_font_grey,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              SizedBox(width: ScreenUtil().setSp(10)),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isLeft = false;
+                                  });
+                                  refetch();
+                                },
+                                child: Text("최신순",
+                                    style: TextStyle(
+                                        fontSize: ScreenUtil().setSp(14),
+                                        letterSpacing: -0.35,
+                                        color: !isLeft
+                                            ? Colors.black
+                                            : app_font_grey,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: ScreenUtil().setSp(4)),
-                  comentsList.length == 0
-                      ? Expanded(
-                          child: Container(
-                            child: Center(
-                              child: Text(
-                                "텅 빈 공간이에요\n의견을 나눠보세요 :)",
-                                style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(16),
-                                    letterSpacing: -0.4,
-                                    color: app_font_grey),
+                    SizedBox(height: ScreenUtil().setSp(4)),
+                    comentsList.length == 0
+                        ? Expanded(
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  "텅 빈 공간이에요\n의견을 나눠보세요 :)",
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil().setSp(16),
+                                      letterSpacing: -0.4,
+                                      color: app_font_grey),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            width: ScreenUtil().screenWidth,
+                            height: ScreenUtil().screenHeight * 0.9 -
+                                ScreenUtil().setSp(180) -
+                                MediaQuery.of(context).viewInsets.bottom,
+                            child: NotificationListener(
+                              onNotification: onCommentNotification,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: commentPages.map((page) {
+                                  return commentsListView(page, refetch);
+                                }).toList(),
                               ),
                             ),
                           ),
-                        )
-                      : Container(
-                          width: ScreenUtil().screenWidth,
-                          height: ScreenUtil().screenHeight * 0.9 -
-                              ScreenUtil().setSp(180) -
-                              MediaQuery.of(context).viewInsets.bottom,
-                          child: NotificationListener(
-                            onNotification: onCommentNotification,
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: commentPages.map((page) {
-                                return commentsListView(page, refetch);
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                  comentsList.length != 0 ? Spacer() : Container(),
-                  editCommentId == null
-                      ? textInput(context, refetch)
-                      : editTextInput(context, refetch),
-                  SizedBox(height: ScreenUtil().setSp(20))
-                ],
-              ),
-            );
-          } else {
-            return Container();
-          }
-        });
+                    comentsList.length != 0 ? Spacer() : Container(),
+                    editCommentId == null
+                        ? textInput(context, refetch)
+                        : editTextInput(context, refetch),
+                    SizedBox(height: ScreenUtil().setSp(20))
+                  ],
+                );
+              } else {
+                return Expanded(
+                  child: Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
+                );
+              }
+            }));
   }
 
   Query commentsListView(int page, Refetch refetch) {
@@ -253,16 +255,18 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 return comentsIdLink == null
                     ? Column(
                         children: [
-                          commentForm(
-                              commentCustomerId,
-                              profilePhotoLInk,
-                              nickname,
-                              date,
-                              content,
-                              comentsId,
-                              comentsIdLink,
-                              refetch,
-                              checkFlag),
+                          (checkFlag == 2 && replyList.length == 0)
+                              ? Container()
+                              : commentForm(
+                                  commentCustomerId,
+                                  profilePhotoLInk,
+                                  nickname,
+                                  date,
+                                  content,
+                                  comentsId,
+                                  comentsIdLink,
+                                  refetch,
+                                  checkFlag),
                           Column(
                             children: replyList.map((e) {
                               String _nickname = e["nick_name"];
