@@ -30,13 +30,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List commentPages = [1];
   List bookmarkPages = [1];
   bool isRefreshing = false;
+  int num = 0;
 
   refresh() {
     setState(() {
       isRefreshing = true;
     });
-    Future.delayed(Duration(seconds: 1), () {
-      int tap = currentTap;
+    Future.delayed(Duration(milliseconds: 100), () {
       setState(() {
         isRefreshing = false;
       });
@@ -176,7 +176,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ScreenUtil().setSp(letter_spacing)),
                             ),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            mypageCountQuery(),
+                            !isRefreshing
+                                ? mypageCountQuery()
+                                : mypageCountContainer(0, 0, 0, true),
                             SizedBox(height: ScreenUtil().setSp(10)),
                           ],
                         ),
@@ -186,52 +188,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: ScreenUtil().screenWidth,
                         height: ScreenUtil().setSp(10),
                       ),
-                      isRefreshing
-                          ? Container(
-                              width: ScreenUtil().screenWidth,
-                              height: ScreenUtil().setSp(42),
-                              child: Center(
-                                child: CupertinoActivityIndicator(),
-                              ))
-                          : Container(),
                       currentTap == 1
                           ? Flexible(
-                              child: NotificationListener(
-                                onNotification: onPostNotification,
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  children: postPages.map((page) {
-                                    return mypageContentsListQuery(page);
-                                  }).toList(),
-                                ),
-                              ),
+                              child: !isRefreshing
+                                  ? NotificationListener(
+                                      onNotification: onPostNotification,
+                                      child: ListView(
+                                        shrinkWrap: true,
+                                        children: postPages.map((page) {
+                                          return mypageContentsListQuery(page);
+                                        }).toList(),
+                                      ),
+                                    )
+                                  : CupertinoActivityIndicator(),
                             )
                           : Container(),
                       currentTap == 2
                           ? Flexible(
-                              child: NotificationListener(
-                                onNotification: onCommentNotification,
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  children: commentPages.map((page) {
-                                    return mypageComentsListQuery(page);
-                                  }).toList(),
-                                ),
-                              ),
+                              child: !isRefreshing
+                                  ? NotificationListener(
+                                      onNotification: onCommentNotification,
+                                      child: ListView(
+                                        shrinkWrap: true,
+                                        children: commentPages.map((page) {
+                                          return mypageComentsListQuery(page);
+                                        }).toList(),
+                                      ),
+                                    )
+                                  : CupertinoActivityIndicator(),
                             )
                           : Container(),
                       currentTap == 3
                           ? Flexible(
-                              child: NotificationListener(
-                                onNotification: onBookmarkNotification,
-                                child: ListView(
-                                  // cacheExtent: 9999,
-                                  shrinkWrap: true,
-                                  children: bookmarkPages.map((page) {
-                                    return mypageBookmarksListQuery(page);
-                                  }).toList(),
-                                ),
-                              ),
+                              child: !isRefreshing
+                                  ? NotificationListener(
+                                      onNotification: onBookmarkNotification,
+                                      child: ListView(
+                                        shrinkWrap: true,
+                                        children: bookmarkPages.map((page) {
+                                          return mypageBookmarksListQuery(page);
+                                        }).toList(),
+                                      ),
+                                    )
+                                  : CupertinoActivityIndicator(),
                             )
                           : Container(),
                     ],
@@ -324,60 +323,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // print("🚨 bookmarkslist : $result");
             List resultData = result.data["mypage_coments_list"];
 
-            return Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil().setSp(20),
-                  vertical: ScreenUtil().setSp(10)),
-              child: Wrap(
-                  children: resultData.map((item) {
-                int index = resultData.indexOf(item);
-                String commentsText = resultData[index]["coment_text"];
-                String mainText = resultData[index]["main_text"];
-
-                return InkWell(
-                    onTap: () {
-                      seeValue("customerId").then((customerId) {
-                        Get.to(() => PlaceDetailScreen(
-                              contentsId: resultData[index]["contents_id"],
-                              customerId: int.parse(customerId),
-                            ));
-                      });
-                    },
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: ScreenUtil().setSp(10)),
-                          Text(commentsText,
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: ScreenUtil()
-                                      .setSp(letter_spacing_small))),
-                          SizedBox(height: ScreenUtil().setSp(6)),
-                          Text(mainText,
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing_small),
-                                  color: app_font_grey),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2),
-                          SizedBox(height: ScreenUtil().setSp(10)),
-                          Container(
-                            color: app_grey_light,
-                            height: ScreenUtil().setSp(2),
-                          ),
-                        ],
-                      ),
-                    ));
-              }).toList()),
-            );
+            return commentsListContainer(resultData);
           } else {
             return Container();
           }
         });
+  }
+
+  Container commentsListContainer(List<dynamic> resultData) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: ScreenUtil().setSp(20), vertical: ScreenUtil().setSp(10)),
+      child: Wrap(
+          children: resultData.map((item) {
+        int index = resultData.indexOf(item);
+        String commentsText = resultData[index]["coment_text"];
+        String mainText = resultData[index]["main_text"];
+
+        return InkWell(
+            onTap: () {
+              seeValue("customerId").then((customerId) {
+                Get.to(() => PlaceDetailScreen(
+                      contentsId: resultData[index]["contents_id"],
+                      customerId: int.parse(customerId),
+                    ));
+              });
+            },
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: ScreenUtil().setSp(10)),
+                  Text(commentsText,
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small))),
+                  SizedBox(height: ScreenUtil().setSp(6)),
+                  Text(mainText,
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
+                          color: app_font_grey),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2),
+                  SizedBox(height: ScreenUtil().setSp(10)),
+                  Container(
+                    color: app_grey_light,
+                    height: ScreenUtil().setSp(2),
+                  ),
+                ],
+              ),
+            ));
+      }).toList()),
+    );
   }
 
   Query mypageBookmarksListQuery(int page) {
@@ -437,117 +439,125 @@ class _ProfileScreenState extends State<ProfileScreen> {
             int contentsCount = resultData["contents_count"];
             int bookmarksCount = resultData["bookmarks_count"];
             int comentsCount = resultData["coments_count"];
-
-            return Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          currentTap = 1;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("내가 쓴 글",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: ScreenUtil()
-                                      .setSp(letter_spacing_small))),
-                          Text("$contentsCount",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrBold",
-                                  fontSize: ScreenUtil().setSp(16),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing))),
-                          SizedBox(height: ScreenUtil().setSp(4)),
-                          Container(
-                              color: currentTap == 1
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: ScreenUtil().setSp(30),
-                              height: ScreenUtil().setSp(4))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          currentTap = 2;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("남긴 댓글",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: ScreenUtil()
-                                      .setSp(letter_spacing_small))),
-                          Text("$comentsCount",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrBold",
-                                  fontSize: ScreenUtil().setSp(16),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing))),
-                          SizedBox(height: ScreenUtil().setSp(4)),
-                          Container(
-                              color: currentTap == 2
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: ScreenUtil().setSp(30),
-                              height: ScreenUtil().setSp(4))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          currentTap = 3;
-                        });
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("보관함",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing: ScreenUtil()
-                                      .setSp(letter_spacing_small))),
-                          Text("$bookmarksCount",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrBold",
-                                  fontSize: ScreenUtil().setSp(16),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing))),
-                          SizedBox(height: ScreenUtil().setSp(4)),
-                          Container(
-                              color: currentTap == 3
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: ScreenUtil().setSp(30),
-                              height: ScreenUtil().setSp(4))
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
+            return mypageCountContainer(
+                contentsCount, comentsCount, bookmarksCount, false);
           } else {
             return Container();
           }
         });
+  }
+
+  Container mypageCountContainer(int contentsCount, int comentsCount,
+      int bookmarksCount, bool isRefreshing) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  currentTap = 1;
+                });
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("내가 쓴 글",
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small))),
+                  !isRefreshing
+                      ? Text("$contentsCount",
+                          style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing)))
+                      : CupertinoActivityIndicator(),
+                  SizedBox(height: ScreenUtil().setSp(4)),
+                  Container(
+                      color:
+                          currentTap == 1 ? Colors.black : Colors.transparent,
+                      width: ScreenUtil().setSp(30),
+                      height: ScreenUtil().setSp(4))
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  currentTap = 2;
+                });
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("남긴 댓글",
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small))),
+                  !isRefreshing
+                      ? Text("$comentsCount",
+                          style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing)))
+                      : CupertinoActivityIndicator(),
+                  SizedBox(height: ScreenUtil().setSp(4)),
+                  Container(
+                      color:
+                          currentTap == 2 ? Colors.black : Colors.transparent,
+                      width: ScreenUtil().setSp(30),
+                      height: ScreenUtil().setSp(4))
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  currentTap = 3;
+                });
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("보관함",
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small))),
+                  !isRefreshing
+                      ? Text("$bookmarksCount",
+                          style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing)))
+                      : CupertinoActivityIndicator(),
+                  SizedBox(height: ScreenUtil().setSp(4)),
+                  Container(
+                      color:
+                          currentTap == 3 ? Colors.black : Colors.transparent,
+                      width: ScreenUtil().setSp(30),
+                      height: ScreenUtil().setSp(4))
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Query mypageQuery() {
@@ -654,5 +664,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Container();
           }
         });
+  }
+}
+
+class RefreshIndicator extends StatelessWidget {
+  final bool isRefreshing;
+  const RefreshIndicator({Key key, @required this.isRefreshing})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return isRefreshing
+        ? Container(
+            width: ScreenUtil().screenWidth,
+            height: ScreenUtil().setSp(42),
+            child: Center(
+              child: CupertinoActivityIndicator(),
+            ))
+        : Container();
   }
 }

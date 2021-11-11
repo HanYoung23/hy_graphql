@@ -14,7 +14,7 @@ class PostalWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WebViewController _webViewController;
+    // WebViewController _webViewController;
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
@@ -69,7 +69,7 @@ class PostalWeb extends StatelessWidget {
                     // initialUrl: "http://plinic.cafe24app.com/api/daumFlutterPost",
                     javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (WebViewController webViewController) {
-                      _webViewController = webViewController;
+                      // _webViewController = webViewController;
                     },
                     javascriptChannels: <JavascriptChannel>{
                       _toasterJavascriptChannel(context),

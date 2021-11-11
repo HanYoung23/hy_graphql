@@ -45,16 +45,21 @@ class MapMarker extends Clusterable {
       ),
       icon: icon,
       onTap: () {
-        seeValue("customerId").then((value) {
+        // print("🚨 child: $childMarkerId");
+        // print("🚨 id: $id");
+
+        seeValue("customerId").then((customerId) {
           int contentsId;
-          if (childMarkerId.contains(",")) {
+          if (childMarkerId != null) {
             contentsId = int.parse(
                 childMarkerId.substring(0, childMarkerId.indexOf(",")));
+            Get.to(() => PlaceDetailScreen(
+                contentsId: contentsId, customerId: int.parse(customerId)));
           } else {
-            contentsId = int.parse(value);
+            contentsId = int.parse(id.substring(0, id.indexOf(",")));
+            Get.to(() => PlaceDetailScreen(
+                contentsId: contentsId, customerId: int.parse(customerId)));
           }
-          Get.to(() => PlaceDetailScreen(
-              contentsId: contentsId, customerId: int.parse(value)));
         });
       });
 }

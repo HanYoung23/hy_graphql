@@ -172,294 +172,303 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
             backgroundColor: Colors.black,
             brightness: Brightness.dark,
           ),
-          body: Container(
-            height: ScreenUtil().screenHeight -
-                MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom,
-            padding: EdgeInsets.all(ScreenUtil().setSp(20)),
-            child: Column(
-              children: [
-                Container(
-                  width: ScreenUtil().screenWidth,
-                  height: ScreenUtil().setSp(44),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: Image.asset("assets/images/arrow_back.png",
-                                  width: ScreenUtil().setSp(arrow_back_size),
-                                  height: ScreenUtil().setSp(arrow_back_size))),
-                        ),
-                      ),
-                      Text(
-                        "게시물 작성",
-                        style: TextStyle(
-                          fontFamily: "NotoSansCJKkrBold",
-                          fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: ScreenUtil().setSp(letter_spacing),
-                        ),
-                      ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            savePostPopup(context, () => saveDataCallback());
-                          },
+          body: SingleChildScrollView(
+            child: Container(
+              height: ScreenUtil().screenHeight -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom,
+              padding: EdgeInsets.all(ScreenUtil().setSp(20)),
+              child: Column(
+                children: [
+                  Container(
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setSp(44),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
                           child: Container(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              "임시저장",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrBold",
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing),
-                                fontSize: ScreenUtil().setSp(appbar_title_size),
-                                color: app_font_grey,
+                            alignment: Alignment.centerLeft,
+                            child: InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Image.asset(
+                                    "assets/images/arrow_back.png",
+                                    width: ScreenUtil().setSp(arrow_back_size),
+                                    height:
+                                        ScreenUtil().setSp(arrow_back_size))),
+                          ),
+                        ),
+                        Text(
+                          "게시물 작성",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            fontSize: ScreenUtil().setSp(appbar_title_size),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              savePostPopup(context, () => saveDataCallback());
+                            },
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                "임시저장",
+                                style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrBold",
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing),
+                                  fontSize:
+                                      ScreenUtil().setSp(appbar_title_size),
+                                  color: app_font_grey,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(height: ScreenUtil().setSp(20)),
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (_) => MapPostCreationBottomSheet(
-                            callback: (category) =>
-                                categoryCallback(category)));
-                  },
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(vertical: ScreenUtil().setSp(8)),
+                  SizedBox(height: ScreenUtil().setSp(20)),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (_) => MapPostCreationBottomSheet(
+                              callback: (category) =>
+                                  categoryCallback(category)));
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: ScreenUtil().setSp(8)),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                          selectedCategory == ""
+                              ? "카테고리 설정"
+                              : "$selectedCategory",
+                          style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
+                              fontSize: ScreenUtil().setSp(14),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_small),
+                              color: selectedCategory == ""
+                                  ? app_font_grey
+                                  : Colors.black)),
+                    ),
+                  ),
+                  Container(
+                      color: app_grey,
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().setSp(3)),
+                  SizedBox(height: ScreenUtil().setSp(18)),
+                  Container(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                        selectedCategory == ""
-                            ? "카테고리 설정"
-                            : "$selectedCategory",
+                    child: Text("이미지를 첨부해보세요\n(${imageList.length}/10)",
                         style: TextStyle(
                             fontFamily: "NotoSansCJKkrRegular",
                             fontSize: ScreenUtil().setSp(14),
                             letterSpacing:
                                 ScreenUtil().setSp(letter_spacing_small),
-                            color: selectedCategory == ""
-                                ? app_font_grey
-                                : Colors.black)),
+                            color: app_font_grey)),
                   ),
-                ),
-                Container(
-                    color: app_grey,
-                    width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setSp(3)),
-                SizedBox(height: ScreenUtil().setSp(18)),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text("이미지를 첨부해보세요\n(${imageList.length}/10)",
-                      style: TextStyle(
-                          fontFamily: "NotoSansCJKkrRegular",
-                          fontSize: ScreenUtil().setSp(14),
-                          letterSpacing:
-                              ScreenUtil().setSp(letter_spacing_small),
-                          color: app_font_grey)),
-                ),
-                SizedBox(height: ScreenUtil().setSp(4)),
-                imageList.length > 0
-                    ? Container(
-                        alignment: Alignment.centerLeft,
-                        height: ScreenUtil().setSp(74),
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: imageList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (index < 10) {
-                              if (index == 0) {
+                  SizedBox(height: ScreenUtil().setSp(4)),
+                  imageList.length > 0
+                      ? Container(
+                          alignment: Alignment.centerLeft,
+                          height: ScreenUtil().setSp(74),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: imageList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              if (index < 10) {
+                                if (index == 0) {
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      photoUploadButton(),
+                                      photoPreview(index)
+                                    ],
+                                  );
+                                }
                                 return Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    photoUploadButton(),
-                                    photoPreview(index)
+                                    photoPreview(index),
                                   ],
                                 );
+                              } else {
+                                return null;
                               }
-                              return Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  photoPreview(index),
-                                ],
-                              );
-                            } else {
-                              return null;
-                            }
-                          },
+                            },
+                          ),
+                        )
+                      : Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            photoUploadButton(),
+                            Container(
+                              width: ScreenUtil().setSp(58),
+                              height: ScreenUtil().setSp(58),
+                              margin:
+                                  EdgeInsets.only(top: ScreenUtil().setSp(10)),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setSp(10)),
+                                  color: Color.fromRGBO(241, 241, 245, 1)),
+                            )
+                          ],
                         ),
-                      )
-                    : Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          photoUploadButton(),
-                          Container(
-                            width: ScreenUtil().setSp(58),
-                            height: ScreenUtil().setSp(58),
-                            margin:
-                                EdgeInsets.only(top: ScreenUtil().setSp(10)),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    ScreenUtil().setSp(10)),
-                                color: Color.fromRGBO(241, 241, 245, 1)),
-                          )
-                        ],
-                      ),
-                SizedBox(height: ScreenUtil().setSp(8)),
-                Container(
-                    color: app_grey,
-                    width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setSp(3)),
-                SizedBox(height: ScreenUtil().setSp(4)),
-                Wrap(
-                  children: [
-                    Container(
-                        height: ScreenUtil().setSp(180),
-                        child: TextField(
-                            controller: contentTextController,
-                            keyboardType: TextInputType.multiline,
-                            minLines: 1,
-                            maxLines: null,
-                            onChanged: (_) {
-                              checkIsAllFilled();
-                            },
-                            style: TextStyle(
-                                fontFamily: "NotoSansCJKkrRegular",
-                                fontSize: ScreenUtil().setSp(14),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing_small),
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText:
-                                    "내용을 입력해주세요.\n(정책을 위반한 글은 무통보 삭제 처리될 수 있습니다.)",
-                                hintMaxLines: 3,
-                                hintStyle: TextStyle(
-                                  color: app_font_grey,
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing_small),
-                                ))))
-                  ],
-                ),
-                SizedBox(height: ScreenUtil().setSp(4)),
-                Container(
-                    color: app_grey,
-                    width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setSp(3)),
-                SizedBox(height: ScreenUtil().setSp(20)),
-                Wrap(
-                  children: [
-                    Container(
-                        child: TextFormField(
-                            keyboardType: TextInputType.text,
-                            controller: tagTextController,
-                            minLines: 1,
-                            maxLines: 1,
-                            onTap: () {
-                              if (tagTextController.text.length < 1) {
-                                tagTextController.text = "#";
-                                tagTextController.selection =
-                                    TextSelection.fromPosition(TextPosition(
-                                        offset: tagTextController.text.length));
-                              }
-                            },
-                            onChanged: (String value) {
-                              checkIsAllFilled();
-                              if (value.length != 0) {
-                                String clickedVal =
-                                    "${value[value.length - 1]}";
-                                if (value[0] != "#") {
-                                  tagTextController.text = "#$value";
-                                }
-                                if (clickedVal == " ") {
-                                  String validText = value.replaceAll(" ", "#");
-                                  String validTextTwo =
-                                      validText.replaceAll("##", "#");
-                                  tagTextController.text = validTextTwo;
-                                }
-                                tagTextController.selection =
-                                    TextSelection.fromPosition(TextPosition(
-                                        offset: tagTextController.text.length));
-                              }
-                            },
-                            style: TextStyle(
-                                fontFamily: "NotoSansCJKkrRegular",
-                                fontSize: ScreenUtil().setSp(14),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing_small),
-                                color: Colors.black),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "태그를 입력할 수 있습니다 (ex. 바다)",
-                                hintStyle: TextStyle(
-                                  color: app_font_grey,
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  fontSize: ScreenUtil().setSp(14),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing_small),
-                                ))))
-                  ],
-                ),
-                Container(
-                    color: app_grey,
-                    width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setSp(3)),
-                Spacer(),
-                InkWell(
-                    onTap: () {
-                      if (isAllFilled) {
-                        Map paramMap = {
-                          "categoryId": category,
-                          "imageLink": imageList,
-                          "imageLatLngList": photoLatLng,
-                          "mainText": contentTextController.text,
-                          "tags": tagTextController.text,
-                        };
-                        Get.to(() => MapPostCreationDetailScreen(
-                              paramMap: paramMap,
-                            ));
-                      }
-                    },
-                    child: Container(
+                  SizedBox(height: ScreenUtil().setSp(8)),
+                  Container(
+                      color: app_grey,
                       width: ScreenUtil().screenWidth,
-                      height: ScreenUtil().setSp(50),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: isAllFilled ? app_blue : app_blue_light_button,
-                          borderRadius:
-                              BorderRadius.circular(ScreenUtil().setSp(10))),
-                      child: Text(
-                        "다음",
-                        style: TextStyle(
-                          fontFamily: "NotoSansCJKkrBold",
-                          fontSize: ScreenUtil().setSp(16),
-                          color: Colors.white,
-                          letterSpacing:
-                              ScreenUtil().setSp(letter_spacing_small),
+                      height: ScreenUtil().setSp(3)),
+                  SizedBox(height: ScreenUtil().setSp(4)),
+                  Wrap(
+                    children: [
+                      Container(
+                          height: ScreenUtil().setSp(180),
+                          child: TextField(
+                              controller: contentTextController,
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: null,
+                              onChanged: (_) {
+                                checkIsAllFilled();
+                              },
+                              style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
+                                  fontSize: ScreenUtil().setSp(14),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                      "내용을 입력해주세요.\n(정책을 위반한 글은 무통보 삭제 처리될 수 있습니다.)",
+                                  hintMaxLines: 3,
+                                  hintStyle: TextStyle(
+                                    color: app_font_grey,
+                                    fontFamily: "NotoSansCJKkrRegular",
+                                    fontSize: ScreenUtil().setSp(14),
+                                    letterSpacing: ScreenUtil()
+                                        .setSp(letter_spacing_small),
+                                  ))))
+                    ],
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(4)),
+                  Container(
+                      color: app_grey,
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().setSp(3)),
+                  SizedBox(height: ScreenUtil().setSp(20)),
+                  Wrap(
+                    children: [
+                      Container(
+                          child: TextFormField(
+                              keyboardType: TextInputType.text,
+                              controller: tagTextController,
+                              minLines: 1,
+                              maxLines: 1,
+                              onTap: () {
+                                if (tagTextController.text.length < 1) {
+                                  tagTextController.text = "#";
+                                  tagTextController.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset:
+                                              tagTextController.text.length));
+                                }
+                              },
+                              onChanged: (String value) {
+                                checkIsAllFilled();
+                                if (value.length != 0) {
+                                  String clickedVal =
+                                      "${value[value.length - 1]}";
+                                  if (value[0] != "#") {
+                                    tagTextController.text = "#$value";
+                                  }
+                                  if (clickedVal == " ") {
+                                    String validText =
+                                        value.replaceAll(" ", "#");
+                                    String validTextTwo =
+                                        validText.replaceAll("##", "#");
+                                    tagTextController.text = validTextTwo;
+                                  }
+                                  tagTextController.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset:
+                                              tagTextController.text.length));
+                                }
+                              },
+                              style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
+                                  fontSize: ScreenUtil().setSp(14),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
+                                  color: Colors.black),
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "태그를 입력할 수 있습니다 (ex. 바다)",
+                                  hintStyle: TextStyle(
+                                    color: app_font_grey,
+                                    fontFamily: "NotoSansCJKkrRegular",
+                                    fontSize: ScreenUtil().setSp(14),
+                                    letterSpacing: ScreenUtil()
+                                        .setSp(letter_spacing_small),
+                                  ))))
+                    ],
+                  ),
+                  Container(
+                      color: app_grey,
+                      width: ScreenUtil().screenWidth,
+                      height: ScreenUtil().setSp(3)),
+                  Spacer(),
+                  InkWell(
+                      onTap: () {
+                        if (isAllFilled) {
+                          Map paramMap = {
+                            "categoryId": category,
+                            "imageLink": imageList,
+                            "imageLatLngList": photoLatLng,
+                            "mainText": contentTextController.text,
+                            "tags": tagTextController.text,
+                          };
+                          Get.to(() => MapPostCreationDetailScreen(
+                                paramMap: paramMap,
+                              ));
+                        }
+                      },
+                      child: Container(
+                        width: ScreenUtil().screenWidth,
+                        height: ScreenUtil().setSp(50),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color:
+                                isAllFilled ? app_blue : app_blue_light_button,
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(10))),
+                        child: Text(
+                          "다음",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            fontSize: ScreenUtil().setSp(16),
+                            color: Colors.white,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
+                          ),
                         ),
-                      ),
-                    )),
-                SizedBox(height: ScreenUtil().setSp(14)),
-              ],
+                      )),
+                  SizedBox(height: ScreenUtil().setSp(14)),
+                ],
+              ),
             ),
           ),
         ),
