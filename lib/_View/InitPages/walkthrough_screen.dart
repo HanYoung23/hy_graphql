@@ -85,19 +85,34 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         Image.asset("assets/images/walkthroughFirst/dot.png",
             width: ScreenUtil().setSp(40), height: ScreenUtil().setSp(8)),
         SizedBox(height: ScreenUtil().setHeight(14)),
-        Image.asset("assets/images/walkthroughFirst/title.png",
-            width: ScreenUtil().setSp(335), height: ScreenUtil().setSp(33)),
+        Text(
+          "내가 다녀온 곳을 기록해요",
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrBold",
+            fontSize: ScreenUtil().setSp(22),
+            letterSpacing: ScreenUtil().setSp(-0.55),
+          ),
+          textAlign: TextAlign.center,
+        ),
         SizedBox(height: ScreenUtil().setHeight(10)),
-        Image.asset("assets/images/walkthroughFirst/content.png",
-            width: ScreenUtil().setSp(300), height: ScreenUtil().setSp(54)),
-        SizedBox(height: ScreenUtil().setHeight(47)),
+        Text(
+          "SNS와 GPS 위치 기반이 만나\n지도에서 한번에 장소별 게시물 확인 가능!",
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
+            fontSize: ScreenUtil().setSp(16),
+            letterSpacing: ScreenUtil().setSp(-0.4),
+            color: app_grey_login,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: ScreenUtil().setHeight(48)),
         Container(
-            width: ScreenUtil().setSp(340),
-            height: ScreenUtil().setSp(190),
+            // width: ScreenUtil().setSp(340),
+            // height: ScreenUtil().setSp(190),
             child: Image.asset(
-              "assets/images/walkthroughFirst/photo.png",
-              fit: BoxFit.fill,
-            )),
+          "assets/images/walkthroughFirst/photo.png",
+          fit: BoxFit.contain,
+        )),
         Spacer(),
         InkWell(
             onTap: () {
@@ -165,19 +180,33 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         Image.asset("assets/images/walkthroughSecond/dot.png",
             width: ScreenUtil().setSp(40), height: ScreenUtil().setSp(8)),
         SizedBox(height: ScreenUtil().setHeight(14)),
-        Image.asset("assets/images/walkthroughSecond/title.png",
-            width: ScreenUtil().setSp(335), height: ScreenUtil().setSp(33)),
+        Text(
+          "포인트로 상품과 교환할 수 있어요",
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrBold",
+            fontSize: ScreenUtil().setSp(22),
+            letterSpacing: ScreenUtil().setSp(-0.55),
+          ),
+          textAlign: TextAlign.center,
+        ),
         SizedBox(height: ScreenUtil().setHeight(10)),
-        Image.asset("assets/images/walkthroughSecond/content.png",
-            width: ScreenUtil().setSp(300), height: ScreenUtil().setSp(80)),
-        SizedBox(height: ScreenUtil().setHeight(10)),
+        Text(
+          "무료 포인트 적립으로 희망하는 제품과\n언제든지 교환할 수 있어요!",
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
+            fontSize: ScreenUtil().setSp(16),
+            letterSpacing: ScreenUtil().setSp(-0.4),
+            color: app_grey_login,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: ScreenUtil().setHeight(48)),
         Container(
             child: Image.asset(
           "assets/images/walkthroughSecond/photo.png",
-          width: ScreenUtil().setSp(375),
-          // width: ScreenUtil().screenWidth,
-          height: ScreenUtil().setSp(220),
-          fit: BoxFit.fill,
+          // width: ScreenUtil().setSp(375),
+          height: ScreenUtil().setSp(234),
+          fit: BoxFit.cover,
         )),
         Spacer(),
         Container(
@@ -233,17 +262,33 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
         Image.asset("assets/images/walkthroughThird/dot.png",
             width: ScreenUtil().setSp(40), height: ScreenUtil().setSp(8)),
         SizedBox(height: ScreenUtil().setHeight(14)),
-        Image.asset("assets/images/walkthroughThird/title.png",
-            width: ScreenUtil().setSp(335), height: ScreenUtil().setSp(33)),
+        Text(
+          "카테고리 별 게시물 노출",
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrBold",
+            fontSize: ScreenUtil().setSp(22),
+            letterSpacing: ScreenUtil().setSp(-0.55),
+          ),
+          textAlign: TextAlign.center,
+        ),
         SizedBox(height: ScreenUtil().setHeight(10)),
-        Image.asset("assets/images/walkthroughThird/content.png",
-            width: ScreenUtil().setSp(300), height: ScreenUtil().setSp(102)),
+        Text(
+          "관심 있는 게시물만 확인할 수도 있어요\n비슷한 관심사를 가진 사람들의\n게시물을 확인해보세요",
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
+            fontSize: ScreenUtil().setSp(16),
+            letterSpacing: ScreenUtil().setSp(-0.4),
+            color: app_grey_login,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: ScreenUtil().setHeight(28)),
         Container(
-            width: ScreenUtil().setSp(305),
-            height: ScreenUtil().setSp(250),
+            width: ScreenUtil().setSp(300),
+            // height: ScreenUtil().setSp(250),
             child: Image.asset(
               "assets/images/walkthroughThird/photo.png",
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
             )),
         Spacer(),
         InkWell(

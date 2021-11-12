@@ -105,14 +105,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/authority/
     - assets/images/walkthroughFirst/
     - assets/images/walkthroughSecond/
     - assets/images/walkthroughThird/
     - assets/images/profileSettings/
     - assets/images/locationTap/
     - assets/images/settings/
-    - assets/images/titles/
-  #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -126,38 +125,16 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: NotoSansCJKkrBlack
-      fonts:
-        - asset: fonts/NotoSansCJKkr-Black.otf
 
     - family: NotoSansCJKkrBold
       fonts:
         - asset: fonts/NotoSansCJKkr-Bold.otf
-
-    - family: NotoSansCJKkrDemiLight
-      fonts:
-        - asset: fonts/NotoSansCJKkr-DemiLight.otf
-
-    - family: NotoSansCJKkrLight
-      fonts:
-        - asset: fonts/NotoSansCJKkr-Light.otf
-
-    - family: NotoSansCJKkrMedium
-      fonts:
-        - asset: fonts/NotoSansCJKkr-Medium.otf
-
     - family: NotoSansCJKkrRegular
       fonts:
         - asset: fonts/NotoSansCJKkr-Regular.otf
-
-    - family: NotoSansCJKkrThin
-      fonts:
-        - asset: fonts/NotoSansCJKkr-Thin.otf
-
     - family: NotoSansMonoCJKkrBold
       fonts:
         - asset: fonts/NotoSansMonoCJKkr-Bold.otf
-
     - family: NotoSansMonoCJKkrRegular
       fonts:
         - asset: fonts/NotoSansMonoCJKkr-Regular.otf

@@ -40,7 +40,8 @@ class AuthorityScreen extends StatelessWidget {
                     Container(
                         // margin:
                         //     EdgeInsets.only(top: ScreenUtil().setHeight(94)),
-                        child: Image.asset("assets/images/authority_title.png",
+                        child: Image.asset(
+                            "assets/images/authority/authority_title.png",
                             width: ScreenUtil().setSp(226),
                             height: ScreenUtil().setSp(36))),
                     Container(
@@ -48,7 +49,7 @@ class AuthorityScreen extends StatelessWidget {
                             top: ScreenUtil().setSp(10),
                             bottom: ScreenUtil().setSp(42)),
                         child: Image.asset(
-                            "assets/images/authority_content.png",
+                            "assets/images/authority/authority_content.png",
                             width: ScreenUtil().setSp(272),
                             height: ScreenUtil().setSp(60))),
                     Row(
@@ -58,7 +59,7 @@ class AuthorityScreen extends StatelessWidget {
                           margin:
                               EdgeInsets.only(right: ScreenUtil().setSp(10)),
                           child: Image.asset(
-                              "assets/images/authority_device.png",
+                              "assets/images/authority/authority_device.png",
                               width: ScreenUtil().setSp(48),
                               height: ScreenUtil().setSp(48)),
                         ),
@@ -69,11 +70,11 @@ class AuthorityScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     bottom: ScreenUtil().setSp(4)),
                                 child: Image.asset(
-                                    "assets/images/authority_device_title.png",
+                                    "assets/images/authority/authority_device_title.png",
                                     width: ScreenUtil().setSp(130),
                                     height: ScreenUtil().setSp(24))),
                             Image.asset(
-                                "assets/images/authority_device_content.png",
+                                "assets/images/authority/authority_device_content.png",
                                 width: ScreenUtil().setSp(256),
                                 height: ScreenUtil().setSp(40))
                           ],
@@ -88,7 +89,7 @@ class AuthorityScreen extends StatelessWidget {
                           margin:
                               EdgeInsets.only(right: ScreenUtil().setSp(10)),
                           child: Image.asset(
-                              "assets/images/authority_location.png",
+                              "assets/images/authority/authority_location.png",
                               width: ScreenUtil().setSp(48),
                               height: ScreenUtil().setSp(48)),
                         ),
@@ -99,11 +100,11 @@ class AuthorityScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     bottom: ScreenUtil().setSp(4)),
                                 child: Image.asset(
-                                    "assets/images/authority_location_title.png",
+                                    "assets/images/authority/authority_location_title.png",
                                     width: ScreenUtil().setSp(72),
                                     height: ScreenUtil().setSp(24))),
                             Image.asset(
-                                "assets/images/authority_location_content.png",
+                                "assets/images/authority/authority_location_content.png",
                                 width: ScreenUtil().setSp(256),
                                 height: ScreenUtil().setSp(40))
                           ],
@@ -118,7 +119,7 @@ class AuthorityScreen extends StatelessWidget {
                           margin:
                               EdgeInsets.only(right: ScreenUtil().setSp(10)),
                           child: Image.asset(
-                              "assets/images/authority_gallery.png",
+                              "assets/images/authority/authority_gallery.png",
                               width: ScreenUtil().setSp(48),
                               height: ScreenUtil().setSp(48)),
                         ),
@@ -129,11 +130,11 @@ class AuthorityScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     bottom: ScreenUtil().setSp(4)),
                                 child: Image.asset(
-                                    "assets/images/authority_gallery_title.png",
+                                    "assets/images/authority/authority_gallery_title.png",
                                     width: ScreenUtil().setSp(102),
                                     height: ScreenUtil().setSp(24))),
                             Image.asset(
-                                "assets/images/authority_gallery_content.png",
+                                "assets/images/authority/authority_gallery_content.png",
                                 width: ScreenUtil().setSp(256),
                                 height: ScreenUtil().setSp(40)),
                           ],

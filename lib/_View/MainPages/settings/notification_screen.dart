@@ -124,7 +124,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             }
                           }
                           //
-                          print("🚨 arrange : ${item["arrangeNum"]}");
 
                           return Mutation(
                               options: MutationOptions(
@@ -132,7 +131,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   update: (GraphQLDataProxy proxy,
                                       QueryResult result) {},
                                   onCompleted: (dynamic resultData) async {
-                                    print("🚨 login result : $resultData");
+                                    // print("🚨 login result : $resultData");
                                     if (resultData["change_check"]["result"]) {
                                       widget.refetchCallback();
                                       if (type == "notice") {

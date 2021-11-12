@@ -96,11 +96,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: ScreenUtil().setSp(42)),
                     Padding(
                       padding: EdgeInsets.only(top: ScreenUtil().setHeight(18)),
-                      child: Image(
-                          image:
-                              AssetImage("assets/images/logo_under_text.png"),
-                          width: ScreenUtil().setSp(222),
-                          height: ScreenUtil().setSp(20)),
+                      child: Text(
+                        "SNS와 위치기반을 융합한 여행사진지도",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(14),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
+                        ),
+                      ),
                     ),
                     SizedBox(height: ScreenUtil().setHeight(70)),
                     Padding(
