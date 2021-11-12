@@ -27,47 +27,43 @@ class Queries {
     query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!, \$page: Int!) {
       photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2, page:\$page)
       {
-          contents_id
-          category_id
-          contents_title
-          location_link
-          image_link
-          main_text
-          tags
-          customer_id
-          star_rating1
-          star_rating2
-          star_rating3
-          star_rating4
-          latitude
-          longitude
-          regist_date
+          count
+          results
         }
     }
 """;
 
-  static final String photoListMapWhole = """
-    query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!) {
-      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2)
+  static final String photoListMapCount = """
+    query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!, \$page: Int!) {
+      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2, page:\$page)
       {
-          contents_id
-          category_id
-          contents_title
-          location_link
-          image_link
-          main_text
-          tags
-          customer_id
-          star_rating1
-          star_rating2
-          star_rating3
-          star_rating4
-          latitude
-          longitude
-          regist_date
+          count
         }
     }
 """;
+
+//   static final String photoListMapWhole = """
+//     query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!) {
+//       photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2)
+//       {
+//           contents_id
+//           category_id
+//           contents_title
+//           location_link
+//           image_link
+//           main_text
+//           tags
+//           customer_id
+//           star_rating1
+//           star_rating2
+//           star_rating3
+//           star_rating4
+//           latitude
+//           longitude
+//           regist_date
+//         }
+//     }
+// """;
 
   static final String promotionsList = """
     query promotions_list(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!) {
@@ -112,15 +108,8 @@ class Queries {
     query coments_list(\$contents_id: Int!, \$sequence: Int!, \$page: Int!) {
       coments_list(contents_id: \$contents_id, sequence: \$sequence,page: \$page) 
       {
-          customer_id
-          coments_id
-          nick_name
-          coment_text
-          coments_id_link
-          regist_date
-          edit_date
-          profile_photo_link
-          check_flag
+          count
+          results
         }
     }
 """;
@@ -137,13 +126,38 @@ class Queries {
     }
 """;
 
+//   static final String mypagePageCount = """
+//     query mypage_page_count(\$customer_id: Int!, \$page: Int!) {
+//       mypage_contents_list(customer_id: \$customer_id, page:\$page)
+//       {
+//           count
+//         }
+//         mypage_coments_list(customer_id: \$customer_id, page: \$page)
+//       {
+//           count
+//         }
+//         mypage_bookmarks_list(customer_id: \$customer_id, page: \$page)
+//       {
+//         count
+//         }
+//     }
+// """;
+
   static final String mypageContentsList = """
     query mypage_contents_list(\$customer_id: Int!, \$page: Int!) {
       mypage_contents_list(customer_id: \$customer_id, page:\$page) 
       {
-          contents_id
-          image_link
-          customer_id
+          count
+          results
+        }
+    }
+""";
+
+  static final String mypageContentsCount = """
+    query mypage_contents_list(\$customer_id: Int!, \$page: Int!) {
+      mypage_contents_list(customer_id: \$customer_id, page:\$page) 
+      {
+          count
         }
     }
 """;
@@ -152,10 +166,17 @@ class Queries {
     query mypage_coments_list(\$customer_id: Int!,\$page: Int!) {
       mypage_coments_list(customer_id: \$customer_id, page: \$page) 
       {
-          contents_id
-          coments_id
-          coment_text
-          main_text
+          count
+          results
+        }
+    }
+""";
+
+  static final String mypageComentsCount = """
+    query mypage_coments_list(\$customer_id: Int!,\$page: Int!) {
+      mypage_coments_list(customer_id: \$customer_id, page: \$page) 
+      {
+          count
         }
     }
 """;
@@ -164,9 +185,16 @@ class Queries {
     query mypage_bookmarks_list(\$customer_id: Int!,\$page: Int!) {
       mypage_bookmarks_list(customer_id: \$customer_id, page: \$page) 
       {
-        bookmarks_id
-        contents_id
-        image_link
+        count
+          results
+        }
+    }
+""";
+  static final String mypageBookmarksCount = """
+    query mypage_bookmarks_list(\$customer_id: Int!,\$page: Int!) {
+      mypage_bookmarks_list(customer_id: \$customer_id, page: \$page) 
+      {
+        count
         }
     }
 """;

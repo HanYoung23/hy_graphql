@@ -88,7 +88,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Obx(() => Query(
         options: QueryOptions(
-          document: gql(Queries.photoListMapWhole),
+          document: gql(Queries.photoListMap),
           variables: {
             "latitude1": "-87.71179927260242",
             "latitude2": "89.45016124669523",
@@ -97,16 +97,19 @@ class _MapScreenState extends State<MapScreen> {
             "category_id": fliterValue.category.value,
             "date1": fliterValue.dateStart.value,
             "date2": fliterValue.dateEnd.value,
+            "page": 0,
           },
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
             List<Map> photoMapMarkerList = [];
-            // print("🚨 result photo : ${result.data}");
+            // print(
+            // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
 
             if (result.data != null) {
-              if (result.data["photo_list_map"].length > 0) {
-                for (Map resultData in result.data["photo_list_map"]) {
+              if (result.data["photo_list_map"]["results"].length > 0) {
+                for (Map resultData in result.data["photo_list_map"]
+                    ["results"]) {
                   int customerId = int.parse("${resultData["customer_id"]}");
                   int contentsId = int.parse("${resultData["contents_id"]}");
                   int categoryId = int.parse("${resultData["category_id"]}");

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/settings/service_policy_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/signout_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/device_info.dart';
@@ -97,15 +98,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     letterSpacing: ScreenUtil().setSp(letter_spacing_small),
                   )),
               SizedBox(height: ScreenUtil().setSp(10)),
-              Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
-                  child: Text("이용약관 및 정책",
-                      style: TextStyle(
-                        fontFamily: "NotoSansCJKkrRegular",
-                        fontSize: ScreenUtil().setSp(16),
-                        letterSpacing: ScreenUtil().setSp(letter_spacing),
-                      ))),
+              InkWell(
+                onTap: () {
+                  Get.to(() => ServicePolicyScreen());
+                },
+                child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: ScreenUtil().setSp(16)),
+                    child: Text("이용약관 및 정책",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(16),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                        ))),
+              ),
               Row(
                 children: [
                   Container(

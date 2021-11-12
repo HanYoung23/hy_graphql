@@ -45,6 +45,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
       setState(() {
         pages = newPages;
       });
+      // print("🚨 ${pages.length}");
     } else {
       // print('I am at the start');
     }
@@ -60,7 +61,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   Widget build(BuildContext context) {
     return Obx(() => Query(
         options: QueryOptions(
-          document: gql(Queries.photoListMap),
+          document: gql(Queries.photoListMapCount),
           variables: {
             "latitude1": "${gmWholeLatLng.latlngBounds["swLat"]}",
             "latitude2": "${gmWholeLatLng.latlngBounds["neLat"]}",
@@ -82,18 +83,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
           String dateRight = fliterValue.dateEnd.value;
 
           if (!result.isLoading && result.data != null) {
-            List imageMaps = result.data["photo_list_map"];
-            // for (Map resultData in result.data["photo_list_map"]) {
-            //   int contentsId = int.parse("${resultData["contents_id"]}");
-            //   String imageUrl = "${resultData["image_link"]}";
-            //   List urlList = imageUrl.split(",");
-            //   Map mapData = {
-            //     "contentsId": contentsId,
-            //     "imageLink": urlList[0],
-            //     "isAd": false,
-            //   };
-            //   imageMaps.add(mapData);
-            // }
+            int pageCount = result.data["photo_list_map"]["count"];
+
             return GestureDetector(
               onTap: () {
                 floatingBtnController.allBtnCancel();
@@ -102,7 +93,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                 top: false,
                 bottom: true,
                 child: NotificationListener(
-                  onNotification: onNotification,
+                  onNotification:
+                      pages.length != pageCount ? onNotification : null,
                   child: Scaffold(
                     key: scaffoldKey,
                     appBar: AppBar(
@@ -217,9 +209,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                     ],
                                   ),
                                 ),
-                                imageMaps.length > 0
-                                    // ? gridBuilder(latitudeFirst, latitudeSecond,
-                                    //     longitudeOne, longitudeSecond, imageMaps)
+                                pageCount > 0
                                     ? Query(
                                         options: QueryOptions(
                                           document: gql(Queries.promotionsList),
@@ -259,15 +249,19 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                               };
                                               adMapList.add(adMapData);
                                             }
+
+                                            adMapList.sublist(1, 3);
+
                                             return photoQuery(
-                                                latitudeFirst,
-                                                latitudeSecond,
-                                                longitudeOne,
-                                                longitudeSecond,
-                                                categoryId,
-                                                dateLeft,
-                                                dateRight,
-                                                adMapList);
+                                              latitudeFirst,
+                                              latitudeSecond,
+                                              longitudeOne,
+                                              longitudeSecond,
+                                              categoryId,
+                                              dateLeft,
+                                              dateRight,
+                                              adMapList,
+                                            );
                                           } else {
                                             return Container();
                                           }
@@ -410,14 +404,15 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   }
 
   Flexible photoQuery(
-      String latitudeFirst,
-      String latitudeSecond,
-      String longitudeOne,
-      String longitudeSecond,
-      int categoryId,
-      String dateLeft,
-      String dateRight,
-      List adMapList) {
+    String latitudeFirst,
+    String latitudeSecond,
+    String longitudeOne,
+    String longitudeSecond,
+    int categoryId,
+    String dateLeft,
+    String dateRight,
+    List adMapList,
+  ) {
     return Flexible(
       child: ListView(
         shrinkWrap: true,
@@ -439,7 +434,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               builder: (result, {refetch, fetchMore}) {
                 if (!result.isLoading && result.data != null) {
                   List<Map> imageMaps = [];
-                  for (Map resultData in result.data["photo_list_map"]) {
+                  for (Map resultData in result.data["photo_list_map"]
+                      ["results"]) {
                     int contentsId = int.parse("${resultData["contents_id"]}");
                     String imageUrl = "${resultData["image_link"]}";
                     List urlList = imageUrl.split(",");
@@ -457,6 +453,14 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                       imageMaps.insert((num + i) * 10, adMapList[num + i]);
                     }
                   }
+
+                  int length = imageMaps.length;
+                  if ((length % 3) != 0) {
+                    for (int i = 0; i < 3 - length % 3; i++) {
+                      imageMaps.add(imageMaps[i + 1]);
+                    }
+                  }
+
                   return gridBuilder(imageMaps, page);
                 } else {
                   return Container();

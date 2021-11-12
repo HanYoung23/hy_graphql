@@ -23,6 +23,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final ScrollController postScrollController = ScrollController();
+  final ScrollController commentScrollController = ScrollController();
+  final ScrollController bookmarkScrollController = ScrollController();
 
   int customerId;
   int currentTap = 1;
@@ -36,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       isRefreshing = true;
     });
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(Duration(milliseconds: 300), () {
       setState(() {
         isRefreshing = false;
       });
@@ -51,8 +54,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         postPages = newPages;
       });
-    } else if (t.metrics.pixels == 0 && t.metrics.atEdge && this.mounted) {
-      refresh();
+    } else {
+      // refresh();
     }
     return true;
   }
@@ -65,8 +68,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         commentPages = newPages;
       });
-    } else if (t.metrics.pixels == 0 && t.metrics.atEdge && this.mounted) {
-      refresh();
+    } else {
+      // refresh();
     }
     return true;
   }
@@ -79,8 +82,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         bookmarkPages = newPages;
       });
-    } else if (t.metrics.pixels == 0 && t.metrics.atEdge && this.mounted) {
-      refresh();
+    } else {
+      // refresh();
     }
     return true;
   }
@@ -97,6 +100,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
         customerId = int.parse(value);
       });
     });
+    postScrollController.addListener(() {
+      if (postScrollController.offset < -100.0) {
+        // print("🚨 ${postScrollController.offset}");
+        Future.delayed(Duration(milliseconds: 200), () => refresh());
+      }
+    });
+    commentScrollController.addListener(() {
+      if (commentScrollController.offset < -100.0) {
+        // print("🚨 ${commentScrollController.offset}");
+        Future.delayed(Duration(milliseconds: 200), () => refresh());
+      }
+    });
+    bookmarkScrollController.addListener(() {
+      if (bookmarkScrollController.offset < -100.0) {
+        // print("🚨 ${bookmarkScrollController.offset}");
+        Future.delayed(Duration(milliseconds: 200), () => refresh());
+      }
+    });
+
     super.initState();
   }
 
@@ -116,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 brightness: Brightness.dark,
               ),
               body: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                // physics: BouncingScrollPhysics(),
                 child: Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().screenHeight -
@@ -191,45 +213,131 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       currentTap == 1
                           ? Flexible(
                               child: !isRefreshing
-                                  ? NotificationListener(
-                                      onNotification: onPostNotification,
-                                      child: ListView(
-                                        shrinkWrap: true,
-                                        children: postPages.map((page) {
-                                          return mypageContentsListQuery(page);
-                                        }).toList(),
+                                  ? Query(
+                                      options: QueryOptions(
+                                        document:
+                                            gql(Queries.mypageContentsCount),
+                                        variables: {
+                                          "customer_id": customerId,
+                                          "page": 1
+                                        },
                                       ),
-                                    )
+                                      builder: (result, {refetch, fetchMore}) {
+                                        if (!result.isLoading &&
+                                            result.data != null) {
+                                          int pageCount = result
+                                                  .data["mypage_contents_list"]
+                                              ["count"];
+                                          return NotificationListener(
+                                            onNotification:
+                                                pageCount != postPages.length
+                                                    ? onPostNotification
+                                                    : null,
+                                            child: ListView(
+                                              controller: postScrollController,
+                                              physics: BouncingScrollPhysics(
+                                                  parent:
+                                                      AlwaysScrollableScrollPhysics()),
+                                              shrinkWrap: false,
+                                              children: postPages.map((page) {
+                                                return mypageContentsListQuery(
+                                                    page);
+                                              }).toList(),
+                                            ),
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
+                                      })
                                   : CupertinoActivityIndicator(),
                             )
                           : Container(),
                       currentTap == 2
                           ? Flexible(
                               child: !isRefreshing
-                                  ? NotificationListener(
-                                      onNotification: onCommentNotification,
-                                      child: ListView(
-                                        shrinkWrap: true,
-                                        children: commentPages.map((page) {
-                                          return mypageComentsListQuery(page);
-                                        }).toList(),
+                                  ? Query(
+                                      options: QueryOptions(
+                                        document:
+                                            gql(Queries.mypageComentsCount),
+                                        variables: {
+                                          "customer_id": customerId,
+                                          "page": 1
+                                        },
                                       ),
-                                    )
+                                      builder: (result, {refetch, fetchMore}) {
+                                        if (!result.isLoading &&
+                                            result.data != null) {
+                                          int pageCount =
+                                              result.data["mypage_coments_list"]
+                                                  ["count"];
+                                          return NotificationListener(
+                                            onNotification:
+                                                pageCount != commentPages.length
+                                                    ? onCommentNotification
+                                                    : null,
+                                            child: ListView(
+                                              controller:
+                                                  commentScrollController,
+                                              physics: BouncingScrollPhysics(
+                                                  parent:
+                                                      AlwaysScrollableScrollPhysics()),
+                                              shrinkWrap: false,
+                                              children:
+                                                  commentPages.map((page) {
+                                                return mypageComentsListQuery(
+                                                    page);
+                                              }).toList(),
+                                            ),
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
+                                      })
                                   : CupertinoActivityIndicator(),
                             )
                           : Container(),
                       currentTap == 3
                           ? Flexible(
                               child: !isRefreshing
-                                  ? NotificationListener(
-                                      onNotification: onBookmarkNotification,
-                                      child: ListView(
-                                        shrinkWrap: true,
-                                        children: bookmarkPages.map((page) {
-                                          return mypageBookmarksListQuery(page);
-                                        }).toList(),
+                                  ? Query(
+                                      options: QueryOptions(
+                                        document:
+                                            gql(Queries.mypageBookmarksCount),
+                                        variables: {
+                                          "customer_id": customerId,
+                                          "page": 1
+                                        },
                                       ),
-                                    )
+                                      builder: (result, {refetch, fetchMore}) {
+                                        if (!result.isLoading &&
+                                            result.data != null) {
+                                          int pageCount = result
+                                                  .data["mypage_bookmarks_list"]
+                                              ["count"];
+
+                                          return NotificationListener(
+                                            onNotification: pageCount !=
+                                                    bookmarkPages.length
+                                                ? onBookmarkNotification
+                                                : null,
+                                            child: ListView(
+                                              controller:
+                                                  bookmarkScrollController,
+                                              physics: BouncingScrollPhysics(
+                                                  parent:
+                                                      AlwaysScrollableScrollPhysics()),
+                                              shrinkWrap: false,
+                                              children:
+                                                  bookmarkPages.map((page) {
+                                                return mypageBookmarksListQuery(
+                                                    page);
+                                              }).toList(),
+                                            ),
+                                          );
+                                        } else {
+                                          return Container();
+                                        }
+                                      })
                                   : CupertinoActivityIndicator(),
                             )
                           : Container(),
@@ -275,7 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
             // print("🚨 mypageContentsList : $result");
-            List resultData = result.data["mypage_contents_list"];
+            List resultData = result.data["mypage_contents_list"]["results"];
 
             return Wrap(
                 spacing: ScreenUtil().setSp(1),
@@ -321,7 +429,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
             // print("🚨 bookmarkslist : $result");
-            List resultData = result.data["mypage_coments_list"];
+            List resultData = result.data["mypage_coments_list"]["results"];
 
             return commentsListContainer(resultData);
           } else {
@@ -390,7 +498,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
-            List resultData = result.data["mypage_bookmarks_list"];
+            List resultData = result.data["mypage_bookmarks_list"]["results"];
             print("🚨 bookmarkslist : ${resultData.length}");
             return Wrap(
                 spacing: ScreenUtil().setSp(1),

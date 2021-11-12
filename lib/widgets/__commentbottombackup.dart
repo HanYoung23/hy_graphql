@@ -68,9 +68,9 @@
 //         ),
 //         builder: (result, {refetch, fetchMore}) {
 //           if (!result.isLoading && result.data != null) {
-//             // print("🚨 comments : ${result.data["coments_list"][0]}");
+//             // print("🚨 comments : ${result.data["coments_list"]["results"][0]}");
 
-//             List comentsList = result.data["coments_list"];
+//             List comentsList = result.data["coments_list"]["results"];
 
 //             return Container(
 //               width: ScreenUtil().screenWidth,
