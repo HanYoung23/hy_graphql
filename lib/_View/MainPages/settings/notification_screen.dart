@@ -21,6 +21,30 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   List clickedIndex = [];
+  List checkList = [];
+
+  reArrangeList() {
+    checkList = widget.checkList;
+    checkList.map((item) {
+      int index = checkList.indexOf(item);
+      String timeValues = item["regist_date"];
+      String numberValues = timeValues
+          .replaceAll("-", "")
+          .replaceAll("T", "")
+          .replaceAll(":", "")
+          .replaceAll(".", "")
+          .replaceAll("Z", "")
+          .removeAllWhitespace;
+      checkList[index]["arrangeNum"] = numberValues;
+    }).toList();
+    checkList.sort((a, b) => b["arrangeNum"].compareTo(a["arrangeNum"]));
+  }
+
+  @override
+  void initState() {
+    reArrangeList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +93,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ],
                 ),
               ),
-              widget.checkList.length != 0
+              checkList.length != 0
                   ? Expanded(
                       child: ListView(
-                        children: widget.checkList.map((item) {
+                        children: checkList.map((item) {
                           String type = item["type"];
                           int checkId = item["check_id"];
                           int check = item["check"];
@@ -82,7 +106,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           String time;
                           String ampm;
                           //
-                          int index = widget.checkList.indexOf(item);
+                          int index = checkList.indexOf(item);
                           if (date != null) {
                             month = date
                                 .substring(5, 10)
@@ -99,6 +123,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ampm = "AM";
                             }
                           }
+                          //
+                          print("🚨 arrange : ${item["arrangeNum"]}");
 
                           return Mutation(
                               options: MutationOptions(
