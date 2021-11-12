@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
+import 'package:letsgotrip/constants/common_value.dart';
 
 class FilterBtn extends StatelessWidget {
   final String isActive;
@@ -96,7 +97,7 @@ class FilterBtnOptions extends StatelessWidget {
             fontFamily: "NotoSansCJKkrBold",
             fontSize: ScreenUtil().setSp(16),
             color: Colors.white,
-            letterSpacing: ScreenUtil().setSp(-0.45),
+            letterSpacing: ScreenUtil().setSp(letter_spacing_big),
           ),
         ),
       ),

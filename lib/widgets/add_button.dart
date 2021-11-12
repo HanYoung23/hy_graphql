@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
+import 'package:letsgotrip/constants/common_value.dart';
 
 class AddBtn extends StatelessWidget {
   final String isActive;
@@ -52,7 +53,7 @@ class AddBtnOptions extends StatelessWidget {
             fontFamily: "NotoSansCJKkrBold",
             fontSize: ScreenUtil().setSp(16),
             color: Colors.white,
-            letterSpacing: ScreenUtil().setSp(-0.45),
+            letterSpacing: ScreenUtil().setSp(letter_spacing_big),
           ),
         ),
       ),

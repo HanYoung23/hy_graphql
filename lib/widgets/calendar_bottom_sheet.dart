@@ -188,7 +188,8 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                             style: TextStyle(
                               fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(18),
-                              letterSpacing: ScreenUtil().setSp(-0.45),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_big),
                             )),
                         Spacer(),
                         selectedDate("rightDate"),
@@ -232,7 +233,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               fontFamily: "NotoSansCJKkrBold",
               color: Colors.black,
               fontSize: ScreenUtil().setSp(18),
-              letterSpacing: ScreenUtil().setSp(-0.45),
+              letterSpacing: ScreenUtil().setSp(letter_spacing_big),
               fontWeight: FontWeight.bold,
             )),
         monthViewSettings: DateRangePickerMonthViewSettings(

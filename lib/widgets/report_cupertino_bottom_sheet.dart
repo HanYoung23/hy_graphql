@@ -22,7 +22,7 @@ class ReportCupertinoBottomSheet extends StatelessWidget {
               style: TextStyle(
                 fontFamily: "NotoSansCJKkrRegular",
                 fontSize: ScreenUtil().setSp(20),
-                letterSpacing: ScreenUtil().setSp(-0.48),
+                letterSpacing: ScreenUtil().setSp(letter_spacing_bottom),
                 color: app_red_cupertino,
               ),
             ),
@@ -38,7 +38,7 @@ class ReportCupertinoBottomSheet extends StatelessWidget {
             style: TextStyle(
               fontFamily: "NotoSansCJKkrRegular",
               fontSize: ScreenUtil().setSp(20),
-              letterSpacing: ScreenUtil().setSp(-0.48),
+              letterSpacing: ScreenUtil().setSp(letter_spacing_bottom),
               color: app_blue_cupertino_cancel,
             ),
           ),

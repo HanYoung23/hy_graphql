@@ -147,8 +147,8 @@ class StoreMenuDrawer extends StatelessWidget {
                                       style: TextStyle(
                                         fontFamily: "NotoSansCJKkrBold",
                                         fontSize: ScreenUtil().setSp(18),
-                                        letterSpacing:
-                                            ScreenUtil().setSp(-0.45),
+                                        letterSpacing: ScreenUtil()
+                                            .setSp(letter_spacing_big),
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
@@ -160,8 +160,8 @@ class StoreMenuDrawer extends StatelessWidget {
                                     style: TextStyle(
                                         fontFamily: "NotoSansCJKkrRegular",
                                         fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing:
-                                            ScreenUtil().setSp(-0.35)),
+                                        letterSpacing: ScreenUtil()
+                                            .setSp(letter_spacing_small)),
                                   ),
                                 ],
                               ),
@@ -177,7 +177,8 @@ class StoreMenuDrawer extends StatelessWidget {
                     style: TextStyle(
                         fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(14),
-                        letterSpacing: ScreenUtil().setSp(-0.35)),
+                        letterSpacing:
+                            ScreenUtil().setSp(letter_spacing_small)),
                   )
                 ],
               ),

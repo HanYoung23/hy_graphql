@@ -120,7 +120,7 @@ class _ProfileEditIntroductionScreenState
                     style: TextStyle(
                       fontFamily: "NotoSansCJKkrRegular",
                       fontSize: ScreenUtil().setSp(18),
-                      letterSpacing: ScreenUtil().setSp(-0.45),
+                      letterSpacing: ScreenUtil().setSp(letter_spacing_big),
                     ),
                   ),
                 ),

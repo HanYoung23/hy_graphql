@@ -100,7 +100,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
           style: TextStyle(
             fontFamily: "NotoSansCJKkrRegular",
             fontSize: ScreenUtil().setSp(16),
-            letterSpacing: ScreenUtil().setSp(-0.4),
+            letterSpacing: ScreenUtil().setSp(letter_spacing),
             color: app_grey_login,
           ),
           textAlign: TextAlign.center,
@@ -195,7 +195,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
           style: TextStyle(
             fontFamily: "NotoSansCJKkrRegular",
             fontSize: ScreenUtil().setSp(16),
-            letterSpacing: ScreenUtil().setSp(-0.4),
+            letterSpacing: ScreenUtil().setSp(letter_spacing),
             color: app_grey_login,
           ),
           textAlign: TextAlign.center,
@@ -277,7 +277,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
           style: TextStyle(
             fontFamily: "NotoSansCJKkrRegular",
             fontSize: ScreenUtil().setSp(16),
-            letterSpacing: ScreenUtil().setSp(-0.4),
+            letterSpacing: ScreenUtil().setSp(letter_spacing),
             color: app_grey_login,
           ),
           textAlign: TextAlign.center,

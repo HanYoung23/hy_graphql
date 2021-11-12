@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -108,9 +110,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             children: [
                               Text("댓글 ${comentsList.length}",
                                   style: TextStyle(
-                                      fontSize: ScreenUtil().setSp(16),
-                                      letterSpacing: -0.4,
-                                      fontWeight: FontWeight.bold)),
+                                    fontFamily: "NotoSansCJKkrBold",
+                                    fontSize: ScreenUtil().setSp(16),
+                                    letterSpacing:
+                                        ScreenUtil().setSp(letter_spacing),
+                                  )),
                               Spacer(),
                               InkWell(
                                 onTap: () {
@@ -118,9 +122,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 },
                                 child: Text("닫기",
                                     style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(16),
-                                        letterSpacing: -0.4,
-                                        fontWeight: FontWeight.bold)),
+                                      fontFamily: "NotoSansCJKkrBold",
+                                      fontSize: ScreenUtil().setSp(16),
+                                      letterSpacing:
+                                          ScreenUtil().setSp(letter_spacing),
+                                    )),
                               ),
                             ],
                           ),
@@ -136,12 +142,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 },
                                 child: Text("등록순",
                                     style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: -0.35,
-                                        color: isLeft
-                                            ? Colors.black
-                                            : app_font_grey,
-                                        fontWeight: FontWeight.bold)),
+                                      fontFamily: "NotoSansCJKkrBold",
+                                      fontSize: ScreenUtil().setSp(14),
+                                      letterSpacing: ScreenUtil()
+                                          .setSp(letter_spacing_small),
+                                      color:
+                                          isLeft ? Colors.black : app_font_grey,
+                                    )),
                               ),
                               SizedBox(width: ScreenUtil().setSp(10)),
                               InkWell(
@@ -153,12 +160,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 },
                                 child: Text("최신순",
                                     style: TextStyle(
-                                        fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: -0.35,
-                                        color: !isLeft
-                                            ? Colors.black
-                                            : app_font_grey,
-                                        fontWeight: FontWeight.bold)),
+                                      fontFamily: "NotoSansCJKkrBold",
+                                      fontSize: ScreenUtil().setSp(14),
+                                      letterSpacing: ScreenUtil()
+                                          .setSp(letter_spacing_small),
+                                      color: !isLeft
+                                          ? Colors.black
+                                          : app_font_grey,
+                                    )),
                               ),
                             ],
                           ),
@@ -173,8 +182,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 child: Text(
                                   "텅 빈 공간이에요\n의견을 나눠보세요 :)",
                                   style: TextStyle(
+                                      fontFamily: "NotoSansCJKkrRegular",
                                       fontSize: ScreenUtil().setSp(16),
-                                      letterSpacing: -0.4,
+                                      letterSpacing:
+                                          ScreenUtil().setSp(letter_spacing),
                                       color: app_font_grey),
                                 ),
                               ),
@@ -341,7 +352,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   }
                 },
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14), letterSpacing: -0.35),
+                    fontFamily: "NotoSansCJKkrRegular",
+                    fontSize: ScreenUtil().setSp(14),
+                    letterSpacing: ScreenUtil().setSp(letter_spacing_small)),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical: 0, horizontal: ScreenUtil().setSp(10)),
@@ -353,6 +366,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                   hintText: replyCommentNickname == "" ? '의견을 남겨보세요' : "",
                   hintStyle: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       color: Color.fromRGBO(188, 192, 193, 1),
                       fontSize: ScreenUtil().setSp(14)),
                   prefixText: replyCommentNickname != ""
@@ -382,11 +396,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       }
                     },
                     child: Container(
-                      width: ScreenUtil().setWidth(56),
-                      height: ScreenUtil().setHeight(34),
+                      width: ScreenUtil().setSp(56),
+                      height: ScreenUtil().setSp(34),
                       margin: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(5),
-                          horizontal: ScreenUtil().setWidth(8)),
+                          vertical: ScreenUtil().setSp(5),
+                          horizontal: ScreenUtil().setSp(8)),
                       decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.circular(ScreenUtil().setSp(5)),
@@ -398,9 +412,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           child: Text(
                         "입력",
                         style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
                             fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.35,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             color: Colors.white),
                       )),
                     ),
@@ -443,7 +458,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   }
                 },
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(14), letterSpacing: -0.35),
+                    fontFamily: "NotoSansCJKkrRegular",
+                    fontSize: ScreenUtil().setSp(14),
+                    letterSpacing: ScreenUtil().setSp(letter_spacing_small)),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
                       vertical: 0, horizontal: ScreenUtil().setSp(10)),
@@ -455,6 +472,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ),
                   // hintText: '의견을 남겨보세요',
                   hintStyle: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
                       color: Color.fromRGBO(188, 192, 193, 1),
                       fontSize: ScreenUtil().setSp(14)),
                   prefixText: replyCommentNickname != ""
@@ -481,11 +499,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       }
                     },
                     child: Container(
-                      width: ScreenUtil().setWidth(56),
-                      height: ScreenUtil().setHeight(34),
+                      width: ScreenUtil().setSp(56),
+                      height: ScreenUtil().setSp(34),
                       margin: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(5),
-                          horizontal: ScreenUtil().setWidth(8)),
+                          vertical: ScreenUtil().setSp(5),
+                          horizontal: ScreenUtil().setSp(8)),
                       decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.circular(ScreenUtil().setSp(5)),
@@ -497,9 +515,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           child: Text(
                         "수정",
                         style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
                             fontSize: ScreenUtil().setSp(14),
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.35,
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
                             color: Colors.white),
                       )),
                     ),
@@ -556,9 +575,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           Text(
                             nickname,
                             style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: -0.35,
-                                fontWeight: FontWeight.bold),
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(14),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_small),
+                            ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -567,8 +588,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             child: Text(
                               date,
                               style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
                                 fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: -0.35,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: app_font_grey,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -581,10 +604,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       Text(
                         checkFlag != 2 ? content : "삭제된 댓글입니다.",
                         style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
                             fontSize: ScreenUtil().setSp(14),
                             color:
                                 checkFlag != 2 ? Colors.black : app_font_grey,
-                            letterSpacing: -0.35),
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small)),
                       ),
                       SizedBox(height: ScreenUtil().setSp(8)),
                       InkWell(
@@ -602,9 +627,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         child: Text(
                           "답글 달기",
                           style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(12),
                               color: app_font_grey,
-                              letterSpacing: -0.3),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_x_small)),
                         ),
                       ),
                     ],
@@ -693,9 +720,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           Text(
                             nickname,
                             style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: -0.35,
-                                fontWeight: FontWeight.bold),
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(14),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_small),
+                            ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -705,7 +734,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                               date,
                               style: TextStyle(
                                 fontSize: ScreenUtil().setSp(14),
-                                letterSpacing: -0.35,
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 color: app_font_grey,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -719,7 +749,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         text: TextSpan(
                             text: "@$replyNickname",
                             style: TextStyle(
-                                letterSpacing: -0.35,
+                                fontFamily: "NotoSansCJKkrBold",
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
                                 fontSize: ScreenUtil().setSp(14),
                                 color: app_blue),
                             children: [
@@ -728,7 +760,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                     ? " $replyText"
                                     : " 삭제된 댓글입니다.",
                                 style: TextStyle(
-                                    letterSpacing: -0.35,
+                                    fontFamily: "NotoSansCJKkrRegular",
+                                    letterSpacing: ScreenUtil()
+                                        .setSp(letter_spacing_small),
                                     color: _checkFlag != 2
                                         ? Colors.black
                                         : app_font_grey,
@@ -752,9 +786,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         child: Text(
                           "답글 달기",
                           style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
                               fontSize: ScreenUtil().setSp(12),
                               color: app_font_grey,
-                              letterSpacing: -0.3),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_x_small)),
                         ),
                       ),
                     ],

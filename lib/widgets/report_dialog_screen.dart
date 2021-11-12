@@ -45,7 +45,7 @@ class _ReportDialogScreenState extends State<ReportDialogScreen> {
               style: TextStyle(
                 fontFamily: "NotoSansCJKkrBold",
                 fontSize: ScreenUtil().setSp(16),
-                letterSpacing: ScreenUtil().setSp(-0.4),
+                letterSpacing: ScreenUtil().setSp(letter_spacing),
               ),
               overflow: TextOverflow.fade,
             ),
