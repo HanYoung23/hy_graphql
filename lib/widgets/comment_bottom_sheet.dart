@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,14 +5,15 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/comment_cupertino_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class CommentBottomSheet extends StatefulWidget {
   final int contentsId;
-  const CommentBottomSheet({Key key, @required this.contentsId})
+  final int customerId;
+  const CommentBottomSheet(
+      {Key key, @required this.contentsId, @required this.customerId})
       : super(key: key);
 
   @override
@@ -23,6 +22,8 @@ class CommentBottomSheet extends StatefulWidget {
 
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
   final commentController = TextEditingController();
+  final ScrollController commentScrollController = ScrollController();
+
   FocusNode focusNode;
   bool isLeft = true;
   bool isValid = false;
@@ -32,9 +33,9 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   int replyCommentId = 0;
   String replyCommentNickname = "";
   //
-  int customerId;
-  //
   List commentPages = [1];
+  //
+  bool isRefreshing = false;
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -64,11 +65,25 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     return true;
   }
 
+  refresh() {
+    setState(() {
+      isRefreshing = true;
+    });
+    Future.delayed(Duration(milliseconds: 300), () {
+      setState(() {
+        isRefreshing = false;
+      });
+    });
+  }
+
   @override
   void initState() {
     focusNode = FocusNode();
-    seeValue("customerId").then((value) {
-      customerId = int.parse(value);
+    commentScrollController.addListener(() {
+      if (commentScrollController.offset < refreshOffset) {
+        // print("🚨 ${commentScrollController.offset}");
+        Future.delayed(Duration(milliseconds: 200), () => refresh());
+      }
     });
     super.initState();
   }
@@ -108,13 +123,35 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         children: [
                           Row(
                             children: [
-                              Text("댓글 ${comentsList.length}",
-                                  style: TextStyle(
-                                    fontFamily: "NotoSansCJKkrBold",
-                                    fontSize: ScreenUtil().setSp(16),
-                                    letterSpacing:
-                                        ScreenUtil().setSp(letter_spacing),
-                                  )),
+                              !isRefreshing
+                                  ? Query(
+                                      options: QueryOptions(
+                                        document: gql(Queries.comentsNum),
+                                        variables: {
+                                          "contents_id": widget.contentsId,
+                                          "customer_id": widget.customerId,
+                                        },
+                                      ),
+                                      builder: (result, {refetch, fetchMore}) {
+                                        if (!result.isLoading &&
+                                            result.data != null) {
+                                          Map resultData =
+                                              result.data["photo_detail"];
+                                          int comentsCount =
+                                              resultData["coments_count"];
+                                          return Text("댓글 $comentsCount",
+                                              style: TextStyle(
+                                                fontFamily: "NotoSansCJKkrBold",
+                                                fontSize:
+                                                    ScreenUtil().setSp(16),
+                                                letterSpacing: ScreenUtil()
+                                                    .setSp(letter_spacing),
+                                              ));
+                                        } else {
+                                          return Container();
+                                        }
+                                      })
+                                  : CupertinoActivityIndicator(),
                               Spacer(),
                               InkWell(
                                 onTap: () {
@@ -138,7 +175,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                   setState(() {
                                     isLeft = true;
                                   });
-                                  refetch();
                                 },
                                 child: Text("등록순",
                                     style: TextStyle(
@@ -156,7 +192,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                   setState(() {
                                     isLeft = false;
                                   });
-                                  refetch();
                                 },
                                 child: Text("최신순",
                                     style: TextStyle(
@@ -175,6 +210,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       ),
                     ),
                     SizedBox(height: ScreenUtil().setSp(4)),
+                    // isRefreshing ? CupertinoActivityIndicator() : Container(),
                     comentsList.length == 0
                         ? Expanded(
                             child: Container(
@@ -196,16 +232,43 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                             height: ScreenUtil().screenHeight * 0.9 -
                                 ScreenUtil().setSp(180) -
                                 MediaQuery.of(context).viewInsets.bottom,
-                            child: NotificationListener(
-                              onNotification: onCommentNotification,
-                              child: ListView(
-                                shrinkWrap: true,
-                                children: commentPages.map((page) {
-                                  return commentsListView(page, refetch);
-                                }).toList(),
-                              ),
-                            ),
-                          ),
+                            child: !isRefreshing
+                                ? Query(
+                                    options: QueryOptions(
+                                      document: gql(Queries.comentsCount),
+                                      variables: {
+                                        "contents_id": widget.contentsId,
+                                        "sequence": isLeft ? 1 : 2,
+                                        "page": 1
+                                      },
+                                    ),
+                                    builder: (result, {refetch, fetchMore}) {
+                                      if (!result.isLoading &&
+                                          result.data != null) {
+                                        int pageCount = result
+                                            .data["coments_list"]["count"];
+                                        return SingleChildScrollView(
+                                          controller: commentScrollController,
+                                          physics: BouncingScrollPhysics(),
+                                          child: NotificationListener(
+                                            onNotification:
+                                                pageCount != commentPages.length
+                                                    ? onCommentNotification
+                                                    : null,
+                                            child: Column(
+                                              children:
+                                                  commentPages.map((page) {
+                                                return commentsListView(
+                                                    page, refetch);
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container();
+                                      }
+                                    })
+                                : CupertinoActivityIndicator()),
                     comentsList.length != 0 ? Spacer() : Container(),
                     editCommentId == null
                         ? textInput(context, refetch)
@@ -214,11 +277,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   ],
                 );
               } else {
-                return Expanded(
-                  child: Center(
-                    child: CupertinoActivityIndicator(),
-                  ),
-                );
+                return CupertinoActivityIndicator();
               }
             }));
   }
@@ -329,7 +388,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  // widget.callbackRefetch();
                   refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -382,7 +440,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
                         runMutation({
                           "contents_id": widget.contentsId,
-                          "customer_id": customerId,
+                          "customer_id": widget.customerId,
                           "coment_text": commentText,
                           "coments_id_link": replyCommentId,
                         });
@@ -433,7 +491,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.changeComent),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  // widget.callbackRefetch();
                   refetch();
                   setState(() {
                     editCommentId = null;
@@ -640,7 +697,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  if (customerId == commentCustomerId && checkFlag == 1) {
+                  if (widget.customerId == commentCustomerId &&
+                      checkFlag == 1) {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) =>
@@ -799,7 +857,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               ),
               InkWell(
                 onTap: () {
-                  if (customerId == commentCustomerId && _checkFlag == 1) {
+                  if (widget.customerId == commentCustomerId &&
+                      _checkFlag == 1) {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) =>

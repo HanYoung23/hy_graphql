@@ -56,9 +56,13 @@ class MyApp extends StatelessWidget {
         designSize: Size(375, 667),
         // allowFontScaling: false,
         builder: () => FutureBuilder(
-              future: Future.delayed(Duration(seconds: 1)),
+              future: Future.delayed(Duration(seconds: 3)),
               builder: (context, snapshot) {
-                return ScreenFilter();
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return ScreenFilter();
+                } else {
+                  return Splash();
+                }
               },
             ));
   }
@@ -82,7 +86,9 @@ class _ScreenFilterState extends State<ScreenFilter> {
     AmplifyStorageS3 storage = new AmplifyStorageS3();
     AmplifyAuthCognito auth = new AmplifyAuthCognito();
     await Amplify.addPlugins([auth, storage]);
-    await Amplify.configure(amplifyconfig);
+    if (!Amplify.isConfigured) {
+      await Amplify.configure(amplifyconfig);
+    }
   }
 
   @override
@@ -154,8 +160,9 @@ class Splash extends StatelessWidget {
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().screenHeight,
         decoration: BoxDecoration(
-            image:
-                DecorationImage(image: AssetImage("assets/images/splash.png"))),
+            image: DecorationImage(
+                image: AssetImage("assets/images/splash.png"),
+                fit: BoxFit.fill)),
       ),
     );
   }

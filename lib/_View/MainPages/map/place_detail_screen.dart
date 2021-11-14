@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/comment_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -107,367 +108,382 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                     backgroundColor: Colors.black,
                     brightness: Brightness.dark,
                   ),
-                  body: Container(
-                      width: ScreenUtil().screenWidth,
-                      height: ScreenUtil().screenHeight,
-                      color: Colors.white,
-                      child: SingleChildScrollView(
-                        controller: _scrollController,
-                        physics: BouncingScrollPhysics(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: ScreenUtil().screenWidth,
-                              height: ScreenUtil().setSp(44),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setSp(20)),
-                              margin:
-                                  EdgeInsets.only(top: ScreenUtil().setSp(20)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        child: Image.asset(
-                                            "assets/images/arrow_back.png",
-                                            width: ScreenUtil()
-                                                .setSp(arrow_back_size),
-                                            height: ScreenUtil()
-                                                .setSp(arrow_back_size)),
+                  body: SingleChildScrollView(
+                    child: Container(
+                        width: ScreenUtil().screenWidth,
+                        height: ScreenUtil().screenHeight,
+                        color: Colors.white,
+                        child: SingleChildScrollView(
+                          controller: _scrollController,
+                          physics: BouncingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: ScreenUtil().screenWidth,
+                                height: ScreenUtil().setSp(44),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: ScreenUtil().setSp(20)),
+                                margin: EdgeInsets.only(
+                                    top: ScreenUtil().setSp(20)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Get.back();
+                                          },
+                                          child: Image.asset(
+                                              "assets/images/arrow_back.png",
+                                              width: ScreenUtil()
+                                                  .setSp(arrow_back_size),
+                                              height: ScreenUtil()
+                                                  .setSp(arrow_back_size)),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Text(
-                                    "게시물",
-                                    style: TextStyle(
-                                      fontFamily: "NotoSansCJKkrBold",
-                                      fontSize:
-                                          ScreenUtil().setSp(appbar_title_size),
-                                      letterSpacing:
-                                          ScreenUtil().setSp(letter_spacing),
+                                    Text(
+                                      "게시물",
+                                      style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrBold",
+                                        fontSize: ScreenUtil()
+                                            .setSp(appbar_title_size),
+                                        letterSpacing:
+                                            ScreenUtil().setSp(letter_spacing),
+                                      ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Image.asset(
-                                        "assets/images/arrow_back.png",
-                                        color: Colors.transparent,
-                                        width:
-                                            ScreenUtil().setSp(arrow_back_size),
-                                        height: ScreenUtil()
-                                            .setSp(arrow_back_size)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            isRefreshing
-                                ? Container(
-                                    width: ScreenUtil().screenWidth,
-                                    height: ScreenUtil().setSp(42),
-                                    child: Center(
-                                      child: CupertinoActivityIndicator(),
-                                    ))
-                                : Container(),
-                            Stack(
-                              children: [
-                                Positioned(
-                                  child: CarouselSlider(
-                                      items: imageLink.map((url) {
-                                        // return Image.network(url,
-                                        //     width: ScreenUtil().screenWidth,
-                                        //     height: ScreenUtil().screenWidth,
-                                        //     fit: BoxFit.cover);
-
-                                        return CachedNetworkImage(
-                                          imageUrl: url,
-                                          width: ScreenUtil().screenWidth,
-                                          height: ScreenUtil().screenWidth,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              Container(
-                                                  width:
-                                                      ScreenUtil().screenWidth,
-                                                  height:
-                                                      ScreenUtil().screenHeight,
-                                                  child: Center(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        LoadingIndicator(),
-                                                      ],
-                                                    ),
-                                                  )),
-                                          errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
-                                        );
-                                      }).toList(),
-                                      options: CarouselOptions(
-                                        aspectRatio: 1,
-                                        viewportFraction: 1,
-                                        initialPage: 0,
-                                        enableInfiniteScroll:
-                                            imageLink.length != 1
-                                                ? true
-                                                : false,
-                                        reverse: false,
-                                        autoPlay: imageLink.length != 1
-                                            ? true
-                                            : false,
-                                        autoPlayInterval: Duration(seconds: 3),
-                                        autoPlayAnimationDuration:
-                                            Duration(milliseconds: 800),
-                                        autoPlayCurve: Curves.fastOutSlowIn,
-                                        onPageChanged: (index, reason) {
-                                          setState(() {
-                                            currentIndex = index + 1;
-                                          });
-                                        },
-                                        scrollDirection: Axis.horizontal,
-                                      )),
+                                    Expanded(
+                                      child: Image.asset(
+                                          "assets/images/arrow_back.png",
+                                          color: Colors.transparent,
+                                          width: ScreenUtil()
+                                              .setSp(arrow_back_size),
+                                          height: ScreenUtil()
+                                              .setSp(arrow_back_size)),
+                                    ),
+                                  ],
                                 ),
-                                Positioned(
-                                  bottom: ScreenUtil().setSp(8),
-                                  child: Container(
-                                    width: ScreenUtil().screenWidth,
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                        width: ScreenUtil().setSp(48),
-                                        height: ScreenUtil().setSp(22),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.3),
-                                          borderRadius: BorderRadius.circular(
-                                              ScreenUtil().setSp(100)),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "$currentIndex/${imageLink.length}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "NotoSansCJKkrBold",
-                                                fontSize:
-                                                    ScreenUtil().setSp(12)),
-                                          ),
+                              ),
+                              isRefreshing
+                                  ? Container(
+                                      width: ScreenUtil().screenWidth,
+                                      height: ScreenUtil().setSp(42),
+                                      child: Center(
+                                        child: CupertinoActivityIndicator(),
+                                      ))
+                                  : Container(),
+                              Stack(
+                                children: [
+                                  Positioned(
+                                    child: CarouselSlider(
+                                        items: imageLink.map((url) {
+                                          // return Image.network(url,
+                                          //     width: ScreenUtil().screenWidth,
+                                          //     height: ScreenUtil().screenWidth,
+                                          //     fit: BoxFit.cover);
+
+                                          return CachedNetworkImage(
+                                            imageUrl: url,
+                                            width: ScreenUtil().screenWidth,
+                                            height: ScreenUtil().screenWidth,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                Container(
+                                                    width: ScreenUtil()
+                                                        .screenWidth,
+                                                    height: ScreenUtil()
+                                                        .screenHeight,
+                                                    child: Center(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          LoadingIndicator(),
+                                                        ],
+                                                      ),
+                                                    )),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
+                                          );
+                                        }).toList(),
+                                        options: CarouselOptions(
+                                          aspectRatio: 1,
+                                          viewportFraction: 1,
+                                          initialPage: 0,
+                                          enableInfiniteScroll:
+                                              imageLink.length != 1
+                                                  ? true
+                                                  : false,
+                                          reverse: false,
+                                          autoPlay: imageLink.length != 1
+                                              ? true
+                                              : false,
+                                          autoPlayInterval:
+                                              Duration(seconds: 3),
+                                          autoPlayAnimationDuration:
+                                              Duration(milliseconds: 800),
+                                          autoPlayCurve: Curves.fastOutSlowIn,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              currentIndex = index + 1;
+                                            });
+                                          },
+                                          scrollDirection: Axis.horizontal,
                                         )),
                                   ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: ScreenUtil().setSp(14)),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: ScreenUtil().setSp(20)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: ScreenUtil().screenWidth,
-                                    height: ScreenUtil().setSp(42),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                            width: ScreenUtil().setSp(42),
-                                            height: ScreenUtil().setSp(42),
-                                            decoration: profilePhotoLink != null
-                                                ? BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            ScreenUtil()
-                                                                .setSp(50)),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            profilePhotoLink),
-                                                        fit: BoxFit.cover))
-                                                : BoxDecoration(
-                                                    color: app_grey,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            ScreenUtil()
-                                                                .setSp(50)),
-                                                  )),
-                                        SizedBox(width: ScreenUtil().setSp(15)),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(
-                                                nickName,
-                                                style: TextStyle(
+                                  Positioned(
+                                    bottom: ScreenUtil().setSp(8),
+                                    child: Container(
+                                      width: ScreenUtil().screenWidth,
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                          width: ScreenUtil().setSp(48),
+                                          height: ScreenUtil().setSp(22),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenUtil().setSp(100)),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "$currentIndex/${imageLink.length}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
                                                   fontFamily:
                                                       "NotoSansCJKkrBold",
                                                   fontSize:
-                                                      ScreenUtil().setSp(14),
-                                                  letterSpacing: ScreenUtil()
-                                                      .setSp(letter_spacing),
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                              ),
-                                              Text(
-                                                date,
-                                                style: TextStyle(
+                                                      ScreenUtil().setSp(12)),
+                                            ),
+                                          )),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: ScreenUtil().setSp(14)),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: ScreenUtil().setSp(20)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: ScreenUtil().screenWidth,
+                                      height: ScreenUtil().setSp(42),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              width: ScreenUtil().setSp(42),
+                                              height: ScreenUtil().setSp(42),
+                                              decoration: profilePhotoLink !=
+                                                      null
+                                                  ? BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              ScreenUtil()
+                                                                  .setSp(50)),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              profilePhotoLink),
+                                                          fit: BoxFit.cover))
+                                                  : BoxDecoration(
+                                                      color: app_grey,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              ScreenUtil()
+                                                                  .setSp(50)),
+                                                    )),
+                                          SizedBox(
+                                              width: ScreenUtil().setSp(15)),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(
+                                                  nickName,
+                                                  style: TextStyle(
                                                     fontFamily:
-                                                        "NotoSansCJKkrRegular",
-                                                    color: app_font_grey,
+                                                        "NotoSansCJKkrBold",
                                                     fontSize:
-                                                        ScreenUtil().setSp(12)),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(width: ScreenUtil().setSp(15)),
-                                        InkWell(
-                                          onTap: () {
-                                            if (widget.customerId !=
-                                                postCustomerId) {
-                                              showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    ReportCupertinoBottomSheet(
-                                                        contentsId:
-                                                            widget.contentsId),
-                                              );
-                                            } else {
-                                              showCupertinoModalPopup(
-                                                context: context,
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    PostCupertinoBottomSheet(
-                                                  contentsId: widget.contentsId,
-                                                  refetchCallback: () =>
-                                                      refetch(),
+                                                        ScreenUtil().setSp(14),
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(letter_spacing),
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
                                                 ),
-                                              );
-                                            }
-                                          },
-                                          child: Image.asset(
-                                              "assets/images/three_dots_toggle_button.png",
-                                              width: ScreenUtil().setSp(28),
-                                              height: ScreenUtil().setSp(28)),
+                                                Text(
+                                                  date,
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          "NotoSansCJKkrRegular",
+                                                      color: app_font_grey,
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(12)),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width: ScreenUtil().setSp(15)),
+                                          InkWell(
+                                            onTap: () {
+                                              if (widget.customerId !=
+                                                  postCustomerId) {
+                                                showCupertinoModalPopup(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      ReportCupertinoBottomSheet(
+                                                          contentsId: widget
+                                                              .contentsId),
+                                                );
+                                              } else {
+                                                showCupertinoModalPopup(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      PostCupertinoBottomSheet(
+                                                    contentsId:
+                                                        widget.contentsId,
+                                                    refetchCallback: () =>
+                                                        refetch(),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/three_dots_toggle_button.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height: ScreenUtil().setSp(28)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: ScreenUtil().setHeight(10)),
+                                    Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: ScreenUtil().setSp(16),
+                                            vertical: ScreenUtil().setSp(8)),
+                                        decoration: BoxDecoration(
+                                          color: app_grey,
+                                          borderRadius: BorderRadius.circular(
+                                              ScreenUtil().setSp(50)),
                                         ),
+                                        child: Text(
+                                          contentsTitle,
+                                          style: TextStyle(
+                                            fontFamily: "NotoSansCJKkrRegular",
+                                            fontSize: ScreenUtil().setSp(12),
+                                            letterSpacing: ScreenUtil()
+                                                .setSp(letter_spacing_small),
+                                          ),
+                                        )),
+                                    SizedBox(
+                                        height: ScreenUtil().setHeight(10)),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Container(
+                                              width: ScreenUtil().setSp(140),
+                                              height: ScreenUtil().setSp(20),
+                                              child:
+                                                  ratings("방문객", starRating[0]),
+                                            ),
+                                            Container(
+                                              width: ScreenUtil().setSp(140),
+                                              height: ScreenUtil().setSp(20),
+                                              child: ratings(
+                                                  "주차 편의성", starRating[1]),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(width: ScreenUtil().setSp(16)),
+                                        Column(
+                                          children: [
+                                            Container(
+                                              width: ScreenUtil().setSp(140),
+                                              height: ScreenUtil().setSp(20),
+                                              child: ratings(
+                                                  "아이 동반", starRating[2]),
+                                            ),
+                                            Container(
+                                              width: ScreenUtil().setSp(140),
+                                              height: ScreenUtil().setSp(20),
+                                              child: ratings(
+                                                  "추천 의향", starRating[3]),
+                                            )
+                                          ],
+                                        )
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(height: ScreenUtil().setHeight(10)),
-                                  Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: ScreenUtil().setSp(16),
-                                          vertical: ScreenUtil().setSp(8)),
-                                      decoration: BoxDecoration(
-                                        color: app_grey,
-                                        borderRadius: BorderRadius.circular(
-                                            ScreenUtil().setSp(50)),
-                                      ),
-                                      child: Text(
-                                        contentsTitle,
+                                    SizedBox(height: ScreenUtil().setSp(10)),
+                                    ReadMoreText(mainText,
+                                        trimLines: 2,
+                                        colorClickableText: app_font_grey,
                                         style: TextStyle(
                                           fontFamily: "NotoSansCJKkrRegular",
-                                          fontSize: ScreenUtil().setSp(12),
+                                          fontSize: ScreenUtil().setSp(14),
                                           letterSpacing: ScreenUtil()
                                               .setSp(letter_spacing_small),
                                         ),
-                                      )),
-                                  SizedBox(height: ScreenUtil().setHeight(10)),
-                                  Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: ScreenUtil().setSp(140),
-                                            height: ScreenUtil().setSp(20),
-                                            child:
-                                                ratings("방문객", starRating[0]),
-                                          ),
-                                          Container(
-                                            width: ScreenUtil().setSp(140),
-                                            height: ScreenUtil().setSp(20),
-                                            child: ratings(
-                                                "주차 편의성", starRating[1]),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(width: ScreenUtil().setSp(16)),
-                                      Column(
-                                        children: [
-                                          Container(
-                                            width: ScreenUtil().setSp(140),
-                                            height: ScreenUtil().setSp(20),
-                                            child:
-                                                ratings("아이 동반", starRating[2]),
-                                          ),
-                                          Container(
-                                            width: ScreenUtil().setSp(140),
-                                            height: ScreenUtil().setSp(20),
-                                            child:
-                                                ratings("추천 의향", starRating[3]),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: ScreenUtil().setSp(10)),
-                                  ReadMoreText(mainText,
-                                      trimLines: 2,
-                                      colorClickableText: app_font_grey,
-                                      style: TextStyle(
-                                        fontFamily: "NotoSansCJKkrRegular",
-                                        fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: ScreenUtil()
-                                            .setSp(letter_spacing_small),
-                                      ),
-                                      trimMode: TrimMode.Line,
-                                      trimCollapsedText: '더보기',
-                                      trimExpandedText: '접기',
-                                      moreStyle: TextStyle(
-                                        fontFamily: "NotoSansCJKkrRegular",
-                                        fontSize: ScreenUtil().setSp(14),
-                                        letterSpacing: ScreenUtil()
-                                            .setSp(letter_spacing_small),
-                                        color: app_font_grey,
-                                      )),
-                                  SizedBox(height: ScreenUtil().setSp(10)),
-                                  Wrap(
-                                    direction: Axis.horizontal,
-                                    children: tagList.map((tag) {
-                                      return Text("#$tag  ",
-                                          style: TextStyle(
-                                              fontFamily:
-                                                  "NotoSansCJKkrRegular",
-                                              fontSize: ScreenUtil().setSp(14),
-                                              letterSpacing:
-                                                  letter_spacing_small,
-                                              color: Color(0xff1A4F79)));
-                                    }).toList(),
-                                  ),
-                                  SizedBox(height: ScreenUtil().setSp(20)),
-                                  Row(
-                                    children: [
-                                      likeButton(likesCount, likes),
-                                      bookmarkButton(bookmarksCount, bookmarks),
-                                      comentsButton(comentsCount, refetch),
-                                    ],
-                                  ),
-                                  SizedBox(height: ScreenUtil().setSp(50)),
-                                ],
+                                        trimMode: TrimMode.Line,
+                                        trimCollapsedText: '더보기',
+                                        trimExpandedText: '접기',
+                                        moreStyle: TextStyle(
+                                          fontFamily: "NotoSansCJKkrRegular",
+                                          fontSize: ScreenUtil().setSp(14),
+                                          letterSpacing: ScreenUtil()
+                                              .setSp(letter_spacing_small),
+                                          color: app_font_grey,
+                                        )),
+                                    SizedBox(height: ScreenUtil().setSp(10)),
+                                    Wrap(
+                                      direction: Axis.horizontal,
+                                      children: tagList.map((tag) {
+                                        return Text("#$tag  ",
+                                            style: TextStyle(
+                                                fontFamily:
+                                                    "NotoSansCJKkrRegular",
+                                                fontSize:
+                                                    ScreenUtil().setSp(14),
+                                                letterSpacing:
+                                                    letter_spacing_small,
+                                                color: Color(0xff1A4F79)));
+                                      }).toList(),
+                                    ),
+                                    SizedBox(height: ScreenUtil().setSp(20)),
+                                    Row(
+                                      children: [
+                                        likeButton(likesCount, likes),
+                                        bookmarkButton(
+                                            bookmarksCount, bookmarks),
+                                        comentsButton(comentsCount, refetch),
+                                      ],
+                                    ),
+                                    SizedBox(height: ScreenUtil().setSp(50)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )),
+                            ],
+                          ),
+                        )),
+                  ),
                 ),
               );
             } else {
@@ -539,13 +555,17 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           //   "coments_id_link": "",
           // });
           if (this.mounted) {
-            showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (_) => CommentBottomSheet(contentsId: widget.contentsId),
-              isScrollControlled: true,
-            ).then((value) {
-              refetch();
+            seeValue("customerId").then((value) {
+              int customerId = int.parse(value);
+              showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (_) => CommentBottomSheet(
+                    contentsId: widget.contentsId, customerId: customerId),
+                isScrollControlled: true,
+              ).then((value) {
+                refetch();
+              });
             });
           }
         },

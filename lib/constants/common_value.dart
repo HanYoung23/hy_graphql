@@ -35,3 +35,5 @@ const Color app_grey_tag = Color.fromRGBO(241, 241, 245, 1);
 const Color app_grey_light = Color.fromRGBO(248, 248, 250, 1);
 const Color app_grey_dark = Color.fromRGBO(188, 192, 193, 1);
 const Color app_grey_login = Color.fromRGBO(118, 118, 118, 1);
+
+const double refreshOffset = -100.0;

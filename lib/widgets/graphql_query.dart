@@ -8,7 +8,7 @@ class Queries {
           profile_photo_link
           profile_text
           point
-          language
+          language 
         }
     }
 """;
@@ -110,6 +110,24 @@ class Queries {
       {
           count
           results
+        }
+    }
+""";
+
+  static final String comentsCount = """
+    query coments_list(\$contents_id: Int!, \$sequence: Int!, \$page: Int!) {
+      coments_list(contents_id: \$contents_id, sequence: \$sequence,page: \$page) 
+      {
+          count
+        }
+    }
+""";
+
+  static final String comentsNum = """
+    query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+      photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
+      {
+          coments_count
         }
     }
 """;

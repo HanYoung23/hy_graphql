@@ -90,6 +90,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void dispose() {
+    postScrollController.dispose();
+    commentScrollController.dispose();
+    bookmarkScrollController.dispose();
     super.dispose();
   }
 
@@ -101,19 +104,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     });
     postScrollController.addListener(() {
-      if (postScrollController.offset < -100.0) {
+      if (postScrollController.offset < refreshOffset) {
         // print("🚨 ${postScrollController.offset}");
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
     });
     commentScrollController.addListener(() {
-      if (commentScrollController.offset < -100.0) {
+      if (commentScrollController.offset < refreshOffset) {
         // print("🚨 ${commentScrollController.offset}");
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
     });
     bookmarkScrollController.addListener(() {
-      if (bookmarkScrollController.offset < -100.0) {
+      if (bookmarkScrollController.offset < refreshOffset) {
         // print("🚨 ${bookmarkScrollController.offset}");
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
