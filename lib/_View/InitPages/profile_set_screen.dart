@@ -42,6 +42,12 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
   bool isAllFilled = false;
 
   @override
+  void dispose() {
+    nicknameController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
   }

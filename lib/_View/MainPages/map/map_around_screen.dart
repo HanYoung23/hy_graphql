@@ -53,6 +53,12 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
   }
 
   @override
+  void dispose() {
+    floatingBtnController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
   }

@@ -124,6 +124,12 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   }
 
   @override
+  void dispose() {
+    gmWholeController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     seeValue("customerId").then((customerId) {
       setState(() {

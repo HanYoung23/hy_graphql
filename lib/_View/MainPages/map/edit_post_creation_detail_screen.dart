@@ -86,6 +86,12 @@ class _EditPostCreationDetailScreenState
   }
 
   @override
+  void dispose() {
+    locationTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     checkLocationPermission().then((permission) {
       if (permission) {

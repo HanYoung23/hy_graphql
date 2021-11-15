@@ -160,6 +160,13 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
   }
 
   @override
+  void dispose() {
+    contentTextController.dispose();
+    tagTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     seeValue("postSaveData").then((value) {

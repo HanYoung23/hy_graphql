@@ -38,6 +38,12 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   }
 
   @override
+  void dispose() {
+    calendarController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
         top: false,

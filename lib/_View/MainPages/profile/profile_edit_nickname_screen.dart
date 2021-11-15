@@ -40,6 +40,12 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
   bool isAllFilled = false;
 
   @override
+  void dispose() {
+    nicknameController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
   }
@@ -120,19 +126,13 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                     width: ScreenUtil().setSp(arrow_back_size),
                                     height:
                                         ScreenUtil().setSp(arrow_back_size))),
-                            InkWell(
-                              onTap: () {
-                                print("🚨 ${nicknameController.text}");
-                              },
-                              child: Text(
-                                "프로필 별명",
-                                style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrBold",
-                                  fontSize:
-                                      ScreenUtil().setSp(appbar_title_size),
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing),
-                                ),
+                            Text(
+                              "프로필 별명",
+                              style: TextStyle(
+                                fontFamily: "NotoSansCJKkrBold",
+                                fontSize: ScreenUtil().setSp(appbar_title_size),
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
                               ),
                             ),
                             InkWell(

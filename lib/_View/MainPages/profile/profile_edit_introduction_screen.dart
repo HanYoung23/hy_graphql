@@ -37,6 +37,12 @@ class _ProfileEditIntroductionScreenState
   }
 
   @override
+  void dispose() {
+    contentTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     setPreviousText();
     super.initState();

@@ -38,9 +38,9 @@ dependencies:
   image_picker: ^0.8.4
   path_provider: ^2.0.4
   flutter_exif: ^1.0.1
-  flutter_rating_bar: ^4.0.0
   exif: ^3.0.0
   metadata: any
+  flutter_rating_bar: ^4.0.0
   webview_flutter: any
   sign_in_with_apple: ^3.2.0
   syncfusion_flutter_datepicker: ^19.3.46

@@ -60,6 +60,13 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   @override
+  void dispose() {
+    gmWholeController.dispose();
+    floatingBtnController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     checkLocationPermission().then((permission) {
       if (permission) {

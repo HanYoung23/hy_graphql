@@ -146,6 +146,13 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   }
 
   @override
+  void dispose() {
+    contentTextController.dispose();
+    tagTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     seeValue("postSaveData").then((value) {
@@ -523,7 +530,9 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
         checkGalleryPermission().then((permission) async {
           if (permission) {
             picker
-                .pickMultiImage(maxWidth: 1000, maxHeight: 1000)
+                .pickMultiImage(
+                    maxWidth: ScreenUtil().setSp(1000),
+                    maxHeight: ScreenUtil().setSp(1000))
                 .then((images) {
               if (images != null) {
                 List<File> newImageList = imageList;
@@ -531,6 +540,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                 images.forEach((xfile) async {
                   File file = File(xfile.path);
                   newImageList.add(file);
+                  //here
                   pullPhotoCoordnate(file).then((latlng) {
                     if (latlng != null) {
                       newLatLngList.add(latlng);

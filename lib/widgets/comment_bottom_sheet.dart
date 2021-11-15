@@ -36,6 +36,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   List commentPages = [1];
   //
   bool isRefreshing = false;
+  //
+  double lastCoord;
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -77,6 +79,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   @override
+  void dispose() {
+    commentController.dispose();
+    commentScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     focusNode = FocusNode();
     commentScrollController.addListener(() {
@@ -90,6 +99,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    print("🚨 lastCoord : $lastCoord");
+
     return Container(
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().screenHeight * 0.9,
@@ -247,6 +258,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                           result.data != null) {
                                         int pageCount = result
                                             .data["coments_list"]["count"];
+
+                                        Future.delayed(
+                                            Duration(milliseconds: 1000), () {
+                                          lastCoord != null
+                                              ? commentScrollController
+                                                  .jumpTo(lastCoord)
+                                              : print("$lastCoord");
+                                        });
+
                                         return SingleChildScrollView(
                                           controller: commentScrollController,
                                           physics: BouncingScrollPhysics(),
@@ -449,6 +469,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           replyCommentId = 0;
                           replyCommentNickname = "";
                           isValid = false;
+                          lastCoord = commentScrollController.offset;
                         });
                         FocusScope.of(context).unfocus();
                       }
@@ -491,11 +512,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.changeComent),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
-                  refetch();
                   setState(() {
                     editCommentId = null;
                     editCommentText = null;
                   });
+                  refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
               return TextFormField(
@@ -674,6 +695,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           setState(() {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
+                            lastCoord = commentScrollController.offset;
                           });
                           commentController.text = " ";
                           commentController.selection =
@@ -834,6 +856,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           setState(() {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
+                            lastCoord = commentScrollController.offset;
                           });
                           commentController.text = " ";
                           commentController.selection =

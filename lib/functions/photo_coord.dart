@@ -1,9 +1,12 @@
 import 'dart:io';
+// import 'package:exif/exif.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:metadata/metadata.dart';
 
 Future pullPhotoCoordnate(File photo) async {
   // final exifData = await readExifFromFile(photo);
+  // print("🚨 exif data : $exifData");
+
   final fileByte = await photo.readAsBytes();
   var result = MetaData.exifData(fileByte);
   print("🚨 result : ${result.exifData}");
@@ -41,6 +44,14 @@ Future pullPhotoCoordnate(File photo) async {
 
     print("🚨 GPSLongitude data : $latValue, $lngValue");
     return LatLng(double.parse(latValue), double.parse(lngValue));
+  } else {
+    return null;
+  }
+}
+
+
+
+
 
     // if (exifData["GPS GPSLatitude"] != null) {
     //   String latitude = "${exifData["GPS GPSLatitude"]}";
@@ -73,16 +84,3 @@ Future pullPhotoCoordnate(File photo) async {
 
     //   print("🚨 GPSLongitude data : ${latValue}, ${lngValue}");
     //   return LatLng(double.parse(latValue), double.parse(lngValue));
-  } else {
-    return null;
-  }
-}
-
-// 목동 : 37.5280556, 126.8777778
-// 영등포 : 37.5269304, 126.9035138
-
-// 37.516666666666
-// 113890
-
-// 37, 31, 37
-// 126, 54, 13
