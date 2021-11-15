@@ -61,8 +61,8 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void dispose() {
-    gmWholeController.dispose();
-    floatingBtnController.dispose();
+    // gmWholeController.dispose();
+    // floatingBtnController.dispose();
     super.dispose();
   }
 
@@ -402,14 +402,14 @@ class _MapScreenState extends State<MapScreen> {
           } else {
             return SafeArea(
               top: false,
-              bottom: true,
+              bottom: false,
               child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   toolbarHeight: 0,
                   elevation: 0,
-                  backgroundColor: Colors.black,
-                  brightness: Brightness.dark,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
                 ),
                 body: Container(
                     width: ScreenUtil().screenWidth,

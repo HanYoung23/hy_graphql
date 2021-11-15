@@ -63,7 +63,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
             return SafeArea(
                 top: false,
-                bottom: true,
+                bottom: false,
                 child: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).unfocus();
@@ -73,8 +73,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         appBar: AppBar(
                           toolbarHeight: 0,
                           elevation: 0,
-                          backgroundColor: Colors.black,
-                          brightness: Brightness.dark,
+                          backgroundColor: Colors.white,
+                          brightness: Brightness.light,
                         ),
                         body: SingleChildScrollView(
                             child: Column(

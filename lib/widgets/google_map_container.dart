@@ -76,11 +76,11 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         setState(() {
           mapMarkerList = mapMarkers;
         });
-        _initMarkers();
+        await _initMarkers();
       }
     }
     if (this.mounted) {
-      _updateMarkers(
+      await _updateMarkers(
           gmWholeController.currentCameraPosition.value.zoom - 0.000001,
           gmWholeController.currentCameraPosition.value);
     }
@@ -125,7 +125,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
   @override
   void dispose() {
-    gmWholeController.dispose();
+    // gmWholeController.dispose();
     super.dispose();
   }
 
@@ -200,7 +200,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       mapToolbarEnabled: false,
       zoomGesturesEnabled: true,
       myLocationButtonEnabled: false,
-      myLocationEnabled: false,
+      myLocationEnabled: true,
       zoomControlsEnabled: false,
       initialCameraPosition: widget.currentCameraPosition.target.latitude ==
               37.55985294417329 // inital latitude

@@ -47,7 +47,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   Widget build(BuildContext context) {
     return SafeArea(
         top: false,
-        bottom: true,
+        bottom: false,
         child: Container(
           width: ScreenUtil().screenWidth,
           height: ScreenUtil().screenHeight * 0.9 -

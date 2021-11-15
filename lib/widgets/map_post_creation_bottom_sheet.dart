@@ -21,7 +21,7 @@ class _MapPostCreationBottomSheetState
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: false,
       child: Container(
         height: ScreenUtil().setSp(280),
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(40)),

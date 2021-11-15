@@ -83,13 +83,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: false,
       child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 0,
             elevation: 0,
-            backgroundColor: Colors.black,
-            brightness: Brightness.dark,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
           ),
           body: IndexedStack(
             index: _selectedIndex,

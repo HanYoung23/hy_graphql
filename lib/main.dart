@@ -83,10 +83,10 @@ class _ScreenFilterState extends State<ScreenFilter> {
   String loginType;
 
   Future initAWS() async {
-    AmplifyStorageS3 storage = new AmplifyStorageS3();
-    AmplifyAuthCognito auth = new AmplifyAuthCognito();
-    await Amplify.addPlugins([auth, storage]);
     if (!Amplify.isConfigured) {
+      AmplifyStorageS3 storage = new AmplifyStorageS3();
+      AmplifyAuthCognito auth = new AmplifyAuthCognito();
+      await Amplify.addPlugins([auth, storage]);
       await Amplify.configure(amplifyconfig);
     }
   }

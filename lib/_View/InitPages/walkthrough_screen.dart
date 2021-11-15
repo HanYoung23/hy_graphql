@@ -29,14 +29,14 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: false,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           toolbarHeight: 0,
           elevation: 0,
-          backgroundColor: Colors.black,
-          brightness: Brightness.dark,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
         ),
         body: Container(
             width: ScreenUtil().screenWidth,

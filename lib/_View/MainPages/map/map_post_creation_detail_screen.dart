@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -115,8 +114,8 @@ class _MapPostCreationDetailScreenState
         appBar: AppBar(
           toolbarHeight: 0,
           elevation: 0,
-          backgroundColor: Colors.black,
-          brightness: Brightness.dark,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
         ),
         body: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
@@ -212,18 +211,18 @@ class _MapPostCreationDetailScreenState
                             ],
                           )),
                 SizedBox(height: ScreenUtil().setSp(4)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
-                        style: TextStyle(
-                            fontFamily: "NotoSansCJKkrRegular",
-                            letterSpacing:
-                                ScreenUtil().setSp(letter_spacing_small),
-                            fontSize: ScreenUtil().setSp(12),
-                            color: address != "" ? Colors.black : Colors.red),
-                        overflow: TextOverflow.fade),
-                  ],
+                Container(
+                  width: ScreenUtil().screenWidth,
+                  child: Text(
+                    address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                        fontSize: ScreenUtil().setSp(12),
+                        color: address != "" ? Colors.black : Colors.red),
+                    overflow: TextOverflow.fade,
+                    maxLines: 2,
+                  ),
                 ),
                 SizedBox(height: ScreenUtil().setSp(8)),
                 Text(

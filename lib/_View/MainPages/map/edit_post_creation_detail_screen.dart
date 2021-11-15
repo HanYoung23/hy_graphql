@@ -122,8 +122,8 @@ class _EditPostCreationDetailScreenState
         appBar: AppBar(
           toolbarHeight: 0,
           elevation: 0,
-          backgroundColor: Colors.black,
-          brightness: Brightness.dark,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
         ),
         body: Container(
           height: ScreenUtil().screenHeight -

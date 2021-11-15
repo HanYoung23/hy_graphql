@@ -47,14 +47,14 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
 
             return SafeArea(
               top: false,
-              bottom: true,
+              bottom: false,
               child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   toolbarHeight: 0,
                   elevation: 0,
-                  backgroundColor: Colors.black,
-                  brightness: Brightness.dark,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
                 ),
                 body: Container(
                   child: SingleChildScrollView(

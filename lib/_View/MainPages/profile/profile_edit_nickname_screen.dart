@@ -93,7 +93,7 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
         builder: (RunMutation runMutation, QueryResult queryResult) {
           return SafeArea(
             top: false,
-            bottom: true,
+            bottom: false,
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -103,8 +103,8 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                 appBar: AppBar(
                   toolbarHeight: 0,
                   elevation: 0,
-                  backgroundColor: Colors.black,
-                  brightness: Brightness.dark,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
                 ),
                 resizeToAvoidBottomInset: false,
                 body: Container(

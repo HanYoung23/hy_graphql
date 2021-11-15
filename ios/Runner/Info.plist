@@ -108,7 +108,7 @@
 	<key>kConsumerSecret</key>
 	<string>RNR1JUfDb2</string>
 	<key>kServiceAppName</key>
-	<string>letsgotrip</string>
+	<string>여행사진지도</string>
 	<key>kServiceAppUrlScheme</key>
 	<string>com.jjang.letsgotrip.naver</string>
 </dict>

@@ -307,6 +307,8 @@ logOutPopup(BuildContext context) {
                               await deleteUserData("userId");
                               await deleteUserData("customerId");
                               await deleteUserData("loginType");
+                              await deleteUserData("isProfileSet");
+
                               Get.offAll(() => AuthorityScreen());
                             });
                           },

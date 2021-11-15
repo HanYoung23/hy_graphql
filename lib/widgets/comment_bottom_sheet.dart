@@ -61,6 +61,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       setState(() {
         commentPages = newPages;
       });
+      print("🚨 commentPages : $commentPages");
     } else {
       // print('I am at the start');
     }
@@ -259,22 +260,25 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                         int pageCount = result
                                             .data["coments_list"]["count"];
 
-                                        Future.delayed(
-                                            Duration(milliseconds: 1000), () {
-                                          lastCoord != null
-                                              ? commentScrollController
-                                                  .jumpTo(lastCoord)
-                                              : print("$lastCoord");
-                                        });
+                                        // Future.delayed(
+                                        //     Duration(milliseconds: 1000), () {
+                                        //   lastCoord != null
+                                        //       ? commentScrollController
+                                        //           .jumpTo(lastCoord)
+                                        //       : print("$lastCoord");
+                                        // });
 
                                         return SingleChildScrollView(
                                           controller: commentScrollController,
                                           physics: BouncingScrollPhysics(),
                                           child: NotificationListener(
+                                            // onNotification: pageCount !=
+                                            //             commentPages.length &&
+                                            //         pageCount != 1
+                                            //     ? onCommentNotification
+                                            //     : null,
                                             onNotification:
-                                                pageCount != commentPages.length
-                                                    ? onCommentNotification
-                                                    : null,
+                                                onCommentNotification,
                                             child: Column(
                                               children:
                                                   commentPages.map((page) {

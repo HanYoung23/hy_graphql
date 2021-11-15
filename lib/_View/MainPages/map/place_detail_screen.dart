@@ -99,14 +99,14 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
 
               return SafeArea(
                 top: false,
-                bottom: true,
+                bottom: false,
                 child: Scaffold(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                   appBar: AppBar(
                     toolbarHeight: 0,
                     elevation: 0,
-                    backgroundColor: Colors.black,
-                    brightness: Brightness.dark,
+                    backgroundColor: Colors.white,
+                    brightness: Brightness.light,
                   ),
                   body: SingleChildScrollView(
                     child: Container(
@@ -489,14 +489,14 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             } else {
               return SafeArea(
                 top: false,
-                bottom: true,
+                bottom: false,
                 child: Scaffold(
                   backgroundColor: Colors.white,
                   appBar: AppBar(
                     toolbarHeight: 0,
                     elevation: 0,
-                    backgroundColor: Colors.black,
-                    brightness: Brightness.dark,
+                    backgroundColor: Colors.white,
+                    brightness: Brightness.light,
                   ),
                   body: Container(
                       width: ScreenUtil().screenWidth,
@@ -516,14 +516,14 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
           } else {
             return SafeArea(
               top: false,
-              bottom: true,
+              bottom: false,
               child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   toolbarHeight: 0,
                   elevation: 0,
-                  backgroundColor: Colors.black,
-                  brightness: Brightness.dark,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
                 ),
                 body: Container(
                     width: ScreenUtil().screenWidth,

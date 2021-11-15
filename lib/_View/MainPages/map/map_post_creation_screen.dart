@@ -166,7 +166,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: false,
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -176,8 +176,8 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
           appBar: AppBar(
             toolbarHeight: 0,
             elevation: 0,
-            backgroundColor: Colors.black,
-            brightness: Brightness.dark,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
           ),
           body: SingleChildScrollView(
             child: Container(

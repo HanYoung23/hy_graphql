@@ -130,15 +130,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return customerId != null
         ? SafeArea(
             top: false,
-            bottom: true,
+            bottom: false,
             child: Scaffold(
               key: scaffoldKey,
               backgroundColor: Colors.white,
               appBar: AppBar(
                 toolbarHeight: 0,
                 elevation: 0,
-                backgroundColor: Colors.black,
-                brightness: Brightness.dark,
+                backgroundColor: Colors.white,
+                brightness: Brightness.light,
               ),
               body: SingleChildScrollView(
                 // physics: BouncingScrollPhysics(),
@@ -352,14 +352,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ))
         : SafeArea(
             top: false,
-            bottom: true,
+            bottom: false,
             child: Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
                 toolbarHeight: 0,
                 elevation: 0,
-                backgroundColor: Colors.black,
-                brightness: Brightness.dark,
+                backgroundColor: Colors.white,
+                brightness: Brightness.light,
               ),
               body: Container(
                   width: ScreenUtil().screenWidth,
@@ -683,7 +683,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
-            String profileText = resultData["profile_text"];
+            String profileText = "";
+            if (resultData["profile_text"] != null) {
+              String profileText = resultData["profile_text"];
+            } else {}
             // int point = resultData["point"];
             // int language = resultData["language"];
 

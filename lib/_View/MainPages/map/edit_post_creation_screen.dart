@@ -181,7 +181,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: false,
       child: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -191,8 +191,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
           appBar: AppBar(
             toolbarHeight: 0,
             elevation: 0,
-            backgroundColor: Colors.black,
-            brightness: Brightness.dark,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
           ),
           body: Container(
             height: ScreenUtil().screenHeight,

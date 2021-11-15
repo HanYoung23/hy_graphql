@@ -54,7 +54,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
 
   @override
   void dispose() {
-    floatingBtnController.dispose();
+    // floatingBtnController.dispose();
     super.dispose();
   }
 
@@ -97,7 +97,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
               },
               child: SafeArea(
                 top: false,
-                bottom: true,
+                bottom: false,
                 child: NotificationListener(
                   onNotification:
                       pages.length != pageCount ? onNotification : null,
@@ -106,8 +106,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                     appBar: AppBar(
                       toolbarHeight: 0,
                       elevation: 0,
-                      backgroundColor: Colors.black,
-                      brightness: Brightness.dark,
+                      backgroundColor: Colors.white,
+                      brightness: Brightness.light,
                     ),
                     body: Stack(
                       children: [
@@ -256,7 +256,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                               adMapList.add(adMapData);
                                             }
 
-                                            adMapList.sublist(1, 3);
+                                            // adMapList.sublist(1, 3);
 
                                             return photoQuery(
                                               latitudeFirst,
@@ -382,14 +382,14 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
           } else {
             return SafeArea(
               top: false,
-              bottom: true,
+              bottom: false,
               child: Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   toolbarHeight: 0,
                   elevation: 0,
-                  backgroundColor: Colors.black,
-                  brightness: Brightness.dark,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
                 ),
                 body: Container(
                     width: ScreenUtil().screenWidth,
