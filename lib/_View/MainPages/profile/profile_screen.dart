@@ -685,8 +685,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             String profilePhotoLink = resultData["profile_photo_link"];
             String profileText = "";
             if (resultData["profile_text"] != null) {
-              String profileText = resultData["profile_text"];
-            } else {}
+              profileText = resultData["profile_text"];
+            }
             // int point = resultData["point"];
             // int language = resultData["language"];
 

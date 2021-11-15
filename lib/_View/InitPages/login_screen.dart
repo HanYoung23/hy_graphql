@@ -10,9 +10,9 @@ import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/apple_login.dart';
 import 'package:letsgotrip/functions/kakao_login.dart';
 import 'package:letsgotrip/functions/naver_login.dart';
-import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -54,14 +54,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 await storeUserData("customerId", customerId);
                 String userId = await storage.read(key: "userId");
                 String loginType = await storage.read(key: "loginType");
-                seeValue("isProfileSet").then((value) {
-                  if (value == "true") {
-                    Get.to(() => HomePage());
-                  } else {
-                    Get.to(() =>
-                        ProfileSetScreen(userId: userId, loginType: loginType));
-                  }
-                });
+                Get.to(() => Query(
+                    options: QueryOptions(
+                      document: gql(Queries.mypage),
+                      variables: {"customer_id": int.parse(customerId)},
+                    ),
+                    builder: (result, {refetch, fetchMore}) {
+                      if (!result.isLoading && result.data != null) {
+                        Map resultData = result.data["mypage"][0];
+                        // print("🚨 mypage result : $resultData");
+                        String nickname = resultData["nick_name"];
+                        String profilePhotoLink =
+                            resultData["profile_photo_link"];
+
+                        return ProfileSetScreen(
+                          userId: userId,
+                          loginType: loginType,
+                          nickname: nickname,
+                          photoUrl: profilePhotoLink,
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }));
               } else {
                 Get.snackbar("error", "${resultData["createCustomer"]["msg"]}");
               }

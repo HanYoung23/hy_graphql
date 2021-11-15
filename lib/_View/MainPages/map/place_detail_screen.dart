@@ -82,7 +82,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   registDate.replaceAll(RegExp(r'-'), ".").substring(0, 10);
               String profilePhotoLink = resultData["profile_photo_link"];
               String tags = resultData["tags"];
-              List tagList = tags.split("#").sublist(1);
+              List tagList = tags.split(",");
               int postCustomerId = resultData["customer_id"];
               int bookmarksCount = resultData["bookmarks_count"];
               int likesCount = resultData["likes_count"];
@@ -94,8 +94,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                 resultData["star_rating1"],
                 resultData["star_rating2"],
                 resultData["star_rating3"],
-                resultData["star_rating4"]
+                resultData["star_rating4"],
               ];
+
+              // print("🚨tagList: $tags");
 
               return SafeArea(
                 top: false,

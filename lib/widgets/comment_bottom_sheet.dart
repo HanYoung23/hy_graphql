@@ -257,8 +257,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                     builder: (result, {refetch, fetchMore}) {
                                       if (!result.isLoading &&
                                           result.data != null) {
-                                        int pageCount = result
-                                            .data["coments_list"]["count"];
+                                        // int pageCount = result
+                                        //     .data["coments_list"]["count"];
 
                                         // Future.delayed(
                                         //     Duration(milliseconds: 1000), () {

@@ -17,9 +17,15 @@ import 'package:letsgotrip/widgets/graphal_mutation.dart';
 class ProfileSetScreen extends StatefulWidget {
   final String userId;
   final String loginType;
+  final String nickname;
+  final String photoUrl;
 
   const ProfileSetScreen(
-      {Key key, @required this.userId, @required this.loginType})
+      {Key key,
+      @required this.userId,
+      @required this.loginType,
+      this.nickname,
+      this.photoUrl})
       : super(key: key);
 
   @override
@@ -49,6 +55,13 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
 
   @override
   void initState() {
+    if (widget.nickname != null) {
+      nicknameController.text = widget.nickname;
+      setState(() {
+        isAllFilled = true;
+      });
+    }
+
     super.initState();
   }
 
@@ -169,10 +182,20 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                         child: Column(
                           children: [
                             pickedImage == null
-                                ? Image.asset(
-                                    "assets/images/profileSettings/thumbnail_default.png",
-                                    width: ScreenUtil().setSp(101),
-                                    height: ScreenUtil().setSp(101))
+                                ? widget.photoUrl == null
+                                    ? Image.asset(
+                                        "assets/images/profileSettings/thumbnail_default.png",
+                                        width: ScreenUtil().setSp(101),
+                                        height: ScreenUtil().setSp(101))
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                            ScreenUtil().setSp(50)),
+                                        child: Image.network(
+                                          widget.photoUrl,
+                                          width: ScreenUtil().setSp(101),
+                                          height: ScreenUtil().setSp(101),
+                                          fit: BoxFit.cover,
+                                        ))
                                 : ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                         ScreenUtil().setSp(50)),
@@ -389,7 +412,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                   ScreenUtil().setSp(10))),
                           child: Center(
                             child: Text(
-                              "회원가입 완료",
+                              "메인 화면으로 이동",
                               style: TextStyle(
                                 fontFamily: "NotoSansCJKkrBold",
                                 fontSize: ScreenUtil().setSp(16),

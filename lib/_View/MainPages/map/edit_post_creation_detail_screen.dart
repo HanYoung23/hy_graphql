@@ -125,13 +125,12 @@ class _EditPostCreationDetailScreenState
           backgroundColor: Colors.white,
           brightness: Brightness.light,
         ),
-        body: Container(
-          height: ScreenUtil().screenHeight -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom,
-          margin: EdgeInsets.all(ScreenUtil().setSp(20)),
-          child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
+        body: SingleChildScrollView(
+          child: Container(
+            height: ScreenUtil().screenHeight -
+                MediaQuery.of(context).padding.top -
+                MediaQuery.of(context).padding.bottom,
+            margin: EdgeInsets.all(ScreenUtil().setSp(20)),
             child: Column(
               children: [
                 Container(
@@ -335,7 +334,7 @@ class _EditPostCreationDetailScreenState
         draggable: true,
         markerId: MarkerId("marker_1"),
         position: photoLatLng,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       )
     ].toSet();
   }

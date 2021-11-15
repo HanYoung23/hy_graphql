@@ -325,7 +325,7 @@ class _MapPostCreationDetailScreenState
         draggable: true,
         markerId: MarkerId("marker_1"),
         position: photoLatLng,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       )
     ].toSet();
   }
