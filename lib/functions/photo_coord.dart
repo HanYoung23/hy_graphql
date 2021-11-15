@@ -1,15 +1,17 @@
 import 'dart:io';
-// import 'package:exif/exif.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:metadata/metadata.dart';
 
 Future pullPhotoCoordnate(File photo) async {
-  // final exifData = await readExifFromFile(photo);
-  // print("🚨 exif data : $exifData");
-
   final fileByte = await photo.readAsBytes();
   var result = MetaData.exifData(fileByte);
   print("🚨 result : ${result.exifData}");
+
+  // readExifFromFile(photo).then((value) {
+  //   print("🚨 value : $value");
+  // });
+
+  // FlutterExif();
   // print("🚨 GPSLongitude data : $exifData");
   // print("🚨 GPSLongitude data : ${exifData["GPS GPSLatitude"]}");
 
@@ -27,8 +29,8 @@ Future pullPhotoCoordnate(File photo) async {
       List lngCalc = lngDataList[2].split("/");
       double lastLat = int.parse(latCalc[0]) / int.parse(latCalc[1]);
       double lastLng = int.parse(lngCalc[0]) / int.parse(lngCalc[1]);
-      print("🚨 lastLat : $lastLat");
-      print("🚨 lastLng : $lastLng");
+      // print("🚨 lastLat : $lastLat");
+      // print("🚨 lastLng : $lastLng");
       latDataList[2] = "$lastLat";
       lngDataList[2] = "$lastLng";
     }

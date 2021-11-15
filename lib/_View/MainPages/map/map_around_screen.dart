@@ -452,6 +452,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                     };
                     imageMaps.add(mapData);
                   }
+
                   int num = (page - 1) * 10;
                   for (int i = 0; i < 10; i++) {
                     if (imageMaps.length > (num + i) * 10 - 1 &&
@@ -461,7 +462,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                   }
 
                   int length = imageMaps.length;
-                  if ((length % 3) != 0) {
+                  if ((length % 3) != 0 && length > 89) {
                     for (int i = 0; i < 3 - length % 3; i++) {
                       imageMaps.add(imageMaps[i + 1]);
                     }

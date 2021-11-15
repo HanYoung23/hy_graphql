@@ -251,7 +251,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     },
                                     child: Column(
                                       children: [
-                                        profilePhotoLink == null
+                                        profilePhotoLink == null ||
+                                                profilePhotoLink == "null"
                                             ? ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -404,7 +405,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       SizedBox(height: ScreenUtil().setSp(10)),
                                       Text(
                                         newIntroduction == null
-                                            ? profileText
+                                            ? profileText == null
+                                                ? ""
+                                                : profileText
                                             : newIntroduction,
                                         style: TextStyle(
                                             fontFamily: "NotoSansCJKkrRegular",

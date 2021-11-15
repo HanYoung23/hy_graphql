@@ -141,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 brightness: Brightness.light,
               ),
               body: SingleChildScrollView(
-                // physics: BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().screenHeight -
@@ -679,8 +679,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
+            print("🚨 mypage result : ${result.data}");
             Map resultData = result.data["mypage"][0];
-            // print("🚨 mypage result : $resultData");
+            print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
             String profileText = "";
@@ -700,7 +701,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Container(
                         width: ScreenUtil().setSp(70),
                         height: ScreenUtil().setSp(70),
-                        decoration: profilePhotoLink == null
+                        decoration: profilePhotoLink == null ||
+                                profilePhotoLink == "null" ||
+                                profilePhotoLink == "null"
                             ? BoxDecoration(
                                 color: app_grey,
                                 borderRadius: BorderRadius.circular(

@@ -304,10 +304,11 @@ logOutPopup(BuildContext context) {
                               //     await naverLogout();
                               //     break;
                               // }
-                              await deleteUserData("userId");
-                              await deleteUserData("customerId");
-                              await deleteUserData("loginType");
-                              await deleteUserData("isProfileSet");
+                              // await deleteUserData("userId");
+                              // await deleteUserData("customerId");
+                              // await deleteUserData("loginType");
+                              // await deleteUserData("isProfileSet");
+                              await deleteAllUserData();
 
                               Get.offAll(() => AuthorityScreen());
                             });
@@ -391,6 +392,7 @@ signOutPopupFirst(BuildContext context) {
                               onCompleted: (dynamic resultData) async {
                                 print("🚨 signout result : $resultData");
                                 if (resultData["secession"]["result"]) {
+                                  await deleteAllUserData();
                                   signOutPopupSecond(context);
                                 }
                               }),

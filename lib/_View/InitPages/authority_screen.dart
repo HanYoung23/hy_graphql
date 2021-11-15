@@ -14,7 +14,7 @@ class AuthorityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: false,
+      bottom: true,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
@@ -24,7 +24,8 @@ class AuthorityScreen extends StatelessWidget {
         ),
         body: Container(
           width: ScreenUtil().screenWidth,
-          height: ScreenUtil().screenHeight,
+          height:
+              ScreenUtil().screenHeight - MediaQuery.of(context).padding.bottom,
           color: Colors.white,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

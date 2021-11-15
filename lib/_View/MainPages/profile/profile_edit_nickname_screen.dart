@@ -244,7 +244,7 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                   fontSize: ScreenUtil().setSp(14)),
                               suffixIcon: InkWell(
                                 onTap: () {
-                                  if (isValid) {
+                                  if (isValid && !isAllFilled) {
                                     seeValue("customerId").then((value) {
                                       int customerId = int.parse(value);
                                       runMutation({

@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>letsgotrip</string>
+	<string>여행사진지도</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -108,7 +108,7 @@
 	<key>kConsumerSecret</key>
 	<string>RNR1JUfDb2</string>
 	<key>kServiceAppName</key>
-	<string>여행사진지도</string>
+	<string>letsgotrip</string>
 	<key>kServiceAppUrlScheme</key>
 	<string>com.jjang.letsgotrip.naver</string>
 </dict>

@@ -117,7 +117,8 @@ class MenuDrawer extends StatelessWidget {
                                 Container(
                                   width: ScreenUtil().setSp(52),
                                   height: ScreenUtil().setSp(52),
-                                  decoration: profilePhotoLink == null
+                                  decoration: profilePhotoLink == null ||
+                                          profilePhotoLink == "null"
                                       ? BoxDecoration(
                                           color: app_grey_dark,
                                           border: Border.all(

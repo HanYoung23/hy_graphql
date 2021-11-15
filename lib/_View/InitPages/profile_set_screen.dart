@@ -72,7 +72,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
             document: gql(Mutations.createNickname),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
-              print("🚨 resultData : $resultData");
+              // print("🚨 resultData : $resultData");
               if (isAllFilled) {
                 if (resultData["createNickname"]["result"]) {
                   storeUserData("isProfileSet", "true");
@@ -182,7 +182,8 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                         child: Column(
                           children: [
                             pickedImage == null
-                                ? widget.photoUrl == null
+                                ? widget.photoUrl == null ||
+                                        widget.photoUrl == "null"
                                     ? Image.asset(
                                         "assets/images/profileSettings/thumbnail_default.png",
                                         width: ScreenUtil().setSp(101),
@@ -297,7 +298,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                   fontSize: ScreenUtil().setSp(14)),
                               suffixIcon: InkWell(
                                 onTap: () {
-                                  if (isValid) {
+                                  if (isValid && !isAllFilled) {
                                     seeValue("customerId").then((customerId) {
                                       runMutation({
                                         "nick_name": nicknameController.text,
