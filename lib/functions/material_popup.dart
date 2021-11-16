@@ -197,7 +197,7 @@ callSaveDataPopup(BuildContext context, Function callSaveDataCallback) {
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(
                               borderRadius:
-                                  BorderRadius.circular(ScreenUtil().setSp(21)),
+                                  BorderRadius.circular(ScreenUtil().setSp(50)),
                             ),
                             backgroundColor: Color(0xffb5b5b5),
                             margin: EdgeInsets.only(

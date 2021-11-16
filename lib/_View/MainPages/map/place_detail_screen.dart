@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -97,7 +98,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                 resultData["star_rating4"],
               ];
 
-              // print("🚨tagList: $tags");
+              // print("🚨 tagList: $tagList");
 
               return SafeArea(
                 top: false,
@@ -458,15 +459,17 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                     Wrap(
                                       direction: Axis.horizontal,
                                       children: tagList.map((tag) {
-                                        return Text("#$tag  ",
-                                            style: TextStyle(
-                                                fontFamily:
-                                                    "NotoSansCJKkrRegular",
-                                                fontSize:
-                                                    ScreenUtil().setSp(14),
-                                                letterSpacing:
-                                                    letter_spacing_small,
-                                                color: Color(0xff1A4F79)));
+                                        return tag != ""
+                                            ? Text("#$tag  ",
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrRegular",
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14),
+                                                    letterSpacing:
+                                                        letter_spacing_small,
+                                                    color: Color(0xff1A4F79)))
+                                            : Container();
                                       }).toList(),
                                     ),
                                     SizedBox(height: ScreenUtil().setSp(20)),
@@ -577,8 +580,12 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             Container(
               width: ScreenUtil().setSp(18),
               height: ScreenUtil().setSp(18),
-              child: Image.asset(
-                "assets/images/reply.png",
+              // child: Image.asset(
+              //   "assets/images/reply.png",
+              //   fit: BoxFit.contain,
+              // ),
+              child: SvgPicture.asset(
+                "assets/images/reply.svg",
                 fit: BoxFit.contain,
               ),
             ),
@@ -643,17 +650,30 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   Container(
                     width: ScreenUtil().setSp(18),
                     height: ScreenUtil().setSp(18),
+                    // child: bookmarks == 1
+                    //     ? Image.asset(
+                    //         bookmarksNum == 0
+                    //             ? "assets/images/bookmark.png"
+                    //             : "assets/images/bookmark_active.png",
+                    //         fit: BoxFit.contain,
+                    //       )
+                    //     : Image.asset(
+                    //         bookmarksNum != 0
+                    //             ? "assets/images/bookmark.png"
+                    //             : "assets/images/bookmark_active.png",
+                    //         fit: BoxFit.contain,
+                    //       ),
                     child: bookmarks == 1
-                        ? Image.asset(
+                        ? SvgPicture.asset(
                             bookmarksNum == 0
-                                ? "assets/images/bookmark.png"
-                                : "assets/images/bookmark_active.png",
+                                ? "assets/images/bookmark.svg"
+                                : "assets/images/bookmark_active.svg",
                             fit: BoxFit.contain,
                           )
-                        : Image.asset(
+                        : SvgPicture.asset(
                             bookmarksNum != 0
-                                ? "assets/images/bookmark.png"
-                                : "assets/images/bookmark_active.png",
+                                ? "assets/images/bookmark.svg"
+                                : "assets/images/bookmark_active.svg",
                             fit: BoxFit.contain,
                           ),
                   ),
@@ -720,17 +740,30 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   Container(
                     width: ScreenUtil().setSp(18),
                     height: ScreenUtil().setSp(18),
+                    // child: likes == 1
+                    //     ? Image.asset(
+                    //         likesNum == 0
+                    //             ? "assets/images/like.png"
+                    //             : "assets/images/like_active.png",
+                    //         fit: BoxFit.contain,
+                    //       )
+                    //     : Image.asset(
+                    //         likesNum != 0
+                    //             ? "assets/images/like.png"
+                    //             : "assets/images/like_active.png",
+                    //         fit: BoxFit.contain,
+                    //       ),
                     child: likes == 1
-                        ? Image.asset(
+                        ? SvgPicture.asset(
                             likesNum == 0
-                                ? "assets/images/like.png"
-                                : "assets/images/like_active.png",
+                                ? "assets/images/like.svg"
+                                : "assets/images/like_active.svg",
                             fit: BoxFit.contain,
                           )
-                        : Image.asset(
+                        : SvgPicture.asset(
                             likesNum != 0
-                                ? "assets/images/like.png"
-                                : "assets/images/like_active.png",
+                                ? "assets/images/like.svg"
+                                : "assets/images/like_active.svg",
                             fit: BoxFit.contain,
                           ),
                   ),

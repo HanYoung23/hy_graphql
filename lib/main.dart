@@ -148,6 +148,7 @@ class _ScreenFilterState extends State<ScreenFilter> {
     // return ProfileSetScreen(userId: userId, loginType: loginType);
     // return LoginScreen();
     // return HomePage();
+    // return Splash();
   }
 }
 
@@ -159,10 +160,15 @@ class Splash extends StatelessWidget {
       home: Container(
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().screenHeight,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/splash.png"),
-                fit: BoxFit.fill)),
+        color: Colors.white,
+        child: Center(
+          child: Image.asset(
+            "assets/images/splash.png",
+            width: ScreenUtil().setSp(170),
+            height: ScreenUtil().setSp(170),
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
     );
   }

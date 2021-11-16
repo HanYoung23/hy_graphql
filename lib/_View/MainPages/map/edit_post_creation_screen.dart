@@ -101,7 +101,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
           duration: Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(ScreenUtil().setSp(21)),
+            borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
           ),
           backgroundColor: Color(0xffb5b5b5),
           margin: EdgeInsets.only(
@@ -137,7 +137,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
         duration: Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(ScreenUtil().setSp(21)),
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
         ),
         backgroundColor: Color(0xffb5b5b5),
         margin: EdgeInsets.only(
@@ -196,7 +196,9 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
           ),
           body: SingleChildScrollView(
             child: Container(
-              height: ScreenUtil().screenHeight,
+              height: ScreenUtil().screenHeight -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom,
               margin: EdgeInsets.all(ScreenUtil().setSp(20)),
               child: Column(
                 children: [

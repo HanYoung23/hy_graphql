@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:kakao_flutter_sdk/all.dart';
@@ -46,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 await storeUserData("customerId", customerId);
                 String userId = await storage.read(key: "userId");
                 String loginType = await storage.read(key: "loginType");
-                Get.to(() =>
+                Get.offAll(() =>
                     ProfileSetScreen(userId: userId, loginType: loginType));
               } else if (resultData["createCustomer"]["msg"] ==
                   "이미 가입된 아이디입니다.") {
@@ -54,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 await storeUserData("customerId", customerId);
                 String userId = await storage.read(key: "userId");
                 String loginType = await storage.read(key: "loginType");
-                Get.to(() => Query(
+                Get.offAll(() => Query(
                     options: QueryOptions(
                       document: gql(Queries.mypage),
                       variables: {"customer_id": int.parse(customerId)},
@@ -165,11 +168,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // Container(
+                            //   width: ScreenUtil().setSp(19.8),
+                            //   height: ScreenUtil().setSp(18.6),
+                            //   child: Image.asset(
+                            //     "assets/images/kakao_logo.png",
+                            //     fit: BoxFit.fill,
+                            //   ),
+                            // ),
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              child: Image.asset(
-                                "assets/images/kakao_logo.png",
+                              child: SvgPicture.asset(
+                                "assets/images/kakao_logo.svg",
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -221,11 +232,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // Container(
+                            //   width: ScreenUtil().setSp(19.8),
+                            //   height: ScreenUtil().setSp(18.6),
+                            //   child: Image.asset(
+                            //     "assets/images/naver_logo.png",
+                            //     fit: BoxFit.fill,
+                            //   ),
+                            // ),
                             Container(
                               width: ScreenUtil().setSp(19.8),
                               height: ScreenUtil().setSp(18.6),
-                              child: Image.asset(
-                                "assets/images/naver_logo.png",
+                              child: SvgPicture.asset(
+                                "assets/images/naver_logo.svg",
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -247,19 +266,46 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        appleLogin(context).then((userId) {
-                          if (userId != null) {
-                            setState(() {
-                              loginType = "apple";
-                            });
-                            runMutation({
-                              "login_link": "$userId",
-                              "login_type": "apple",
-                            });
-                          } else {
-                            print("🚨 login canceled");
-                          }
-                        });
+                        if (!Platform.isAndroid) {
+                          appleLogin(context).then((userId) {
+                            if (userId != null) {
+                              setState(() {
+                                loginType = "apple";
+                              });
+                              runMutation({
+                                "login_link": "$userId",
+                                "login_type": "apple",
+                              });
+                            } else {
+                              print("🚨 login canceled");
+                            }
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                '서비스 준비 중 입니다.',
+                                style: TextStyle(
+                                  fontFamily: "NotoSansCJKkrRegular",
+                                  fontSize: ScreenUtil().setSp(14),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              elevation: 0,
+                              duration: Duration(seconds: 3),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setSp(50)),
+                              ),
+                              backgroundColor: Color(0xffb5b5b5),
+                              margin: EdgeInsets.only(
+                                  bottom: ScreenUtil().setSp(90),
+                                  left: ScreenUtil().setSp(80),
+                                  right: ScreenUtil().setSp(80))));
+                        }
                       },
                       child: Container(
                         width: ScreenUtil().setSp(305),
@@ -276,12 +322,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            // Container(
+                            //   width: ScreenUtil().setSp(19.8),
+                            //   height: ScreenUtil().setSp(18.6),
+                            //   child: Image.asset(
+                            //     "assets/images/apple_logo.png",
+                            //     fit: BoxFit.fill,
+                            //   ),
+                            // ),
                             Container(
                               width: ScreenUtil().setSp(19.8),
-                              height: ScreenUtil().setSp(18.6),
-                              child: Image.asset(
-                                "assets/images/apple_logo.png",
+                              height: ScreenUtil().setSp(22.4),
+                              child: SvgPicture.asset(
+                                "assets/images/apple_logo.svg",
                                 fit: BoxFit.fill,
+                                color: Colors.white,
                               ),
                             ),
                             Text(

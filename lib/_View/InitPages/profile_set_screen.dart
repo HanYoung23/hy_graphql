@@ -76,7 +76,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
               if (isAllFilled) {
                 if (resultData["createNickname"]["result"]) {
                   storeUserData("isProfileSet", "true");
-                  Get.to(() => HomePage());
+                  Get.off(() => HomePage());
                 } else {
                   Get.snackbar(
                       "error", "${resultData["createNickname"]["msg"]}");
@@ -132,14 +132,10 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: Image.asset("assets/images/arrow_back.png",
-                                  width: ScreenUtil().setSp(arrow_back_size),
-                                  height: ScreenUtil().setSp(arrow_back_size)),
-                            ),
+                            Image.asset("assets/images/arrow_back.png",
+                                color: Colors.transparent,
+                                width: ScreenUtil().setSp(arrow_back_size),
+                                height: ScreenUtil().setSp(arrow_back_size)),
                             Text(
                               "프로필 설정",
                               style: TextStyle(
@@ -390,6 +386,12 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                       "customer_id": int.parse(customerId),
                                     });
                                   }
+                                });
+                              } else if (widget.photoUrl != null) {
+                                runMutation({
+                                  "nick_name": "${nicknameController.text}",
+                                  "profile_photo_link": widget.photoUrl,
+                                  "customer_id": int.parse(customerId),
                                 });
                               } else {
                                 runMutation({

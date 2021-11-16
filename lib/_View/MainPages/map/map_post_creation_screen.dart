@@ -99,7 +99,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
           duration: Duration(seconds: 3),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(ScreenUtil().setSp(21)),
+            borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
           ),
           backgroundColor: Color(0xffb5b5b5),
           margin: EdgeInsets.only(
@@ -135,7 +135,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
         duration: Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(ScreenUtil().setSp(21)),
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(50)),
         ),
         backgroundColor: Color(0xffb5b5b5),
         margin: EdgeInsets.only(
@@ -506,6 +506,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
           child: InkWell(
             onTap: () {
               imageList.removeAt(index);
+              photoLatLng.removeAt(index);
               checkIsAllFilled();
               setState(() {});
             },

@@ -86,20 +86,23 @@ class _MapPostCreationDetailScreenState
 
   @override
   void initState() {
-    checkLocationPermission().then((permission) {
-      if (permission) {
-        getUserLocation().then((latlng) {
-          if (latlng != null) {
-            setState(() {
-              photoLatLng = LatLng(latlng.latitude, latlng.longitude);
-            });
-          }
-        });
-      } else {
-        permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
-      }
-    });
-    getPlaceInfo();
+    if (widget.paramMap["imageLatLngList"].length > 0) {
+      getPlaceInfo();
+    } else {
+      checkLocationPermission().then((permission) {
+        if (permission) {
+          getUserLocation().then((latlng) {
+            if (latlng != null) {
+              setState(() {
+                photoLatLng = LatLng(latlng.latitude, latlng.longitude);
+              });
+            }
+          });
+        } else {
+          permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
+        }
+      });
+    }
     super.initState();
   }
 
@@ -191,7 +194,7 @@ class _MapPostCreationDetailScreenState
                               mapToolbarEnabled: false,
                               zoomGesturesEnabled: true,
                               myLocationButtonEnabled: false,
-                              myLocationEnabled: false,
+                              myLocationEnabled: true,
                               zoomControlsEnabled: false,
                               initialCameraPosition: CameraPosition(
                                 target: photoLatLng,
@@ -199,9 +202,12 @@ class _MapPostCreationDetailScreenState
                               ),
                               onMapCreated: (GoogleMapController controller) {
                                 mapCompleter.complete(controller);
-                                createMarker();
+                                controller.animateCamera(
+                                    CameraUpdate.newLatLngZoom(
+                                        photoLatLng, 14));
+                                // createMarker(photoLatLng);
                               },
-                              markers: createMarker(),
+                              markers: createMarker(photoLatLng),
                             ),
                           )
                         : Row(
@@ -319,12 +325,12 @@ class _MapPostCreationDetailScreenState
     );
   }
 
-  createMarker() {
+  createMarker(LatLng position) {
     return [
       Marker(
-        draggable: true,
+        draggable: false,
         markerId: MarkerId("marker_1"),
-        position: photoLatLng,
+        position: position,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       )
     ].toSet();

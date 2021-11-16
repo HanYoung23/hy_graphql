@@ -137,21 +137,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                           QueryResult result) {},
                                       onCompleted: (dynamic resultData) {
                                         widget.callbackRefetch();
-                                        print("🚨d $resultData");
                                         Get.back();
                                       }),
                                   builder: (RunMutation runMutation,
                                       QueryResult queryResult) {
                                     return InkWell(
                                       onTap: () async {
-                                        print("🚨 $newNickname");
                                         int customerId = int.parse(await storage
                                             .read(key: "customerId"));
                                         //
                                         if (pickedImage != null) {
                                           File file = File(pickedImage.path);
                                           uploadAWS([file]).then((awsLink) {
-                                            print("🚨 aws : $awsLink");
                                             if (awsLink[0] != null) {
                                               runMutation({
                                                 "nick_name": newNickname,
