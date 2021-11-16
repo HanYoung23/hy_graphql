@@ -57,7 +57,7 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
             document: gql(Mutations.createNickname),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
-              print("🚨 resultData : $resultData");
+              // print("🚨 resultData : $resultData");
               if (isAllFilled) {
                 if (resultData["createNickname"]["result"]) {
                   storeUserData("isProfileSet", "true");

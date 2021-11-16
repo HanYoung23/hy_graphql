@@ -341,7 +341,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
                 List replyList = [];
                 comentsList.map((e) {
-                  if (e["coments_id_link"] == comentsId) {
+                  if (e["coments_id_link"] == comentsId &&
+                      e["check_flag"] != 2) {
                     replyList.add(e);
                   }
                 }).toList();

@@ -102,7 +102,7 @@ class PostCupertinoBottomSheet extends StatelessWidget {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
-            print("🚨 photodetail result : ${result.data["photo_detail"]}");
+            // print("🚨 photodetail result : ${result.data["photo_detail"]}");
             Map resultData = result.data["photo_detail"];
             int categoryId = resultData["category_id"];
             String selectedCategory;

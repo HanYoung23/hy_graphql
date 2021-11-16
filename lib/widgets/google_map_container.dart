@@ -197,6 +197,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     //         print("🚨 google map error : ${queryResult.exception}");
     //       }
     return GoogleMap(
+      compassEnabled: true,
       mapToolbarEnabled: false,
       zoomGesturesEnabled: true,
       myLocationButtonEnabled: false,

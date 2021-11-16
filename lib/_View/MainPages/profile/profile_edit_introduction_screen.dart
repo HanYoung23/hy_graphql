@@ -30,10 +30,12 @@ class _ProfileEditIntroductionScreenState
   }
 
   setPreviousText() {
-    contentTextController.text = widget.introduction;
-    setState(() {
-      textLength = widget.introduction.length;
-    });
+    if (widget.introduction != null) {
+      contentTextController.text = widget.introduction;
+      setState(() {
+        textLength = widget.introduction.length;
+      });
+    }
   }
 
   @override

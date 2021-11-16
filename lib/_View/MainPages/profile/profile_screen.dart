@@ -679,9 +679,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
-            print("🚨 mypage result : ${result.data}");
             Map resultData = result.data["mypage"][0];
-            print("🚨 mypage result : $resultData");
+            // print("🚨 mypage result : $resultData");
             String nickname = resultData["nick_name"];
             String profilePhotoLink = resultData["profile_photo_link"];
             String profileText = "";

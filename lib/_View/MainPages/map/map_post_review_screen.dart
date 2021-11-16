@@ -43,7 +43,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
               }
             },
             onCompleted: (dynamic resultData) {
-              print("🚨 resultData : $resultData");
+              // print("🚨 resultData : $resultData");
               if (resultData["createContents"]["result"]) {
                 Get.offAll(() => HomePage());
               } else {

@@ -93,6 +93,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         alignment: Alignment.centerLeft,
                                         child: InkWell(
                                           onTap: () {
+                                            widget.callbackRefetch();
                                             Get.back();
                                           },
                                           child: Image.asset(
@@ -120,16 +121,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                   QueryResult result) {},
                                               onCompleted:
                                                   (dynamic resultData) {
-                                                if (resultData["change_profile"]
-                                                    ["result"]) {
-                                                  widget.callbackRefetch();
-                                                  Get.back();
-                                                }
+                                                widget.callbackRefetch();
+                                                print("🚨d $resultData");
+                                                Get.back();
                                               }),
                                           builder: (RunMutation runMutation,
                                               QueryResult queryResult) {
                                             return InkWell(
                                               onTap: () async {
+                                                print("🚨 $newNickname");
                                                 int customerId = int.parse(
                                                     await storage.read(
                                                         key: "customerId"));

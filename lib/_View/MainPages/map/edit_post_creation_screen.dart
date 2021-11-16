@@ -156,7 +156,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
     });
     contentTextController.text = widget.mapData["mainText"];
     tagTextController.text = widget.mapData["tags"];
-    print("🚨 tags ${widget.mapData["tags"]}");
+    checkIsAllFilled();
   }
 
   @override

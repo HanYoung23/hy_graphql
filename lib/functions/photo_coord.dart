@@ -5,7 +5,7 @@ import 'package:metadata/metadata.dart';
 Future pullPhotoCoordnate(File photo) async {
   final fileByte = await photo.readAsBytes();
   var result = MetaData.exifData(fileByte);
-  print("🚨 result : ${result.exifData}");
+  // print("🚨 result : ${result.exifData}");
 
   // readExifFromFile(photo).then((value) {
   //   print("🚨 value : $value");
