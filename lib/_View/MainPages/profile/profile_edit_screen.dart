@@ -286,7 +286,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               setNickname: (nickname) =>
                                   setNewNickname(nickname),
                               profilePhoto: newPhotoUrl,
-                              customerId: customerId,
                             ));
                       },
                       child: Container(
