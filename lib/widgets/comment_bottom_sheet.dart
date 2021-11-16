@@ -61,7 +61,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       setState(() {
         commentPages = newPages;
       });
-      print("🚨 commentPages : $commentPages");
+      // print("🚨 commentPages : $commentPages");
     } else {
       // print('I am at the start');
     }
@@ -77,6 +77,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         isRefreshing = false;
       });
     });
+  }
+
+  moveScroll() {
+    if (lastCoord != null) {
+      commentScrollController.jumpTo(lastCoord + 30);
+    }
   }
 
   @override
@@ -95,13 +101,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
     });
+    Future.delayed(Duration.zero, () => moveScroll());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("🚨 lastCoord : $lastCoord");
-
     return Container(
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().screenHeight * 0.9,
@@ -145,6 +150,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                         },
                                       ),
                                       builder: (result, {refetch, fetchMore}) {
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          moveScroll();
+                                        });
+
                                         if (!result.isLoading &&
                                             result.data != null) {
                                           Map resultData =
@@ -257,35 +267,22 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                     builder: (result, {refetch, fetchMore}) {
                                       if (!result.isLoading &&
                                           result.data != null) {
-                                        // int pageCount = result
-                                        //     .data["coments_list"]["count"];
+                                        int pageCount = result
+                                            .data["coments_list"]["count"];
 
-                                        // Future.delayed(
-                                        //     Duration(milliseconds: 1000), () {
-                                        //   lastCoord != null
-                                        //       ? commentScrollController
-                                        //           .jumpTo(lastCoord)
-                                        //       : print("$lastCoord");
-                                        // });
-
-                                        return SingleChildScrollView(
-                                          controller: commentScrollController,
-                                          physics: BouncingScrollPhysics(),
-                                          child: NotificationListener(
-                                            // onNotification: pageCount !=
-                                            //             commentPages.length &&
-                                            //         pageCount != 1
-                                            //     ? onCommentNotification
-                                            //     : null,
-                                            onNotification:
-                                                onCommentNotification,
-                                            child: Column(
-                                              children:
-                                                  commentPages.map((page) {
-                                                return commentsListView(
-                                                    page, refetch);
-                                              }).toList(),
-                                            ),
+                                        return NotificationListener(
+                                          onNotification: pageCount !=
+                                                      commentPages.length &&
+                                                  pageCount != 1
+                                              ? onCommentNotification
+                                              : null,
+                                          child: ListView(
+                                            controller: commentScrollController,
+                                            physics: BouncingScrollPhysics(),
+                                            children: commentPages.map((page) {
+                                              return commentsListView(
+                                                  page, refetch);
+                                            }).toList(),
                                           ),
                                         );
                                       } else {
