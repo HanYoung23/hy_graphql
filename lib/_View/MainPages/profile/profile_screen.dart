@@ -733,8 +733,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           InkWell(
                             onTap: () {
                               Get.to(() => ProfileEditScreen(
-                                  customerId: customerId,
-                                  callbackRefetch: () => refetch()));
+                                    callbackRefetch: () => refetch(),
+                                    originalPhotoUrl: profilePhotoLink,
+                                    originalNickname: nickname,
+                                    originalIntro: profileText,
+                                  ));
                             },
                             child: Text("프로필 편집",
                                 style: TextStyle(
