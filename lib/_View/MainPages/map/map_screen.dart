@@ -33,8 +33,8 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   GoogleMapWholeController gmWholeController =
       Get.put(GoogleMapWholeController());
-  GoogleMapWholeController gmWholeImages = Get.find();
-  GoogleMapWholeController gmWholeLatLng = Get.find();
+  // GoogleMapWholeController gmWholeImages = Get.find();
+  // GoogleMapWholeController gmWholeLatLng = Get.find();
   GoogleMapWholeController gmPosition = Get.find();
 
   FloatingButtonController floatingBtnController =
@@ -157,7 +157,7 @@ class _MapScreenState extends State<MapScreen> {
               body: Stack(children: [
                 Positioned(
                   child: Container(
-                    // color: Colors.white,
+                    color: Colors.white,
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().screenHeight -
                         MediaQuery.of(context).padding.top -
@@ -288,14 +288,34 @@ class _MapScreenState extends State<MapScreen> {
                                         ? true
                                         : false,
                                 child: Expanded(
-                                  child: Obx(() => GoogleMapContainer(
-                                        photoMapList: photoMapMarkerList,
-                                        userPosition: userPosition,
-                                        currentCameraPosition: gmPosition
-                                            .currentCameraPosition.value,
-                                        category: fliterValue.category.value,
-                                        dateStart: fliterValue.dateStart.value,
-                                        dateEnd: fliterValue.dateEnd.value,
+                                  child: Obx(() => Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Positioned(
+                                            child: GoogleMapContainer(
+                                              photoMapList: photoMapMarkerList,
+                                              userPosition: userPosition,
+                                              currentCameraPosition: gmPosition
+                                                  .currentCameraPosition.value,
+                                              category:
+                                                  fliterValue.category.value,
+                                              dateStart:
+                                                  fliterValue.dateStart.value,
+                                              dateEnd:
+                                                  fliterValue.dateEnd.value,
+                                            ),
+                                          ),
+                                          gmWholeController
+                                                  .isMarkerLoading.value
+                                              ? Positioned(
+                                                  child: Image.asset(
+                                                  "assets/images/spinner.gif",
+                                                  width: ScreenUtil().setSp(50),
+                                                  height:
+                                                      ScreenUtil().setSp(50),
+                                                ))
+                                              : Container()
+                                        ],
                                       )),
                                 ))
                             : Expanded(

@@ -23,4 +23,10 @@ class GoogleMapWholeController extends GetxController {
   setCameraPosition(CameraPosition cameraPosition) {
     currentCameraPosition.value = cameraPosition;
   }
+
+  var isMarkerLoading = false.obs;
+
+  setIsMarkerLoading(bool isloading) {
+    isMarkerLoading.value = isloading;
+  }
 }

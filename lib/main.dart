@@ -164,8 +164,8 @@ class Splash extends StatelessWidget {
         child: Center(
           child: Image.asset(
             "assets/images/splash.png",
-            width: ScreenUtil().setSp(180),
-            height: ScreenUtil().setSp(180),
+            width: ScreenUtil().setSp(46),
+            height: ScreenUtil().setSp(46),
             fit: BoxFit.contain,
           ),
         ),

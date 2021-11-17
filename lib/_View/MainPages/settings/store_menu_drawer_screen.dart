@@ -26,6 +26,7 @@ class StoreMenuDrawer extends StatelessWidget {
         child: Column(
           children: [
             Container(
+              color: Colors.white,
               padding: EdgeInsets.all(ScreenUtil().setSp(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,6 +193,7 @@ class StoreMenuDrawer extends StatelessWidget {
             Column(
               children: [
                 Container(
+                  color: Colors.white,
                   padding: EdgeInsets.all(ScreenUtil().setSp(20)),
                   width: ScreenUtil().screenWidth,
                   child: Column(
@@ -301,11 +303,9 @@ class StoreMenuDrawer extends StatelessWidget {
                 )
               ],
             ),
-            Container(
-              color: app_grey_light,
-              width: ScreenUtil().screenWidth,
-              height: ScreenUtil().setSp(10),
-            ),
+            Expanded(
+              child: Container(color: Colors.white),
+            )
           ],
         ),
       ),

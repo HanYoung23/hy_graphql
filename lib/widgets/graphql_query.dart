@@ -104,6 +104,19 @@ class Queries {
     }
 """;
 
+  static final String photoDetailCounts = """
+    query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+      photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
+      {
+          bookmarks_count
+          likes_count
+          coments_count
+          likes
+          bookmarks
+        }
+    }
+""";
+
   static final String comentsList = """
     query coments_list(\$contents_id: Int!, \$sequence: Int!, \$page: Int!) {
       coments_list(contents_id: \$contents_id, sequence: \$sequence,page: \$page) 

@@ -92,293 +92,367 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
             int pageCount = result.data["photo_list_map"]["count"];
 
             return GestureDetector(
-              onTap: () {
-                floatingBtnController.allBtnCancel();
-              },
-              child: SafeArea(
-                top: false,
-                bottom: false,
-                child: NotificationListener(
-                  onNotification:
-                      pages.length != pageCount ? onNotification : null,
-                  child: Scaffold(
-                    key: scaffoldKey,
-                    appBar: AppBar(
-                      toolbarHeight: 0,
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                      brightness: Brightness.light,
-                    ),
-                    body: Stack(
-                      children: [
-                        Positioned(
-                          child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              children: [
-                                SizedBox(height: ScreenUtil().setSp(20)),
-                                Container(
-                                  width: ScreenUtil().screenWidth,
-                                  height: ScreenUtil().setSp(46),
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: ScreenUtil().setSp(8),
-                                      horizontal: ScreenUtil().setSp(20)),
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          scaffoldKey.currentState.openDrawer();
-                                        },
-                                        child: Image.asset(
-                                            "assets/images/hamburger_button.png",
-                                            width: ScreenUtil().setSp(28),
-                                            height: ScreenUtil().setSp(28)),
-                                      ),
-                                      Spacer(),
-                                      InkWell(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Container(
-                                                width: ScreenUtil().setSp(78),
-                                                height: ScreenUtil().setSp(24),
-                                                child: Center(
-                                                  child: Text("지도",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              "NotoSansCJKkrBold",
-                                                          color: app_font_grey,
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(
-                                                                  appbar_title_size),
-                                                          letterSpacing:
-                                                              ScreenUtil().setSp(
-                                                                  letter_spacing))),
-                                                )),
-                                            Container(
-                                              width: ScreenUtil().setSp(60),
-                                              height: ScreenUtil().setSp(3),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(width: ScreenUtil().setSp(8)),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Container(
-                                              width: ScreenUtil().setSp(78),
-                                              height: ScreenUtil().setSp(24),
-                                              child: Center(
-                                                child: Text("둘러보기",
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            "NotoSansCJKkrBold",
-                                                        color: app_font_black,
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(
-                                                                appbar_title_size),
-                                                        letterSpacing:
-                                                            ScreenUtil().setSp(
-                                                                letter_spacing))),
-                                              )),
-                                          Container(
-                                            color: app_blue,
-                                            width: ScreenUtil().setSp(60),
-                                            height: ScreenUtil().setSp(3),
-                                          )
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      InkWell(
-                                        onTap: () {
-                                          showModalBottomSheet(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              context: context,
-                                              builder: (_) =>
-                                                  CalendarBottomSheet(
-                                                      refetchCallback: () =>
-                                                          refetch),
-                                              isScrollControlled: true);
-                                        },
-                                        child: Image.asset(
-                                            "assets/images/locationTap/calender_button.png",
-                                            width: ScreenUtil().setSp(28),
-                                            height: ScreenUtil().setSp(28)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                pageCount > 0
-                                    ? Query(
-                                        options: QueryOptions(
-                                          document: gql(Queries.promotionsList),
-                                          variables: {
-                                            "latitude1": latitudeFirst,
-                                            "latitude2": latitudeSecond,
-                                            "longitude1": longitudeOne,
-                                            "longitude2": longitudeSecond,
-                                          },
-                                        ),
-                                        builder: (result,
-                                            {refetch, fetchMore}) {
-                                          if (!result.isLoading &&
-                                              result.data != null) {
-                                            // print(
-                                            //     "🚨 promotionslist result : ${result.data["promotions_list"]}");
-                                            List adMapList = [];
-
-                                            for (Map resultData in result
-                                                .data["promotions_list"]) {
-                                              int promotionsId = int.parse(
-                                                  "${resultData["promotions_id"]}");
-                                              String adImageUrl =
-                                                  "${resultData["image_link"]}";
-                                              List adUrlList =
-                                                  adImageUrl.split(",");
-                                              String adMainText =
-                                                  "${resultData["main_text"]}";
-                                              String adLocationLink =
-                                                  "${resultData["location_link"]}";
-                                              Map adMapData = {
-                                                "promotionsId": promotionsId,
-                                                "imageLink": adUrlList,
-                                                "mainText": adMainText,
-                                                "locationLink": adLocationLink,
-                                                "isAd": true,
-                                              };
-                                              adMapList.add(adMapData);
-                                            }
-
-                                            // adMapList.sublist(1, 3);
-
-                                            return photoQuery(
-                                              latitudeFirst,
-                                              latitudeSecond,
-                                              longitudeOne,
-                                              longitudeSecond,
-                                              categoryId,
-                                              dateLeft,
-                                              dateRight,
-                                              adMapList,
-                                            );
-                                          } else {
-                                            return Container();
-                                          }
-                                        })
-                                    : Expanded(
-                                        child: Center(
-                                            child: Text(
-                                          "조건에 맞는 게시물이 없습니다.\n다른 조건으로 검색해보시는건 어떠세요?",
-                                          style: TextStyle(
-                                            fontFamily: "NotoSansCJKkrRegular",
-                                            fontSize: ScreenUtil().setSp(16),
-                                            letterSpacing: ScreenUtil()
-                                                .setSp(letter_spacing),
-                                            color: Color.fromRGBO(
-                                                185, 185, 185, 1),
-                                          ),
-                                          overflow: TextOverflow.fade,
-                                          textAlign: TextAlign.center,
-                                        )),
-                                      ),
-                              ],
-                            ),
-                          ),
+                onTap: () {
+                  floatingBtnController.allBtnCancel();
+                },
+                child: SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: NotificationListener(
+                    onNotification:
+                        pages.length != pageCount ? onNotification : null,
+                    child: Obx(() {
+                      return Scaffold(
+                        key: scaffoldKey,
+                        appBar: AppBar(
+                          toolbarHeight: 0,
+                          elevation: 0,
+                          backgroundColor: floatingBtn.isFilterActive.value ||
+                                  floatingBtn.isAddActive.value
+                              ? Colors.black.withOpacity(0.7)
+                              : Colors.white,
+                          brightness: floatingBtn.isFilterActive.value ||
+                                  floatingBtn.isAddActive.value
+                              ? Brightness.dark
+                              : Brightness.light,
                         ),
-                        FilterBtn(isActive: ""),
-                        AddBtn(isActive: ""),
-                        Obx(() => floatingBtn.isFilterActive.value ||
-                                floatingBtn.isAddActive.value
-                            ? Positioned(
-                                child: Container(
-                                width: ScreenUtil().screenWidth,
-                                height: ScreenUtil().screenHeight,
-                                color: Colors.black.withOpacity(0.7),
-                              ))
-                            : Container()),
-                        Obx(() => floatingBtn.isFilterActive.value
-                            ? Positioned(
-                                bottom: ScreenUtil().setSp(80),
-                                left: ScreenUtil().setSp(18),
+                        body: Stack(
+                          children: [
+                            Positioned(
+                              child: Container(
+                                color: Colors.white,
                                 child: Column(
                                   children: [
-                                    FilterBtnOptions(
-                                      title: '전체',
-                                      callback: () => refetch(),
+                                    SizedBox(height: ScreenUtil().setSp(20)),
+                                    Container(
+                                      width: ScreenUtil().screenWidth,
+                                      height: ScreenUtil().setSp(46),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: ScreenUtil().setSp(8),
+                                          horizontal: ScreenUtil().setSp(20)),
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              scaffoldKey.currentState
+                                                  .openDrawer();
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/hamburger_button.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height: ScreenUtil().setSp(28)),
+                                          ),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Container(
+                                                    width:
+                                                        ScreenUtil().setSp(78),
+                                                    height:
+                                                        ScreenUtil().setSp(24),
+                                                    child: Center(
+                                                      child: Text("지도",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "NotoSansCJKkrBold",
+                                                              color:
+                                                                  app_font_grey,
+                                                              fontSize: ScreenUtil()
+                                                                  .setSp(
+                                                                      appbar_title_size),
+                                                              letterSpacing:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          letter_spacing))),
+                                                    )),
+                                                Container(
+                                                  width: ScreenUtil().setSp(60),
+                                                  height: ScreenUtil().setSp(3),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              width: ScreenUtil().setSp(8)),
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Container(
+                                                  width: ScreenUtil().setSp(78),
+                                                  height:
+                                                      ScreenUtil().setSp(24),
+                                                  child: Center(
+                                                    child: Text("둘러보기",
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansCJKkrBold",
+                                                            color:
+                                                                app_font_black,
+                                                            fontSize: ScreenUtil()
+                                                                .setSp(
+                                                                    appbar_title_size),
+                                                            letterSpacing:
+                                                                ScreenUtil().setSp(
+                                                                    letter_spacing))),
+                                                  )),
+                                              Container(
+                                                color: app_blue,
+                                                width: ScreenUtil().setSp(60),
+                                                height: ScreenUtil().setSp(3),
+                                              )
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  context: context,
+                                                  builder: (_) =>
+                                                      CalendarBottomSheet(
+                                                          refetchCallback: () =>
+                                                              refetch),
+                                                  isScrollControlled: true);
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/locationTap/calender_button.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height: ScreenUtil().setSp(28)),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    FilterBtnOptions(
-                                      title: '바닷가',
-                                      callback: () => refetch(),
-                                    ),
-                                    FilterBtnOptions(
-                                      title: '액티비티',
-                                      callback: () => refetch(),
-                                    ),
-                                    FilterBtnOptions(
-                                      title: '맛집',
-                                      callback: () => refetch(),
-                                    ),
-                                    FilterBtnOptions(
-                                      title: '숙소',
-                                      callback: () => refetch(),
-                                    ),
+                                    pageCount > 0
+                                        ? Query(
+                                            options: QueryOptions(
+                                              document:
+                                                  gql(Queries.promotionsList),
+                                              variables: {
+                                                "latitude1": latitudeFirst,
+                                                "latitude2": latitudeSecond,
+                                                "longitude1": longitudeOne,
+                                                "longitude2": longitudeSecond,
+                                              },
+                                            ),
+                                            builder: (result,
+                                                {refetch, fetchMore}) {
+                                              if (!result.isLoading &&
+                                                  result.data != null) {
+                                                // print(
+                                                //     "🚨 promotionslist result : ${result.data["promotions_list"]}");
+                                                List adMapList = [];
+
+                                                for (Map resultData in result
+                                                    .data["promotions_list"]) {
+                                                  int promotionsId = int.parse(
+                                                      "${resultData["promotions_id"]}");
+                                                  String adImageUrl =
+                                                      "${resultData["image_link"]}";
+                                                  List adUrlList =
+                                                      adImageUrl.split(",");
+                                                  String adMainText =
+                                                      "${resultData["main_text"]}";
+                                                  String adLocationLink =
+                                                      "${resultData["location_link"]}";
+                                                  Map adMapData = {
+                                                    "promotionsId":
+                                                        promotionsId,
+                                                    "imageLink": adUrlList,
+                                                    "mainText": adMainText,
+                                                    "locationLink":
+                                                        adLocationLink,
+                                                    "isAd": true,
+                                                  };
+                                                  adMapList.add(adMapData);
+                                                }
+
+                                                // adMapList.sublist(1, 3);
+
+                                                return photoQuery(
+                                                  latitudeFirst,
+                                                  latitudeSecond,
+                                                  longitudeOne,
+                                                  longitudeSecond,
+                                                  categoryId,
+                                                  dateLeft,
+                                                  dateRight,
+                                                  adMapList,
+                                                );
+                                              } else {
+                                                return Container();
+                                              }
+                                            })
+                                        : Expanded(
+                                            child: Center(
+                                                child: Text(
+                                              "조건에 맞는 게시물이 없습니다.\n다른 조건으로 검색해보시는건 어떠세요?",
+                                              style: TextStyle(
+                                                fontFamily:
+                                                    "NotoSansCJKkrRegular",
+                                                fontSize:
+                                                    ScreenUtil().setSp(16),
+                                                letterSpacing: ScreenUtil()
+                                                    .setSp(letter_spacing),
+                                                color: Color.fromRGBO(
+                                                    185, 185, 185, 1),
+                                              ),
+                                              overflow: TextOverflow.fade,
+                                              textAlign: TextAlign.center,
+                                            )),
+                                          ),
                                   ],
                                 ),
-                              )
-                            : Container()),
-                        Obx(() => floatingBtn.isAddActive.value
-                            ? Positioned(
-                                bottom: ScreenUtil().setSp(80),
-                                right: ScreenUtil().setSp(18),
-                                child: AddBtnOptions(title: '글쓰기'),
-                              )
-                            : Container()),
-                        Obx(() => floatingBtn.isFilterActive.value
-                            ? FilterBtn(isActive: "active")
-                            : Container()),
-                        Obx(() => floatingBtn.isAddActive.value
-                            ? AddBtn(isActive: "active")
-                            : Container()),
-                      ],
-                    ),
-                    bottomNavigationBar: Obx(() {
-                      return Stack(
-                        children: [
-                          Positioned(
-                            child: BottomNavigationBar(
-                              backgroundColor: Colors.white,
-                              type: BottomNavigationBarType.fixed,
-                              items: btmNavItems,
-                              showUnselectedLabels: true,
-                              currentIndex: 1,
-                              onTap: _onBtmItemClick,
-                              elevation: 0,
+                              ),
                             ),
-                          ),
-                          floatingBtn.isFilterActive.value ||
+                            FilterBtn(isActive: ""),
+                            AddBtn(isActive: ""),
+                            Obx(() => floatingBtn.isFilterActive.value ||
+                                    floatingBtn.isAddActive.value
+                                ? Positioned(
+                                    child: Container(
+                                    width: ScreenUtil().screenWidth,
+                                    height: ScreenUtil().screenHeight,
+                                    color: Colors.black.withOpacity(0.7),
+                                  ))
+                                : Container()),
+                            Obx(() => floatingBtn.isFilterActive.value
+                                ? Positioned(
+                                    bottom: ScreenUtil().setSp(80),
+                                    left: ScreenUtil().setSp(18),
+                                    child: Column(
+                                      children: [
+                                        FilterBtnOptions(
+                                          title: '전체',
+                                          callback: () => refetch(),
+                                        ),
+                                        FilterBtnOptions(
+                                          title: '바닷가',
+                                          callback: () => refetch(),
+                                        ),
+                                        FilterBtnOptions(
+                                          title: '액티비티',
+                                          callback: () => refetch(),
+                                        ),
+                                        FilterBtnOptions(
+                                          title: '맛집',
+                                          callback: () => refetch(),
+                                        ),
+                                        FilterBtnOptions(
+                                          title: '숙소',
+                                          callback: () => refetch(),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container()),
+                            Obx(() => floatingBtn.isAddActive.value
+                                ? Positioned(
+                                    bottom: ScreenUtil().setSp(80),
+                                    right: ScreenUtil().setSp(18),
+                                    child: AddBtnOptions(title: '글쓰기'),
+                                  )
+                                : Container()),
+                            Obx(() => floatingBtn.isFilterActive.value
+                                ? FilterBtn(isActive: "active")
+                                : Container()),
+                            Obx(() => floatingBtn.isAddActive.value
+                                ? AddBtn(isActive: "active")
+                                : Container()),
+                          ],
+                        ),
+                        bottomNavigationBar: BottomNavigationBar(
+                          backgroundColor: floatingBtn.isFilterActive.value ||
                                   floatingBtn.isAddActive.value
-                              ? Positioned(
-                                  child: Container(
-                                  width: ScreenUtil().screenWidth,
-                                  height: ScreenUtil().setSp(60),
-                                  color: Colors.black.withOpacity(0.7),
-                                ))
-                              : SizedBox()
-                        ],
+                              ? Colors.black.withOpacity(0.7)
+                              : Colors.white,
+                          type: BottomNavigationBarType.fixed,
+                          fixedColor: floatingBtn.isFilterActive.value ||
+                                  floatingBtn.isAddActive.value
+                              ? app_blue.withOpacity(0.3)
+                              : app_blue,
+                          items: [
+                            BottomNavigationBarItem(
+                              activeIcon: Image.asset(
+                                "assets/images/nav_store.png",
+                                width: ScreenUtil().setSp(30),
+                                height: ScreenUtil().setSp(30),
+                              ),
+                              icon: Image.asset(
+                                "assets/images/nav_store_grey.png",
+                                width: ScreenUtil().setSp(30),
+                                height: ScreenUtil().setSp(30),
+                                color: floatingBtn.isFilterActive.value ||
+                                        floatingBtn.isAddActive.value
+                                    ? Colors.black.withOpacity(0.7)
+                                    : Colors.grey,
+                              ),
+                              label: "스토어",
+                            ),
+                            BottomNavigationBarItem(
+                                activeIcon: Image.asset(
+                                  "assets/images/nav_location.png",
+                                  width: ScreenUtil().setSp(30),
+                                  height: ScreenUtil().setSp(30),
+                                  color: floatingBtn.isFilterActive.value ||
+                                          floatingBtn.isAddActive.value
+                                      ? app_blue.withOpacity(0.3)
+                                      : app_blue,
+                                ),
+                                icon: Image.asset(
+                                  "assets/images/nav_location_grey.png",
+                                  width: ScreenUtil().setSp(30),
+                                  height: ScreenUtil().setSp(30),
+                                ),
+                                label: "장소"),
+                            BottomNavigationBarItem(
+                                activeIcon: Image.asset(
+                                  "assets/images/nav_profile.png",
+                                  width: ScreenUtil().setSp(30),
+                                  height: ScreenUtil().setSp(30),
+                                ),
+                                icon: Image.asset(
+                                  "assets/images/nav_profile_grey.png",
+                                  width: ScreenUtil().setSp(30),
+                                  height: ScreenUtil().setSp(30),
+                                  color: floatingBtn.isFilterActive.value ||
+                                          floatingBtn.isAddActive.value
+                                      ? Colors.black.withOpacity(0.7)
+                                      : Colors.grey,
+                                ),
+                                label: "마이페이지"),
+                          ],
+                          currentIndex: 1,
+                          onTap: floatingBtn.isFilterActive.value ||
+                                  floatingBtn.isAddActive.value
+                              ? null
+                              : _onBtmItemClick,
+                          showSelectedLabels: true,
+                          elevation: 0,
+                          selectedLabelStyle: TextStyle(
+                            fontFamily: "NotoSansCJKkrMedium",
+                            fontSize: ScreenUtil().setSp(10),
+                            letterSpacing: ScreenUtil().setSp(-0.25),
+                            color: Colors.red,
+                          ),
+                          unselectedLabelStyle: TextStyle(
+                            fontFamily: "NotoSansCJKkrMedium",
+                            fontSize: ScreenUtil().setSp(10),
+                            letterSpacing: ScreenUtil().setSp(-0.25),
+                          ),
+                        ),
+                        drawer: MenuDrawer(customerId: widget.customerId),
                       );
                     }),
-                    drawer: MenuDrawer(customerId: widget.customerId),
                   ),
-                ),
-              ),
-            );
+                ));
           } else {
             return SafeArea(
               top: false,
@@ -564,42 +638,38 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
         }).toList());
   }
 
-  List<BottomNavigationBarItem> btmNavItems = [
-    BottomNavigationBarItem(
-        icon: Image.asset(
-          "assets/images/nav_store_grey.png",
-          width: ScreenUtil().setSp(30),
-          height: ScreenUtil().setSp(30),
-        ),
-        label: "스토어"),
-    BottomNavigationBarItem(
-        activeIcon: Image.asset(
-          "assets/images/nav_location.png",
-          width: ScreenUtil().setSp(30),
-          height: ScreenUtil().setSp(30),
-        ),
-        icon: Image.asset(
-          "assets/images/nav_location_grey.png",
-          width: ScreenUtil().setSp(30),
-          height: ScreenUtil().setSp(30),
-        ),
-        label: "장소"),
-    BottomNavigationBarItem(
-        icon: Image.asset(
-          "assets/images/nav_profile_grey.png",
-          width: ScreenUtil().setSp(30),
-          height: ScreenUtil().setSp(30),
-        ),
-        label: "마이페이지"),
-  ];
+  // List<BottomNavigationBarItem> btmNavItems = [
+  //   BottomNavigationBarItem(
+  //       icon: Image.asset(
+  //         "assets/images/nav_store_grey.png",
+  //         width: ScreenUtil().setSp(30),
+  //         height: ScreenUtil().setSp(30),
+  //       ),
+  //       label: "스토어"),
+  //   BottomNavigationBarItem(
+  //       activeIcon: Image.asset(
+  //         "assets/images/nav_location.png",
+  //         width: ScreenUtil().setSp(30),
+  //         height: ScreenUtil().setSp(30),
+  //       ),
+  //       icon: Image.asset(
+  //         "assets/images/nav_location_grey.png",
+  //         width: ScreenUtil().setSp(30),
+  //         height: ScreenUtil().setSp(30),
+  //       ),
+  //       label: "장소"),
+  //   BottomNavigationBarItem(
+  //       icon: Image.asset(
+  //         "assets/images/nav_profile_grey.png",
+  //         width: ScreenUtil().setSp(30),
+  //         height: ScreenUtil().setSp(30),
+  //       ),
+  //       label: "마이페이지"),
+  // ];
   void _onBtmItemClick(int index) {
     if (this.mounted) {
       Get.off(() => HomePage(),
           arguments: index, transition: Transition.noTransition);
     }
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => HomePage()),
-    // );
   }
 }

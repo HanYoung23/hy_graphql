@@ -57,6 +57,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   }
 
   setMapMarker(List dataList) async {
+    gmWholeController.isMarkerLoading(true);
     print("🚨 photomaplist : ${dataList.length}");
     List<MapMarker> mapMarkers = [];
     if (dataList.length > 0) {
@@ -76,6 +77,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         setState(() {
           mapMarkerList = mapMarkers;
         });
+        gmWholeController.isMarkerLoading(false);
         await _initMarkers();
       }
     }
