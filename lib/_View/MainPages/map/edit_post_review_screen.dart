@@ -175,10 +175,13 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                                 }
                               });
                               String imageLink = awsUrlList.join(",");
-                              String tag = widget.paramMap["tags"];
-                              String tags = tag
-                                  .replaceAll(RegExp(r'#'), ",")
-                                  .substring(1);
+                              String tag = "${widget.paramMap["tags"]}";
+                              String tags = "";
+                              if (tag != "") {
+                                tags = tag
+                                    .replaceAll(RegExp(r'#'), ",")
+                                    .substring(1);
+                              }
                               String customerId =
                                   await storage.read(key: "customerId");
 
@@ -234,10 +237,12 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                             SizedBox(height: ScreenUtil().setSp(40)),
                             Text("업로드 중 ...",
                                 style: TextStyle(
-                                    fontFamily: "NotoSansCJKkrRegular",
-                                    letterSpacing: ScreenUtil()
-                                        .setSp(letter_spacing_small),
-                                    fontSize: ScreenUtil().setSp(16)))
+                                  fontFamily: "NotoSansCJKkrRegular",
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
+                                  fontSize: ScreenUtil().setSp(16),
+                                  color: app_font_grey,
+                                ))
                           ],
                         ))),
           );

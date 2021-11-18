@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/notification_controller.dart';
 import 'package:letsgotrip/_View/MainPages/settings/store_menu_drawer_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({
@@ -16,6 +22,9 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   int customerId;
   bool isDrawerOpen = false;
+  // NotificationContoller notificationContoller =
+  //     Get.put(NotificationContoller());
+  // NotificationContoller globalNotification = Get.find();
 
   closeCallback() {
     setState(() {
@@ -62,16 +71,60 @@ class _StoreScreenState extends State<StoreScreen> {
                         children: [
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isDrawerOpen = true;
-                                  });
-                                },
-                                child: Image.asset(
-                                    "assets/images/hamburger_button.png",
-                                    width: ScreenUtil().setSp(28),
-                                    height: ScreenUtil().setSp(28))),
+                            child: Query(
+                                options: QueryOptions(
+                                  document: gql(Queries.checkList),
+                                  variables: {"customer_id": customerId},
+                                ),
+                                builder: (result, {refetch, fetchMore}) {
+                                  if (!result.isLoading &&
+                                      result.data != null) {
+                                    // print(
+                                    //     "🧾 settings result : ${result.data["check_list"]}");
+                                    List resultData = result.data["check_list"];
+                                    bool isNoti = false;
+                                    for (Map checkListMap in resultData) {
+                                      if (checkListMap["check"] == 1) {
+                                        //   notificationContoller
+                                        //       .updateIsNotification(true);
+                                        // } else {
+                                        //   notificationContoller
+                                        //       .updateIsNotification(false);
+                                        isNoti = true;
+                                      }
+                                    }
+
+                                    Timer(Duration(seconds: 5), () {
+                                      refetch();
+                                    });
+
+                                    return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isDrawerOpen = true;
+                                        });
+                                      },
+                                      child: Image.asset(
+                                          !isNoti
+                                              ? "assets/images/hamburger_button.png"
+                                              : "assets/images/hamburger_button_active.png",
+                                          width: ScreenUtil().setSp(28),
+                                          height: ScreenUtil().setSp(28)),
+                                    );
+                                  } else {
+                                    return InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isDrawerOpen = true;
+                                        });
+                                      },
+                                      child: Image.asset(
+                                          "assets/images/hamburger_button.png",
+                                          width: ScreenUtil().setSp(28),
+                                          height: ScreenUtil().setSp(28)),
+                                    );
+                                  }
+                                }),
                           ),
                           Text(
                             "스토어",
@@ -113,8 +166,12 @@ class _StoreScreenState extends State<StoreScreen> {
               child: Visibility(
                   visible: isDrawerOpen,
                   child: GestureDetector(
-                    onHorizontalDragStart: (_) {
-                      closeCallback();
+                    onPanUpdate: (details) {
+                      // print("🚨 details: $details");
+                      if (details.delta.dx > 0) {}
+                      if (details.delta.dx < -5) {
+                        closeCallback();
+                      }
                     },
                     child: StoreMenuDrawer(
                         customerId: customerId,

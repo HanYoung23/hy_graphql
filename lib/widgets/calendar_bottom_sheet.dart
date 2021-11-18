@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CalendarBottomSheet extends StatefulWidget {
@@ -41,6 +44,22 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
   void dispose() {
     // calendarController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    seeValue("calendarSaveData").then((mapData) {
+      if (mapData != null) {
+        Map calendarData = jsonDecode(mapData);
+        setState(() {
+          isWhole = calendarData["isWhole"];
+          leftDate = calendarData["leftDate"];
+          rightDate = calendarData["rightDate"];
+          selectedDateRange = calendarData["selectedDateRange"];
+        });
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -88,14 +107,25 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
                     ),
                     InkWell(
                       onTap: () {
-                        if (isWhole || leftDate == "") {
-                          calendarController.dateUpdate(
-                              "2021.01.01", "3021.09.23");
-                        } else {
-                          calendarController.dateUpdate(leftDate, rightDate);
-                        }
-                        widget.refetchCallback();
-                        Get.back();
+                        Map calendarData = {
+                          "isWhole": isWhole,
+                          "leftDate": leftDate,
+                          "rightDate": rightDate,
+                          "selectedDateRange": selectedDateRange,
+                        };
+
+                        String calendarSaveData = jsonEncode(calendarData);
+                        storeUserData("calendarSaveData", calendarSaveData)
+                            .then((value) {
+                          if (isWhole || leftDate == "") {
+                            calendarController.dateUpdate(
+                                "2021.01.01", "3021.09.23");
+                          } else {
+                            calendarController.dateUpdate(leftDate, rightDate);
+                          }
+                          widget.refetchCallback();
+                          Get.back();
+                        });
                       },
                       child: Text(
                         "적용",

@@ -117,6 +117,35 @@ class Queries {
     }
 """;
 
+  static final String photoDetailLikeCounts = """
+    query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+      photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
+      {
+          likes_count
+          likes
+        }
+    }
+""";
+
+  static final String photoDetailBookmarkCounts = """
+    query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+      photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
+      {
+          bookmarks_count
+          bookmarks
+        }
+    }
+""";
+
+  static final String photoDetailCommentCounts = """
+    query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+      photo_detail(contents_id: \$contents_id, customer_id: \$customer_id) 
+      {
+          coments_count
+        }
+    }
+""";
+
   static final String comentsList = """
     query coments_list(\$contents_id: Int!, \$sequence: Int!, \$page: Int!) {
       coments_list(contents_id: \$contents_id, sequence: \$sequence,page: \$page) 

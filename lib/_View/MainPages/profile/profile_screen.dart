@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/notification_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/_View/MainPages/profile/profile_edit_screen.dart';
@@ -27,6 +28,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ScrollController postScrollController = ScrollController();
   final ScrollController commentScrollController = ScrollController();
   final ScrollController bookmarkScrollController = ScrollController();
+  NotificationContoller notificationContoller =
+      Get.put(NotificationContoller());
+  NotificationContoller globalNotification = Get.find();
 
   int customerId;
   int currentTap = 1;
@@ -164,14 +168,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  InkWell(
-                                      onTap: () {
-                                        scaffoldKey.currentState.openDrawer();
-                                      },
-                                      child: Image.asset(
-                                          "assets/images/hamburger_button.png",
-                                          width: ScreenUtil().setSp(28),
-                                          height: ScreenUtil().setSp(28))),
+                                  Query(
+                                      options: QueryOptions(
+                                        document: gql(Queries.checkList),
+                                        variables: {"customer_id": customerId},
+                                      ),
+                                      builder: (result, {refetch, fetchMore}) {
+                                        if (!result.isLoading &&
+                                            result.data != null) {
+                                          // print(
+                                          //     "🧾 settings result : ${result.data["check_list"]}");
+                                          List resultData =
+                                              result.data["check_list"];
+                                          for (Map checkListMap in resultData) {
+                                            if (checkListMap["check"] == 1) {
+                                              notificationContoller
+                                                  .updateIsNotification(true);
+                                            } else {
+                                              notificationContoller
+                                                  .updateIsNotification(false);
+                                            }
+                                          }
+                                          return InkWell(
+                                            onTap: () {
+                                              scaffoldKey.currentState
+                                                  .openDrawer();
+                                            },
+                                            child: Obx(() => Image.asset(
+                                                !globalNotification
+                                                        .isNotification.value
+                                                    ? "assets/images/hamburger_button.png"
+                                                    : "assets/images/hamburger_button_active.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height:
+                                                    ScreenUtil().setSp(28))),
+                                          );
+                                        } else {
+                                          return InkWell(
+                                            onTap: () {
+                                              scaffoldKey.currentState
+                                                  .openDrawer();
+                                            },
+                                            child: Image.asset(
+                                                "assets/images/hamburger_button.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height: ScreenUtil().setSp(28)),
+                                          );
+                                        }
+                                      }),
                                   InkWell(
                                     onTap: () {
                                       checkNotificationPermission();

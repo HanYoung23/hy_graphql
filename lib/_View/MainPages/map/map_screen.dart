@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
+import 'package:letsgotrip/_Controller/notification_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -41,6 +42,10 @@ class _MapScreenState extends State<MapScreen> {
       Get.put(FloatingButtonController());
   FloatingButtonController floatingBtn = Get.find();
   FloatingButtonController fliterValue = Get.find();
+
+  NotificationContoller notificationContoller =
+      Get.put(NotificationContoller());
+  NotificationContoller globalNotification = Get.find();
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -172,16 +177,53 @@ class _MapScreenState extends State<MapScreen> {
                               vertical: ScreenUtil().setSp(8),
                               horizontal: ScreenUtil().setSp(20)),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  scaffoldKey.currentState.openDrawer();
-                                },
-                                child: Image.asset(
-                                    "assets/images/hamburger_button.png",
-                                    width: ScreenUtil().setSp(28),
-                                    height: ScreenUtil().setSp(28)),
-                              ),
+                              Query(
+                                  options: QueryOptions(
+                                    document: gql(Queries.checkList),
+                                    variables: {"customer_id": customerId},
+                                  ),
+                                  builder: (result, {refetch, fetchMore}) {
+                                    if (!result.isLoading &&
+                                        result.data != null) {
+                                      // print(
+                                      //     "🧾 settings result : ${result.data["check_list"]}");
+                                      List resultData =
+                                          result.data["check_list"];
+                                      for (Map checkListMap in resultData) {
+                                        if (checkListMap["check"] == 1) {
+                                          notificationContoller
+                                              .updateIsNotification(true);
+                                        } else {
+                                          notificationContoller
+                                              .updateIsNotification(false);
+                                        }
+                                      }
+                                      return InkWell(
+                                        onTap: () {
+                                          scaffoldKey.currentState.openDrawer();
+                                        },
+                                        child: Obx(() => Image.asset(
+                                            !globalNotification
+                                                    .isNotification.value
+                                                ? "assets/images/hamburger_button.png"
+                                                : "assets/images/hamburger_button_active.png",
+                                            width: ScreenUtil().setSp(28),
+                                            height: ScreenUtil().setSp(28))),
+                                      );
+                                    } else {
+                                      return InkWell(
+                                        onTap: () {
+                                          scaffoldKey.currentState.openDrawer();
+                                        },
+                                        child: Image.asset(
+                                            "assets/images/hamburger_button.png",
+                                            width: ScreenUtil().setSp(28),
+                                            height: ScreenUtil().setSp(28)),
+                                      );
+                                    }
+                                  }),
                               Spacer(),
                               InkWell(
                                 onTap: () {

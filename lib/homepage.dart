@@ -146,6 +146,7 @@ class _HomePageState extends State<HomePage> {
                           "assets/images/nav_location_grey.png",
                           width: ScreenUtil().setSp(30),
                           height: ScreenUtil().setSp(30),
+                          color: Colors.grey,
                         ),
                         label: "장소"),
                     BottomNavigationBarItem(

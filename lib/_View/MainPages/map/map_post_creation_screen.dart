@@ -62,8 +62,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   checkIsAllFilled() {
     if (selectedCategory != "" &&
         imageList.length != 0 &&
-        contentTextController.text.length != 0 &&
-        tagTextController.text.length > 1) {
+        contentTextController.text.length != 0) {
       setState(() {
         isAllFilled = true;
       });
@@ -446,7 +445,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                             "imageLink": imageList,
                             "imageLatLngList": photoLatLng,
                             "mainText": contentTextController.text,
-                            "tags": tagTextController.text,
+                            "tags": "${tagTextController.text}",
                           };
                           Get.to(() => MapPostCreationDetailScreen(
                                 paramMap: paramMap,

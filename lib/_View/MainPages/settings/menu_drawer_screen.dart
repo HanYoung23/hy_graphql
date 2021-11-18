@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/notification_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/announce_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/notification_screen.dart';
@@ -17,6 +18,10 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NotificationContoller notificationContoller =
+        Get.put(NotificationContoller());
+    NotificationContoller globalNotification = Get.find();
+
     return SafeArea(
       child: Container(
         width: ScreenUtil().screenWidth * 0.75,
@@ -66,11 +71,14 @@ class MenuDrawer extends StatelessWidget {
                                 // print(
                                 //     "🧾 settings result : ${result.data["check_list"]}");
                                 List resultData = result.data["check_list"];
-                                bool isNewNoti = false;
 
                                 for (Map checkListMap in resultData) {
                                   if (checkListMap["check"] == 1) {
-                                    isNewNoti = true;
+                                    notificationContoller
+                                        .updateIsNotification(true);
+                                  } else {
+                                    notificationContoller
+                                        .updateIsNotification(false);
                                   }
                                 }
                                 return InkWell(
@@ -80,15 +88,17 @@ class MenuDrawer extends StatelessWidget {
                                         refetchCallback: () => refetch()));
                                   },
                                   child: Image.asset(
-                                    !isNewNoti
+                                    !globalNotification.isNotification.value
                                         ? "assets/images/settings/alarm_button.png"
                                         : "assets/images/settings/alarm_button_active.png",
-                                    width: !isNewNoti
-                                        ? ScreenUtil().setSp(22)
-                                        : ScreenUtil().setSp(28),
-                                    height: !isNewNoti
-                                        ? ScreenUtil().setSp(22)
-                                        : ScreenUtil().setSp(28),
+                                    width:
+                                        !globalNotification.isNotification.value
+                                            ? ScreenUtil().setSp(22)
+                                            : ScreenUtil().setSp(28),
+                                    height:
+                                        !globalNotification.isNotification.value
+                                            ? ScreenUtil().setSp(22)
+                                            : ScreenUtil().setSp(28),
                                   ),
                                 );
                               } else {

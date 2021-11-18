@@ -64,8 +64,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
   checkIsAllFilled() {
     if (selectedCategory != "" &&
         imageList.length != 0 &&
-        contentTextController.text.length != 0 &&
-        tagTextController.text.length > 1) {
+        contentTextController.text.length != 0) {
       setState(() {
         isAllFilled = true;
       });

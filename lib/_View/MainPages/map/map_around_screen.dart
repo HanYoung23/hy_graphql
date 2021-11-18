@@ -132,16 +132,61 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                                           horizontal: ScreenUtil().setSp(20)),
                                       child: Row(
                                         children: [
-                                          InkWell(
-                                            onTap: () {
-                                              scaffoldKey.currentState
-                                                  .openDrawer();
-                                            },
-                                            child: Image.asset(
-                                                "assets/images/hamburger_button.png",
-                                                width: ScreenUtil().setSp(28),
-                                                height: ScreenUtil().setSp(28)),
-                                          ),
+                                          Query(
+                                              options: QueryOptions(
+                                                document:
+                                                    gql(Queries.checkList),
+                                                variables: {
+                                                  "customer_id":
+                                                      widget.customerId
+                                                },
+                                              ),
+                                              builder: (result,
+                                                  {refetch, fetchMore}) {
+                                                if (!result.isLoading &&
+                                                    result.data != null) {
+                                                  // print(
+                                                  //     "🧾 settings result : ${result.data["check_list"]}");
+                                                  List resultData =
+                                                      result.data["check_list"];
+                                                  bool isNewNoti = false;
+
+                                                  for (Map checkListMap
+                                                      in resultData) {
+                                                    if (checkListMap["check"] ==
+                                                        1) {
+                                                      isNewNoti = true;
+                                                    }
+                                                  }
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      scaffoldKey.currentState
+                                                          .openDrawer();
+                                                    },
+                                                    child: Image.asset(
+                                                        !isNewNoti
+                                                            ? "assets/images/hamburger_button.png"
+                                                            : "assets/images/hamburger_button_active.png",
+                                                        width: ScreenUtil()
+                                                            .setSp(28),
+                                                        height: ScreenUtil()
+                                                            .setSp(28)),
+                                                  );
+                                                } else {
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      scaffoldKey.currentState
+                                                          .openDrawer();
+                                                    },
+                                                    child: Image.asset(
+                                                        "assets/images/hamburger_button.png",
+                                                        width: ScreenUtil()
+                                                            .setSp(28),
+                                                        height: ScreenUtil()
+                                                            .setSp(28)),
+                                                  );
+                                                }
+                                              }),
                                           Spacer(),
                                           InkWell(
                                             onTap: () {

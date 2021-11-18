@@ -35,7 +35,6 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
   @override
   void initState() {
     _scrollController.addListener(() {
-      print('🚨 offset = ${_scrollController.offset}');
       if (_scrollController.offset < 0.0) {
         setState(() {
           isRefreshing = true;
@@ -79,7 +78,11 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   registDate.replaceAll(RegExp(r'-'), ".").substring(0, 10);
               String profilePhotoLink = resultData["profile_photo_link"];
               String tags = resultData["tags"];
-              List tagList = tags.split(",");
+
+              List tagList = [];
+              if (tags != null) {
+                tags.split(",");
+              }
               int postCustomerId = resultData["customer_id"];
               // int bookmarksCount = resultData["bookmarks_count"];
               // int likesCount = resultData["likes_count"];
@@ -318,7 +321,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                         .spaceAround,
                                                 children: [
                                                   Text(
-                                                    nickName,
+                                                    "$nickName",
                                                     style: TextStyle(
                                                       fontFamily:
                                                           "NotoSansCJKkrBold",
@@ -553,7 +556,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
   Query countButtons() {
     return Query(
         options: QueryOptions(
-          document: gql(Queries.photoDetail),
+          document: gql(Queries.photoDetailCounts),
           variables: {
             "contents_id": widget.contentsId,
             "customer_id": widget.customerId,
@@ -569,91 +572,197 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             int bookmarks = resultData["bookmarks"];
             return Row(
               children: [
-                likeButton(likesCount, likes, refetch),
-                bookmarkButton(bookmarksCount, bookmarks, refetch),
-                comentsButton(comentsCount, refetch),
+                likeButton(likesCount, likes),
+                bookmarkButton(bookmarksCount, bookmarks),
+                comentsButton(comentsCount),
               ],
             );
           } else {
-            return Row(
-              children: [
-                likeButton(0, 1, refetch),
-                bookmarkButton(0, 1, refetch),
-                comentsButton(0, refetch),
-              ],
+            return Container();
+          }
+        });
+  }
+
+  Query comentsButton(int comentsCount) {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.photoDetailCommentCounts),
+          variables: {
+            "contents_id": widget.contentsId,
+            "customer_id": widget.customerId,
+          },
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading && result.data != null) {
+            Map resultData = result.data["photo_detail"];
+            int newComentsCount = resultData["coments_count"];
+
+            return Expanded(
+              child: InkWell(
+                onTap: () {
+                  if (this.mounted) {
+                    seeValue("customerId").then((value) {
+                      int customerId = int.parse(value);
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (_) => CommentBottomSheet(
+                            contentsId: widget.contentsId,
+                            customerId: customerId),
+                        isScrollControlled: true,
+                      ).then((value) {
+                        refetch();
+                      });
+                    });
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: ScreenUtil().setSp(18),
+                      height: ScreenUtil().setSp(18),
+                      // child: Image.asset(
+                      //   "assets/images/reply.png",
+                      //   fit: BoxFit.contain,
+                      // ),
+                      child: SvgPicture.asset(
+                        "assets/images/reply.svg",
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(width: ScreenUtil().setSp(6)),
+                    Text(
+                      "댓글  $newComentsCount",
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_x_small),
+                          fontSize: ScreenUtil().setSp(12)),
+                    )
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Expanded(
+              child: InkWell(
+                onTap: () {
+                  if (this.mounted) {
+                    seeValue("customerId").then((value) {
+                      int customerId = int.parse(value);
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (_) => CommentBottomSheet(
+                            contentsId: widget.contentsId,
+                            customerId: customerId),
+                        isScrollControlled: true,
+                      ).then((value) {
+                        refetch();
+                      });
+                    });
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: ScreenUtil().setSp(18),
+                      height: ScreenUtil().setSp(18),
+                      // child: Image.asset(
+                      //   "assets/images/reply.png",
+                      //   fit: BoxFit.contain,
+                      // ),
+                      child: SvgPicture.asset(
+                        "assets/images/reply.svg",
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(width: ScreenUtil().setSp(6)),
+                    Text(
+                      "댓글  $comentsCount",
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_x_small),
+                          fontSize: ScreenUtil().setSp(12)),
+                    )
+                  ],
+                ),
+              ),
             );
           }
         });
   }
 
-  Expanded comentsButton(int comentsCount, Function refetch) {
-    return Expanded(
-      child: InkWell(
-        onTap: () {
-          if (this.mounted) {
-            seeValue("customerId").then((value) {
-              int customerId = int.parse(value);
-              showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (_) => CommentBottomSheet(
-                    contentsId: widget.contentsId, customerId: customerId),
-                isScrollControlled: true,
-              ).then((value) {
-                refetch();
-              });
-            });
-          }
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: ScreenUtil().setSp(18),
-              height: ScreenUtil().setSp(18),
-              // child: Image.asset(
-              //   "assets/images/reply.png",
-              //   fit: BoxFit.contain,
-              // ),
-              child: SvgPicture.asset(
-                "assets/images/reply.svg",
-                fit: BoxFit.contain,
-              ),
-            ),
-            SizedBox(width: ScreenUtil().setSp(6)),
-            Text(
-              "댓글  $comentsCount",
-              style: TextStyle(
-                  fontFamily: "NotoSansCJKkrRegular",
-                  letterSpacing: ScreenUtil().setSp(letter_spacing_x_small),
-                  fontSize: ScreenUtil().setSp(12)),
-            )
-          ],
+  Query bookmarkButton(int bookmarksCount, int bookmarks) {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.photoDetailBookmarkCounts),
+          variables: {
+            "contents_id": widget.contentsId,
+            "customer_id": widget.customerId,
+          },
         ),
-      ),
-    );
-  }
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading && result.data != null) {
+            Map resultData = result.data["photo_detail"];
+            int newBookmarksCount = resultData["bookmarks_count"];
+            int newBookmarks = resultData["bookmarks"];
 
-  Mutation bookmarkButton(int bookmarksCount, int bookmarks, Function refetch) {
-    return Mutation(
-        options: MutationOptions(
-            document: gql(Mutations.addBookmarks),
-            onCompleted: (dynamic resultData) {
-              if (resultData["add_bookmarks"]["result"]) {
-                refetch();
-              } else {
-                Get.snackbar("error", resultData["add_bookmarks"]["msg"]);
-              }
-            }),
-        builder: (RunMutation runMutation, QueryResult queryResult) {
-          return Expanded(
-            child: InkWell(
-              onTap: () {
-                runMutation({
-                  "customer_id": widget.customerId,
-                  "contents_id": widget.contentsId,
+            return Mutation(
+                options: MutationOptions(
+                    document: gql(Mutations.addBookmarks),
+                    onCompleted: (dynamic resultData) {
+                      if (resultData["add_bookmarks"]["result"]) {
+                        refetch();
+                      } else {
+                        Get.snackbar(
+                            "error", resultData["add_bookmarks"]["msg"]);
+                      }
+                    }),
+                builder: (RunMutation runMutation, QueryResult queryResult) {
+                  return Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        runMutation({
+                          "customer_id": widget.customerId,
+                          "contents_id": widget.contentsId,
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: ScreenUtil().setSp(18),
+                            height: ScreenUtil().setSp(18),
+                            child: newBookmarks != 1
+                                ? SvgPicture.asset(
+                                    "assets/images/bookmark.svg",
+                                    fit: BoxFit.contain,
+                                  )
+                                : SvgPicture.asset(
+                                    "assets/images/bookmark_active.svg",
+                                    fit: BoxFit.contain,
+                                  ),
+                          ),
+                          SizedBox(width: ScreenUtil().setSp(6)),
+                          Text(
+                            "북마크  $newBookmarksCount",
+                            style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_x_small),
+                                fontSize: ScreenUtil().setSp(12)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
                 });
-              },
+          } else {
+            return Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -681,31 +790,77 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   )
                 ],
               ),
-            ),
-          );
+            );
+          }
         });
   }
 
-  Mutation likeButton(int likesCount, int likes, Function refetch) {
-    return Mutation(
-        options: MutationOptions(
-            document: gql(Mutations.addLikes),
-            onCompleted: (dynamic resultData) {
-              if (resultData["add_likes"]["result"]) {
-                refetch();
-              } else {
-                Get.snackbar("error", resultData["add_likes"]["msg"]);
-              }
-            }),
-        builder: (RunMutation runMutation, QueryResult queryResult) {
-          return Expanded(
-            child: InkWell(
-              onTap: () {
-                runMutation({
-                  "customer_id": widget.customerId,
-                  "contents_id": widget.contentsId,
+  Query likeButton(int likesCount, int likes) {
+    return Query(
+        options: QueryOptions(
+          document: gql(Queries.photoDetailLikeCounts),
+          variables: {
+            "contents_id": widget.contentsId,
+            "customer_id": widget.customerId,
+          },
+        ),
+        builder: (result, {refetch, fetchMore}) {
+          if (!result.isLoading && result.data != null) {
+            Map resultData = result.data["photo_detail"];
+            int newLikesCount = resultData["likes_count"];
+            int newLikes = resultData["likes"];
+
+            return Mutation(
+                options: MutationOptions(
+                    document: gql(Mutations.addLikes),
+                    onCompleted: (dynamic resultData) {
+                      if (resultData["add_likes"]["result"]) {
+                        refetch();
+                      } else {
+                        Get.snackbar("error", resultData["add_likes"]["msg"]);
+                      }
+                    }),
+                builder: (RunMutation runMutation, QueryResult queryResult) {
+                  return Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        runMutation({
+                          "customer_id": widget.customerId,
+                          "contents_id": widget.contentsId,
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: ScreenUtil().setSp(18),
+                            height: ScreenUtil().setSp(18),
+                            child: newLikes != 1
+                                ? SvgPicture.asset(
+                                    "assets/images/like_active.svg",
+                                    fit: BoxFit.contain,
+                                  )
+                                : SvgPicture.asset(
+                                    "assets/images/like.svg",
+                                    fit: BoxFit.contain,
+                                  ),
+                          ),
+                          SizedBox(width: ScreenUtil().setSp(6)),
+                          Text(
+                            "좋아요  $newLikesCount",
+                            style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_x_small),
+                                fontSize: ScreenUtil().setSp(12)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
                 });
-              },
+          } else {
+            return Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -733,8 +888,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                   )
                 ],
               ),
-            ),
-          );
+            );
+          }
         });
   }
 
