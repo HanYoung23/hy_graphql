@@ -19,6 +19,7 @@ class GoogleMapContainer extends StatefulWidget {
   final int category;
   final String dateStart;
   final String dateEnd;
+  final Function refetchCallback;
   const GoogleMapContainer({
     Key key,
     @required this.photoMapList,
@@ -27,6 +28,7 @@ class GoogleMapContainer extends StatefulWidget {
     @required this.category,
     @required this.dateStart,
     @required this.dateEnd,
+    this.refetchCallback,
   }) : super(key: key);
   @override
   _GoogleMapContainerState createState() => _GoogleMapContainerState();
@@ -35,6 +37,7 @@ class GoogleMapContainer extends StatefulWidget {
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
   GoogleMapWholeController gmWholeImages = Get.find();
+  GoogleMapWholeController gmUpdate = Get.find();
   final GoogleMapWholeController gmWholeController =
       Get.put(GoogleMapWholeController());
 
@@ -58,7 +61,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
   setMapMarker(List dataList) async {
     gmWholeController.isMarkerLoading(true);
+    gmWholeController.setMarkerNum(dataList.length);
     print("🚨 photomaplist : ${dataList.length}");
+
     List<MapMarker> mapMarkers = [];
     if (dataList.length > 0) {
       for (Map data in dataList) {
@@ -94,6 +99,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       _minClusterZoom,
       _maxClusterZoom,
     );
+    setState(() {});
     await _updateMarkers();
   }
 
@@ -202,7 +208,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       compassEnabled: true,
       mapToolbarEnabled: false,
       zoomGesturesEnabled: true,
-      myLocationButtonEnabled: false,
+      myLocationButtonEnabled: true,
       myLocationEnabled: true,
       zoomControlsEnabled: false,
       initialCameraPosition: widget.currentCameraPosition.target.latitude ==

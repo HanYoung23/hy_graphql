@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/homepage.dart';
@@ -20,6 +21,10 @@ class MapPostReviewScreen extends StatefulWidget {
 }
 
 class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
+  GoogleMapWholeController gmWholeController =
+      Get.put(GoogleMapWholeController());
+  GoogleMapWholeController gmUpdate = Get.find();
+
   int firstQRating = 3;
 
   int secondQRating = 3;
@@ -44,6 +49,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
             },
             onCompleted: (dynamic resultData) {
               // print("🚨 resultData : $resultData");
+
               if (resultData["createContents"]["result"]) {
                 Get.offAll(() => HomePage());
               } else {

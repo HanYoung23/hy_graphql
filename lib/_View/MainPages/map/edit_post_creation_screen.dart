@@ -40,7 +40,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
   categoryCallback(String categoryName) {
     int categoryId;
     switch (categoryName) {
-      case "바닷가":
+      case "관광지":
         categoryId = 1;
         break;
       case "액티비티":
@@ -148,13 +148,16 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
   }
 
   setCurrentData() {
+    // print("🚨 edit post tags : ${widget.mapData["tags"]}");
+    String tag = widget.mapData["tags"];
+    String newTag = tag.replaceAll(",", "#");
     setState(() {
       category = widget.mapData["categoryId"];
       selectedCategory = widget.mapData["selectedCategory"];
       imageList = widget.mapData["imageLink"];
     });
     contentTextController.text = widget.mapData["mainText"];
-    tagTextController.text = widget.mapData["tags"];
+    tagTextController.text = newTag;
     checkIsAllFilled();
   }
 

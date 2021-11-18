@@ -37,6 +37,7 @@ class _MapScreenState extends State<MapScreen> {
   // GoogleMapWholeController gmWholeImages = Get.find();
   // GoogleMapWholeController gmWholeLatLng = Get.find();
   GoogleMapWholeController gmPosition = Get.find();
+  GoogleMapWholeController gmUpdate = Get.find();
 
   FloatingButtonController floatingBtnController =
       Get.put(FloatingButtonController());
@@ -49,7 +50,7 @@ class _MapScreenState extends State<MapScreen> {
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  bool isLeftTap = true;
+  // bool isLeftTap = true;
   bool isPermission = true;
   bool isMapLoading = true;
   Position userPosition;
@@ -117,6 +118,21 @@ class _MapScreenState extends State<MapScreen> {
             List<Map> photoMapMarkerList = [];
             // print(
             // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
+            // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
+
+            print(
+                "🚨 map screen length : ${result.data["photo_list_map"]["results"].length}");
+
+            // if (gmUpdate.isGmUpdate.value) {
+            //   gmWholeController.setIsGmUpdate(false);
+            //   refetch();
+            // }
+
+            if (gmUpdate.markerNum !=
+                    result.data["photo_list_map"]["results"].length &&
+                gmUpdate.markerNum.value != 0) {
+              refetch();
+            }
 
             if (result.data != null) {
               if (result.data["photo_list_map"]["results"].length > 0) {
@@ -235,11 +251,11 @@ class _MapScreenState extends State<MapScreen> {
                                   }),
                               Spacer(),
                               InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isLeftTap = true;
-                                  });
-                                },
+                                // onTap: () {
+                                //   setState(() {
+                                //     isLeftTap = true;
+                                //   });
+                                // },
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
@@ -252,21 +268,24 @@ class _MapScreenState extends State<MapScreen> {
                                               style: TextStyle(
                                                   fontFamily:
                                                       "NotoSansCJKkrBold",
-                                                  color: isLeftTap
-                                                      ? app_font_black
-                                                      : app_font_grey,
+                                                  color:
+                                                      // isLeftTap
+                                                      //     ?
+                                                      app_font_black,
+                                                  // : app_font_grey,
                                                   fontSize:
                                                       ScreenUtil().setSp(16),
                                                   letterSpacing:
                                                       letter_spacing)),
                                         )),
-                                    isLeftTap
-                                        ? Container(
-                                            color: app_blue,
-                                            width: ScreenUtil().setSp(30),
-                                            height: ScreenUtil().setSp(3),
-                                          )
-                                        : Container()
+                                    // isLeftTap
+                                    //     ?
+                                    Container(
+                                      color: app_blue,
+                                      width: ScreenUtil().setSp(30),
+                                      height: ScreenUtil().setSp(3),
+                                    )
+                                    // : Container()
                                   ],
                                 ),
                               ),
@@ -292,24 +311,27 @@ class _MapScreenState extends State<MapScreen> {
                                               style: TextStyle(
                                                   fontFamily:
                                                       "NotoSansCJKkrBold",
-                                                  color: isLeftTap
-                                                      ? app_font_grey
-                                                      : app_font_black,
+                                                  color:
+                                                      // isLeftTap
+                                                      //     ?
+                                                      app_font_grey,
+                                                  // : app_font_black,
                                                   fontSize:
                                                       ScreenUtil().setSp(16),
                                                   letterSpacing:
                                                       letter_spacing)),
                                         )),
-                                    !isLeftTap
-                                        ? Container(
-                                            color: app_blue,
-                                            width: ScreenUtil().setSp(60),
-                                            height: ScreenUtil().setSp(3),
-                                          )
-                                        : Container(
-                                            width: ScreenUtil().setSp(60),
-                                            height: ScreenUtil().setSp(3),
-                                          )
+                                    // !isLeftTap
+                                    //     ? Container(
+                                    //         color: app_blue,
+                                    //         width: ScreenUtil().setSp(60),
+                                    //         height: ScreenUtil().setSp(3),
+                                    //       )
+                                    //     :
+                                    Container(
+                                      width: ScreenUtil().setSp(60),
+                                      height: ScreenUtil().setSp(3),
+                                    )
                                   ],
                                 ),
                               ),
@@ -333,28 +355,47 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                         isPermission
                             ? Visibility(
-                                visible: isMapLoading
-                                    ? false
-                                    : isLeftTap
-                                        ? true
-                                        : false,
+                                visible: isMapLoading ? false : true,
                                 child: Expanded(
                                   child: Obx(() => Stack(
                                         alignment: Alignment.center,
                                         children: [
                                           Positioned(
-                                            child: GoogleMapContainer(
-                                              photoMapList: photoMapMarkerList,
-                                              userPosition: userPosition,
-                                              currentCameraPosition: gmPosition
-                                                  .currentCameraPosition.value,
-                                              category:
-                                                  fliterValue.category.value,
-                                              dateStart:
-                                                  fliterValue.dateStart.value,
-                                              dateEnd:
-                                                  fliterValue.dateEnd.value,
-                                            ),
+                                            child: gmUpdate.markerNum !=
+                                                    result
+                                                        .data["photo_list_map"]
+                                                            ["results"]
+                                                        .length
+                                                ? GoogleMapContainer(
+                                                    photoMapList:
+                                                        photoMapMarkerList,
+                                                    userPosition: userPosition,
+                                                    currentCameraPosition:
+                                                        gmPosition
+                                                            .currentCameraPosition
+                                                            .value,
+                                                    category: fliterValue
+                                                        .category.value,
+                                                    dateStart: fliterValue
+                                                        .dateStart.value,
+                                                    dateEnd: fliterValue
+                                                        .dateEnd.value,
+                                                  )
+                                                : GoogleMapContainer(
+                                                    photoMapList:
+                                                        photoMapMarkerList,
+                                                    userPosition: userPosition,
+                                                    currentCameraPosition:
+                                                        gmPosition
+                                                            .currentCameraPosition
+                                                            .value,
+                                                    category: fliterValue
+                                                        .category.value,
+                                                    dateStart: fliterValue
+                                                        .dateStart.value,
+                                                    dateEnd: fliterValue
+                                                        .dateEnd.value,
+                                                  ),
                                           ),
                                           gmWholeController
                                                   .isMarkerLoading.value
@@ -421,7 +462,7 @@ class _MapScreenState extends State<MapScreen> {
                                 });
                               },
                               child: FilterBtnOptions(
-                                  title: '바닷가', callback: () => refetch()),
+                                  title: '관광지', callback: () => refetch()),
                             ),
                             InkWell(
                               onTap: () {

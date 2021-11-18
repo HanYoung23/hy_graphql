@@ -59,11 +59,11 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
             document: gql(Mutations.changeContents),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
-              // print("🚨 resultData : $resultData");
+              print("🚨 edit post mutation result : $resultData");
               if (resultData["change_contents"]["result"]) {
                 Get.offAll(() => HomePage());
               } else {
-                // Get.snackbar("error", "${resultData["createContents"]["msg"]}");
+                Get.snackbar("error", "${resultData["createContents"]["msg"]}");
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {

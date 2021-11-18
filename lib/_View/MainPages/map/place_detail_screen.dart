@@ -81,8 +81,9 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
 
               List tagList = [];
               if (tags != null) {
-                tags.split(",");
+                tagList = tags.split(",");
               }
+              // print("🚨 place detail tags : $tags");
               int postCustomerId = resultData["customer_id"];
               // int bookmarksCount = resultData["bookmarks_count"];
               // int likesCount = resultData["likes_count"];

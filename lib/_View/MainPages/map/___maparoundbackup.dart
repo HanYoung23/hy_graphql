@@ -315,7 +315,7 @@
 //                                       callback: () => refetch(),
 //                                     ),
 //                                     FilterBtnOptions(
-//                                       title: '바닷가',
+//                                       title: '관광지',
 //                                       callback: () => refetch(),
 //                                     ),
 //                                     FilterBtnOptions(

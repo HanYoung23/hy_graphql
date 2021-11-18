@@ -120,7 +120,7 @@ class PostCupertinoBottomSheet extends StatelessWidget {
 
             switch (categoryId) {
               case 1:
-                selectedCategory = "바닷가";
+                selectedCategory = "관광지";
                 break;
               case 2:
                 selectedCategory = "액티비티";

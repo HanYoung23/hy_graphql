@@ -38,10 +38,14 @@ class AddBtnOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FloatingButtonController floatingBtnController =
+        Get.put(FloatingButtonController());
+
     return InkWell(
       onTap: () {
         Get.to(() => MapPostCreationScreen());
-        // floatingBtnController.allBtnCancel();
+        // Get.off(() => MapPostCreationScreen());
+        floatingBtnController.allBtnCancel();
       },
       child: Container(
         width: ScreenUtil().setSp(82),

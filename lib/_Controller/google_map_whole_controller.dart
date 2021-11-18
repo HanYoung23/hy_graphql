@@ -29,4 +29,10 @@ class GoogleMapWholeController extends GetxController {
   setIsMarkerLoading(bool isloading) {
     isMarkerLoading.value = isloading;
   }
+
+  var markerNum = 0.obs;
+
+  setMarkerNum(int num) {
+    markerNum.value = num;
+  }
 }

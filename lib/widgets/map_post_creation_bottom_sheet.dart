@@ -15,7 +15,7 @@ class MapPostCreationBottomSheet extends StatefulWidget {
 class _MapPostCreationBottomSheetState
     extends State<MapPostCreationBottomSheet> {
   String currentCategory;
-  List categoryList = ["바닷가", "액티비티", "맛집", "숙소"];
+  List categoryList = ["관광지", "액티비티", "맛집", "숙소"];
 
   @override
   Widget build(BuildContext context) {

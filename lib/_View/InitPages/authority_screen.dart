@@ -14,7 +14,7 @@ class AuthorityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: false,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
@@ -152,12 +152,15 @@ class AuthorityScreen extends StatelessWidget {
                   Get.offAll(() => WalkthroughScreen());
                 },
                 child: Container(
-                    width: ScreenUtil().screenWidth,
-                    height: ScreenUtil().setSp(54),
-                    color: app_blue,
+                    width: ScreenUtil().setSp(336),
+                    height: ScreenUtil().setSp(50),
+                    decoration: BoxDecoration(
+                        color: app_blue,
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(10))),
                     child: Center(
                       child: Text(
-                        "확인",
+                        "다음",
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),
@@ -166,6 +169,11 @@ class AuthorityScreen extends StatelessWidget {
                         ),
                       ),
                     )),
+              ),
+              Container(
+                height:
+                    ScreenUtil().setSp(MediaQuery.of(context).padding.bottom),
+                color: Colors.white,
               )
             ],
           ),

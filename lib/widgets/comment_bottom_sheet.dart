@@ -81,7 +81,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   moveScroll() {
     if (lastCoord != null) {
-      commentScrollController.jumpTo(lastCoord + 30);
+      commentScrollController.jumpTo(lastCoord);
     }
   }
 
@@ -697,7 +697,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           setState(() {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
-                            lastCoord = commentScrollController.offset;
+                            // lastCoord = commentScrollController.offset;
                           });
                           commentController.text = " ";
                           commentController.selection =
@@ -858,7 +858,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           setState(() {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
-                            lastCoord = commentScrollController.offset;
+                            // lastCoord = commentScrollController.offset;
                           });
                           commentController.text = " ";
                           commentController.selection =

@@ -54,7 +54,7 @@ class FilterBtnOptions extends StatelessWidget {
 
         break;
       case 1:
-        currentCategory = "바닷가";
+        currentCategory = "관광지";
 
         break;
       case 2:
@@ -82,7 +82,7 @@ class FilterBtnOptions extends StatelessWidget {
               callback();
               floatingBtnController.allBtnCancel();
               break;
-            case "바닷가":
+            case "관광지":
               // gmCategoryMapController.setCategoryMap(2);
               floatingBtnController.categoryUpdate(1);
               // callback(2);

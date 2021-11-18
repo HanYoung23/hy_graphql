@@ -38,7 +38,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
   categoryCallback(String categoryName) {
     int categoryId;
     switch (categoryName) {
-      case "바닷가":
+      case "관광지":
         categoryId = 1;
         break;
       case "액티비티":

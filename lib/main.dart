@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         designSize: Size(375, 667),
         // allowFontScaling: false,
         builder: () => FutureBuilder(
-              future: Future.delayed(Duration(seconds: 0)),
+              future: Future.delayed(Duration(seconds: 2)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return ScreenFilter();
@@ -164,8 +164,8 @@ class Splash extends StatelessWidget {
         child: Center(
           child: Image.asset(
             "assets/images/splash.png",
-            width: ScreenUtil().setSp(46),
-            height: ScreenUtil().setSp(46),
+            width: ScreenUtil().setSp(70),
+            height: ScreenUtil().setSp(70),
             fit: BoxFit.contain,
           ),
         ),
