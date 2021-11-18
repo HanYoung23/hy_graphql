@@ -28,9 +28,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ScrollController postScrollController = ScrollController();
   final ScrollController commentScrollController = ScrollController();
   final ScrollController bookmarkScrollController = ScrollController();
-  NotificationContoller notificationContoller =
-      Get.put(NotificationContoller());
-  NotificationContoller globalNotification = Get.find();
+  // NotificationContoller notificationContoller =
+  //     Get.put(NotificationContoller());
+  // NotificationContoller globalNotification = Get.find();
 
   int customerId;
   int currentTap = 1;
@@ -180,13 +180,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           //     "🧾 settings result : ${result.data["check_list"]}");
                                           List resultData =
                                               result.data["check_list"];
+                                          bool isNoti = false;
                                           for (Map checkListMap in resultData) {
                                             if (checkListMap["check"] == 1) {
-                                              notificationContoller
-                                                  .updateIsNotification(true);
-                                            } else {
-                                              notificationContoller
-                                                  .updateIsNotification(false);
+                                              //   notificationContoller
+                                              //       .updateIsNotification(true);
+                                              // } else {
+                                              //   notificationContoller
+                                              //       .updateIsNotification(false);
+                                              isNoti = true;
                                             }
                                           }
                                           return InkWell(
@@ -194,14 +196,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               scaffoldKey.currentState
                                                   .openDrawer();
                                             },
-                                            child: Obx(() => Image.asset(
-                                                !globalNotification
-                                                        .isNotification.value
+                                            child: Image.asset(
+                                                !isNoti
                                                     ? "assets/images/hamburger_button.png"
                                                     : "assets/images/hamburger_button_active.png",
                                                 width: ScreenUtil().setSp(28),
-                                                height:
-                                                    ScreenUtil().setSp(28))),
+                                                height: ScreenUtil().setSp(28)),
                                           );
                                         } else {
                                           return InkWell(
