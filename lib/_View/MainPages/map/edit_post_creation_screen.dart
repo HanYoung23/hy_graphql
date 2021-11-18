@@ -150,14 +150,19 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
   setCurrentData() {
     // print("🚨 edit post tags : ${widget.mapData["tags"]}");
     String tag = widget.mapData["tags"];
-    String newTag = tag.replaceAll(",", "#");
+    String newTag;
+    if (tag != null) {
+      newTag = tag.replaceAll(",", "#");
+    }
     setState(() {
       category = widget.mapData["categoryId"];
       selectedCategory = widget.mapData["selectedCategory"];
       imageList = widget.mapData["imageLink"];
     });
     contentTextController.text = widget.mapData["mainText"];
-    tagTextController.text = newTag;
+    if (newTag != null) {
+      tagTextController.text = newTag;
+    }
     checkIsAllFilled();
   }
 
@@ -430,6 +435,8 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                                       TextSelection.fromPosition(TextPosition(
                                           offset:
                                               tagTextController.text.length));
+                                } else {
+                                  FocusScope.of(context).unfocus();
                                 }
                               },
                               style: TextStyle(

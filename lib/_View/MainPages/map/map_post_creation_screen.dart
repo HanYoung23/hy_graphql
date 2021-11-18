@@ -412,6 +412,8 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                                       TextSelection.fromPosition(TextPosition(
                                           offset:
                                               tagTextController.text.length));
+                                } else {
+                                  FocusScope.of(context).unfocus();
                                 }
                               },
                               style: TextStyle(
