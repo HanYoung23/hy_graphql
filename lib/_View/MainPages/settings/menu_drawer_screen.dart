@@ -18,9 +18,9 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // NotificationContoller notificationContoller =
-    //     Get.put(NotificationContoller());
-    // NotificationContoller globalNotification = Get.find();
+    NotificationContoller notificationContoller =
+        Get.put(NotificationContoller());
+    NotificationContoller globalNotification = Get.find();
 
     return SafeArea(
       child: Container(
@@ -71,35 +71,42 @@ class MenuDrawer extends StatelessWidget {
                                 // print(
                                 //     "🧾 settings result : ${result.data["check_list"]}");
                                 List resultData = result.data["check_list"];
+
                                 bool isNoti = false;
                                 for (Map checkListMap in resultData) {
                                   if (checkListMap["check"] == 1) {
-                                    //   notificationContoller
-                                    //       .updateIsNotification(true);
-                                    // } else {
-                                    //   notificationContoller
-                                    //       .updateIsNotification(false);
+                                    WidgetsBinding.instance
+                                        .addPostFrameCallback((_) =>
+                                            notificationContoller
+                                                .updateIsNotification(true));
                                     isNoti = true;
                                   }
                                 }
-                                return InkWell(
-                                  onTap: () {
-                                    Get.to(() => NotificationScreen(
-                                        checkList: resultData,
-                                        refetchCallback: () => refetch()));
-                                  },
-                                  child: Image.asset(
-                                    !isNoti
-                                        ? "assets/images/settings/alarm_button.png"
-                                        : "assets/images/settings/alarm_button_active.png",
-                                    width: !isNoti
-                                        ? ScreenUtil().setSp(22)
-                                        : ScreenUtil().setSp(28),
-                                    height: !isNoti
-                                        ? ScreenUtil().setSp(22)
-                                        : ScreenUtil().setSp(28),
-                                  ),
-                                );
+                                if (!isNoti) {
+                                  WidgetsBinding.instance.addPostFrameCallback(
+                                      (_) => notificationContoller
+                                          .updateIsNotification(false));
+                                }
+                                return Obx(() => InkWell(
+                                      onTap: () {
+                                        Get.to(() => NotificationScreen(
+                                            checkList: resultData,
+                                            refetchCallback: () => refetch()));
+                                      },
+                                      child: Image.asset(
+                                        !globalNotification.isNotification.value
+                                            ? "assets/images/settings/alarm_button.png"
+                                            : "assets/images/settings/alarm_button_active.png",
+                                        width: !globalNotification
+                                                .isNotification.value
+                                            ? ScreenUtil().setSp(22)
+                                            : ScreenUtil().setSp(28),
+                                        height: !globalNotification
+                                                .isNotification.value
+                                            ? ScreenUtil().setSp(22)
+                                            : ScreenUtil().setSp(28),
+                                      ),
+                                    ));
                               } else {
                                 return Container();
                               }

@@ -22,9 +22,9 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   int customerId;
   bool isDrawerOpen = false;
-  // NotificationContoller notificationContoller =
-  //     Get.put(NotificationContoller());
-  // NotificationContoller globalNotification = Get.find();
+  NotificationContoller notificationContoller =
+      Get.put(NotificationContoller());
+  NotificationContoller globalNotification = Get.find();
 
   closeCallback() {
     setState(() {
@@ -85,18 +85,24 @@ class _StoreScreenState extends State<StoreScreen> {
                                     bool isNoti = false;
                                     for (Map checkListMap in resultData) {
                                       if (checkListMap["check"] == 1) {
-                                        //   notificationContoller
-                                        //       .updateIsNotification(true);
-                                        // } else {
-                                        //   notificationContoller
-                                        //       .updateIsNotification(false);
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) =>
+                                                notificationContoller
+                                                    .updateIsNotification(
+                                                        true));
                                         isNoti = true;
                                       }
                                     }
+                                    if (!isNoti) {
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) =>
+                                              notificationContoller
+                                                  .updateIsNotification(false));
+                                    }
 
-                                    Timer(Duration(seconds: 5), () {
-                                      refetch();
-                                    });
+                                    // Timer(Duration(seconds: 2), () {
+                                    //   refetch();
+                                    // });
 
                                     return InkWell(
                                       onTap: () {
@@ -104,12 +110,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                           isDrawerOpen = true;
                                         });
                                       },
-                                      child: Image.asset(
-                                          !isNoti
+                                      child: Obx(() => Image.asset(
+                                          !globalNotification
+                                                  .isNotification.value
                                               ? "assets/images/hamburger_button.png"
                                               : "assets/images/hamburger_button_active.png",
                                           width: ScreenUtil().setSp(28),
-                                          height: ScreenUtil().setSp(28)),
+                                          height: ScreenUtil().setSp(28))),
                                     );
                                   } else {
                                     return InkWell(

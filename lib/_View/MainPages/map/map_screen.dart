@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,9 +43,9 @@ class _MapScreenState extends State<MapScreen> {
   FloatingButtonController floatingBtn = Get.find();
   FloatingButtonController fliterValue = Get.find();
 
-  // NotificationContoller notificationContoller =
-  //     Get.put(NotificationContoller());
-  // NotificationContoller globalNotification = Get.find();
+  NotificationContoller notificationContoller =
+      Get.put(NotificationContoller());
+  NotificationContoller globalNotification = Get.find();
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -196,29 +194,32 @@ class _MapScreenState extends State<MapScreen> {
                                       bool isNoti = false;
                                       for (Map checkListMap in resultData) {
                                         if (checkListMap["check"] == 1) {
-                                          //   notificationContoller
-                                          //       .updateIsNotification(true);
-                                          // } else {
-                                          //   notificationContoller
-                                          //       .updateIsNotification(false);
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) =>
+                                                  notificationContoller
+                                                      .updateIsNotification(
+                                                          true));
                                           isNoti = true;
                                         }
                                       }
-
-                                      Timer(Duration(seconds: 5), () {
-                                        refetch();
-                                      });
-
+                                      if (!isNoti) {
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) =>
+                                                notificationContoller
+                                                    .updateIsNotification(
+                                                        false));
+                                      }
                                       return InkWell(
                                         onTap: () {
                                           scaffoldKey.currentState.openDrawer();
                                         },
-                                        child: Image.asset(
-                                            !isNoti
+                                        child: Obx(() => Image.asset(
+                                            !globalNotification
+                                                    .isNotification.value
                                                 ? "assets/images/hamburger_button.png"
                                                 : "assets/images/hamburger_button_active.png",
                                             width: ScreenUtil().setSp(28),
-                                            height: ScreenUtil().setSp(28)),
+                                            height: ScreenUtil().setSp(28))),
                                       );
                                     } else {
                                       return InkWell(
