@@ -160,7 +160,7 @@ class AuthorityScreen extends StatelessWidget {
                             BorderRadius.circular(ScreenUtil().setSp(10))),
                     child: Center(
                       child: Text(
-                        "다음",
+                        "확인",
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(16),

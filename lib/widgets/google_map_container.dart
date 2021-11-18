@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_controller/google_maps_controller.dart';
@@ -36,6 +37,7 @@ class GoogleMapContainer extends StatefulWidget {
 
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
   Completer<GoogleMapController> _mapController = Completer();
+
   GoogleMapWholeController gmWholeImages = Get.find();
   GoogleMapWholeController gmUpdate = Get.find();
   final GoogleMapWholeController gmWholeController =
@@ -204,28 +206,68 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     //       if (queryResult.hasException) {
     //         print("🚨 google map error : ${queryResult.exception}");
     //       }
-    return GoogleMap(
-      compassEnabled: true,
-      mapToolbarEnabled: false,
-      zoomGesturesEnabled: true,
-      myLocationButtonEnabled: true,
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      initialCameraPosition: widget.currentCameraPosition.target.latitude ==
-              37.55985294417329 // inital latitude
-          ? CameraPosition(
-              target: LatLng(
-                  widget.userPosition.latitude, widget.userPosition.longitude),
-              zoom: _currentZoom,
-            )
-          : CameraPosition(
-              target: widget.currentCameraPosition.target,
-              zoom: widget.currentCameraPosition.zoom,
-            ),
-      markers: _markers,
-      onMapCreated: (controller) => _onMapCreated(controller),
-      onCameraMove: (position) => onCameraMove(position.zoom, position),
-      onCameraIdle: () => _updateMarkers(currentZoom, currentPosition),
+    return Stack(
+      children: [
+        Positioned(
+          child: GoogleMap(
+            compassEnabled: true,
+            mapToolbarEnabled: false,
+            zoomGesturesEnabled: true,
+            // myLocationButtonEnabled: true,
+            myLocationEnabled: true,
+            zoomControlsEnabled: false,
+            initialCameraPosition:
+                widget.currentCameraPosition.target.latitude ==
+                            37.55985294417329 &&
+                        widget.userPosition != null // inital latitude
+                    ? CameraPosition(
+                        target: LatLng(widget.userPosition.latitude,
+                            widget.userPosition.longitude),
+                        zoom: _currentZoom,
+                      )
+                    : CameraPosition(
+                        target: widget.currentCameraPosition.target,
+                        zoom: widget.currentCameraPosition.zoom,
+                      ),
+            markers: _markers,
+            onMapCreated: (controller) => _onMapCreated(controller),
+            onCameraMove: (position) => onCameraMove(position.zoom, position),
+            onCameraIdle: () => _updateMarkers(currentZoom, currentPosition),
+          ),
+        ),
+        widget.userPosition != null
+            ? Positioned(
+                top: ScreenUtil().setSp(20),
+                right: ScreenUtil().setSp(20),
+                child: InkWell(
+                  onTap: () async {
+                    final GoogleMapController controller =
+                        await _mapController.future;
+
+                    controller.animateCamera(CameraUpdate.newLatLngZoom(
+                        LatLng(widget.userPosition.latitude,
+                            widget.userPosition.longitude),
+                        currentZoom));
+                  },
+                  child: Container(
+                    width: ScreenUtil().setSp(40),
+                    height: ScreenUtil().setSp(40),
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        border: Border.all(
+                            width: ScreenUtil().setSp(1),
+                            color: Colors.grey.withOpacity(0.4)),
+                        borderRadius:
+                            BorderRadius.circular(ScreenUtil().setSp(5))),
+                    child: Icon(
+                      Icons.my_location,
+                      size: ScreenUtil().setSp(24),
+                      color: Colors.black.withOpacity(0.6),
+                    ),
+                  ),
+                ))
+            : Container()
+      ],
     );
     // });
   }
