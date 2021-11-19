@@ -12,8 +12,12 @@ import 'package:letsgotrip/widgets/graphql_query.dart';
 class CommentBottomSheet extends StatefulWidget {
   final int contentsId;
   final int customerId;
+  final int commentCount;
   const CommentBottomSheet(
-      {Key key, @required this.contentsId, @required this.customerId})
+      {Key key,
+      @required this.contentsId,
+      @required this.customerId,
+      @required this.commentCount})
       : super(key: key);
 
   @override
@@ -23,6 +27,7 @@ class CommentBottomSheet extends StatefulWidget {
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
   final commentController = TextEditingController();
   final ScrollController commentScrollController = ScrollController();
+  ScrollPhysics scrollPhysics = BouncingScrollPhysics();
 
   FocusNode focusNode;
   bool isLeft = true;
@@ -34,10 +39,14 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   String replyCommentNickname = "";
   //
   List commentPages = [1];
+  List reverseCommentPages = [1];
   //
   bool isRefreshing = false;
   //
   double lastCoord;
+  //
+  bool isReverse = false;
+  bool isBottom = false;
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -54,6 +63,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   bool onCommentNotification(ScrollEndNotification t) {
+    // print("🚨 t : ${t.metrics.pixels}");
     if (t.metrics.pixels > 0 && t.metrics.atEdge) {
       List newPages = commentPages;
       int lastPage = newPages.length;
@@ -61,9 +71,19 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       setState(() {
         commentPages = newPages;
       });
-      // print("🚨 commentPages : $commentPages");
     } else {
-      // print('I am at the start');
+      print("🚨 reverse : $reverseCommentPages");
+      if (isLeft && isReverse) {
+        List newPages = reverseCommentPages;
+        int previousPage = newPages[0];
+        if (previousPage - 1 != 0) {
+          newPages.insert(0, previousPage - 1);
+        }
+        setState(() {
+          reverseCommentPages = newPages;
+        });
+        print("🚨 reverseCommentPages : $reverseCommentPages");
+      }
     }
     return true;
   }
@@ -80,6 +100,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   moveScroll() {
+    // if (isBottom && lastCoord == null) {
+    //   final position = commentScrollController.position.maxScrollExtent;
+    //   setState(() {
+    //     lastCoord = position;
+    //   });
+    //   commentScrollController.jumpTo(position + 30);
+    // } else
     if (lastCoord != null) {
       commentScrollController.jumpTo(lastCoord);
     }
@@ -96,12 +123,30 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   void initState() {
     focusNode = FocusNode();
     commentScrollController.addListener(() {
+      if (commentScrollController.offset < 50.0) {
+        setState(() {
+          scrollPhysics = BouncingScrollPhysics();
+        });
+      } else {
+        setState(() {
+          scrollPhysics = ClampingScrollPhysics();
+        });
+      }
       if (commentScrollController.offset < refreshOffset) {
-        // print("🚨 ${commentScrollController.offset}");
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
     });
-    Future.delayed(Duration.zero, () => moveScroll());
+
+    // if (widget.commentCount > 30) {
+    //   int lastPageNum = (widget.commentCount / 30).ceil();
+    //   List pages = [lastPageNum];
+    //   if (lastPageNum > 1) {
+    //     pages.insert(0, lastPageNum - 1);
+    //   }
+    //   setState(() {
+    //     reverseCommentPages = pages;
+    //   });
+    // }
     super.initState();
   }
 
@@ -127,7 +172,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             ),
             builder: (result, {refetch, fetchMore}) {
               if (!result.isLoading && result.data != null) {
-                // print("🚨 comments : ${result.data["coments_list"]["results"][0]}");
+                // print(
+                //     "🚨 comments : ${result.data["coments_list"]["results"][0]}");
 
                 List comentsList = result.data["coments_list"]["results"];
                 return Column(
@@ -152,6 +198,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                       builder: (result, {refetch, fetchMore}) {
                                         WidgetsBinding.instance
                                             .addPostFrameCallback((_) {
+                                          // print("🚨 is bottom : $isBottom");
                                           moveScroll();
                                         });
 
@@ -213,6 +260,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 onTap: () {
                                   setState(() {
                                     isLeft = false;
+                                    isReverse = false;
                                   });
                                 },
                                 child: Text("최신순",
@@ -270,21 +318,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                         int pageCount = result
                                             .data["coments_list"]["count"];
 
-                                        return NotificationListener(
-                                          onNotification: pageCount !=
-                                                      commentPages.length &&
-                                                  pageCount != 1
-                                              ? onCommentNotification
-                                              : null,
-                                          child: ListView(
-                                            controller: commentScrollController,
-                                            physics: BouncingScrollPhysics(),
-                                            children: commentPages.map((page) {
-                                              return commentsListView(
-                                                  page, refetch);
-                                            }).toList(),
-                                          ),
-                                        );
+                                        return isLeft && isReverse
+                                            ? reverseCommentBuilder(
+                                                pageCount, refetch)
+                                            : commentBuilder(
+                                                pageCount, refetch);
                                       } else {
                                         return Container();
                                       }
@@ -301,6 +339,38 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 return CupertinoActivityIndicator();
               }
             }));
+  }
+
+  NotificationListener<ScrollEndNotification> reverseCommentBuilder(
+      int pageCount, Refetch refetch) {
+    return NotificationListener(
+      onNotification: pageCount != reverseCommentPages.length && pageCount != 1
+          ? onCommentNotification
+          : null,
+      child: ListView(
+        controller: commentScrollController,
+        physics: scrollPhysics,
+        children: reverseCommentPages.map((page) {
+          return commentsListView(page, refetch);
+        }).toList(),
+      ),
+    );
+  }
+
+  NotificationListener<ScrollEndNotification> commentBuilder(
+      int pageCount, Refetch refetch) {
+    return NotificationListener(
+      onNotification: pageCount != commentPages.length && pageCount != 1
+          ? onCommentNotification
+          : null,
+      child: ListView(
+        controller: commentScrollController,
+        physics: scrollPhysics,
+        children: commentPages.map((page) {
+          return commentsListView(page, refetch);
+        }).toList(),
+      ),
+    );
   }
 
   Query commentsListView(int page, Refetch refetch) {
@@ -410,6 +480,20 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
+                  if (isLeft && replyCommentId == 0 && editCommentId == null) {
+                    setState(() {
+                      // isBottom = true;
+                      isReverse = true;
+                      lastCoord = null;
+                      lastCoord =
+                          commentScrollController.position.maxScrollExtent;
+                    });
+                  } else {
+                    setState(() {
+                      // isBottom = false;
+                      lastCoord = commentScrollController.offset;
+                    });
+                  }
                   refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -471,7 +555,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           replyCommentId = 0;
                           replyCommentNickname = "";
                           isValid = false;
-                          lastCoord = commentScrollController.offset;
+                          // lastCoord = commentScrollController.offset;
                         });
                         FocusScope.of(context).unfocus();
                       }
@@ -517,6 +601,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                   setState(() {
                     editCommentId = null;
                     editCommentText = null;
+                    // isBottom = false;
                   });
                   refetch();
                 }),
@@ -630,7 +715,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               Container(
                 width: ScreenUtil().setSp(35),
                 height: ScreenUtil().setSp(35),
-                decoration: photo == null
+                decoration: "$photo" == "null"
                     ? BoxDecoration(
                         color: app_grey,
                         borderRadius:
@@ -697,7 +782,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           setState(() {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
-                            // lastCoord = commentScrollController.offset;
+                            // isBottom = false;
                           });
                           commentController.text = " ";
                           commentController.selection =
@@ -777,7 +862,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               Container(
                 width: ScreenUtil().setSp(25),
                 height: ScreenUtil().setSp(25),
-                decoration: photo == null
+                decoration: "$photo" == "null"
                     ? BoxDecoration(
                         color: app_grey,
                         borderRadius:
@@ -858,7 +943,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           setState(() {
                             replyCommentId = comentsId;
                             replyCommentNickname = nickname;
-                            // lastCoord = commentScrollController.offset;
+                            // isBottom = false;
                           });
                           commentController.text = " ";
                           commentController.selection =

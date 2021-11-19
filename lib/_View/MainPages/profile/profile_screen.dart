@@ -448,6 +448,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             List resultData = result.data["mypage_contents_list"]["results"];
 
             return Wrap(
+                alignment: WrapAlignment.spaceBetween,
                 spacing: ScreenUtil().setSp(1),
                 runSpacing: ScreenUtil().setSp(1),
                 direction: Axis.horizontal,
@@ -462,9 +463,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Container(
                       width:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
                       height:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
                       child: Image.network(
                         imageLink[0],
                         fit: BoxFit.cover,
@@ -561,8 +562,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
             List resultData = result.data["mypage_bookmarks_list"]["results"];
-            print("🚨 bookmarkslist : ${resultData.length}");
+            // print("🚨 bookmarkslist : ${resultData.length}");
             return Wrap(
+                alignment: WrapAlignment.spaceBetween,
                 spacing: ScreenUtil().setSp(1),
                 runSpacing: ScreenUtil().setSp(1),
                 direction: Axis.horizontal,
@@ -577,9 +579,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Container(
                       width:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
                       height:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
                       child: Image.network(
                         imageLink[0],
                         fit: BoxFit.cover,

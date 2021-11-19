@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +13,6 @@ import 'package:letsgotrip/_Controller/notification_controller.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_around_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
@@ -86,7 +87,11 @@ class _MapScreenState extends State<MapScreen> {
           }
         });
       } else {
-        permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
+        setState(() {
+          isMapLoading = false;
+          isPermission = permission;
+        });
+        // permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
       }
     });
     seeValue("customerId").then((value) {
@@ -120,19 +125,22 @@ class _MapScreenState extends State<MapScreen> {
             // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
             // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
 
-            print(
-                "🚨 map screen length : ${result.data["photo_list_map"]["results"].length}");
+            // print(
+            //     "🚨 map screen length : ${result.data["photo_list_map"]["results"].length}");
 
             // if (gmUpdate.isGmUpdate.value) {
             //   gmWholeController.setIsGmUpdate(false);
             //   refetch();
             // }
 
-            if (gmUpdate.markerNum !=
-                    result.data["photo_list_map"]["results"].length &&
-                gmUpdate.markerNum.value != 0) {
-              refetch();
-            }
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (gmUpdate.markerNum !=
+                      result.data["photo_list_map"]["results"].length &&
+                  gmUpdate.markerNum.value != 0 &&
+                  Platform.isAndroid) {
+                refetch();
+              }
+            });
 
             if (result.data != null) {
               if (result.data["photo_list_map"]["results"].length > 0) {
@@ -353,66 +361,64 @@ class _MapScreenState extends State<MapScreen> {
                             ],
                           ),
                         ),
-                        isPermission
-                            ? Visibility(
-                                visible: isMapLoading ? false : true,
-                                child: Expanded(
-                                  child: Obx(() => Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Positioned(
-                                            child: gmUpdate.markerNum !=
+                        Visibility(
+                            visible: isMapLoading ? false : true,
+                            child: Expanded(
+                              child: Obx(() => Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Positioned(
+                                        child: (gmUpdate.markerNum.value != 0 &&
+                                                gmUpdate.markerNum.value !=
                                                     result
                                                         .data["photo_list_map"]
                                                             ["results"]
-                                                        .length
-                                                ? GoogleMapContainer(
-                                                    photoMapList:
-                                                        photoMapMarkerList,
-                                                    userPosition: userPosition,
-                                                    currentCameraPosition:
-                                                        gmPosition
-                                                            .currentCameraPosition
-                                                            .value,
-                                                    category: fliterValue
-                                                        .category.value,
-                                                    dateStart: fliterValue
-                                                        .dateStart.value,
-                                                    dateEnd: fliterValue
-                                                        .dateEnd.value,
-                                                  )
-                                                : GoogleMapContainer(
-                                                    photoMapList:
-                                                        photoMapMarkerList,
-                                                    userPosition: userPosition,
-                                                    currentCameraPosition:
-                                                        gmPosition
-                                                            .currentCameraPosition
-                                                            .value,
-                                                    category: fliterValue
-                                                        .category.value,
-                                                    dateStart: fliterValue
-                                                        .dateStart.value,
-                                                    dateEnd: fliterValue
-                                                        .dateEnd.value,
-                                                  ),
-                                          ),
-                                          gmWholeController
-                                                  .isMarkerLoading.value
-                                              ? Positioned(
-                                                  child: Image.asset(
-                                                  "assets/images/spinner.gif",
-                                                  width: ScreenUtil().setSp(50),
-                                                  height:
-                                                      ScreenUtil().setSp(50),
-                                                ))
-                                              : Container()
-                                        ],
-                                      )),
-                                ))
-                            : Expanded(
-                                child: Container(
-                                    child: Text("위치 권한 허용 후 이용가능합니다."))),
+                                                        .length)
+                                            ? GoogleMapContainer(
+                                                photoMapList:
+                                                    photoMapMarkerList,
+                                                userPosition: userPosition,
+                                                currentCameraPosition:
+                                                    gmPosition
+                                                        .currentCameraPosition
+                                                        .value,
+                                                category:
+                                                    fliterValue.category.value,
+                                                dateStart:
+                                                    fliterValue.dateStart.value,
+                                                dateEnd:
+                                                    fliterValue.dateEnd.value,
+                                              )
+                                            : GoogleMapContainer(
+                                                photoMapList:
+                                                    photoMapMarkerList,
+                                                userPosition: userPosition,
+                                                currentCameraPosition:
+                                                    gmPosition
+                                                        .currentCameraPosition
+                                                        .value,
+                                                category:
+                                                    fliterValue.category.value,
+                                                dateStart:
+                                                    fliterValue.dateStart.value,
+                                                dateEnd:
+                                                    fliterValue.dateEnd.value,
+                                              ),
+                                      ),
+                                      gmWholeController.isMarkerLoading.value
+                                          ? Positioned(
+                                              child: Image.asset(
+                                              "assets/images/spinner.gif",
+                                              width: ScreenUtil().setSp(50),
+                                              height: ScreenUtil().setSp(50),
+                                            ))
+                                          : Container()
+                                    ],
+                                  )),
+                            )),
+                        // : Expanded(
+                        //     child: Container(
+                        //         child: Text("위치 권한 허용 후 이용가능합니다."))),
                         isMapLoading
                             ? Expanded(
                                 child: Center(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:fluster/fluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
 
   setMapMarker(List dataList) async {
     gmWholeController.isMarkerLoading(true);
-    gmWholeController.setMarkerNum(dataList.length);
+    if (Platform.isAndroid) {
+      gmWholeController.setMarkerNum(dataList.length);
+    }
     print("🚨 photomaplist : ${dataList.length}");
 
     List<MapMarker> mapMarkers = [];
@@ -101,7 +104,6 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       _minClusterZoom,
       _maxClusterZoom,
     );
-    setState(() {});
     await _updateMarkers();
   }
 
@@ -123,7 +125,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     _markers
       ..clear()
       ..addAll(updatedMarkers);
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   onCameraMove(double zoom, CameraPosition position) {
@@ -213,7 +217,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             compassEnabled: true,
             mapToolbarEnabled: false,
             zoomGesturesEnabled: true,
-            // myLocationButtonEnabled: true,
+            myLocationButtonEnabled: false,
             myLocationEnabled: true,
             zoomControlsEnabled: false,
             initialCameraPosition:
@@ -238,7 +242,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         widget.userPosition != null
             ? Positioned(
                 top: ScreenUtil().setSp(20),
-                right: ScreenUtil().setSp(20),
+                right: Platform.isAndroid ? ScreenUtil().setSp(20) : null,
+                left: Platform.isIOS ? ScreenUtil().setSp(20) : null,
                 child: InkWell(
                   onTap: () async {
                     final GoogleMapController controller =
@@ -247,7 +252,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
                     controller.animateCamera(CameraUpdate.newLatLngZoom(
                         LatLng(widget.userPosition.latitude,
                             widget.userPosition.longitude),
-                        currentZoom));
+                        13));
                   },
                   child: Container(
                     width: ScreenUtil().setSp(40),

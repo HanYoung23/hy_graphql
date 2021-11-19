@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         designSize: Size(375, 667),
         // allowFontScaling: false,
         builder: () => FutureBuilder(
-              future: Future.delayed(Duration(seconds: 0)),
+              future: Future.delayed(Duration(seconds: 2)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return ScreenFilter();

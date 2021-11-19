@@ -289,8 +289,8 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                             Container(
                                                 width: ScreenUtil().setSp(42),
                                                 height: ScreenUtil().setSp(42),
-                                                decoration: profilePhotoLink !=
-                                                        null
+                                                decoration: "$profilePhotoLink" !=
+                                                        "null"
                                                     ? BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius
@@ -608,8 +608,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (_) => CommentBottomSheet(
-                            contentsId: widget.contentsId,
-                            customerId: customerId),
+                          contentsId: widget.contentsId,
+                          customerId: customerId,
+                          commentCount: newComentsCount,
+                        ),
                         isScrollControlled: true,
                       ).then((value) {
                         refetch();
@@ -647,50 +649,31 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
             );
           } else {
             return Expanded(
-              child: InkWell(
-                onTap: () {
-                  if (this.mounted) {
-                    seeValue("customerId").then((value) {
-                      int customerId = int.parse(value);
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (_) => CommentBottomSheet(
-                            contentsId: widget.contentsId,
-                            customerId: customerId),
-                        isScrollControlled: true,
-                      ).then((value) {
-                        refetch();
-                      });
-                    });
-                  }
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: ScreenUtil().setSp(18),
-                      height: ScreenUtil().setSp(18),
-                      // child: Image.asset(
-                      //   "assets/images/reply.png",
-                      //   fit: BoxFit.contain,
-                      // ),
-                      child: SvgPicture.asset(
-                        "assets/images/reply.svg",
-                        fit: BoxFit.contain,
-                      ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: ScreenUtil().setSp(18),
+                    height: ScreenUtil().setSp(18),
+                    // child: Image.asset(
+                    //   "assets/images/reply.png",
+                    //   fit: BoxFit.contain,
+                    // ),
+                    child: SvgPicture.asset(
+                      "assets/images/reply.svg",
+                      fit: BoxFit.contain,
                     ),
-                    SizedBox(width: ScreenUtil().setSp(6)),
-                    Text(
-                      "댓글  $comentsCount",
-                      style: TextStyle(
-                          fontFamily: "NotoSansCJKkrRegular",
-                          letterSpacing:
-                              ScreenUtil().setSp(letter_spacing_x_small),
-                          fontSize: ScreenUtil().setSp(12)),
-                    )
-                  ],
-                ),
+                  ),
+                  SizedBox(width: ScreenUtil().setSp(6)),
+                  Text(
+                    "댓글  $comentsCount",
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        letterSpacing:
+                            ScreenUtil().setSp(letter_spacing_x_small),
+                        fontSize: ScreenUtil().setSp(12)),
+                  )
+                ],
               ),
             );
           }

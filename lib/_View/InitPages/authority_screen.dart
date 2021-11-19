@@ -149,7 +149,7 @@ class AuthorityScreen extends StatelessWidget {
               Spacer(),
               InkWell(
                 onTap: () {
-                  Get.offAll(() => WalkthroughScreen());
+                  Get.off(() => WalkthroughScreen());
                 },
                 child: Container(
                     width: ScreenUtil().setSp(336),
@@ -171,8 +171,7 @@ class AuthorityScreen extends StatelessWidget {
                     )),
               ),
               Container(
-                height:
-                    ScreenUtil().setSp(MediaQuery.of(context).padding.bottom),
+                height: ScreenUtil().setSp(34),
                 color: Colors.white,
               )
             ],

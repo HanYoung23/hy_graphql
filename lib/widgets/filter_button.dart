@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/_Controller/floating_button_controller.dart';
+import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 
 class FilterBtn extends StatelessWidget {
@@ -13,6 +14,8 @@ class FilterBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     final FloatingButtonController floatingBtnController =
         Get.put(FloatingButtonController());
+    GoogleMapWholeController gmWholeController =
+        Get.put(GoogleMapWholeController());
 
     return Positioned(
         bottom: ScreenUtil().setSp(10),
@@ -20,6 +23,9 @@ class FilterBtn extends StatelessWidget {
         child: InkWell(
           onTap: () {
             floatingBtnController.filterBtnOnClick();
+            if (isActive == "") {
+              gmWholeController.setMarkerNum(0);
+            }
           },
           child: Image.asset(
             isActive == "active"
@@ -78,35 +84,30 @@ class FilterBtnOptions extends StatelessWidget {
             case "전체":
               // gmCategoryMapController.setCategoryMap(1);
               floatingBtnController.categoryUpdate(0);
-              // callback(1);
               callback();
               floatingBtnController.allBtnCancel();
               break;
             case "관광지":
               // gmCategoryMapController.setCategoryMap(2);
               floatingBtnController.categoryUpdate(1);
-              // callback(2);
               callback();
               floatingBtnController.allBtnCancel();
               break;
             case "액티비티":
               // gmCategoryMapController.setCategoryMap(3);
               floatingBtnController.categoryUpdate(2);
-              // callback(3);
               callback();
               floatingBtnController.allBtnCancel();
               break;
             case "맛집":
               // gmCategoryMapController.setCategoryMap(4);
               floatingBtnController.categoryUpdate(3);
-              // callback(4);
               callback();
               floatingBtnController.allBtnCancel();
               break;
             case "숙소":
               // gmCategoryMapController.setCategoryMap(5);
               floatingBtnController.categoryUpdate(4);
-              // callback(5);
               callback();
               floatingBtnController.allBtnCancel();
               break;

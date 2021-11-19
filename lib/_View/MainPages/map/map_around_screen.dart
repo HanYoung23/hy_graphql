@@ -599,7 +599,8 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
 
   Wrap gridBuilder(List<Map<dynamic, dynamic>> imageMaps, int page) {
     return Wrap(
-        spacing: ScreenUtil().setSp(1),
+        alignment: WrapAlignment.spaceBetween,
+        // spacing: ScreenUtil().setSp(1),
         runSpacing: ScreenUtil().setSp(1),
         direction: Axis.horizontal,
         children: imageMaps.map((item) {
@@ -613,7 +614,7 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                         ));
                   },
                   child: CachedNetworkImage(
-                    width: ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
+                    width: ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
                     height:
                         ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
                     imageUrl: imageMaps[index]["imageLink"],

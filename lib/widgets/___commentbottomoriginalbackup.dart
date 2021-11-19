@@ -12,12 +12,8 @@
 // class CommentBottomSheet extends StatefulWidget {
 //   final int contentsId;
 //   final int customerId;
-//   final int commentCount;
 //   const CommentBottomSheet(
-//       {Key key,
-//       @required this.contentsId,
-//       @required this.customerId,
-//       @required this.commentCount})
+//       {Key key, @required this.contentsId, @required this.customerId})
 //       : super(key: key);
 
 //   @override
@@ -38,13 +34,10 @@
 //   String replyCommentNickname = "";
 //   //
 //   List commentPages = [1];
-//   List reverseCommentPages = [1];
 //   //
 //   bool isRefreshing = false;
 //   //
 //   double lastCoord;
-//   //
-//   bool isMoveToBottom = false;
 
 //   commentEditCallback(commentId, commentText) {
 //     if (commentId != null) {
@@ -68,18 +61,9 @@
 //       setState(() {
 //         commentPages = newPages;
 //       });
+//       // print("🚨 commentPages : $commentPages");
 //     } else {
-//       if (isLeft && isMoveToBottom) {
-//         List newPages = reverseCommentPages;
-//         int lastPage = newPages[newPages.length - 1];
-//         if (lastPage != 0) {
-//           newPages.insert(0, lastPage - 1);
-//         }
-//         setState(() {
-//           reverseCommentPages = newPages;
-//         });
-//         print("🚨 reverseCommentPages : $reverseCommentPages");
-//       }
+//       // print('I am at the start');
 //     }
 //     return true;
 //   }
@@ -96,10 +80,7 @@
 //   }
 
 //   moveScroll() {
-//     if (isMoveToBottom) {
-//       final position = commentScrollController.position.maxScrollExtent;
-//       commentScrollController.jumpTo(position);
-//     } else if (lastCoord != null) {
+//     if (lastCoord != null) {
 //       commentScrollController.jumpTo(lastCoord);
 //     }
 //   }
@@ -116,17 +97,11 @@
 //     focusNode = FocusNode();
 //     commentScrollController.addListener(() {
 //       if (commentScrollController.offset < refreshOffset) {
+//         // print("🚨 ${commentScrollController.offset}");
 //         Future.delayed(Duration(milliseconds: 200), () => refresh());
 //       }
-//       print("🚨 scroll : ${commentScrollController.offset}");
 //     });
 //     Future.delayed(Duration.zero, () => moveScroll());
-
-//     if (widget.commentCount > 30) {
-//       setState(() {
-//         reverseCommentPages = [(widget.commentCount / 30).ceil()];
-//       });
-//     }
 //     super.initState();
 //   }
 
@@ -152,8 +127,7 @@
 //             ),
 //             builder: (result, {refetch, fetchMore}) {
 //               if (!result.isLoading && result.data != null) {
-//                 // print(
-//                 //     "🚨 comments : ${result.data["coments_list"]["results"][0]}");
+//                 // print("🚨 comments : ${result.data["coments_list"]["results"][0]}");
 
 //                 List comentsList = result.data["coments_list"]["results"];
 //                 return Column(
@@ -239,7 +213,6 @@
 //                                 onTap: () {
 //                                   setState(() {
 //                                     isLeft = false;
-//                                     isMoveToBottom = false;
 //                                   });
 //                                 },
 //                                 child: Text("최신순",
@@ -297,13 +270,21 @@
 //                                         int pageCount = result
 //                                             .data["coments_list"]["count"];
 
-//                                         // print("🚨 pagecount : $pageCount");
-
-//                                         return isLeft && isMoveToBottom
-//                                             ? reverseCommentBuilder(
-//                                                 pageCount, refetch)
-//                                             : commentBuilder(
-//                                                 pageCount, refetch);
+//                                         return NotificationListener(
+//                                           onNotification: pageCount !=
+//                                                       commentPages.length &&
+//                                                   pageCount != 1
+//                                               ? onCommentNotification
+//                                               : null,
+//                                           child: ListView(
+//                                             controller: commentScrollController,
+//                                             physics: BouncingScrollPhysics(),
+//                                             children: commentPages.map((page) {
+//                                               return commentsListView(
+//                                                   page, refetch);
+//                                             }).toList(),
+//                                           ),
+//                                         );
 //                                       } else {
 //                                         return Container();
 //                                       }
@@ -320,38 +301,6 @@
 //                 return CupertinoActivityIndicator();
 //               }
 //             }));
-//   }
-
-//   NotificationListener<ScrollEndNotification> reverseCommentBuilder(
-//       int pageCount, Refetch refetch) {
-//     return NotificationListener(
-//       onNotification: pageCount != commentPages.length && pageCount != 1
-//           ? onCommentNotification
-//           : null,
-//       child: ListView(
-//         controller: commentScrollController,
-//         physics: BouncingScrollPhysics(),
-//         children: reverseCommentPages.map((page) {
-//           return commentsListView(page, refetch);
-//         }).toList(),
-//       ),
-//     );
-//   }
-
-//   NotificationListener<ScrollEndNotification> commentBuilder(
-//       int pageCount, Refetch refetch) {
-//     return NotificationListener(
-//       onNotification: pageCount != commentPages.length && pageCount != 1
-//           ? onCommentNotification
-//           : null,
-//       child: ListView(
-//         controller: commentScrollController,
-//         physics: BouncingScrollPhysics(),
-//         children: commentPages.map((page) {
-//           return commentsListView(page, refetch);
-//         }).toList(),
-//       ),
-//     );
 //   }
 
 //   Query commentsListView(int page, Refetch refetch) {
@@ -461,15 +410,6 @@
 //                 document: gql(Mutations.createComents),
 //                 update: (GraphQLDataProxy proxy, QueryResult result) {},
 //                 onCompleted: (dynamic resultData) {
-//                   if (isLeft && replyCommentId == 0 && editCommentId == null) {
-//                     setState(() {
-//                       isMoveToBottom = true;
-//                     });
-//                   } else {
-//                     setState(() {
-//                       isMoveToBottom = false;
-//                     });
-//                   }
 //                   refetch();
 //                 }),
 //             builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -577,7 +517,6 @@
 //                   setState(() {
 //                     editCommentId = null;
 //                     editCommentText = null;
-//                     isMoveToBottom = false;
 //                   });
 //                   refetch();
 //                 }),
@@ -758,6 +697,7 @@
 //                           setState(() {
 //                             replyCommentId = comentsId;
 //                             replyCommentNickname = nickname;
+//                             // lastCoord = commentScrollController.offset;
 //                           });
 //                           commentController.text = " ";
 //                           commentController.selection =
@@ -918,6 +858,7 @@
 //                           setState(() {
 //                             replyCommentId = comentsId;
 //                             replyCommentNickname = nickname;
+//                             // lastCoord = commentScrollController.offset;
 //                           });
 //                           commentController.text = " ";
 //                           commentController.selection =
