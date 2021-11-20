@@ -55,7 +55,9 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
           isWhole = calendarData["isWhole"];
           leftDate = calendarData["leftDate"];
           rightDate = calendarData["rightDate"];
-          selectedDateRange = calendarData["selectedDateRange"];
+          selectedDateRange = calendarData["selectedDateRange"] == 0
+              ? null
+              : calendarData["selectedDateRange"];
         });
       }
     });
@@ -237,6 +239,7 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               if (!isWhole)
                 Column(
                   children: [
+                    selectedDateRange == null ? calendar(null) : Container(),
                     selectedDateRange == 0 ? calendar(0) : Container(),
                     selectedDateRange == 7 ? calendar(7) : Container(),
                     selectedDateRange == 30 ? calendar(30) : Container(),
@@ -301,9 +304,12 @@ class _CalendarBottomSheetState extends State<CalendarBottomSheet> {
               fontSize: ScreenUtil().setSp(16),
               letterSpacing: ScreenUtil().setSp(letter_spacing)),
         ),
-        initialSelectedRange: PickerDateRange(
-            DateTime.now().subtract(Duration(days: rangeDate)),
-            DateTime.now().add(Duration(days: 0))),
+        initialSelectedRange: rangeDate != null
+            ? PickerDateRange(
+                DateTime.now().subtract(Duration(days: rangeDate)),
+                DateTime.now().add(Duration(days: 0)))
+            : PickerDateRange(DateTime.parse(leftDate.replaceAll(".", "-")),
+                DateTime.parse(rightDate.replaceAll(".", "-"))),
       ),
     );
   }
