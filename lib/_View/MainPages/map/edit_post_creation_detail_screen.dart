@@ -6,14 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/edit_post_review_screen.dart';
-import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
-import 'package:letsgotrip/functions/user_location.dart';
 import 'package:http/http.dart' as http;
 
 class EditPostCreationDetailScreen extends StatefulWidget {
@@ -61,9 +58,11 @@ class _EditPostCreationDetailScreenState
   }
 
   Future getPlaceInfo() async {
+    double lat;
+    double lng;
     if (widget.paramMap["imageLatLngList"].length > 0) {
-      double lat = widget.paramMap["imageLatLngList"][0].latitude;
-      double lng = widget.paramMap["imageLatLngList"][0].longitude;
+      lat = widget.paramMap["imageLatLngList"][0].latitude;
+      lng = widget.paramMap["imageLatLngList"][0].longitude;
 
       final url = Uri.parse(
           'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$googleWebKey&language=ko');
@@ -76,6 +75,22 @@ class _EditPostCreationDetailScreenState
       setState(() {
         // isCoord = true;
         photoLatLng = widget.paramMap["imageLatLngList"][0];
+        address = addressJSON;
+      });
+    } else {
+      lat = double.parse(widget.mapData["latitude"]);
+      lng = double.parse(widget.mapData["longitude"]);
+      final url = Uri.parse(
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$googleWebKey&language=ko');
+      final response = await http.get(url);
+
+      String addressJSON = await jsonDecode(response.body.toString())['results']
+              [0]['formatted_address']
+          .replaceAll("대한민국 ", "");
+
+      setState(() {
+        // isCoord = true;
+        photoLatLng = LatLng(lat, lng);
         address = addressJSON;
       });
     }
@@ -93,23 +108,24 @@ class _EditPostCreationDetailScreenState
 
   @override
   void initState() {
-    if (widget.paramMap["imageLatLngList"].length > 0) {
-      getPlaceInfo();
-    } else {
-      checkLocationPermission().then((permission) {
-        if (permission) {
-          getUserLocation().then((latlng) {
-            if (latlng != null) {
-              setState(() {
-                photoLatLng = LatLng(latlng.latitude, latlng.longitude);
-              });
-            }
-          });
-        } else {
-          permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
-        }
-      });
-    }
+    // if (widget.paramMap["imageLatLngList"].length > 0 || widget.) {
+    getPlaceInfo();
+    // }
+    // else {
+    //   checkLocationPermission().then((permission) {
+    //     if (permission) {
+    //       getUserLocation().then((latlng) {
+    //         if (latlng != null) {
+    //           setState(() {
+    //             photoLatLng = LatLng(latlng.latitude, latlng.longitude);
+    //           });
+    //         }
+    //       });
+    //     } else {
+    //       permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
+    //     }
+    //   });
+    // }
     setPreviousData();
     super.initState();
   }

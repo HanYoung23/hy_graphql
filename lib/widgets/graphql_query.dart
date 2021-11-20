@@ -100,9 +100,21 @@ class Queries {
           likes
           bookmarks
           tags
+          latitude
+          longitude
         }
     }
 """;
+
+//   static final String photoDetailLatLng = """
+//     query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {
+//       photo_detail(contents_id: \$contents_id, customer_id: \$customer_id)
+//       {
+//         latitude
+//         longitude
+//         }
+//     }
+// """;
 
   static final String photoDetailCounts = """
     query photo_detail(\$contents_id: Int!, \$customer_id: Int!) {

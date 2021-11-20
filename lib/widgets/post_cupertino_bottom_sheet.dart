@@ -117,6 +117,8 @@ class PostCupertinoBottomSheet extends StatelessWidget {
               resultData["star_rating3"],
               resultData["star_rating4"],
             ];
+            String latitude = resultData["latitude"];
+            String longtidue = resultData["longitude"];
 
             switch (categoryId) {
               case 1:
@@ -143,6 +145,8 @@ class PostCupertinoBottomSheet extends StatelessWidget {
               "tags": tags,
               "contentsTitle": contentsTitle,
               "starRatingList": starRatingList,
+              "latitude": latitude,
+              "longitude": longtidue,
             };
             return EditPostCreationScreen(
               mapData: mapData,
