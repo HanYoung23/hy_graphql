@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -24,6 +25,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
   GoogleMapWholeController gmWholeController =
       Get.put(GoogleMapWholeController());
   GoogleMapWholeController gmUpdate = Get.find();
+  GoogleMapWholeController gmWholeImages = Get.find();
 
   int firstQRating = 3;
 
@@ -51,6 +53,15 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
               // print("🚨 resultData : $resultData");
 
               if (resultData["createContents"]["result"]) {
+                CameraPosition cameraPosition = CameraPosition(
+                    bearing: 0.0,
+                    target: LatLng(
+                        double.parse("${widget.paramMap["latitude"]}"),
+                        double.parse("${widget.paramMap["longitude"]}")),
+                    tilt: 0.0,
+                    zoom: 15);
+
+                gmWholeImages.setCameraPosition(cameraPosition);
                 Get.offAll(() => HomePage());
               } else {
                 Get.snackbar("error", "${resultData["createContents"]["msg"]}");

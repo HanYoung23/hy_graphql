@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_Controller/google_map_whole_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/homepage.dart';
@@ -22,6 +24,8 @@ class EditPostReviewScreen extends StatefulWidget {
 }
 
 class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
+  GoogleMapWholeController gmWholeImages = Get.find();
+
   int firstQRating = 3;
 
   int secondQRating = 3;
@@ -61,6 +65,14 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
             onCompleted: (dynamic resultData) {
               print("🚨 edit post mutation result : $resultData");
               if (resultData["change_contents"]["result"]) {
+                CameraPosition cameraPosition = CameraPosition(
+                    bearing: 0.0,
+                    target: LatLng(
+                        double.parse("${widget.paramMap["latitude"]}"),
+                        double.parse("${widget.paramMap["longitude"]}")),
+                    tilt: 0.0,
+                    zoom: 15);
+                gmWholeImages.setCameraPosition(cameraPosition);
                 Get.offAll(() => HomePage());
               } else {
                 Get.snackbar("error", "${resultData["createContents"]["msg"]}");

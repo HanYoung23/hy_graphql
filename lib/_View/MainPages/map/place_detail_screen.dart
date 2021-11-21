@@ -610,7 +610,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                         builder: (_) => CommentBottomSheet(
                           contentsId: widget.contentsId,
                           customerId: customerId,
-                          // commentCount: newComentsCount,
+                          commentCount: newComentsCount,
                         ),
                         isScrollControlled: true,
                       ).then((value) {

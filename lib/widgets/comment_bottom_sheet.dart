@@ -12,8 +12,12 @@ import 'package:letsgotrip/widgets/graphql_query.dart';
 class CommentBottomSheet extends StatefulWidget {
   final int contentsId;
   final int customerId;
+  final int commentCount;
   const CommentBottomSheet(
-      {Key key, @required this.contentsId, @required this.customerId})
+      {Key key,
+      @required this.contentsId,
+      @required this.customerId,
+      @required this.commentCount})
       : super(key: key);
 
   @override
@@ -38,6 +42,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   bool isRefreshing = false;
   //
   double lastCoord;
+  //
+  bool isBottom = true;
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -80,9 +86,32 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   }
 
   moveScroll() {
-    if (lastCoord != null) {
+    if (isBottom) {
+      commentScrollController
+          .jumpTo(commentScrollController.position.maxScrollExtent);
+      setState(() {
+        isBottom = false;
+      });
+    } else if (lastCoord != null) {
       commentScrollController.jumpTo(lastCoord);
+      setState(() {
+        lastCoord = null;
+      });
     }
+  }
+
+  setCommentPages() {
+    int comments = widget.commentCount;
+    int pages = (comments / 30).ceil();
+    List pageList = [];
+    for (int i = 1; i < pages + 1; i++) {
+      pageList.add(i);
+    }
+    setState(() {
+      commentPages = pageList;
+    });
+    print("🚨 commentPages : $commentPages");
+    print("🚨 pageList : $pageList");
   }
 
   @override
@@ -101,7 +130,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
     });
-    Future.delayed(Duration.zero, () => moveScroll());
+    setCommentPages();
     super.initState();
   }
 
@@ -150,10 +179,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                         },
                                       ),
                                       builder: (result, {refetch, fetchMore}) {
-                                        WidgetsBinding.instance
-                                            .addPostFrameCallback((_) {
-                                          moveScroll();
-                                        });
+                                        // WidgetsBinding.instance
+                                        //     .addPostFrameCallback((_) {
+                                        //   moveScroll();
+                                        // });
 
                                         if (!result.isLoading &&
                                             result.data != null) {
@@ -280,6 +309,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                             controller: commentScrollController,
                                             physics: BouncingScrollPhysics(),
                                             children: commentPages.map((page) {
+                                              if (page == commentPages.length) {
+                                                WidgetsBinding.instance
+                                                    .addPostFrameCallback((_) {
+                                                  moveScroll();
+                                                });
+                                              }
                                               return commentsListView(
                                                   page, refetch);
                                             }).toList(),
@@ -294,7 +329,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                     editCommentId == null
                         ? textInput(context, refetch)
                         : editTextInput(context, refetch),
-                    SizedBox(height: ScreenUtil().setSp(20))
+                    // SizedBox(height: ScreenUtil().setSp(20)),
+                    comentsList.length != 0 ? Spacer() : Container(),
                   ],
                 );
               } else {
@@ -316,7 +352,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
             // print("🚨 comments : ${result.data["coments_list"]["results"][0]}");
-
             List comentsList = result.data["coments_list"]["results"];
 
             return Wrap(
@@ -410,6 +445,21 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 document: gql(Mutations.createComents),
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
+                  if (replyCommentId == 0 && editCommentId == null && isLeft) {
+                    setState(() {
+                      isBottom = true;
+                    });
+                  } else {
+                    setState(() {
+                      lastCoord = commentScrollController.offset;
+                    });
+                  }
+                  setState(() {
+                    replyCommentId = 0;
+                    replyCommentNickname = "";
+                    editCommentId = null;
+                    isValid = false;
+                  });
                   refetch();
                 }),
             builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -459,7 +509,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                         String commentText = replyCommentId != 0
                             ? inputText.substring(1, inputText.length)
                             : inputText;
-
                         runMutation({
                           "contents_id": widget.contentsId,
                           "customer_id": widget.customerId,
@@ -467,12 +516,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                           "coments_id_link": replyCommentId,
                         });
                         commentController.text = "";
-                        setState(() {
-                          replyCommentId = 0;
-                          replyCommentNickname = "";
-                          isValid = false;
-                          lastCoord = commentScrollController.offset;
-                        });
                         FocusScope.of(context).unfocus();
                       }
                     },
@@ -515,8 +558,12 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 update: (GraphQLDataProxy proxy, QueryResult result) {},
                 onCompleted: (dynamic resultData) {
                   setState(() {
+                    replyCommentId = 0;
+                    replyCommentNickname = "";
                     editCommentId = null;
                     editCommentText = null;
+                    isValid = false;
+                    lastCoord = commentScrollController.offset;
                   });
                   refetch();
                 }),
