@@ -63,7 +63,7 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
             document: gql(Mutations.changeContents),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
-              print("🚨 edit post mutation result : $resultData");
+              // print("🚨 edit post mutation result : $resultData");
               if (resultData["change_contents"]["result"]) {
                 CameraPosition cameraPosition = CameraPosition(
                     bearing: 0.0,

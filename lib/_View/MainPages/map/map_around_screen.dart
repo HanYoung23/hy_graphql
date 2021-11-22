@@ -599,9 +599,9 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
 
   Wrap gridBuilder(List<Map<dynamic, dynamic>> imageMaps, int page) {
     return Wrap(
-        alignment: WrapAlignment.spaceBetween,
+        alignment: WrapAlignment.start,
         // spacing: ScreenUtil().setSp(1),
-        runSpacing: ScreenUtil().setSp(1),
+        // runSpacing: ScreenUtil().setSp(1),
         direction: Axis.horizontal,
         children: imageMaps.map((item) {
           int index = imageMaps.indexOf(item);
@@ -613,14 +613,20 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                           customerId: widget.customerId,
                         ));
                   },
-                  child: CachedNetworkImage(
-                    width: ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
-                    height:
-                        ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(2),
-                    imageUrl: imageMaps[index]["imageLink"],
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => CupertinoActivityIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  child: Container(
+                    width: ScreenUtil().screenWidth / 3,
+                    height: ScreenUtil().screenWidth / 3,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: ScreenUtil().setSp(0.5),
+                            color: Colors.white)),
+                    child: CachedNetworkImage(
+                      imageUrl: imageMaps[index]["imageLink"],
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          CupertinoActivityIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
                   ),
                 )
               : InkWell(
@@ -638,17 +644,21 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                   child: Stack(
                     children: [
                       Positioned(
-                        child: CachedNetworkImage(
-                          width: ScreenUtil().screenWidth / 3 -
-                              ScreenUtil().setSp(2),
-                          height: ScreenUtil().screenWidth / 3 -
-                              ScreenUtil().setSp(2),
-                          imageUrl: imageMaps[index]["imageLink"][0],
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              CupertinoActivityIndicator(),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                        child: Container(
+                          width: ScreenUtil().screenWidth / 3,
+                          height: ScreenUtil().screenWidth / 3,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: ScreenUtil().setSp(0.5),
+                                  color: Colors.white)),
+                          child: CachedNetworkImage(
+                            imageUrl: imageMaps[index]["imageLink"][0],
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                CupertinoActivityIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
                         ),
                       ),
                       Positioned(

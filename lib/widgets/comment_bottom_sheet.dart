@@ -110,8 +110,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     setState(() {
       commentPages = pageList;
     });
-    print("🚨 commentPages : $commentPages");
-    print("🚨 pageList : $pageList");
+    // print("🚨 commentPages : $commentPages");
+    // print("🚨 pageList : $pageList");
   }
 
   @override

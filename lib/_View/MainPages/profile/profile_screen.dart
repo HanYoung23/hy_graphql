@@ -448,9 +448,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             List resultData = result.data["mypage_contents_list"]["results"];
 
             return Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                spacing: ScreenUtil().setSp(1),
-                runSpacing: ScreenUtil().setSp(1),
+                // alignment: WrapAlignment.spaceBetween,
+                // spacing: ScreenUtil().setSp(1),
+                // runSpacing: ScreenUtil().setSp(1),
                 direction: Axis.horizontal,
                 children: resultData.map((item) {
                   List imageLink = item["image_link"].split(",");
@@ -462,10 +462,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ));
                     },
                     child: Container(
-                      width:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
-                      height:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
+                      width: ScreenUtil().screenWidth / 3,
+                      height: ScreenUtil().screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: ScreenUtil().setSp(0.5),
+                              color: Colors.white)),
                       child: Image.network(
                         imageLink[0],
                         fit: BoxFit.cover,
@@ -564,9 +566,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             List resultData = result.data["mypage_bookmarks_list"]["results"];
             // print("🚨 bookmarkslist : ${resultData.length}");
             return Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                spacing: ScreenUtil().setSp(1),
-                runSpacing: ScreenUtil().setSp(1),
+                // alignment: WrapAlignment.spaceBetween,
+                // spacing: ScreenUtil().setSp(1),
+                // runSpacing: ScreenUtil().setSp(1),
                 direction: Axis.horizontal,
                 children: resultData.map((item) {
                   List imageLink = item["image_link"].split(",");
@@ -578,10 +580,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ));
                     },
                     child: Container(
-                      width:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
-                      height:
-                          ScreenUtil().screenWidth / 3 - ScreenUtil().setSp(1),
+                      width: ScreenUtil().screenWidth / 3,
+                      height: ScreenUtil().screenWidth / 3,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: ScreenUtil().setSp(0.5),
+                              color: Colors.white)),
                       child: Image.network(
                         imageLink[0],
                         fit: BoxFit.cover,

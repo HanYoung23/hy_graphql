@@ -29,7 +29,7 @@ class _AnnounceDetailScreenState extends State<AnnounceDetailScreen> {
         ),
         builder: (result, {refetch, fetchMore}) {
           if (!result.isLoading && result.data != null) {
-            print("🚨 notice : $result");
+            // print("🚨 notice : $result");
 
             Map resultData = result.data["notice"][0];
 
