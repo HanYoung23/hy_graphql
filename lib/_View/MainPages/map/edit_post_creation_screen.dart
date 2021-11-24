@@ -161,7 +161,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
     });
     contentTextController.text = widget.mapData["mainText"];
     if (newTag != null) {
-      tagTextController.text = newTag;
+      tagTextController.text = "#$newTag";
     }
     checkIsAllFilled();
   }

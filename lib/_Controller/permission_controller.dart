@@ -14,8 +14,9 @@ Future<bool> checkLocationPermission() async {
   bool isPermission;
 
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
   if (!serviceEnabled) {
-    return Future.error('지도 이용이 불가합니다.');
+    return false;
   }
 
   LocationPermission permission = await Geolocator.checkPermission();

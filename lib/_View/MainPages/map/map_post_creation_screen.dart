@@ -218,6 +218,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                           child: InkWell(
                             onTap: () {
                               savePostPopup(context, () => saveDataCallback());
+                              // Get.to(() => WebViewLoad());
                             },
                             child: Container(
                               alignment: Alignment.centerRight,

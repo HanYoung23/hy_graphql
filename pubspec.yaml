@@ -47,7 +47,6 @@ dependencies:
   intl: ^0.17.0
   cached_network_image: ^3.1.0
   readmore: ^2.1.0
-  connectivity: ^3.0.6
 
 # google map
   fluster: ^1.2.0
@@ -114,6 +113,7 @@ flutter:
     - assets/images/locationTap/
     - assets/images/settings/
     - assets/texts/
+    - assets/postal.html
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

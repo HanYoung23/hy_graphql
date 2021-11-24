@@ -9,6 +9,7 @@ import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/report_dialog_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:app_settings/app_settings.dart';
 
 // void gpsNullPopup(BuildContext context) {
 //     showDialog(
@@ -766,6 +767,81 @@ reportPostDonePopup(BuildContext context) {
                       InkWell(
                           onTap: () {
                             Get.back();
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+settingsPopup(BuildContext context) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "현재 위치서비스가 꺼져있습니다.\n설정에서 위치서비스를 켜신 후 이용가능합니다.",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            AppSettings.openLocationSettings();
                           },
                           child: Text(
                             "확인",
