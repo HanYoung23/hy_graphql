@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,6 +38,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   // GoogleMapWholeController gmWholeLatLng = Get.find();
   GoogleMapWholeController gmPosition = Get.find();
   GoogleMapWholeController gmUpdate = Get.find();
+  GoogleMapWholeController gmWholeLatLng = Get.find();
 
   FloatingButtonController floatingBtnController =
       Get.put(FloatingButtonController());
@@ -66,7 +65,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     checkLocationPermission().then((permission) {
-      print("🚨 permission $permission");
+      // print("🚨 permission $permission");
       if (permission) {
         getUserLocation().then((latlng) {
           if (latlng != null) {
@@ -139,10 +138,14 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
             options: QueryOptions(
               document: gql(Queries.photoListMap),
               variables: {
-                "latitude1": "-87.71179927260242",
-                "latitude2": "89.45016124669523",
-                "longitude1": "-180",
-                "longitude2": "180",
+                // "latitude1": "${gmWholeLatLng.latlngBounds["swLat"]}",
+                // "latitude2": "${gmWholeLatLng.latlngBounds["neLat"]}",
+                // "longitude1": "${gmWholeLatLng.latlngBounds["swLng"]}",
+                // "longitude2": "${gmWholeLatLng.latlngBounds["neLng"]}",
+                "latitude1": "0",
+                "latitude2": "0",
+                "longitude1": "0",
+                "longitude2": "0",
                 "category_id": fliterValue.category.value,
                 "date1": fliterValue.dateStart.value,
                 "date2": fliterValue.dateEnd.value,
@@ -150,6 +153,12 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
               },
             ),
             builder: (result, {refetch, fetchMore}) {
+              Map queryParams = {
+                "category_id": fliterValue.category.value,
+                "date1": fliterValue.dateStart.value,
+                "date2": fliterValue.dateEnd.value,
+              };
+
               if (!result.isLoading && result.data != null) {
                 List<Map> photoMapMarkerList = [];
                 // print(
@@ -157,21 +166,21 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                 // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
 
                 // print(
-                //     "🚨 map screen length : ${result.data["photo_list_map"]["results"].length}");
+                // "🚨 map screen length : ${result.data["photo_list_map"]["results"].length}");
 
                 // if (gmUpdate.isGmUpdate.value) {
                 //   gmWholeController.setIsGmUpdate(false);
                 //   refetch();
                 // }
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (gmUpdate.markerNum !=
-                          result.data["photo_list_map"]["results"].length &&
-                      gmUpdate.markerNum.value != 0 &&
-                      Platform.isAndroid) {
-                    refetch();
-                  }
-                });
+                // WidgetsBinding.instance.addPostFrameCallback((_) {
+                //   if (gmUpdate.markerNum !=
+                //           result.data["photo_list_map"]["results"].length &&
+                //       gmUpdate.markerNum.value != 0 &&
+                //       Platform.isAndroid) {
+                //     refetch();
+                //   }
+                // });
 
                 if (result.data != null) {
                   if (result.data["photo_list_map"]["results"].length > 0) {
@@ -417,8 +426,8 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                                                                 ["results"]
                                                             .length)
                                                 ? GoogleMapContainer(
-                                                    photoMapList:
-                                                        photoMapMarkerList,
+                                                    // photoMapList:
+                                                    //     photoMapMarkerList,
                                                     userPosition: userPosition,
                                                     currentCameraPosition:
                                                         gmPosition
@@ -430,10 +439,11 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                                                         .dateStart.value,
                                                     dateEnd: fliterValue
                                                         .dateEnd.value,
+                                                    queryParams: queryParams,
                                                   )
                                                 : GoogleMapContainer(
-                                                    photoMapList:
-                                                        photoMapMarkerList,
+                                                    // photoMapList:
+                                                    //     photoMapMarkerList,
                                                     userPosition: userPosition,
                                                     currentCameraPosition:
                                                         gmPosition
@@ -445,6 +455,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                                                         .dateStart.value,
                                                     dateEnd: fliterValue
                                                         .dateEnd.value,
+                                                    queryParams: queryParams,
                                                   ),
                                           ),
                                           gmWholeController

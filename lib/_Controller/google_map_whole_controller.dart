@@ -5,9 +5,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/functions/get_map_coord.dart';
 
 class GoogleMapWholeController extends GetxController {
-  var latlngBounds = {}.obs;
+  var latlngBounds = {
+    // "swLat": "0",
+    // "swLng": "0",
+    // "neLat": "0",
+    // "neLng": "0",
+    // "swLat": "-87.71179927260242",
+    // "swLng": "-180",
+    // "neLat": "89.45016124669523",
+    // "neLng": "180",
+  }.obs;
+
+  // "latitude1": "-87.71179927260242",
+  //               "latitude2": "89.45016124669523",
+  //               "longitude1": "-180",
+  //               "longitude2": "180",
+
+  // latlngBounds = ;
 
   Future addMapCoord(Completer<GoogleMapController> mapCoordController) async {
+    print("🚨 add map coord");
     await getMapCoord(mapCoordController).then((latlngMap) {
       latlngBounds.value = latlngMap;
     });
