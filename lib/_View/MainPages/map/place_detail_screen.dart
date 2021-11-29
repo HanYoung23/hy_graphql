@@ -303,13 +303,10 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                                 profilePhotoLink),
                                                             fit: BoxFit.cover))
                                                     : BoxDecoration(
-                                                        color: app_grey,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    ScreenUtil()
-                                                                        .setSp(
-                                                                            50)),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                "assets/images/profileSettings/thumbnail_default.png"),
+                                                            fit: BoxFit.cover),
                                                       )),
                                             SizedBox(
                                                 width: ScreenUtil().setSp(15)),

@@ -769,9 +769,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 profilePhotoLink == "null" ||
                                 profilePhotoLink == "null"
                             ? BoxDecoration(
-                                color: app_grey,
-                                borderRadius: BorderRadius.circular(
-                                    ScreenUtil().setSp(100)),
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/profileSettings/thumbnail_default.png"),
+                                    fit: BoxFit.cover),
                               )
                             : BoxDecoration(
                                 image: DecorationImage(

@@ -63,6 +63,8 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   //
   CameraPosition currentPosition;
   double currentZoom;
+  //
+  bool isRefreshButton = false;
 
   void _onMapCreated(
       GoogleMapController controller, Function runMutation) async {
@@ -177,6 +179,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     setState(() {
       currentPosition = position;
       currentZoom = zoom;
+      isRefreshButton = true;
     });
   }
 
@@ -291,30 +294,41 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
                   ),
                 ),
               ),
-              Positioned(
-                top: ScreenUtil().setSp(10),
-                child: InkWell(
-                    onTap: () {
-                      // getMapCoord(_mapController).then((latlngBounds) {
-                      //   runMutation(
-                      //     {
-                      //       "latitude1": "${latlngBounds["swLat"]}",
-                      //       "latitude2": "${latlngBounds["neLat"]}",
-                      //       "longitude1": "${latlngBounds["swLng"]}",
-                      //       "longitude2": "${latlngBounds["neLng"]}",
-                      //       "category_id": widget.queryParams["category_id"],
-                      //       "date1": widget.queryParams["date1"],
-                      //       "date2": widget.queryParams["date2"],
-                      //     },
-                      //   );
-                      // });
-                      widget.refetchCallback();
-                    },
-                    child: Image.asset(
-                      "assets/images/map_refresh_button.png",
-                      width: ScreenUtil().setSp(120),
-                    )),
-              ),
+              isRefreshButton
+                  ? Positioned(
+                      top: ScreenUtil().setSp(10),
+                      child: InkWell(
+                          onTap: () {
+                            gmWholeController.isMarkerLoading(true);
+                            Future.delayed(const Duration(milliseconds: 500),
+                                () {
+                              gmWholeController.isMarkerLoading(false);
+                            });
+                            getMapCoord(_mapController).then((latlngBounds) {
+                              runMutation(
+                                {
+                                  "latitude1": "${latlngBounds["swLat"]}",
+                                  "latitude2": "${latlngBounds["neLat"]}",
+                                  "longitude1": "${latlngBounds["swLng"]}",
+                                  "longitude2": "${latlngBounds["neLng"]}",
+                                  "category_id":
+                                      widget.queryParams["category_id"],
+                                  "date1": widget.queryParams["date1"],
+                                  "date2": widget.queryParams["date2"],
+                                },
+                              );
+                            });
+                            setState(() {
+                              isRefreshButton = false;
+                            });
+                            // widget.refetchCallback();
+                          },
+                          child: Image.asset(
+                            "assets/images/map_refresh_button.png",
+                            width: ScreenUtil().setSp(120),
+                          )),
+                    )
+                  : Container(),
               widget.userPosition != null
                   ? Positioned(
                       top: ScreenUtil().setSp(20),

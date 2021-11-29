@@ -123,7 +123,10 @@ class StoreMenuDrawer extends StatelessWidget {
                                 decoration: profilePhotoLink == null ||
                                         profilePhotoLink == "null"
                                     ? BoxDecoration(
-                                        color: app_grey_dark,
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/profileSettings/thumbnail_default.png"),
+                                            fit: BoxFit.cover),
                                         border: Border.all(
                                             width: ScreenUtil().setSp(0.5)),
                                         borderRadius: BorderRadius.circular(

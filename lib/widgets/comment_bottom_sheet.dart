@@ -621,9 +621,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 height: ScreenUtil().setSp(35),
                 decoration: "$photo" == "null"
                     ? BoxDecoration(
-                        color: app_grey,
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().setSp(100)),
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/profileSettings/thumbnail_default.png"),
+                            fit: BoxFit.cover),
                       )
                     : BoxDecoration(
                         image: DecorationImage(
@@ -768,9 +769,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 height: ScreenUtil().setSp(25),
                 decoration: "$photo" == "null"
                     ? BoxDecoration(
-                        color: app_grey,
-                        borderRadius:
-                            BorderRadius.circular(ScreenUtil().setSp(100)),
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/images/profileSettings/thumbnail_default.png"),
+                            fit: BoxFit.cover),
                       )
                     : BoxDecoration(
                         image: DecorationImage(
