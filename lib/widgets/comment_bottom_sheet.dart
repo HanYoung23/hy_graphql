@@ -37,13 +37,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
   int replyCommentId = 0;
   String replyCommentNickname = "";
   //
-  List commentPages = [1];
+  // List commentPages = [1];
   //
   bool isRefreshing = false;
   //
   double lastCoord;
   //
-  bool isBottom = true;
+  bool isBottom = false;
 
   commentEditCallback(commentId, commentText) {
     if (commentId != null) {
@@ -59,20 +59,20 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     }
   }
 
-  bool onCommentNotification(ScrollEndNotification t) {
-    if (t.metrics.pixels > 0 && t.metrics.atEdge) {
-      List newPages = commentPages;
-      int lastPage = newPages.length;
-      newPages.add(lastPage + 1);
-      setState(() {
-        commentPages = newPages;
-      });
-      // print("🚨 commentPages : $commentPages");
-    } else {
-      // print('I am at the start');
-    }
-    return true;
-  }
+  // bool onCommentNotification(ScrollEndNotification t) {
+  //   if (t.metrics.pixels > 0 && t.metrics.atEdge) {
+  //     List newPages = commentPages;
+  //     int lastPage = newPages.length;
+  //     newPages.add(lastPage + 1);
+  //     setState(() {
+  //       commentPages = newPages;
+  //     });
+  //     // print("🚨 commentPages : $commentPages");
+  //   } else {
+  //     // print('I am at the start');
+  //   }
+  //   return true;
+  // }
 
   refresh() {
     setState(() {
@@ -100,19 +100,19 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     }
   }
 
-  setCommentPages() {
-    int comments = widget.commentCount;
-    int pages = (comments / 30).ceil();
-    List pageList = [];
-    for (int i = 1; i < pages + 1; i++) {
-      pageList.add(i);
-    }
-    setState(() {
-      commentPages = pageList;
-    });
-    // print("🚨 commentPages : $commentPages");
-    // print("🚨 pageList : $pageList");
-  }
+  // setCommentPages() {
+  //   int comments = widget.commentCount;
+  //   int pages = (comments / 30).ceil();
+  //   List pageList = [];
+  //   for (int i = 1; i < pages + 1; i++) {
+  //     pageList.add(i);
+  //   }
+  //   setState(() {
+  //     commentPages = pageList;
+  //   });
+  //   // print("🚨 commentPages : $commentPages");
+  //   // print("🚨 pageList : $pageList");
+  // }
 
   @override
   void dispose() {
@@ -123,6 +123,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   @override
   void initState() {
+    // print("🚨 id : ${widget.contentsId}");
     focusNode = FocusNode();
     commentScrollController.addListener(() {
       if (commentScrollController.offset < refreshOffset) {
@@ -130,7 +131,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         Future.delayed(Duration(milliseconds: 200), () => refresh());
       }
     });
-    setCommentPages();
+    // setCommentPages();
     super.initState();
   }
 
@@ -151,14 +152,15 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               variables: {
                 "contents_id": widget.contentsId,
                 "sequence": isLeft ? 1 : 2,
-                "page": 1
               },
             ),
             builder: (result, {refetch, fetchMore}) {
-              if (!result.isLoading && result.data != null) {
-                // print("🚨 comments : ${result.data["coments_list"]["results"][0]}");
+              if (!result.isLoading) {
+                // print(
+                //     "🚨 comments : ${result.data["coments_list"]["results"][0]}");
 
                 List comentsList = result.data["coments_list"]["results"];
+                // print("🚨 comments : $comentsList");
                 return Column(
                   children: [
                     SizedBox(height: ScreenUtil().setSp(30)),
@@ -179,10 +181,10 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                         },
                                       ),
                                       builder: (result, {refetch, fetchMore}) {
-                                        // WidgetsBinding.instance
-                                        //     .addPostFrameCallback((_) {
-                                        //   moveScroll();
-                                        // });
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          moveScroll();
+                                        });
 
                                         if (!result.isLoading &&
                                             result.data != null) {
@@ -284,46 +286,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                                 ScreenUtil().setSp(180) -
                                 MediaQuery.of(context).viewInsets.bottom,
                             child: !isRefreshing
-                                ? Query(
-                                    options: QueryOptions(
-                                      document: gql(Queries.comentsCount),
-                                      variables: {
-                                        "contents_id": widget.contentsId,
-                                        "sequence": isLeft ? 1 : 2,
-                                        "page": 1
-                                      },
-                                    ),
-                                    builder: (result, {refetch, fetchMore}) {
-                                      if (!result.isLoading &&
-                                          result.data != null) {
-                                        int pageCount = result
-                                            .data["coments_list"]["count"];
-
-                                        return NotificationListener(
-                                          onNotification: pageCount !=
-                                                      commentPages.length &&
-                                                  pageCount != 1
-                                              ? onCommentNotification
-                                              : null,
-                                          child: ListView(
-                                            controller: commentScrollController,
-                                            physics: BouncingScrollPhysics(),
-                                            children: commentPages.map((page) {
-                                              if (page == commentPages.length) {
-                                                WidgetsBinding.instance
-                                                    .addPostFrameCallback((_) {
-                                                  moveScroll();
-                                                });
-                                              }
-                                              return commentsListView(
-                                                  page, refetch);
-                                            }).toList(),
-                                          ),
-                                        );
-                                      } else {
-                                        return Container();
-                                      }
-                                    })
+                                ? commentsListView(comentsList, refetch)
                                 : CupertinoActivityIndicator()),
                     comentsList.length != 0 ? Spacer() : Container(),
                     editCommentId == null
@@ -339,102 +302,81 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             }));
   }
 
-  Query commentsListView(int page, Refetch refetch) {
-    return Query(
-        options: QueryOptions(
-          document: gql(Queries.comentsList),
-          variables: {
-            "contents_id": widget.contentsId,
-            "sequence": isLeft ? 1 : 2,
-            "page": page
-          },
-        ),
-        builder: (result, {refetch, fetchMore}) {
-          if (!result.isLoading && result.data != null) {
-            // print("🚨 comments : ${result.data["coments_list"]["results"][0]}");
-            List comentsList = result.data["coments_list"]["results"];
+  ListView commentsListView(List comentsList, Function refetch) {
+    return ListView(
+        controller: commentScrollController,
+        children: comentsList.map((comment) {
+          String nickname = comment["nick_name"];
+          String profilePhotoLInk = comment["profile_photo_link"];
+          //
+          DateTime dateTime = DateTime.parse(comment["edit_date"] == null
+              ? comment["regist_date"]
+              : comment["edit_date"]);
+          var formatter = new DateFormat('yyyy MMM dd, a h:mm');
+          String date = formatter.format(dateTime);
+          //
+          String content = comment["coment_text"];
+          int commentCustomerId = comment["customer_id"];
+          int comentsId = comment["coments_id"];
+          int comentsIdLink = comment["coments_id_link"];
+          int checkFlag = comment["check_flag"];
 
-            return Wrap(
-              children: comentsList.map((comment) {
-                String nickname = comment["nick_name"];
-                String profilePhotoLInk = comment["profile_photo_link"];
-                //
-                DateTime dateTime = DateTime.parse(comment["edit_date"] == null
-                    ? comment["regist_date"]
-                    : comment["edit_date"]);
-                var formatter = new DateFormat('yyyy MMM dd, a h:mm');
-                String date = formatter.format(dateTime);
-                //
-                String content = comment["coment_text"];
-                int commentCustomerId = comment["customer_id"];
-                int comentsId = comment["coments_id"];
-                int comentsIdLink = comment["coments_id_link"];
-                int checkFlag = comment["check_flag"];
+          List replyList = [];
+          comentsList.map((e) {
+            if (e["coments_id_link"] == comentsId && e["check_flag"] != 2) {
+              replyList.add(e);
+            }
+          }).toList();
 
-                List replyList = [];
-                comentsList.map((e) {
-                  if (e["coments_id_link"] == comentsId &&
-                      e["check_flag"] != 2) {
-                    replyList.add(e);
-                  }
-                }).toList();
+          return comentsIdLink == null
+              ? Column(
+                  children: [
+                    (checkFlag == 2 && replyList.length == 0)
+                        ? Container()
+                        : commentForm(
+                            commentCustomerId,
+                            profilePhotoLInk,
+                            nickname,
+                            date,
+                            content,
+                            comentsId,
+                            comentsIdLink,
+                            refetch,
+                            checkFlag),
+                    Column(
+                      children: replyList.map((e) {
+                        String _nickname = e["nick_name"];
+                        String _profilePhotoLInk = e["profile_photo_link"];
+                        //
+                        DateTime _dateTime = DateTime.parse(
+                            e["edit_date"] == null
+                                ? e["regist_date"]
+                                : e["edit_date"]);
+                        var formatter = new DateFormat('yyyy MMM dd, a h:mm');
+                        String _date = formatter.format(_dateTime);
+                        //
+                        String _content = e["coment_text"];
+                        int _commentCustomerId = comment["customer_id"];
+                        int _comentsId = e["coments_id"];
+                        int _checkFlag = e["check_flag"];
 
-                return comentsIdLink == null
-                    ? Column(
-                        children: [
-                          (checkFlag == 2 && replyList.length == 0)
-                              ? Container()
-                              : commentForm(
-                                  commentCustomerId,
-                                  profilePhotoLInk,
-                                  nickname,
-                                  date,
-                                  content,
-                                  comentsId,
-                                  comentsIdLink,
-                                  refetch,
-                                  checkFlag),
-                          Column(
-                            children: replyList.map((e) {
-                              String _nickname = e["nick_name"];
-                              String _profilePhotoLInk =
-                                  e["profile_photo_link"];
-                              //
-                              DateTime _dateTime = DateTime.parse(
-                                  e["edit_date"] == null
-                                      ? e["regist_date"]
-                                      : e["edit_date"]);
-                              var formatter =
-                                  new DateFormat('yyyy MMM dd, a h:mm');
-                              String _date = formatter.format(_dateTime);
-                              //
-                              String _content = e["coment_text"];
-                              int _commentCustomerId = comment["customer_id"];
-                              int _comentsId = e["coments_id"];
-                              int _checkFlag = e["check_flag"];
-
-                              return commentReplyForm(
-                                  _commentCustomerId,
-                                  _profilePhotoLInk,
-                                  nickname,
-                                  _nickname,
-                                  _date,
-                                  _content,
-                                  comentsId,
-                                  _comentsId,
-                                  refetch,
-                                  _checkFlag);
-                            }).toList(),
-                          )
-                        ],
-                      )
-                    : Container();
-              }).toList(),
-            );
-          } else {
-            return Container();
-          }
-        });
+                        return commentReplyForm(
+                            _commentCustomerId,
+                            _profilePhotoLInk,
+                            nickname,
+                            _nickname,
+                            _date,
+                            _content,
+                            comentsId,
+                            _comentsId,
+                            refetch,
+                            _checkFlag);
+                      }).toList(),
+                    )
+                  ],
+                )
+              : Container();
+        }).toList());
   }
 
   Container textInput(BuildContext context, Function refetch) {

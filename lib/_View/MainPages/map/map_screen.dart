@@ -417,12 +417,10 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                                         alignment: Alignment.center,
                                         children: [
                                           Positioned(
-                                            child: (gmUpdate.markerNum.value !=
-                                                        0 &&
+                                            child: (gmUpdate.markerNum.value != 0 &&
                                                     gmUpdate.markerNum.value !=
                                                         result
-                                                            .data[
-                                                                "photo_list_map"]
+                                                            .data["photo_list_map"]
                                                                 ["results"]
                                                             .length)
                                                 ? GoogleMapContainer(
@@ -440,7 +438,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                                                     dateEnd: fliterValue
                                                         .dateEnd.value,
                                                     queryParams: queryParams,
-                                                  )
+                                                    refetchCallback: refetch)
                                                 : GoogleMapContainer(
                                                     // photoMapList:
                                                     //     photoMapMarkerList,
@@ -456,7 +454,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                                                     dateEnd: fliterValue
                                                         .dateEnd.value,
                                                     queryParams: queryParams,
-                                                  ),
+                                                    refetchCallback: refetch),
                                           ),
                                           gmWholeController
                                                   .isMarkerLoading.value

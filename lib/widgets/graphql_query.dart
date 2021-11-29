@@ -159,8 +159,8 @@ class Queries {
 """;
 
   static final String comentsList = """
-    query coments_list(\$contents_id: Int!, \$sequence: Int!, \$page: Int!) {
-      coments_list(contents_id: \$contents_id, sequence: \$sequence,page: \$page) 
+    query coments_list(\$contents_id: Int!, \$sequence: Int!) {
+      coments_list(contents_id: \$contents_id, sequence: \$sequence) 
       {
           count
           results
