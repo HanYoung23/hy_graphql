@@ -57,6 +57,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
   //
   List<Map> photoMapList = [];
   List<MapMarker> mapMarkerList = [];
+  List currentItemList = [];
   //
   int customerId;
   //
@@ -210,6 +211,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               if (resultData != null &&
                   resultData["photo_list_map"].length > 0) {
                 List<Map> newPhotoMapList = [];
+                List queryItemList = [];
                 for (Map resultData in resultData["photo_list_map"]
                     ["results"]) {
                   int customerId = int.parse("${resultData["customer_id"]}");
@@ -227,12 +229,28 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
                     "longitude": longitude,
                   };
 
-                  newPhotoMapList.add(photoDataMap);
+                  if (!currentItemList.contains("$imageLink")) {
+                    newPhotoMapList.add(photoDataMap);
+                    queryItemList.add("$imageLink");
+                  }
                 }
-                setMapMarker(newPhotoMapList);
-                setState(() {
-                  photoMapList = newPhotoMapList;
-                });
+
+                if (newPhotoMapList.length > 0) {
+                  List previousList = photoMapList;
+                  List previousItemList = currentItemList;
+                  newPhotoMapList.map((e) {
+                    previousList.add(e);
+                    int index = newPhotoMapList.indexOf(e);
+                    previousItemList.add(queryItemList[index]);
+                  }).toList();
+                  setState(() {
+                    photoMapList = previousList;
+                    currentItemList = previousItemList;
+                  });
+                  // print("🚨 photomaplist : ${photoMapList.length}");
+                  // print("🚨 currentItemList 2 : ${currentItemList.length}");
+                  setMapMarker(photoMapList);
+                }
               }
               // getMapCoord(_mapController);
             }),
@@ -272,6 +290,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
                   ),
                 ),
               ),
+              Positioned(
+                  top: ScreenUtil().setSp(10),
+                  child: Image.asset("assts/images/map_refresh_button.png")),
               widget.userPosition != null
                   ? Positioned(
                       top: ScreenUtil().setSp(20),

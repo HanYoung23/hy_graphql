@@ -24,7 +24,7 @@ class GoogleMapWholeController extends GetxController {
   // latlngBounds = ;
 
   Future addMapCoord(Completer<GoogleMapController> mapCoordController) async {
-    print("🚨 add map coord");
+    // print("🚨 add map coord");
     await getMapCoord(mapCoordController).then((latlngMap) {
       latlngBounds.value = latlngMap;
     });

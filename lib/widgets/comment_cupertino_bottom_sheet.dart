@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
 class CommentCupertinoBottomSheet extends StatelessWidget {
@@ -62,12 +63,13 @@ class CommentCupertinoBottomSheet extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    editCommentCallback(null, null);
-                    runMutation({
-                      "type": "del",
-                      "coments_id": comentsId,
-                      "coment_text": comentText,
-                    });
+                    deleteCommentPopup(
+                        context,
+                        () => runMutation({
+                              "type": "del",
+                              "coments_id": comentsId,
+                              "coment_text": comentText,
+                            }));
                   },
                 ),
               ],
