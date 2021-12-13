@@ -385,6 +385,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                               controller: tagTextController,
                               minLines: 1,
                               maxLines: 1,
+                              maxLength: 200,
                               onTap: () {
                                 if (tagTextController.text.length < 1) {
                                   tagTextController.text = "#";
@@ -424,15 +425,17 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                                       ScreenUtil().setSp(letter_spacing_small),
                                   color: Colors.black),
                               decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "태그를 입력할 수 있습니다 (ex. 바다)",
-                                  hintStyle: TextStyle(
-                                    color: app_font_grey,
-                                    fontFamily: "NotoSansCJKkrRegular",
-                                    fontSize: ScreenUtil().setSp(14),
-                                    letterSpacing: ScreenUtil()
-                                        .setSp(letter_spacing_small),
-                                  ))))
+                                border: InputBorder.none,
+                                hintText: "태그를 입력할 수 있습니다 (200자 미만)",
+                                hintStyle: TextStyle(
+                                  color: app_font_grey,
+                                  fontFamily: "NotoSansCJKkrRegular",
+                                  fontSize: ScreenUtil().setSp(14),
+                                  letterSpacing:
+                                      ScreenUtil().setSp(letter_spacing_small),
+                                ),
+                                counterText: "",
+                              )))
                     ],
                   ),
                   Container(

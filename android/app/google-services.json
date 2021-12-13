@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "186240661139-55oqb92j97de1fkg2p4nu6ps2f42p344.apps.googleusercontent.com",
+          "client_id": "186240661139-1qeoatam9l4ti6uqa64bvup66npa8h98.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.jjang.letsgotrip",
-            "certificate_hash": "b6f17770a544cdc1ca61a0cd4e742a20bb1e9a07"
+            "certificate_hash": "edc2e9ced5fe48a04d89501c0fbb85f211204c5a"
+          }
+        },
+        {
+          "client_id": "186240661139-ddsnq45a6ub9t658fjk5n5err7sgmm30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jjang.letsgotrip",
+            "certificate_hash": "5dd828045aac94307b7c2557867dd7234e78b3bf"
           }
         },
         {

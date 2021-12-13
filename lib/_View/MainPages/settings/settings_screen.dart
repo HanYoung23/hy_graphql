@@ -162,7 +162,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 )),
                           ),
                           Spacer(),
-                          appVersion == queryVersion
+                          appVersion != queryVersion
                               ? Container(
                                   width: ScreenUtil().setSp(130),
                                   height: ScreenUtil().setSp(32),

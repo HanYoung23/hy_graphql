@@ -21,7 +21,8 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
 
   @override
   void initState() {
-    checkNotificationPermission();
+    // checkNotificationPermission();
+    checkLocationPermission();
     super.initState();
   }
 

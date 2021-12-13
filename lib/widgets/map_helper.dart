@@ -12,6 +12,9 @@ import 'package:letsgotrip/widgets/map_marker.dart';
 import 'package:intl/intl.dart' as intl;
 
 class MapHelper {
+  double largeRatio = 0.35;
+  double smallRatio = 0.24;
+
   static Future<BitmapDescriptor> getMarkerImageFromUrl(String url) async {
     File markerImageFile;
     markerImageFile = await DefaultCacheManager().getSingleFile(url);
@@ -23,14 +26,14 @@ class MapHelper {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
-    int size = ScreenUtil().setSp(120).toInt();
+    int size = (ScreenUtil().screenHeight * 0.24).toInt();
     int whitePadding = ScreenUtil().setSp(8).toInt();
 
     Paint paint = Paint();
     paint.color = Colors.white;
 
-    final rect =
-        Rect.fromLTWH(0, 0, ScreenUtil().setSp(120), ScreenUtil().setSp(120));
+    final rect = Rect.fromLTWH(0, 0, (ScreenUtil().screenHeight * 0.24),
+        (ScreenUtil().screenHeight * 0.24));
     canvas.drawRRect(
         RRect.fromRectAndRadius(rect, Radius.circular(ScreenUtil().setSp(10))),
         paint);
@@ -40,8 +43,8 @@ class MapHelper {
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
         canvas: canvas,
-        rect: Rect.fromLTWH(
-            0, 0, ScreenUtil().setSp(120), ScreenUtil().setSp(120)),
+        rect: Rect.fromLTWH(0, 0, (ScreenUtil().screenHeight * 0.24),
+            (ScreenUtil().screenHeight * 0.24)),
         image: imageFI.image,
         alignment: Alignment.center);
 
@@ -109,7 +112,15 @@ class MapHelper {
       textDirection: TextDirection.ltr,
     );
     // final DecorationImagePainter
-
+//
+    // paint.color = Colors.red;
+    // final redrect = Rect.fromLTWH(0, 0, (ScreenUtil().screenHeight * 0.34),
+    //     (ScreenUtil().screenHeight * 0.34));
+    // canvas.drawRRect(
+    //     RRect.fromRectAndRadius(
+    //         redrect, Radius.circular(ScreenUtil().setSp(10))),
+    //     paint);
+//
     // //
     String imageUrl = mapMarker.childMarkerId.substring(
         mapMarker.childMarkerId.indexOf(",") + 1,
@@ -117,12 +128,12 @@ class MapHelper {
 
     File markerImageFile;
     markerImageFile = await DefaultCacheManager().getSingleFile(imageUrl);
-    int size = ScreenUtil().setSp(120).toInt();
+    int size = (ScreenUtil().screenHeight * 0.24).toInt();
     int whitePadding = ScreenUtil().setSp(8).toInt();
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, ScreenUtil().setSp(80),
-        ScreenUtil().setSp(120), ScreenUtil().setSp(120));
+    final rect = Rect.fromLTWH(0, ScreenUtil().screenHeight * 0.06,
+        (ScreenUtil().screenHeight * 0.24), (ScreenUtil().screenHeight * 0.24));
     canvas.drawRRect(
         RRect.fromRectAndRadius(rect, Radius.circular(ScreenUtil().setSp(10))),
         paint);
@@ -135,8 +146,11 @@ class MapHelper {
     final ui.FrameInfo imageFI = await codec.getNextFrame();
     paintImage(
       canvas: canvas,
-      rect: Rect.fromLTWH(0, ScreenUtil().setSp(80), ScreenUtil().setSp(120),
-          ScreenUtil().setSp(120)),
+      rect: Rect.fromLTWH(
+          0,
+          ScreenUtil().screenHeight * 0.06,
+          (ScreenUtil().screenHeight * 0.24),
+          (ScreenUtil().screenHeight * 0.24)),
       image: imageFI.image,
       alignment: Alignment.center,
     );
@@ -152,15 +166,19 @@ class MapHelper {
     }
 
     int textLength = textNum.length;
-    final double radius = ScreenUtil().setSp(44);
+    final double radius = ScreenUtil().setSp(40);
 
-    double blueBoxWidth = textLength * ScreenUtil().setSp(16) + radius;
-    double blueBoxHeight = ScreenUtil().setSp(16) + radius;
+    double blueBoxWidth =
+        textLength * ScreenUtil().screenHeight * 0.03 + radius;
+    double blueBoxHeight = ScreenUtil().screenHeight * 0.03 + radius;
     double offsetX = size - blueBoxWidth / 2 - whitePadding / 2;
 
     canvas.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(offsetX, blueBoxHeight - whitePadding, blueBoxWidth,
+            Rect.fromLTWH(
+                offsetX,
+                ScreenUtil().screenHeight * 0.015 + whitePadding,
+                blueBoxWidth,
                 blueBoxHeight),
             Radius.circular(ScreenUtil().setSp(50))),
         paint);
@@ -182,13 +200,17 @@ class MapHelper {
       canvas,
       // Offset(radius - textPainter.width / 2 + textSize * 2 + whitePadding,
       //     radius - textPainter.height / 2 + textSize + whitePadding),
-      Offset(offsetX + blueBoxWidth / 2 - textPainter.width / 2,
-          blueBoxHeight - whitePadding + textPainter.height / 4),
+      Offset(
+          offsetX + blueBoxWidth / 2 - textPainter.width / 2,
+          ScreenUtil().screenHeight * 0.015 -
+              textPainter.height / 2 +
+              blueBoxHeight / 2 +
+              whitePadding),
     );
 
     final image = await pictureRecorder.endRecording().toImage(
-          ScreenUtil().setSp(200).toInt(),
-          ScreenUtil().setSp(200).toInt(),
+          (ScreenUtil().screenHeight * 0.34).toInt(),
+          (ScreenUtil().screenHeight * 0.34).toInt(),
         );
     final data = await image.toByteData(format: ImageByteFormat.png);
 
