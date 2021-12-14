@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,13 +6,9 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
-import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/user_location.dart';
-import 'package:http/http.dart' as http;
 import 'package:letsgotrip/widgets/location_unable_screen.dart';
-import 'package:letsgotrip/widgets/postal.dart';
 
 class AdPostDetailScreen extends StatefulWidget {
   final Map paramMap;
@@ -33,6 +28,10 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
   bool isAllFilled = false;
   bool isPermission = true;
   String address = "";
+  List rangeList = ["500m", "1km", "2km", "3km", "5km", "6km", "8km"];
+  List countList = ["50회", "100회", "200회", "300회", "500회", "700회", "1000회"];
+  String range = "0km";
+  String count = "0회";
 
   checkIsAllFilled() {
     if (locationTextController.text.length > 0) {
@@ -46,64 +45,79 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
     }
   }
 
-  callBackAddress(Map callbackAddress) async {
-    final GoogleMapController mapController = await mapCompleter.future;
-    await mapController.animateCamera(CameraUpdate.newLatLngZoom(
-        LatLng(callbackAddress["lat"], callbackAddress["lng"]), 14));
-    setState(() {
-      address = callbackAddress["address"];
-      photoLatLng = LatLng(callbackAddress["lat"], callbackAddress["lng"]);
-    });
-    // mapCompleter.complete(mapController);
-  }
-
-  Future getPlaceInfo() async {
-    if (widget.paramMap["imageLatLngList"].length > 0) {
-      double lat = widget.paramMap["imageLatLngList"][0].latitude;
-      double lng = widget.paramMap["imageLatLngList"][0].longitude;
-
-      final url = Uri.parse(
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$googleWebKey&language=ko');
-      final response = await http.get(url);
-
-      String addressJSON = await jsonDecode(response.body.toString())['results']
-              [0]['formatted_address']
-          .replaceAll("대한민국 ", "");
-
-      setState(() {
-        photoLatLng = widget.paramMap["imageLatLngList"][0];
-        address = addressJSON;
-      });
-    }
+  showPicker(String title) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: ScreenUtil().setSp(262),
+            child: Column(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setSp(44),
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.all(ScreenUtil().setSp(12)),
+                    child: Text(
+                      "Done",
+                      style: TextStyle(
+                          fontSize: ScreenUtil().setSp(16),
+                          // fontFamily: "NotoSansCJKkrRegular",
+                          fontWeight: FontWeight.w600,
+                          color: app_blue_cupertino),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    onSelectedItemChanged: (index) {
+                      if (title == "range") {
+                        setState(() {
+                          range = rangeList[index];
+                        });
+                      } else {
+                        setState(() {
+                          count = countList[index];
+                        });
+                      }
+                    },
+                    itemExtent: 32.0,
+                    diameterRatio: 1,
+                    children: title == "range"
+                        ? rangeList.map((e) {
+                            return Text(
+                              "$e",
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(22),
+                              ),
+                            );
+                          }).toList()
+                        : countList.map((e) {
+                            return Text(
+                              "$e",
+                              style: TextStyle(
+                                fontSize: ScreenUtil().setSp(22),
+                              ),
+                            );
+                          }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
   void initState() {
-    if (widget.paramMap["imageLatLngList"].length > 0) {
-      getPlaceInfo();
-      checkLocationPermission().then((permission) {
-        setState(() {
-          isPermission = permission;
-        });
-      });
-    } else {
-      checkLocationPermission().then((permission) {
-        if (permission) {
-          getUserLocation().then((latlng) {
-            if (latlng != null) {
-              setState(() {
-                photoLatLng = LatLng(latlng.latitude, latlng.longitude);
-              });
-            }
-          });
-        } else {
-          // permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
-        }
-        setState(() {
-          isPermission = permission;
-        });
-      });
-    }
+    setState(() {
+      photoLatLng = LatLng(widget.paramMap["lat"], widget.paramMap["lng"]);
+    });
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -156,13 +170,10 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
         ),
         body: isPermission
             ? SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
                 child: Container(
-                  height: ScreenUtil().screenHeight -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom,
                   padding: EdgeInsets.all(ScreenUtil().setSp(20)),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         width: ScreenUtil().screenWidth,
@@ -196,28 +207,7 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                               ),
                             ),
                             Expanded(
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    Get.to(() => PostalWeb(
-                                          callback: (address) =>
-                                              callBackAddress(address),
-                                        ));
-                                  },
-                                  child: Text(
-                                    "위치 검색",
-                                    style: TextStyle(
-                                      color: app_font_grey,
-                                      fontFamily: "NotoSansCJKkrBold",
-                                      fontSize:
-                                          ScreenUtil().setSp(appbar_title_size),
-                                      letterSpacing:
-                                          ScreenUtil().setSp(letter_spacing),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              child: Container(),
                             ),
                           ],
                         ),
@@ -226,76 +216,98 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                       Container(
                           width: ScreenUtil().screenWidth,
                           height: ScreenUtil().setSp(240),
-                          child: photoLatLng != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      ScreenUtil().setSp(10)),
-                                  child: GoogleMap(
-                                    mapToolbarEnabled: false,
-                                    zoomGesturesEnabled: true,
-                                    myLocationButtonEnabled: false,
-                                    myLocationEnabled: true,
-                                    zoomControlsEnabled: false,
-                                    initialCameraPosition: CameraPosition(
-                                      target: photoLatLng,
-                                      zoom: 13,
-                                    ),
-                                    onMapCreated:
-                                        (GoogleMapController controller) {
-                                      mapCompleter.complete(controller);
-                                      controller.animateCamera(
-                                          CameraUpdate.newLatLngZoom(
-                                              photoLatLng, 14));
-                                      // createMarker(photoLatLng);
-                                    },
-                                    markers: createMarker(photoLatLng),
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    LoadingIndicator(),
-                                  ],
-                                )),
-                      SizedBox(height: ScreenUtil().setSp(4)),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(ScreenUtil().setSp(10)),
+                            child: GoogleMap(
+                              mapToolbarEnabled: false,
+                              zoomGesturesEnabled: true,
+                              myLocationButtonEnabled: false,
+                              myLocationEnabled: true,
+                              zoomControlsEnabled: false,
+                              initialCameraPosition: CameraPosition(
+                                target: photoLatLng,
+                                zoom: 15,
+                              ),
+                              onMapCreated: (GoogleMapController controller) {
+                                mapCompleter.complete(controller);
+                                controller.animateCamera(
+                                    CameraUpdate.newLatLngZoom(
+                                        photoLatLng, 15));
+                                // createMarker(photoLatLng);
+                              },
+                              // markers: createMarker(photoLatLng),
+                            ),
+                          )),
+                      SizedBox(height: ScreenUtil().setSp(20)),
+                      contentTitle("희망지역"),
+                      SizedBox(height: ScreenUtil().setSp(6)),
                       Container(
                         width: ScreenUtil().screenWidth,
                         child: Text(
-                          address != "" ? "위치 : $address" : "위치가 설정되어 있지 않습니다.",
+                          widget.paramMap["address"],
                           style: TextStyle(
                               fontFamily: "NotoSansCJKkrRegular",
-                              letterSpacing:
-                                  ScreenUtil().setSp(letter_spacing_small),
-                              fontSize: ScreenUtil().setSp(12),
-                              color: address != "" ? Colors.black : Colors.red),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              fontSize: ScreenUtil().setSp(16),
+                              color: Colors.black),
                           overflow: TextOverflow.fade,
                           maxLines: 2,
                         ),
                       ),
-                      SizedBox(height: ScreenUtil().setSp(8)),
-                      Text(
-                          "선택된 위치가 다른 경우 직접 선택할 수 있습니다.\n(GPS 정보 값이 존재하는 경우 자동으로 지정됩니다.)",
-                          style: TextStyle(
-                            fontFamily: "NotoSansCJKkrRegular",
-                            letterSpacing:
-                                ScreenUtil().setSp(letter_spacing_small),
-                            fontSize: ScreenUtil().setSp(14),
-                            color: app_font_grey,
+                      SizedBox(height: ScreenUtil().setSp(20)),
+                      contentTitle("도달범위"),
+                      SizedBox(height: ScreenUtil().setSp(6)),
+                      InkWell(
+                        onTap: () {
+                          showPicker("range");
+                        },
+                        child: Container(
+                          width: ScreenUtil().screenWidth,
+                          child: Text(
+                            "반경 $range",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              fontSize: ScreenUtil().setSp(16),
+                              color:
+                                  range != "0km" ? Colors.black : app_font_grey,
+                              decoration: TextDecoration.underline,
+                            ),
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
                           ),
-                          overflow: TextOverflow.fade),
-                      SizedBox(height: ScreenUtil().setSp(24)),
-                      Row(
-                        children: [
-                          Text("장소명 입력",
-                              style: TextStyle(
-                                  fontFamily: "NotoSansCJKkrBold",
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing_small),
-                                  fontSize: ScreenUtil().setSp(14),
-                                  fontWeight: FontWeight.bold)),
-                        ],
+                        ),
                       ),
-                      SizedBox(height: ScreenUtil().setSp(5)),
+                      SizedBox(height: ScreenUtil().setSp(20)),
+                      contentTitle("게시물 클릭 횟수"),
+                      SizedBox(height: ScreenUtil().setSp(6)),
+                      InkWell(
+                        onTap: () {
+                          showPicker("count");
+                        },
+                        child: Container(
+                          width: ScreenUtil().screenWidth,
+                          child: Text(
+                            count == "0회" ? "횟수 설정하기" : "$count",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              fontSize: ScreenUtil().setSp(16),
+                              color:
+                                  count != "0회" ? Colors.black : app_font_grey,
+                              decoration: TextDecoration.underline,
+                            ),
+                            overflow: TextOverflow.fade,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: ScreenUtil().setSp(20)),
+                      Row(
+                        children: [contentTitle("장소(상호)명 입력")],
+                      ),
+                      SizedBox(height: ScreenUtil().setSp(10)),
                       TextFormField(
                           keyboardType: TextInputType.text,
                           controller: locationTextController,
@@ -322,7 +334,7 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                                       ScreenUtil().setSp(letter_spacing_small),
                                   color: app_font_grey,
                                   fontSize: ScreenUtil().setSp(14)))),
-                      Spacer(),
+                      // Spacer(),
                       InkWell(
                         onTap: () {
                           if (locationTextController.text.length > 0 &&
@@ -368,6 +380,17 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                 ),
               )
             : LocationUnableScreen(),
+      ),
+    );
+  }
+
+  Text contentTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontFamily: "NotoSansCJKkrBold",
+        letterSpacing: ScreenUtil().setSp(letter_spacing),
+        fontSize: ScreenUtil().setSp(16),
       ),
     );
   }
