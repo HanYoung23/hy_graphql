@@ -31,6 +31,7 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
   List rangeList = ["500m", "1km", "2km", "3km", "5km", "6km", "8km"];
   List countList = ["50회", "100회", "200회", "300회", "500회", "700회", "1000회"];
   String range = "0km";
+  double rangeNum = 0.5;
   String count = "0회";
 
   checkIsAllFilled() {
@@ -80,12 +81,14 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                         setState(() {
                           range = rangeList[index];
                         });
+                        updateCamera(index);
                       } else {
                         setState(() {
                           count = countList[index];
                         });
                       }
                     },
+                    useMagnifier: true,
                     itemExtent: 32.0,
                     diameterRatio: 1,
                     children: title == "range"
@@ -111,6 +114,12 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
             ),
           );
         });
+  }
+
+  Future updateCamera(int index) async {
+    final GoogleMapController controller = await mapCompleter.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: photoLatLng, zoom: 14.0 - index / 2)));
   }
 
   @override
@@ -227,16 +236,29 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                               zoomControlsEnabled: false,
                               initialCameraPosition: CameraPosition(
                                 target: photoLatLng,
-                                zoom: 15,
+                                zoom: 14,
                               ),
                               onMapCreated: (GoogleMapController controller) {
                                 mapCompleter.complete(controller);
                                 controller.animateCamera(
                                     CameraUpdate.newLatLngZoom(
-                                        photoLatLng, 15));
-                                // createMarker(photoLatLng);
+                                        photoLatLng, 14));
                               },
                               // markers: createMarker(photoLatLng),
+                              circles: Set.from([
+                                Circle(
+                                  circleId: CircleId("1"),
+                                  center: LatLng(widget.paramMap["lat"],
+                                      widget.paramMap["lng"]),
+                                  radius: range == "500m" || range == "0km"
+                                      ? 500.0
+                                      : double.parse(range.substring(0, 1)) *
+                                          1000,
+                                  fillColor: app_blue.withOpacity(0.16),
+                                  strokeColor: app_blue,
+                                  strokeWidth: ScreenUtil().setSp(1).round(),
+                                )
+                              ]),
                             ),
                           )),
                       SizedBox(height: ScreenUtil().setSp(20)),
@@ -334,7 +356,21 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                                       ScreenUtil().setSp(letter_spacing_small),
                                   color: app_font_grey,
                                   fontSize: ScreenUtil().setSp(14)))),
-                      // Spacer(),
+                      SizedBox(height: ScreenUtil().setSp(60)),
+                      Center(
+                        child: Text(
+                          "결제완료 후 심사가 시작됩니다.\n최대 48시간이 소요되며, 승인 후 개제 됩니다.",
+                          style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            fontFamily: "NotoSansCJKkrRegular",
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
+                            color: app_font_grey,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(height: ScreenUtil().setSp(10)),
                       InkWell(
                         onTap: () {
                           if (locationTextController.text.length > 0 &&
