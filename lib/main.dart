@@ -34,7 +34,7 @@ void main() {
       ], // for datepicker korean
       supportedLocales: [
         const Locale('ko', 'KO'),
-        const Locale('en', 'US'),
+        // const Locale('en', 'US'),
       ], // for datepicker korean
       debugShowCheckedModeBanner: false,
       // navigatorObservers: [
@@ -96,8 +96,8 @@ class _ScreenFilterState extends State<ScreenFilter> {
     initAWS();
     seeValue("isWalkThrough").then((value) {
       if (value == "true") {
-        seeValue("customerId").then((value) {
-          if (value != null) {
+        seeValue("customerId").then((customerId) {
+          if (customerId != null) {
             seeValue("isProfileSet").then((value) {
               if (value == "true") {
                 setState(() {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:letsgotrip/_View/InitPages/authority_screen.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
@@ -57,6 +56,82 @@ savePostPopup(BuildContext context, Function saveDataCallback) {
                   Container(
                     child: Text(
                       "임시저장 하시겠습니까?\n다음 게시물 작성 시 불러올 수 있습니다.",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(
+                        width: ScreenUtil().setSp(20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            saveDataCallback();
+                            Get.back();
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+saveAdPopup(BuildContext context, Function saveDataCallback) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "임시저장 하시겠습니까?\n다음 홍보 게시물 작성 시 불러올 수 있습니다.",
                       style: TextStyle(
                         fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
@@ -309,9 +384,11 @@ logOutPopup(BuildContext context) {
                               // await deleteUserData("customerId");
                               // await deleteUserData("loginType");
                               // await deleteUserData("isProfileSet");
-                              await deleteAllUserData();
+                              await deleteAllUserData().then((value) {
+                                storeUserData("isWalkThrough", "true");
+                              });
 
-                              Get.offAll(() => AuthorityScreen());
+                              Get.offAll(() => LoginScreen());
                             });
                           },
                           child: Text(

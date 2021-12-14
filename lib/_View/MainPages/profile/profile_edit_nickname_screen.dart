@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/homepage.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 
@@ -50,96 +49,82 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
     super.initState();
   }
 
+// if (isAllFilled) {
+//                 if (resultData["check_nickname"]["result"]) {
+//                   storeUserData("isProfileSet", "true");
+//                   Get.offAll(() => HomePage());
+//                 }
+//               }
   @override
   Widget build(BuildContext context) {
-    return Mutation(
-        options: MutationOptions(
-            document: gql(Mutations.createNickname),
-            update: (GraphQLDataProxy proxy, QueryResult result) {},
-            onCompleted: (dynamic resultData) {
-              print("🚨 resultData : $resultData");
-              if (isAllFilled) {
-                if (resultData["createNickname"]["result"]) {
-                  storeUserData("isProfileSet", "true");
-                  Get.offAll(() => HomePage());
-                } else {
-                  Get.snackbar(
-                      "error", "${resultData["createNickname"]["msg"]}");
-                }
-              } else {
-                if (resultData["createNickname"]["result"]) {
-                  setState(() {
-                    inputMessage = "사용 가능한 별명입니다 :)";
-                    currentColor = enableColor;
-                    isAllFilled = true;
-                  });
-                } else if ("${resultData["createNickname"]["msg"]}" == "???") {
-                  setState(() {
-                    inputMessage = "이미 사용 중인 별명입니다.";
-                    currentColor = errorColor;
-                    isAllFilled = false;
-                  });
-                } else {
-                  setState(() {
-                    inputMessage = "";
-                    currentColor = errorColor;
-                    isAllFilled = false;
-                  });
-                  Get.snackbar(
-                      "error", "${resultData["createNickname"]["msg"]}");
-                }
-              }
-            }),
-        builder: (RunMutation runMutation, QueryResult queryResult) {
-          return SafeArea(
-            top: false,
-            bottom: false,
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Scaffold(
-                backgroundColor: Colors.white,
-                appBar: AppBar(
-                  toolbarHeight: 0,
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
-                ),
-                resizeToAvoidBottomInset: false,
-                body: Container(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(20)),
-                  child: Column(
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
+          ),
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            padding: EdgeInsets.all(ScreenUtil().setSp(20)),
+            child: Column(
+              children: [
+                Container(
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().setSp(44),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        width: ScreenUtil().screenWidth,
-                        height: ScreenUtil().setSp(44),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Image.asset(
-                                    "assets/images/arrow_back.png",
-                                    width: ScreenUtil().setSp(arrow_back_size),
-                                    height:
-                                        ScreenUtil().setSp(arrow_back_size))),
-                            Text(
-                              "프로필 별명",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrBold",
-                                fontSize: ScreenUtil().setSp(appbar_title_size),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if (inputMessage == "사용 가능한 별명입니다 :)") {
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Image.asset("assets/images/arrow_back.png",
+                              width: ScreenUtil().setSp(arrow_back_size),
+                              height: ScreenUtil().setSp(arrow_back_size))),
+                      Text(
+                        "프로필 별명",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          fontSize: ScreenUtil().setSp(appbar_title_size),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                        ),
+                      ),
+                      Mutation(
+                          options: MutationOptions(
+                              document: gql(Mutations.createNickname),
+                              update: (GraphQLDataProxy proxy,
+                                  QueryResult result) {},
+                              onCompleted: (dynamic resultData) {
+                                print("🚨 resultData : $resultData");
+
+                                if (resultData["createNickname"]["result"]) {
                                   widget.setNickname(nicknameController.text);
                                   Get.back();
+                                }
+                              }),
+                          builder: (RunMutation runMutation,
+                              QueryResult queryResult) {
+                            return InkWell(
+                              onTap: () {
+                                if (inputMessage == "사용 가능한 별명입니다 :)") {
+                                  seeValue("customerId").then((value) {
+                                    int customerId = int.parse(value);
+                                    runMutation({
+                                      "nick_name": nicknameController.text,
+                                      "profile_photo_link":
+                                          "${widget.profilePhoto}",
+                                      "customer_id": customerId,
+                                    });
+                                  });
                                 }
                               },
                               child: Container(
@@ -158,21 +143,43 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(30)),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                                "assets/images/profileSettings/profile_nickname.png",
-                                width: ScreenUtil().setSp(66),
-                                height: ScreenUtil().setSp(20))
-                          ]),
-                      SizedBox(height: ScreenUtil().setSp(5)),
-                      Container(
+                            );
+                          }),
+                    ],
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setSp(30)),
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Image.asset(
+                      "assets/images/profileSettings/profile_nickname.png",
+                      width: ScreenUtil().setSp(66),
+                      height: ScreenUtil().setSp(20))
+                ]),
+                SizedBox(height: ScreenUtil().setSp(5)),
+                Mutation(
+                    options: MutationOptions(
+                        document: gql(Mutations.checkNickname),
+                        update: (GraphQLDataProxy proxy, QueryResult result) {},
+                        onCompleted: (dynamic resultData) {
+                          print("🚨 resultData : $resultData");
+
+                          if (resultData["check_nickname"]["result"]) {
+                            setState(() {
+                              inputMessage = "사용 가능한 별명입니다 :)";
+                              currentColor = enableColor;
+                              isAllFilled = true;
+                            });
+                          } else {
+                            setState(() {
+                              inputMessage = "이미 사용 중인 별명입니다.";
+                              currentColor = errorColor;
+                              isAllFilled = false;
+                            });
+                          }
+                        }),
+                    builder:
+                        (RunMutation runMutation, QueryResult queryResult) {
+                      return Container(
                           alignment: Alignment.bottomLeft,
                           child: TextFormField(
                             controller: nicknameController,
@@ -284,47 +291,46 @@ class _ProfileEditNicknameScreenState extends State<ProfileEditNicknameScreen> {
                                 ),
                               ),
                             ),
-                          )),
-                      SizedBox(height: ScreenUtil().setSp(5)),
-                      SizedBox(width: ScreenUtil().setSp(10)),
-                      Container(
-                        width: ScreenUtil().screenWidth,
-                        padding: EdgeInsets.only(left: ScreenUtil().setSp(10)),
-                        child: Text(
-                          "$inputMessage",
-                          style: TextStyle(
-                              fontFamily: "NotoSansCJKkrRegular",
-                              fontSize: ScreenUtil().setSp(14),
-                              letterSpacing:
-                                  ScreenUtil().setSp(letter_spacing_small),
-                              color: inputMessage != ""
-                                  ? currentColor
-                                  : Colors.transparent),
-                        ),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(15)),
-                      Container(
-                        padding: EdgeInsets.only(left: ScreenUtil().setSp(10)),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "한글 2~12자, 영문 대소문자, 숫자 2~20자에 한하여\n사용 가능합니다(혼용가능)",
-                          style: TextStyle(
-                            fontFamily: "NotoSansCJKkrRegular",
-                            letterSpacing:
-                                ScreenUtil().setSp(letter_spacing_small),
-                            fontSize: ScreenUtil().setSp(14),
-                            color: app_font_grey,
-                          ),
-                          overflow: TextOverflow.fade,
-                        ),
-                      ),
-                      Spacer(),
-                    ],
+                          ));
+                    }),
+                SizedBox(height: ScreenUtil().setSp(5)),
+                SizedBox(width: ScreenUtil().setSp(10)),
+                Container(
+                  width: ScreenUtil().screenWidth,
+                  padding: EdgeInsets.only(left: ScreenUtil().setSp(10)),
+                  child: Text(
+                    "$inputMessage",
+                    style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(14),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                        color: inputMessage != ""
+                            ? currentColor
+                            : Colors.transparent),
                   ),
                 ),
-              ),
+                SizedBox(height: ScreenUtil().setSp(15)),
+                Container(
+                  padding: EdgeInsets.only(left: ScreenUtil().setSp(10)),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "한글 2~12자, 영문 대소문자, 숫자 2~20자에 한하여\n사용 가능합니다(혼용가능)",
+                    style: TextStyle(
+                      fontFamily: "NotoSansCJKkrRegular",
+                      letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                      fontSize: ScreenUtil().setSp(14),
+                      color: app_font_grey,
+                    ),
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+                Spacer(),
+              ],
             ),
-          );
-        });
+          ),
+        ),
+      ),
+    );
+    // });
   }
 }

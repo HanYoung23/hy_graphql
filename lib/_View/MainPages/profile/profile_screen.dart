@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/notification_controller.dart';
-import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/_View/MainPages/profile/profile_edit_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -225,19 +224,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           );
                                         }
                                       }),
-                                  InkWell(
-                                    onTap: () {
-                                      checkNotificationPermission();
-                                    },
-                                    child: Text(
-                                      "마이페이지",
-                                      style: TextStyle(
-                                          fontFamily: "NotoSansCJKkrBold",
-                                          fontSize: ScreenUtil()
-                                              .setSp(appbar_title_size),
-                                          letterSpacing: ScreenUtil()
-                                              .setSp(letter_spacing)),
-                                    ),
+                                  Text(
+                                    "마이페이지",
+                                    style: TextStyle(
+                                        fontFamily: "NotoSansCJKkrBold",
+                                        fontSize: ScreenUtil()
+                                            .setSp(appbar_title_size),
+                                        letterSpacing:
+                                            ScreenUtil().setSp(letter_spacing)),
                                   ),
                                   Image.asset(
                                     "assets/images/hamburger_button.png",

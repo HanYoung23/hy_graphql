@@ -67,172 +67,150 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Mutation(
-        options: MutationOptions(
-            document: gql(Mutations.createNickname),
-            update: (GraphQLDataProxy proxy, QueryResult result) {},
-            onCompleted: (dynamic resultData) {
-              // print("🚨 resultData : $resultData");
-              if (isAllFilled) {
-                if (resultData["createNickname"]["result"]) {
-                  storeUserData("isProfileSet", "true");
-                  Get.off(() => HomePage());
-                } else {
-                  Get.snackbar(
-                      "error", "${resultData["createNickname"]["msg"]}");
-                }
-              } else {
-                if (resultData["createNickname"]["result"]) {
-                  setState(() {
-                    inputMessage = "사용 가능한 별명입니다 :)";
-                    currentColor = enableColor;
-                    isAllFilled = true;
-                  });
-                } else if ("${resultData["createNickname"]["msg"]}" == "???") {
-                  setState(() {
-                    inputMessage = "이미 사용 중인 별명입니다.";
-                    currentColor = errorColor;
-                    isAllFilled = false;
-                  });
-                } else {
-                  setState(() {
-                    inputMessage = "";
-                    currentColor = errorColor;
-                    isAllFilled = false;
-                  });
-                  Get.snackbar(
-                      "error", "${resultData["createNickname"]["msg"]}");
-                }
-              }
-              FocusScope.of(context).unfocus();
-            }),
-        builder: (RunMutation runMutation, QueryResult queryResult) {
-          return SafeArea(
-            top: false,
-            bottom: false,
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                appBar: AppBar(
-                  toolbarHeight: 0,
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
+          ),
+          body: Container(
+            margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+            child: Column(
+              children: [
+                Container(
+                  width: ScreenUtil().screenWidth,
+                  height: ScreenUtil().setSp(44),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset("assets/images/arrow_back.png",
+                          color: Colors.transparent,
+                          width: ScreenUtil().setSp(arrow_back_size),
+                          height: ScreenUtil().setSp(arrow_back_size)),
+                      Text(
+                        "프로필 설정",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          fontSize: ScreenUtil().setSp(appbar_title_size),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                        ),
+                      ),
+                      Image.asset("assets/images/arrow_back.png",
+                          color: Colors.transparent,
+                          width: ScreenUtil().setSp(arrow_back_size),
+                          height: ScreenUtil().setSp(arrow_back_size)),
+                    ],
+                  ),
                 ),
-                body: Container(
-                  margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+                SizedBox(height: ScreenUtil().setHeight(12)),
+                InkWell(
+                  onTap: () {
+                    checkGalleryPermission().then((permission) async {
+                      if (permission) {
+                        picker
+                            .pickImage(
+                                maxWidth: 1000,
+                                maxHeight: 1000,
+                                source: ImageSource.gallery)
+                            .then((image) {
+                          if (image != null) {
+                            setState(() {
+                              pickedImage = image;
+                            });
+                          }
+                        });
+                      } else {
+                        permissionPopup(context,
+                            "사진 접근이 허용되어있지 않있습니다.\n설정에서 허용 후 이용 가능합니다.");
+                      }
+                    });
+                  },
                   child: Column(
                     children: [
-                      Container(
-                        width: ScreenUtil().screenWidth,
-                        height: ScreenUtil().setSp(44),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Image.asset("assets/images/arrow_back.png",
-                                color: Colors.transparent,
-                                width: ScreenUtil().setSp(arrow_back_size),
-                                height: ScreenUtil().setSp(arrow_back_size)),
-                            Text(
-                              "프로필 설정",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrBold",
-                                fontSize: ScreenUtil().setSp(appbar_title_size),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing),
-                              ),
-                            ),
-                            Image.asset("assets/images/arrow_back.png",
-                                color: Colors.transparent,
-                                width: ScreenUtil().setSp(arrow_back_size),
-                                height: ScreenUtil().setSp(arrow_back_size)),
-                          ],
+                      pickedImage == null
+                          ? widget.photoUrl == null || widget.photoUrl == "null"
+                              ? Image.asset(
+                                  "assets/images/profileSettings/thumbnail_default.png",
+                                  width: ScreenUtil().setSp(101),
+                                  height: ScreenUtil().setSp(101))
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      ScreenUtil().setSp(50)),
+                                  child: Image.network(
+                                    widget.photoUrl,
+                                    width: ScreenUtil().setSp(101),
+                                    height: ScreenUtil().setSp(101),
+                                    fit: BoxFit.cover,
+                                  ))
+                          : ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(ScreenUtil().setSp(50)),
+                              child: Image.file(
+                                File(pickedImage.path),
+                                width: ScreenUtil().setSp(101),
+                                height: ScreenUtil().setSp(101),
+                                fit: BoxFit.cover,
+                              )),
+                      SizedBox(height: ScreenUtil().setHeight(3)),
+                      Text(
+                        "변경하기",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(12),
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_x_small),
+                          color: app_grey_dark,
                         ),
-                      ),
-                      SizedBox(height: ScreenUtil().setHeight(12)),
-                      InkWell(
-                        onTap: () {
-                          checkGalleryPermission().then((permission) async {
-                            if (permission) {
-                              picker
-                                  .pickImage(
-                                      maxWidth: 1000,
-                                      maxHeight: 1000,
-                                      source: ImageSource.gallery)
-                                  .then((image) {
-                                if (image != null) {
-                                  setState(() {
-                                    pickedImage = image;
-                                  });
-                                }
-                              });
-                            } else {
-                              permissionPopup(context,
-                                  "사진 접근이 허용되어있지 않있습니다.\n설정에서 허용 후 이용 가능합니다.");
-                            }
-                          });
-                        },
-                        child: Column(
-                          children: [
-                            pickedImage == null
-                                ? widget.photoUrl == null ||
-                                        widget.photoUrl == "null"
-                                    ? Image.asset(
-                                        "assets/images/profileSettings/thumbnail_default.png",
-                                        width: ScreenUtil().setSp(101),
-                                        height: ScreenUtil().setSp(101))
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                            ScreenUtil().setSp(50)),
-                                        child: Image.network(
-                                          widget.photoUrl,
-                                          width: ScreenUtil().setSp(101),
-                                          height: ScreenUtil().setSp(101),
-                                          fit: BoxFit.cover,
-                                        ))
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        ScreenUtil().setSp(50)),
-                                    child: Image.file(
-                                      File(pickedImage.path),
-                                      width: ScreenUtil().setSp(101),
-                                      height: ScreenUtil().setSp(101),
-                                      fit: BoxFit.cover,
-                                    )),
-                            SizedBox(height: ScreenUtil().setHeight(3)),
-                            Text(
-                              "변경하기",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrRegular",
-                                fontSize: ScreenUtil().setSp(12),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing_x_small),
-                                color: app_grey_dark,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: ScreenUtil().setHeight(7)),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              "프로필 별명",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrBold",
-                                fontSize: ScreenUtil().setSp(14),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing_small),
-                                color: Colors.black,
-                              ),
-                            )
-                          ]),
-                      SizedBox(height: ScreenUtil().setHeight(5)),
-                      Container(
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(7)),
+                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Text(
+                    "프로필 별명",
+                    style: TextStyle(
+                      fontFamily: "NotoSansCJKkrBold",
+                      fontSize: ScreenUtil().setSp(14),
+                      letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                      color: Colors.black,
+                    ),
+                  )
+                ]),
+                SizedBox(height: ScreenUtil().setHeight(5)),
+                Mutation(
+                    options: MutationOptions(
+                        document: gql(Mutations.checkNickname),
+                        update: (GraphQLDataProxy proxy, QueryResult result) {},
+                        onCompleted: (dynamic resultData) {
+                          print("🚨 resultData : $resultData");
+                          if (resultData["check_nickname"]["result"]) {
+                            setState(() {
+                              inputMessage = "사용 가능한 별명입니다 :)";
+                              currentColor = enableColor;
+                              isAllFilled = true;
+                            });
+                          } else {
+                            setState(() {
+                              inputMessage = "이미 사용 중인 별명입니다.";
+                              currentColor = errorColor;
+                              isAllFilled = false;
+                            });
+                          }
+                          FocusScope.of(context).unfocus();
+                        }),
+                    builder:
+                        (RunMutation runMutation, QueryResult queryResult) {
+                      return Container(
                           alignment: Alignment.bottomLeft,
                           child: TextFormField(
                             controller: nicknameController,
@@ -298,11 +276,9 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                     seeValue("customerId").then((customerId) {
                                       runMutation({
                                         "nick_name": nicknameController.text,
-                                        "profile_photo_link": "",
                                         "customer_id": int.parse(customerId),
                                       });
                                     });
-
                                     FocusScope.of(context).unfocus();
                                   }
                                 },
@@ -331,42 +307,59 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                 ),
                               ),
                             ),
-                          )),
-                      SizedBox(height: ScreenUtil().setHeight(5)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: ScreenUtil().setSp(10)),
-                          Text(
-                            "$inputMessage",
-                            style: TextStyle(
-                                fontSize: ScreenUtil().setSp(14),
-                                color: inputMessage != ""
-                                    ? currentColor
-                                    : Colors.transparent),
-                          ),
-                        ],
+                          ));
+                    }),
+                SizedBox(height: ScreenUtil().setHeight(5)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: ScreenUtil().setSp(10)),
+                    Text(
+                      "$inputMessage",
+                      style: TextStyle(
+                          fontSize: ScreenUtil().setSp(14),
+                          color: inputMessage != ""
+                              ? currentColor
+                              : Colors.transparent),
+                    ),
+                  ],
+                ),
+                SizedBox(height: ScreenUtil().setHeight(15)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: ScreenUtil().setSp(14)),
+                    Text(
+                      "한글 2~12자, 영문 대소문자, 숫자 2~20자에 한하여\n사용가능합니다(혼용 가능)",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(14),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                        color: app_grey_login,
                       ),
-                      SizedBox(height: ScreenUtil().setHeight(15)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: ScreenUtil().setSp(14)),
-                          Text(
-                            "한글 2~12자, 영문 대소문자, 숫자 2~20자에 한하여\n사용가능합니다(혼용 가능)",
-                            style: TextStyle(
-                              fontFamily: "NotoSansCJKkrRegular",
-                              fontSize: ScreenUtil().setSp(14),
-                              letterSpacing:
-                                  ScreenUtil().setSp(letter_spacing_small),
-                              color: app_grey_login,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      InkWell(
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                Spacer(),
+                Mutation(
+                    options: MutationOptions(
+                        document: gql(Mutations.createNickname),
+                        update: (GraphQLDataProxy proxy, QueryResult result) {},
+                        onCompleted: (dynamic resultData) {
+                          print("🚨 create nickname resultData : $resultData");
+                          if (resultData["createNickname"]["result"]) {
+                            storeUserData("isProfileSet", "true");
+                            Get.off(() => HomePage());
+                          } else {
+                            Get.snackbar("error",
+                                "${resultData["createNickname"]["msg"]}");
+                          }
+                          FocusScope.of(context).unfocus();
+                        }),
+                    builder:
+                        (RunMutation runMutation, QueryResult queryResult) {
+                      return InkWell(
                         onTap: () async {
                           seeValue("customerId").then((customerId) {
                             if (isAllFilled) {
@@ -426,14 +419,14 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(14)),
-                    ],
-                  ),
-                ),
-              ),
+                      );
+                    }),
+                SizedBox(height: ScreenUtil().setSp(14)),
+              ],
             ),
-          );
-        });
+          ),
+        ),
+      ),
+    );
   }
 }

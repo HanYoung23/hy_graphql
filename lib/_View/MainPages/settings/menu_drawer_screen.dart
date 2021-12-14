@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_Controller/notification_controller.dart';
 import 'package:letsgotrip/_View/MainPages/map/map_post_creation_screen.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/announce_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/notification_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/settings_screen.dart';
@@ -317,10 +318,34 @@ class MenuDrawer extends StatelessWidget {
                             ),
                           ),
                         ),
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => AdScreen());
+                          },
+                          child: Container(
+                            width: ScreenUtil().screenWidth,
+                            height: ScreenUtil().setSp(48),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "게시물 홍보하기",
+                              style: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing),
+                                fontSize: ScreenUtil().setSp(16),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   )
                 ],
+              ),
+              Container(
+                color: app_grey_light,
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().setSp(10),
               ),
               Expanded(
                 child: Container(
