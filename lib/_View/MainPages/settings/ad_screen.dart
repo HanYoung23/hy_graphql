@@ -85,7 +85,6 @@ class AdScreen extends StatelessWidget {
                       width: ScreenUtil().screenWidth,
                       padding: EdgeInsets.symmetric(
                           vertical: ScreenUtil().setSp(10)),
-                      color: Colors.amber,
                       child: Text(
                         "홍보 게시물 작성하기",
                         style: TextStyle(
@@ -101,7 +100,6 @@ class AdScreen extends StatelessWidget {
                     width: ScreenUtil().screenWidth,
                     padding:
                         EdgeInsets.symmetric(vertical: ScreenUtil().setSp(10)),
-                    color: Colors.red,
                     child: Text(
                       "내 게시물 관리하기",
                       style: TextStyle(

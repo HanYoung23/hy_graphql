@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_detail_screen.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_post_done_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
@@ -186,12 +187,17 @@ class _AdPostScreenState extends State<AdPostScreen> {
                                   height: ScreenUtil().setSp(arrow_back_size))),
                         ),
                       ),
-                      Text(
-                        "홍보 게시물 작성",
-                        style: TextStyle(
-                          fontFamily: "NotoSansCJKkrBold",
-                          fontSize: ScreenUtil().setSp(appbar_title_size),
-                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      InkWell(
+                        onTap: () {
+                          Get.to(() => AdPostDoneScreen());
+                        },
+                        child: Text(
+                          "홍보 게시물 작성",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            fontSize: ScreenUtil().setSp(appbar_title_size),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -243,22 +249,22 @@ class _AdPostScreenState extends State<AdPostScreen> {
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().setSp(3)),
                 SizedBox(height: ScreenUtil().setSp(10)),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: ScreenUtil().setSp(1),
-                          right: ScreenUtil().setSp(8)),
-                      child: Icon(Icons.location_on_sharp,
-                          size: ScreenUtil().setSp(18), color: app_grey_dark),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(() => PostalWeb(
-                              callback: (address) => callBackAddress(address),
-                            ));
-                      },
-                      child: Flexible(
+                InkWell(
+                  onTap: () {
+                    Get.to(() => PostalWeb(
+                          callback: (address) => callBackAddress(address),
+                        ));
+                  },
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: ScreenUtil().setSp(1),
+                            right: ScreenUtil().setSp(8)),
+                        child: Icon(Icons.location_on_sharp,
+                            size: ScreenUtil().setSp(18), color: app_grey_dark),
+                      ),
+                      Expanded(
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: ScreenUtil().setSp(40),
@@ -275,8 +281,8 @@ class _AdPostScreenState extends State<AdPostScreen> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Container(
                     color: app_grey,
@@ -297,20 +303,33 @@ class _AdPostScreenState extends State<AdPostScreen> {
                         alignment: Alignment.centerLeft,
                         height: ScreenUtil().setSp(40),
                         child: TextFormField(
-                            autocorrect: false,
-                            controller: phoneTextController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: '전화번호를 입력하세요(선택사항)',
-                              hintStyle: TextStyle(color: app_font_grey),
-                            ),
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                fontFamily: "NotoSansCJKkrRegular",
-                                fontSize: ScreenUtil().setSp(14),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing_small))),
+                          autocorrect: false,
+                          controller: phoneTextController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: '전화번호를 입력하세요(선택사항)',
+                            hintStyle: TextStyle(color: app_font_grey),
+                          ),
+                          style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontFamily: "NotoSansCJKkrRegular",
+                              fontSize: ScreenUtil().setSp(14),
+                              letterSpacing:
+                                  ScreenUtil().setSp(letter_spacing_small)),
+                          onChanged: (value) {
+                            // if (value.isNumericOnly) {
+                            //   if (phoneTextController.text.length > 11) {
+                            //     phoneTextController.text =
+                            //         phoneTextController.text.substring(0, 11);
+                            //     FocusScope.of(context).unfocus();
+                            //   }
+                            // } else {
+                            //   phoneTextController.text =
+                            //       value.replaceAll(".", "").replaceAll("-", "");
+                            // }
+                          },
+                        ),
                       ),
                     ),
                   ],

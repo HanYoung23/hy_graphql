@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:letsgotrip/_Controller/permission_controller.dart';
-import 'package:letsgotrip/_View/MainPages/map/map_post_review_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/user_location.dart';
-import 'package:letsgotrip/widgets/location_unable_screen.dart';
+import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/payment.dart';
 
 class AdPostDetailScreen extends StatefulWidget {
   final Map paramMap;
@@ -21,18 +20,20 @@ class AdPostDetailScreen extends StatefulWidget {
 
 class _AdPostDetailScreenState extends State<AdPostDetailScreen>
     with WidgetsBindingObserver {
-  Completer mapCompleter = Completer();
+  Completer gmapCompleter = Completer();
 
   final locationTextController = TextEditingController();
+  BitmapDescriptor icon;
   LatLng photoLatLng;
   bool isAllFilled = false;
-  bool isPermission = true;
   String address = "";
   List rangeList = ["500m", "1km", "2km", "3km", "5km", "6km", "8km"];
   List countList = ["50회", "100회", "200회", "300회", "500회", "700회", "1000회"];
   String range = "0km";
   double rangeNum = 0.5;
   String count = "0회";
+  int money;
+  String cost;
 
   checkIsAllFilled() {
     if (locationTextController.text.length > 0) {
@@ -83,8 +84,14 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                         });
                         updateCamera(index);
                       } else {
+                        var format = NumberFormat('###,###,###,###');
+                        String selectedValue = countList[index];
+                        int moneyValue =
+                            int.parse(selectedValue.replaceAll("회", "")) * 100;
                         setState(() {
                           count = countList[index];
+                          cost = format.format(moneyValue);
+                          money = moneyValue;
                         });
                       }
                     },
@@ -117,9 +124,39 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
   }
 
   Future updateCamera(int index) async {
-    final GoogleMapController controller = await mapCompleter.future;
+    String range = rangeList[index];
+    int km = int.parse(range.substring(0, 1));
+    if (index == 0) {
+      km = 0;
+    }
+    double zoom = 14.0;
+    switch (km) {
+      case 0:
+        zoom = 14.0;
+        break;
+      case 1:
+        zoom = 13.0;
+        break;
+      case 2:
+        zoom = 12.0;
+        break;
+      case 3:
+        zoom = 11.5;
+        break;
+      case 5:
+        zoom = 11.0;
+        break;
+      case 6:
+        zoom = 10.5;
+        break;
+      case 8:
+        zoom = 10.0;
+        break;
+      default:
+    }
+    final GoogleMapController controller = await gmapCompleter.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: photoLatLng, zoom: 14.0 - index / 2)));
+        CameraPosition(target: photoLatLng, zoom: zoom)));
   }
 
   @override
@@ -128,6 +165,13 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
       photoLatLng = LatLng(widget.paramMap["lat"], widget.paramMap["lng"]);
     });
     WidgetsBinding.instance.addObserver(this);
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(), 'assets/images/location_dot.png')
+        .then((value) {
+      setState(() {
+        icon = value;
+      });
+    });
     super.initState();
   }
 
@@ -139,284 +183,283 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // print("🚨 state $state");
-    if (!isPermission) {
-      if (state == AppLifecycleState.resumed) {
-        checkLocationPermission().then((permission) {
-          if (permission) {
-            getUserLocation().then((latlng) {
-              if (latlng != null) {
-                setState(() {
-                  photoLatLng = LatLng(latlng.latitude, latlng.longitude);
-                });
-              }
-            });
-          } else {
-            // permissionPopup(context, "위치 검색이 허용되어있지 않습니다.\n설정에서 허용 후 이용가능합니다.");
-          }
-          setState(() {
-            isPermission = permission;
-          });
-        });
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          toolbarHeight: 0,
-          elevation: 0,
           backgroundColor: Colors.white,
-          brightness: Brightness.light,
-        ),
-        body: isPermission
-            ? SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(ScreenUtil().setSp(20)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: ScreenUtil().screenWidth,
-                        height: ScreenUtil().setSp(44),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                // width: ScreenUtil().setSp(appbar_title_size * 3),
-                                alignment: Alignment.centerLeft,
-                                child: InkWell(
-                                    onTap: () {
-                                      Get.back();
-                                    },
-                                    child: Image.asset(
-                                        "assets/images/arrow_back.png",
-                                        width:
-                                            ScreenUtil().setSp(arrow_back_size),
-                                        height: ScreenUtil()
-                                            .setSp(arrow_back_size))),
-                              ),
-                            ),
-                            Text(
-                              "게시물 상세설정",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrBold",
-                                fontSize: ScreenUtil().setSp(appbar_title_size),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(10)),
-                      Container(
-                          width: ScreenUtil().screenWidth,
-                          height: ScreenUtil().setSp(240),
-                          child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(ScreenUtil().setSp(10)),
-                            child: GoogleMap(
-                              mapToolbarEnabled: false,
-                              zoomGesturesEnabled: true,
-                              myLocationButtonEnabled: false,
-                              myLocationEnabled: true,
-                              zoomControlsEnabled: false,
-                              initialCameraPosition: CameraPosition(
-                                target: photoLatLng,
-                                zoom: 14,
-                              ),
-                              onMapCreated: (GoogleMapController controller) {
-                                mapCompleter.complete(controller);
-                                controller.animateCamera(
-                                    CameraUpdate.newLatLngZoom(
-                                        photoLatLng, 14));
-                              },
-                              // markers: createMarker(photoLatLng),
-                              circles: Set.from([
-                                Circle(
-                                  circleId: CircleId("1"),
-                                  center: LatLng(widget.paramMap["lat"],
-                                      widget.paramMap["lng"]),
-                                  radius: range == "500m" || range == "0km"
-                                      ? 500.0
-                                      : double.parse(range.substring(0, 1)) *
-                                          1000,
-                                  fillColor: app_blue.withOpacity(0.16),
-                                  strokeColor: app_blue,
-                                  strokeWidth: ScreenUtil().setSp(1).round(),
-                                )
-                              ]),
-                            ),
-                          )),
-                      SizedBox(height: ScreenUtil().setSp(20)),
-                      contentTitle("희망지역"),
-                      SizedBox(height: ScreenUtil().setSp(6)),
-                      Container(
-                        width: ScreenUtil().screenWidth,
-                        child: Text(
-                          widget.paramMap["address"],
-                          style: TextStyle(
-                              fontFamily: "NotoSansCJKkrRegular",
-                              letterSpacing: ScreenUtil().setSp(letter_spacing),
-                              fontSize: ScreenUtil().setSp(16),
-                              color: Colors.black),
-                          overflow: TextOverflow.fade,
-                          maxLines: 2,
-                        ),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(20)),
-                      contentTitle("도달범위"),
-                      SizedBox(height: ScreenUtil().setSp(6)),
-                      InkWell(
-                        onTap: () {
-                          showPicker("range");
-                        },
-                        child: Container(
-                          width: ScreenUtil().screenWidth,
-                          child: Text(
-                            "반경 $range",
-                            style: TextStyle(
-                              fontFamily: "NotoSansCJKkrBold",
-                              letterSpacing: ScreenUtil().setSp(letter_spacing),
-                              fontSize: ScreenUtil().setSp(16),
-                              color:
-                                  range != "0km" ? Colors.black : app_font_grey,
-                              decoration: TextDecoration.underline,
-                            ),
-                            overflow: TextOverflow.fade,
-                            maxLines: 2,
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
+          ),
+          body: Container(
+            // height: ScreenUtil().screenHeight,
+            margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setSp(44),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            // width: ScreenUtil().setSp(appbar_title_size * 3),
+                            alignment: Alignment.centerLeft,
+                            child: InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Image.asset(
+                                    "assets/images/arrow_back.png",
+                                    width: ScreenUtil().setSp(arrow_back_size),
+                                    height:
+                                        ScreenUtil().setSp(arrow_back_size))),
                           ),
                         ),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(20)),
-                      contentTitle("게시물 클릭 횟수"),
-                      SizedBox(height: ScreenUtil().setSp(6)),
-                      InkWell(
-                        onTap: () {
-                          showPicker("count");
-                        },
-                        child: Container(
-                          width: ScreenUtil().screenWidth,
-                          child: Text(
-                            count == "0회" ? "횟수 설정하기" : "$count",
-                            style: TextStyle(
-                              fontFamily: "NotoSansCJKkrBold",
-                              letterSpacing: ScreenUtil().setSp(letter_spacing),
-                              fontSize: ScreenUtil().setSp(16),
-                              color:
-                                  count != "0회" ? Colors.black : app_font_grey,
-                              decoration: TextDecoration.underline,
-                            ),
-                            overflow: TextOverflow.fade,
-                            maxLines: 2,
+                        Text(
+                          "게시물 상세설정",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            fontSize: ScreenUtil().setSp(appbar_title_size),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing),
                           ),
                         ),
+                        Expanded(
+                          child: Container(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(10)),
+                  Container(
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().setSp(240),
+                    child: GoogleMap(
+                      mapToolbarEnabled: false,
+                      zoomGesturesEnabled: false,
+                      myLocationButtonEnabled: false,
+                      myLocationEnabled: false,
+                      zoomControlsEnabled: false,
+                      initialCameraPosition: CameraPosition(
+                        target: photoLatLng,
+                        zoom: 14,
                       ),
-                      SizedBox(height: ScreenUtil().setSp(20)),
-                      Row(
-                        children: [contentTitle("장소(상호)명 입력")],
+                      onMapCreated: (GoogleMapController controller) {
+                        gmapCompleter.complete(controller);
+                        controller.animateCamera(
+                            CameraUpdate.newLatLngZoom(photoLatLng, 14));
+                      },
+                      markers: [
+                        icon != null
+                            ? Marker(
+                                draggable: false,
+                                markerId: MarkerId("marker_1"),
+                                position: photoLatLng,
+                                icon: icon,
+                                anchor: Offset(0.5, 0.5),
+                              )
+                            : null
+                      ].toSet(),
+                      circles: Set.from([
+                        Circle(
+                          circleId: CircleId("1"),
+                          center: LatLng(
+                              widget.paramMap["lat"], widget.paramMap["lng"]),
+                          radius: range == "500m" || range == "0km"
+                              ? 500.0
+                              : double.parse(range.substring(0, 1)) * 1000,
+                          fillColor: app_blue.withOpacity(0.16),
+                          strokeColor: app_blue,
+                          strokeWidth: ScreenUtil().setSp(1).round(),
+                        )
+                      ]),
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(20)),
+                  contentTitle("희망지역"),
+                  SizedBox(height: ScreenUtil().setSp(6)),
+                  Container(
+                    width: ScreenUtil().screenWidth,
+                    child: Text(
+                      widget.paramMap["address"],
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                          fontSize: ScreenUtil().setSp(16),
+                          color: Colors.black),
+                      overflow: TextOverflow.fade,
+                      maxLines: 2,
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(20)),
+                  contentTitle("도달범위"),
+                  SizedBox(height: ScreenUtil().setSp(6)),
+                  InkWell(
+                    onTap: () {
+                      showPicker("range");
+                      if (range == "0km") {
+                        setState(() {
+                          range = "500m";
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: ScreenUtil().screenWidth,
+                      child: Text(
+                        "반경 $range",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                          fontSize: ScreenUtil().setSp(16),
+                          color: range != "0km" ? Colors.black : app_font_grey,
+                          decoration: TextDecoration.underline,
+                        ),
+                        overflow: TextOverflow.fade,
+                        maxLines: 2,
                       ),
-                      SizedBox(height: ScreenUtil().setSp(10)),
-                      TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: locationTextController,
-                          minLines: 1,
-                          maxLines: 1,
-                          onChanged: (String value) {
-                            checkIsAllFilled();
-                          },
-                          style: TextStyle(
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(20)),
+                  contentTitle("게시물 클릭 횟수"),
+                  SizedBox(height: ScreenUtil().setSp(6)),
+                  InkWell(
+                    onTap: () {
+                      showPicker("count");
+                      if (count == "0회") {
+                        setState(() {
+                          count = "50회";
+                          cost = "5,000";
+                          money = 5000;
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: ScreenUtil().screenWidth,
+                      child: Text(
+                        count == "0회" ? "횟수 설정하기" : "$count",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                          fontSize: ScreenUtil().setSp(16),
+                          color: count != "0회" ? Colors.black : app_font_grey,
+                          decoration: TextDecoration.underline,
+                        ),
+                        overflow: TextOverflow.fade,
+                        maxLines: 2,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(20)),
+                  Row(
+                    children: [contentTitle("장소(상호)명 입력")],
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(10)),
+                  TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: locationTextController,
+                      minLines: 1,
+                      maxLines: 1,
+                      onChanged: (String value) {
+                        checkIsAllFilled();
+                      },
+                      style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          letterSpacing:
+                              ScreenUtil().setSp(letter_spacing_small),
+                          fontSize: ScreenUtil().setSp(14),
+                          color: Colors.black),
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: app_grey)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black)),
+                          hintText: "해당 장소명을 남겨주세요.",
+                          hintStyle: TextStyle(
                               fontFamily: "NotoSansCJKkrRegular",
                               letterSpacing:
                                   ScreenUtil().setSp(letter_spacing_small),
-                              fontSize: ScreenUtil().setSp(14),
-                              color: Colors.black),
-                          decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: app_grey)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              hintText: "해당 장소명을 남겨주세요.",
-                              hintStyle: TextStyle(
-                                  fontFamily: "NotoSansCJKkrRegular",
-                                  letterSpacing:
-                                      ScreenUtil().setSp(letter_spacing_small),
-                                  color: app_font_grey,
-                                  fontSize: ScreenUtil().setSp(14)))),
-                      SizedBox(height: ScreenUtil().setSp(60)),
-                      Center(
-                        child: Text(
-                          "결제완료 후 심사가 시작됩니다.\n최대 48시간이 소요되며, 승인 후 개제 됩니다.",
-                          style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            fontFamily: "NotoSansCJKkrRegular",
-                            letterSpacing:
-                                ScreenUtil().setSp(letter_spacing_small),
-                            color: app_font_grey,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                              color: app_font_grey,
+                              fontSize: ScreenUtil().setSp(14)))),
+                  SizedBox(height: ScreenUtil().setSp(60)),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "결제완료 후 심사가 시작됩니다.\n최대 48시간이 소요되며, 승인 후 개제 됩니다.",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(14),
+                        fontFamily: "NotoSansCJKkrRegular",
+                        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                        color: app_font_grey,
                       ),
-                      SizedBox(height: ScreenUtil().setSp(10)),
-                      InkWell(
-                        onTap: () {
-                          if (locationTextController.text.length > 0 &&
-                              address != "") {
-                            widget.paramMap["locationLink"] = address;
-                            widget.paramMap["latitude"] = photoLatLng.latitude;
-                            widget.paramMap["longitude"] =
-                                photoLatLng.longitude;
-                            widget.paramMap["contentsTitle"] =
-                                "${locationTextController.text}";
-                            // print("🚨 map : ${widget.paramMap}");
-
-                            Get.to(() =>
-                                MapPostReviewScreen(paramMap: widget.paramMap));
-                          }
-                        },
-                        child: Container(
-                            width: ScreenUtil().screenWidth,
-                            height: ScreenUtil().setSp(50),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(ScreenUtil().setSp(10)),
-                              color: (locationTextController.text.length > 0 &&
-                                      address != "")
-                                  ? app_blue
-                                  : app_blue_light_button,
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              "다음",
-                              style: TextStyle(
-                                fontFamily: "NotoSansCJKkrBold",
-                                fontSize: ScreenUtil().setSp(16),
-                                letterSpacing:
-                                    ScreenUtil().setSp(letter_spacing),
-                                color: Colors.white,
-                              ),
-                            )),
-                      ),
-                      SizedBox(height: ScreenUtil().setSp(14)),
-                    ],
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              )
-            : LocationUnableScreen(),
-      ),
+                  SizedBox(height: ScreenUtil().setSp(10)),
+                  InkWell(
+                    onTap: () {
+                      if (range != "0km" &&
+                          count != "0회" &&
+                          locationTextController.text.length > 0) {
+                        seeValue("customerId").then((value) {
+                          Map payMap = {
+                            "titleText": widget.paramMap["titleText"],
+                            "phoneText": widget.paramMap["phoneText"],
+                            "contentText": widget.paramMap["contentText"],
+                            "imageLink": widget.paramMap["imageLink"],
+                            "address": widget.paramMap["address"],
+                            "lat": widget.paramMap["lat"],
+                            "lng": widget.paramMap["lng"],
+                            //
+                            "range": range == "500m" || range == "0km"
+                                ? 500
+                                : int.parse(range.substring(0, 1)) * 1000,
+                            "count": int.parse(count.replaceAll("회", "")),
+                            "businessName": locationTextController.text,
+                            "customerId": int.parse(value),
+                            "amount": money,
+                            "buyerName": "customer $value",
+                          };
+                          Get.to(() => Payment(paramData: payMap));
+                        });
+                      }
+                    },
+                    child: Container(
+                        width: ScreenUtil().screenWidth,
+                        height: ScreenUtil().setSp(50),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(ScreenUtil().setSp(10)),
+                          color: (range != "0km" &&
+                                  count != "0회" &&
+                                  locationTextController.text.length > 0)
+                              ? app_blue
+                              : app_blue_light_button,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          count == "0회" ? "결제하기" : "$cost원 결제하기",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            fontSize: ScreenUtil().setSp(16),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing),
+                            color: Colors.white,
+                          ),
+                        )),
+                  ),
+                  SizedBox(height: ScreenUtil().setSp(14)),
+                ],
+              ),
+            ),
+          )),
     );
   }
 
@@ -431,14 +474,14 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
     );
   }
 
-  createMarker(LatLng position) {
-    return [
-      Marker(
-        draggable: false,
-        markerId: MarkerId("marker_1"),
-        position: position,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      )
-    ].toSet();
-  }
+  // createMarker() {
+  //   return [
+  //     Marker(
+  //       draggable: false,
+  //       markerId: MarkerId("marker_1"),
+  //       position: photoLatLng,
+  //       icon: icon,
+  //     )
+  //   ].toSet();
+  // }
 }

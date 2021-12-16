@@ -148,4 +148,38 @@ class Mutations {
         }
     }
 """;
+
+  static final String newPromotions = """
+    mutation(
+      \$title: String!, 
+      \$image_link: String!,
+      \$main_text: String!,
+      \$location_link: String!,
+      \$phone: String!,
+      \$customer_id: Int!,
+      \$ranges: Int!,
+      \$promotions_count_total: Int!,
+      \$business_name: String!,
+      \$point_total: Int!,
+      \$latitude: String!
+      \$longitude: String!) {
+      new_promotions(
+        title: \$title, 
+        image_link: \$image_link,
+        main_text: \$main_text,
+        location_link: \$location_link,
+        phone: \$phone,
+        customer_id: \$customer_id,
+        ranges: \$ranges,
+        promotions_count_total: \$promotions_count_total,
+        business_name: \$business_name,
+        point_total: \$point_total,
+        latitude: \$latitude
+        longitude: \$longitude) 
+      {
+          result
+          msg
+        }
+    }
+""";
 }
