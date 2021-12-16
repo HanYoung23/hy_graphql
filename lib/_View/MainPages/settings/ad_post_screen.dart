@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:letsgotrip/_Controller/permission_controller.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_detail_screen.dart';
-import 'package:letsgotrip/_View/MainPages/settings/ad_post_done_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/functions/photo_coord.dart';
@@ -188,9 +187,9 @@ class _AdPostScreenState extends State<AdPostScreen> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {
-                          Get.to(() => AdPostDoneScreen());
-                        },
+                        // onTap: () {
+                        //   Get.to(() => AdPostDoneScreen());
+                        // },
                         child: Text(
                           "홍보 게시물 작성",
                           style: TextStyle(
@@ -261,8 +260,11 @@ class _AdPostScreenState extends State<AdPostScreen> {
                         padding: EdgeInsets.only(
                             left: ScreenUtil().setSp(1),
                             right: ScreenUtil().setSp(8)),
-                        child: Icon(Icons.location_on_sharp,
-                            size: ScreenUtil().setSp(18), color: app_grey_dark),
+                        child: Image.asset(
+                          "assets/images/location_icon.png",
+                          width: ScreenUtil().setSp(14),
+                          height: ScreenUtil().setSp(14),
+                        ),
                       ),
                       Expanded(
                         child: Container(
@@ -295,8 +297,11 @@ class _AdPostScreenState extends State<AdPostScreen> {
                       padding: EdgeInsets.only(
                           left: ScreenUtil().setSp(1),
                           right: ScreenUtil().setSp(8)),
-                      child: Icon(Icons.phone,
-                          size: ScreenUtil().setSp(18), color: app_grey_dark),
+                      child: Image.asset(
+                        "assets/images/phone_icon.png",
+                        width: ScreenUtil().setSp(14),
+                        height: ScreenUtil().setSp(14),
+                      ),
                     ),
                     Flexible(
                       child: Container(

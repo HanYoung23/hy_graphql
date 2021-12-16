@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_post_mine_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 
@@ -96,16 +97,21 @@ class AdScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: ScreenUtil().setSp(10)),
-                  Container(
-                    width: ScreenUtil().screenWidth,
-                    padding:
-                        EdgeInsets.symmetric(vertical: ScreenUtil().setSp(10)),
-                    child: Text(
-                      "내 게시물 관리하기",
-                      style: TextStyle(
-                        fontFamily: "NotoSansCJKkrRegular",
-                        fontSize: ScreenUtil().setSp(font_s),
-                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => AdPostMineScreen());
+                    },
+                    child: Container(
+                      width: ScreenUtil().screenWidth,
+                      padding: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setSp(10)),
+                      child: Text(
+                        "내 게시물 관리하기",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrRegular",
+                          fontSize: ScreenUtil().setSp(font_s),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
+                        ),
                       ),
                     ),
                   ),
