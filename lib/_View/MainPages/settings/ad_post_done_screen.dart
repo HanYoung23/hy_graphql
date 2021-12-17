@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_post_mine_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class AdPostDoneScreen extends StatelessWidget {
-  const AdPostDoneScreen({Key key}) : super(key: key);
+  final String promotionId;
+  const AdPostDoneScreen({Key key, @required this.promotionId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +52,44 @@ class AdPostDoneScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: ScreenUtil().setSp(26)),
-            Container(
-              width: ScreenUtil().setSp(180),
-              height: ScreenUtil().setSp(40),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: app_grey,
-                borderRadius: BorderRadius.circular(ScreenUtil().setSp(5)),
-              ),
-              child: Text(
-                "진행 내역 확인",
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(14),
-                  fontFamily: "NotoSansCJKKRBold",
-                  letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+            InkWell(
+              onTap: () {
+                seeValue("customerId").then((customerId) {
+                  Get.to(() => Query(
+                      options: QueryOptions(
+                        document: gql(Queries.myPromotionsList),
+                        variables: {"customer_id": int.parse(customerId)},
+                      ),
+                      builder: (result, {refetch, fetchMore}) {
+                        if (!result.isLoading && result.data != null) {
+                          // print("🚨 myPromotionsList result : $result");
+                          Map resultData = result.data["my_promotions_list"]
+                              [result.data["my_promotions_list"].length - 1];
+                          return AdPostMineScreen(
+                            paramData: resultData,
+                            // customerId: int.parse(customerId),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }));
+                });
+              },
+              child: Container(
+                width: ScreenUtil().setSp(180),
+                height: ScreenUtil().setSp(40),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: app_grey,
+                  borderRadius: BorderRadius.circular(ScreenUtil().setSp(5)),
+                ),
+                child: Text(
+                  "진행 내역 확인",
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(14),
+                    fontFamily: "NotoSansCJKKRBold",
+                    letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+                  ),
                 ),
               ),
             ),

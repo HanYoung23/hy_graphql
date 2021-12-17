@@ -5,7 +5,15 @@ import 'package:google_maps_controller/google_maps_controller.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 
 class GooglemapBottomSheet extends StatefulWidget {
-  const GooglemapBottomSheet({Key key}) : super(key: key);
+  final String title;
+  final String address;
+  final LatLng latlng;
+  const GooglemapBottomSheet({
+    Key key,
+    @required this.title,
+    @required this.address,
+    @required this.latlng,
+  }) : super(key: key);
 
   @override
   _GooglemapBottomSheetState createState() => _GooglemapBottomSheetState();
@@ -26,7 +34,7 @@ class _GooglemapBottomSheetState extends State<GooglemapBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "빵순이네",
+            "${widget.title}",
             style: TextStyle(
               fontFamily: "NotoSansCJKkrBold",
               fontSize: ScreenUtil().setSp(18),
@@ -37,7 +45,7 @@ class _GooglemapBottomSheetState extends State<GooglemapBottomSheet> {
           ),
           SizedBox(height: ScreenUtil().setSp(10)),
           Text(
-            "전라북도 전주시 완산구 효자로 225 225 225 225 225 225",
+            "${widget.address}",
             style: TextStyle(
                 fontFamily: "NotoSansCJKkrRegular",
                 fontSize: ScreenUtil().setSp(16),
@@ -59,8 +67,8 @@ class _GooglemapBottomSheetState extends State<GooglemapBottomSheet> {
                 myLocationEnabled: true,
                 zoomControlsEnabled: false,
                 initialCameraPosition: CameraPosition(
-                  target: LatLng(37.5741309, 126.9095579),
-                  zoom: 17,
+                  target: widget.latlng,
+                  zoom: 18,
                 ),
               ),
             )),

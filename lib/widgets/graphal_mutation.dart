@@ -182,4 +182,58 @@ class Mutations {
         }
     }
 """;
+
+  static final String changePromotions = """
+    mutation(
+      \$promotions_id: Int!, 
+      \$title: String!, 
+      \$image_link: String!,
+      \$main_text: String!,
+      \$location_link: String!,
+      \$phone: String!,
+      \$latitude: String!
+      \$longitude: String!) {
+      change_promotions(
+        promotions_id: \$promotions_id, 
+        title: \$title, 
+        image_link: \$image_link,
+        main_text: \$main_text,
+        location_link: \$location_link,
+        phone: \$phone,
+        latitude: \$latitude
+        longitude: \$longitude) 
+      {
+          result
+          msg
+        }
+    }
+""";
+
+  static final String pausePromotions = """
+    mutation(
+      \$promotions_id: Int!) {
+      pause_promotions(
+        promotions_id: \$promotions_id) 
+      {
+          result
+          msg
+        }
+    }
+""";
+
+  static final String delPromotions = """
+    mutation(
+      \$promotions_id: Int!,
+      \$customer_id: Int!,
+      ) {
+      del_promotions(
+        promotions_id: \$promotions_id,
+        customer_id: \$customer_id
+        ) 
+      {
+          result
+          msg
+        }
+    }
+""";
 }

@@ -52,7 +52,7 @@ Future editUploadAWS(List imageFiles) async {
               storageUrl.url.substring(0, storageUrl.url.indexOf("?X-Amz"));
 
           photoUrlList.add(shortUrl);
-          print('🚨 Successfully uploaded url: ${result.key}');
+          print('🚨 Successfully uploaded url: ${result.key}, $shortUrl');
         });
       } on StorageException catch (e) {
         print('🚨 Error uploading image: $e');

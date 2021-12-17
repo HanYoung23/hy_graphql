@@ -19,7 +19,6 @@ class Payment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("🚨 $paramData");
     return Mutation(
         options: MutationOptions(
             document: gql(Mutations.newPromotions),
@@ -27,7 +26,8 @@ class Payment extends StatelessWidget {
             onCompleted: (dynamic resultData) {
               print("🚨 new promotions resultData : $resultData");
               if (resultData["new_promotions"]["result"]) {
-                Get.to(() => AdPostDoneScreen());
+                Get.to(() => AdPostDoneScreen(
+                    promotionId: "${resultData["new_promotions"]["msg"]}"));
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/constants/common_value.dart';
@@ -37,6 +38,7 @@ class PhoneCallCupertinoBottomSheet extends StatelessWidget {
               ],
             ),
             onPressed: () {
+              FlutterPhoneDirectCaller.callNumber(phone);
               Get.back();
             },
           ),

@@ -337,4 +337,31 @@ class Queries {
         }
     }
 """;
+
+/////////////////////////////////////////////////////////////////ad screen
+
+  static final String myPromotionsList = """
+    query my_promotions_list(\$customer_id: Int!) {
+      my_promotions_list(customer_id: \$customer_id) 
+      {
+          promotions_id,
+          title,
+          image_link,
+          main_text,
+          location_link,
+          ranges,
+          promotions_count_total,
+          promotions_count,
+          business_name,
+          phone,
+          nick_name,
+          regist_date,
+          edit_date,
+          latitude,
+          longitude,
+          promotions_state,
+          customer_id,
+      }
+    }
+""";
 }

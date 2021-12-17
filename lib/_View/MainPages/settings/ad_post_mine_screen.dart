@@ -3,10 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_post_edit_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/googlemap_bottom_sheet.dart';
 import 'package:letsgotrip/constants/common_value.dart';
-import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/widgets/channeltalk_bottom_sheet.dart';
+import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:letsgotrip/_View/MainPages/settings/phone_call_cupertino_bottom_sheet.dart';
@@ -15,10 +20,12 @@ import 'package:readmore/readmore.dart';
 class AdPostMineScreen extends StatefulWidget {
   // final int contentsId;
   // final int customerId;
+  final Map paramData;
   const AdPostMineScreen({
     Key key,
     // @required this.contentsId,
     // @required this.customerId,
+    @required this.paramData,
   }) : super(key: key);
 
   @override
@@ -29,13 +36,33 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
   final ScrollController _scrollController = ScrollController();
   int currentIndex = 1;
   bool isRefreshing = false;
-  List imageLink = [
-    "https://blog.kakaocdn.net/dn/ldvzm/btqXoaEqSKH/gQkmLwuGIGKu56SzuwYHPk/img.png"
-  ];
-  String profilePhotoLink =
-      "https://blog.kakaocdn.net/dn/ldvzm/btqXoaEqSKH/gQkmLwuGIGKu56SzuwYHPk/img.png";
+  List imageLink = [];
+  String profilePhotoLink = "";
+  // String nickname = "";
+  String date = "";
   String currentState = "일시중지";
   String clickedButton = "";
+  String range = "";
+  String promotionState = "";
+
+  setParamData() {
+    String dateString = widget.paramData["regist_date"];
+    if (widget.paramData["edit_date"] != null) {
+      dateString = widget.paramData["edit_date"];
+    }
+    String dateFormat =
+        DateFormat("yyyy.MM.dd").format(DateTime.parse(dateString));
+
+    String postRange = "${widget.paramData["ranges"]}".substring(0, 1);
+    if (widget.paramData["ranges"] == 500) {
+      postRange = "500m";
+    }
+    setState(() {
+      imageLink = "${widget.paramData["image_link"]}".split(",");
+      date = dateFormat;
+      range = postRange;
+    });
+  }
 
   @override
   void initState() {
@@ -51,6 +78,8 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                 }));
       }
     });
+    print("🚨 ${widget.paramData}");
+    setParamData();
     super.initState();
   }
 
@@ -62,6 +91,29 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String promotionState;
+    switch (widget.paramData["promotions_state"]) {
+      case 1:
+        promotionState = "심사대기중";
+        break;
+      case 2:
+        promotionState = "승인반려";
+        break;
+      case 3:
+        promotionState = "진행중";
+        break;
+      case 4:
+        promotionState = "중지";
+        break;
+      case 5:
+        promotionState = "완료";
+        break;
+      case 6:
+        promotionState = "삭제";
+        break;
+      default:
+    }
+
     return SafeArea(
       top: false,
       bottom: false,
@@ -229,85 +281,113 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                               height: ScreenUtil().setSp(42),
                               padding: EdgeInsets.symmetric(
                                   horizontal: ScreenUtil().setSp(20)),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      width: ScreenUtil().setSp(42),
-                                      height: ScreenUtil().setSp(42),
-                                      decoration: "$profilePhotoLink" != "null"
-                                          ? BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      ScreenUtil().setSp(50)),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      profilePhotoLink),
-                                                  fit: BoxFit.cover))
-                                          : BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "assets/images/profileSettings/thumbnail_default.png"),
-                                                  fit: BoxFit.cover),
-                                            )),
-                                  SizedBox(width: ScreenUtil().setSp(15)),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          "nickName",
-                                          style: TextStyle(
-                                            fontFamily: "NotoSansCJKkrBold",
-                                            fontSize: ScreenUtil().setSp(14),
-                                            letterSpacing: ScreenUtil()
-                                                .setSp(letter_spacing),
+                              child: Query(
+                                  options: QueryOptions(
+                                    document: gql(Queries.mypage),
+                                    variables: {
+                                      "customer_id":
+                                          widget.paramData["customer_id"],
+                                    },
+                                  ),
+                                  builder: (result, {refetch, fetchMore}) {
+                                    if (!result.isLoading &&
+                                        result.data != null) {
+                                      Map resultData = result.data["mypage"][0];
+                                      // print("🚨 mypage result : $resultData");
+                                      String nickname = resultData["nick_name"];
+                                      String profilePhotoLink =
+                                          resultData["profile_photo_link"];
+                                      return Row(
+                                        children: [
+                                          Container(
+                                              width: ScreenUtil().setSp(42),
+                                              height: ScreenUtil().setSp(42),
+                                              decoration: "$profilePhotoLink" !=
+                                                      "null"
+                                                  ? BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              ScreenUtil()
+                                                                  .setSp(50)),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              profilePhotoLink),
+                                                          fit: BoxFit.cover))
+                                                  : BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              "assets/images/profileSettings/thumbnail_default.png"),
+                                                          fit: BoxFit.cover),
+                                                    )),
+                                          SizedBox(
+                                              width: ScreenUtil().setSp(15)),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(
+                                                  nickname,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrBold",
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14),
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(letter_spacing),
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
+                                                Text(
+                                                  "$date",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          "NotoSansCJKkrRegular",
+                                                      color: app_font_grey,
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(12)),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                        Text(
-                                          "date",
-                                          style: TextStyle(
-                                              fontFamily:
-                                                  "NotoSansCJKkrRegular",
-                                              color: app_font_grey,
-                                              fontSize: ScreenUtil().setSp(12)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: ScreenUtil().setSp(15)),
-                                  InkWell(
-                                    // onTap: () {
-                                    //   if (widget.customerId != postCustomerId) {
-                                    //     showCupertinoModalPopup(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) =>
-                                    //           ReportCupertinoBottomSheet(
-                                    //               contentsId:
-                                    //                   widget.contentsId),
-                                    //     );
-                                    //   } else {
-                                    //     showCupertinoModalPopup(
-                                    //       context: context,
-                                    //       builder: (BuildContext context) =>
-                                    //           PostCupertinoBottomSheet(
-                                    //         contentsId: widget.contentsId,
-                                    //         refetchCallback: () => refetch(),
-                                    //       ),
-                                    //     );
-                                    //   }
-                                    // },
-                                    child: Image.asset(
-                                        "assets/images/three_dots_toggle_button.png",
-                                        width: ScreenUtil().setSp(28),
-                                        height: ScreenUtil().setSp(28)),
-                                  ),
-                                ],
-                              ),
+                                          SizedBox(
+                                              width: ScreenUtil().setSp(15)),
+                                          InkWell(
+                                            // onTap: () {
+                                            //   if (widget.customerId != postCustomerId) {
+                                            //     showCupertinoModalPopup(
+                                            //       context: context,
+                                            //       builder: (BuildContext context) =>
+                                            //           ReportCupertinoBottomSheet(
+                                            //               contentsId:
+                                            //                   widget.contentsId),
+                                            //     );
+                                            //   } else {
+                                            //     showCupertinoModalPopup(
+                                            //       context: context,
+                                            //       builder: (BuildContext context) =>
+                                            //           PostCupertinoBottomSheet(
+                                            //         contentsId: widget.contentsId,
+                                            //         refetchCallback: () => refetch(),
+                                            //       ),
+                                            //     );
+                                            //   }
+                                            // },
+                                            child: Image.asset(
+                                                "assets/images/three_dots_toggle_button.png",
+                                                width: ScreenUtil().setSp(28),
+                                                height: ScreenUtil().setSp(28)),
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return Container();
+                                    }
+                                  }),
                             ),
                             SizedBox(height: ScreenUtil().setHeight(16)),
                             Container(
@@ -322,7 +402,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                       ScreenUtil().setSp(50)),
                                 ),
                                 child: Text(
-                                  "상호명",
+                                  "${widget.paramData["business_name"]}",
                                   style: TextStyle(
                                     fontFamily: "NotoSansCJKkrRegular",
                                     fontSize: ScreenUtil().setSp(12),
@@ -335,7 +415,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: ScreenUtil().setSp(20)),
                               child: Text(
-                                "제목 제목 제목 제목 제목 제목",
+                                "${widget.paramData["title"]}",
                                 style: TextStyle(
                                   fontFamily: "NotoSansCJKkrBold",
                                   fontSize: ScreenUtil().setSp(18),
@@ -351,7 +431,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: ScreenUtil().setSp(20)),
                               child: ReadMoreText(
-                                  "빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵빵순이네 빵",
+                                  "${widget.paramData["main_text"]}",
                                   trimLines: 2,
                                   colorClickableText: app_font_grey,
                                   style: TextStyle(
@@ -384,7 +464,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             PhoneCallCupertinoBottomSheet(
-                                          phone: "01010102020",
+                                          phone: "${widget.paramData["phone"]}",
                                         ),
                                       );
                                     },
@@ -429,7 +509,18 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                           backgroundColor: Colors.transparent,
                                           context: context,
                                           builder: (BuildContext context) =>
-                                              GooglemapBottomSheet(),
+                                              GooglemapBottomSheet(
+                                                latlng: LatLng(
+                                                  double.parse(
+                                                      "${widget.paramData["latitude"]}"),
+                                                  double.parse(
+                                                      "${widget.paramData["longitude"]}"),
+                                                ),
+                                                address:
+                                                    "${widget.paramData["location_link"]}",
+                                                title:
+                                                    "${widget.paramData["business_name"]}",
+                                              ),
                                           isScrollControlled: true,
                                           enableDrag: false);
                                     },
@@ -517,19 +608,52 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                               ),
                             ),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            postInfo("희망지역", "전라북도 전라북도 전라북도"),
+                            postInfo(
+                                "희망지역", "${widget.paramData["location_link"]}"),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            postInfo("도달범위", "반경 8km"),
+                            postInfo(
+                                "도달범위",
+                                range == "500m"
+                                    ? "반경 $range"
+                                    : "반경 ${range}km"),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            postInfo("클릭횟수", "(0 / 100회)"),
+                            postInfo("클릭횟수",
+                                "(${widget.paramData["promotions_count"]} / 100회)"),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            postInfo("작동상태", "심사 대기중"),
+                            postInfo("작동상태", "$promotionState"),
                             SizedBox(height: ScreenUtil().setSp(20)),
                             postButton(context, "$currentState"),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            postButton(context, "게시물 수정하기"),
+                            InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    clickedButton = "게시물 수정하기";
+                                  });
+                                  Get.to(() => AdPostEditScreen(
+                                      paramData: widget.paramData));
+                                },
+                                child: postButton(context, "게시물 수정하기")),
                             SizedBox(height: ScreenUtil().setSp(10)),
-                            postButton(context, "게시물 삭제하기"),
+                            Mutation(
+                                options: MutationOptions(
+                                    document: gql(Mutations.delPromotions),
+                                    update: (GraphQLDataProxy proxy,
+                                        QueryResult result) {},
+                                    onCompleted: (dynamic resultData) {
+                                      print("🚨 resultData : $resultData");
+                                      if (resultData["del_promotions"]
+                                          ["result"]) {}
+                                    }),
+                                builder: (RunMutation runMutation,
+                                    QueryResult queryResult) {
+                                  // runMutation({
+                                  //   "promotions_id": int.parse(
+                                  //       "${widget.paramData["promotions_id"]}"),
+                                  //   "customer_id": int.parse(
+                                  //       "${widget.paramData["customer_id"]}"),
+                                  // })
+                                  return postButton(context, "게시물 삭제하기");
+                                }),
                             SizedBox(height: ScreenUtil().setSp(20)),
                             Container(
                               color: app_grey,
@@ -549,41 +673,27 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
     );
   }
 
-  InkWell postButton(BuildContext context, String title) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          clickedButton = title;
-        });
-        switch (title) {
-          case "일시중지":
-            adPausePopup(
-                context, () => adResumePopup(context, () => print("object")));
-            break;
-          default:
-        }
-      },
-      child: Container(
-          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
-          width: ScreenUtil().screenWidth,
-          height: ScreenUtil().setSp(50),
-          decoration: BoxDecoration(
-            color: clickedButton == title ? app_grey : Colors.white,
-            border: Border.all(
-                width: ScreenUtil().setSp(0.5), color: app_font_grey),
-            borderRadius: BorderRadius.circular(ScreenUtil().setSp(5)),
+  Container postButton(BuildContext context, String title) {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(20)),
+        width: ScreenUtil().screenWidth,
+        height: ScreenUtil().setSp(50),
+        decoration: BoxDecoration(
+          color: clickedButton == title ? app_grey : Colors.white,
+          border:
+              Border.all(width: ScreenUtil().setSp(0.5), color: app_font_grey),
+          borderRadius: BorderRadius.circular(ScreenUtil().setSp(5)),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontFamily: "NotoSansCJKkrRegular",
+            fontSize: ScreenUtil().setSp(14),
+            letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+            color: clickedButton == title ? app_font_grey : Colors.black,
           ),
-          alignment: Alignment.center,
-          child: Text(
-            title,
-            style: TextStyle(
-              fontFamily: "NotoSansCJKkrRegular",
-              fontSize: ScreenUtil().setSp(14),
-              letterSpacing: ScreenUtil().setSp(letter_spacing_small),
-              color: clickedButton == title ? app_font_grey : Colors.black,
-            ),
-          )),
-    );
+        ));
   }
 
   Container postInfo(String title, String desc) {
