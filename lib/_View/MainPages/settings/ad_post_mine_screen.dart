@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_edit_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/googlemap_bottom_sheet.dart';
 import 'package:letsgotrip/constants/common_value.dart';
+import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/widgets/channeltalk_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
@@ -21,11 +22,13 @@ class AdPostMineScreen extends StatefulWidget {
   // final int contentsId;
   // final int customerId;
   final Map paramData;
+  final Function refetchCallback;
   const AdPostMineScreen({
     Key key,
     // @required this.contentsId,
     // @required this.customerId,
     @required this.paramData,
+    this.refetchCallback,
   }) : super(key: key);
 
   @override
@@ -91,27 +94,30 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String promotionState;
-    switch (widget.paramData["promotions_state"]) {
-      case 1:
-        promotionState = "심사대기중";
-        break;
-      case 2:
-        promotionState = "승인반려";
-        break;
-      case 3:
-        promotionState = "진행중";
-        break;
-      case 4:
-        promotionState = "중지";
-        break;
-      case 5:
-        promotionState = "완료";
-        break;
-      case 6:
-        promotionState = "삭제";
-        break;
-      default:
+    if (promotionState == "") {
+      switch (widget.paramData["promotions_state"]) {
+        case 1:
+          promotionState = "심사 대기중";
+          break;
+        case 2:
+          promotionState = "승인 반려됨";
+          break;
+        case 3:
+          promotionState = "진행중";
+          currentState = "일시중지";
+          break;
+        case 4:
+          promotionState = "중지됨";
+          currentState = "게시물 홍보 진행하기";
+          break;
+        case 5:
+          promotionState = "완료";
+          break;
+        case 6:
+          promotionState = "삭제됨";
+          break;
+        default:
+      }
     }
 
     return SafeArea(
@@ -354,34 +360,34 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                               ],
                                             ),
                                           ),
-                                          SizedBox(
-                                              width: ScreenUtil().setSp(15)),
-                                          InkWell(
-                                            // onTap: () {
-                                            //   if (widget.customerId != postCustomerId) {
-                                            //     showCupertinoModalPopup(
-                                            //       context: context,
-                                            //       builder: (BuildContext context) =>
-                                            //           ReportCupertinoBottomSheet(
-                                            //               contentsId:
-                                            //                   widget.contentsId),
-                                            //     );
-                                            //   } else {
-                                            //     showCupertinoModalPopup(
-                                            //       context: context,
-                                            //       builder: (BuildContext context) =>
-                                            //           PostCupertinoBottomSheet(
-                                            //         contentsId: widget.contentsId,
-                                            //         refetchCallback: () => refetch(),
-                                            //       ),
-                                            //     );
-                                            //   }
-                                            // },
-                                            child: Image.asset(
-                                                "assets/images/three_dots_toggle_button.png",
-                                                width: ScreenUtil().setSp(28),
-                                                height: ScreenUtil().setSp(28)),
-                                          ),
+                                          // SizedBox(
+                                          //     width: ScreenUtil().setSp(15)),
+                                          // InkWell(
+                                          // onTap: () {
+                                          //   if (widget.customerId != postCustomerId) {
+                                          //     showCupertinoModalPopup(
+                                          //       context: context,
+                                          //       builder: (BuildContext context) =>
+                                          //           ReportCupertinoBottomSheet(
+                                          //               contentsId:
+                                          //                   widget.contentsId),
+                                          //     );
+                                          //   } else {
+                                          //     showCupertinoModalPopup(
+                                          //       context: context,
+                                          //       builder: (BuildContext context) =>
+                                          //           PostCupertinoBottomSheet(
+                                          //         contentsId: widget.contentsId,
+                                          //         refetchCallback: () => refetch(),
+                                          //       ),
+                                          //     );
+                                          //   }
+                                          // },
+                                          // child: Image.asset(
+                                          //     "assets/images/three_dots_toggle_button.png",
+                                          //     width: ScreenUtil().setSp(28),
+                                          //     height: ScreenUtil().setSp(28)),
+                                          // ),
                                         ],
                                       );
                                     } else {
@@ -618,11 +624,56 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                     : "반경 ${range}km"),
                             SizedBox(height: ScreenUtil().setSp(10)),
                             postInfo("클릭횟수",
-                                "(${widget.paramData["promotions_count"]} / 100회)"),
+                                "(${widget.paramData["promotions_count"]}/${widget.paramData["promotions_count_total"]})"),
                             SizedBox(height: ScreenUtil().setSp(10)),
                             postInfo("작동상태", "$promotionState"),
                             SizedBox(height: ScreenUtil().setSp(20)),
-                            postButton(context, "$currentState"),
+                            Mutation(
+                                options: MutationOptions(
+                                    document: gql(Mutations.pausePromotions),
+                                    update: (GraphQLDataProxy proxy,
+                                        QueryResult result) {},
+                                    onCompleted: (dynamic resultData) {
+                                      print("🚨 resultData : $resultData");
+                                      if (resultData["pause_promotions"]
+                                          ["result"]) {
+                                        setState(() {
+                                          promotionState =
+                                              currentState != "일시중지"
+                                                  ? "진행중"
+                                                  : "중지됨";
+                                          currentState = currentState == "일시중지"
+                                              ? "게시물 홍보 진행하기"
+                                              : "일시중지";
+                                          clickedButton = currentState;
+                                        });
+                                        widget.refetchCallback();
+                                        adResumePopup(context);
+                                      }
+                                    }),
+                                builder: (RunMutation runMutation,
+                                    QueryResult queryResult) {
+                                  return InkWell(
+                                      onTap: () {
+                                        adPausePopup(
+                                            context,
+                                            () => currentState == "일시중지"
+                                                ? runMutation({
+                                                    "promotions_id":
+                                                        widget.paramData[
+                                                            "promotions_id"],
+                                                    "type": 4,
+                                                  })
+                                                : runMutation({
+                                                    "promotions_id":
+                                                        widget.paramData[
+                                                            "promotions_id"],
+                                                    "type": 3,
+                                                  }));
+                                      },
+                                      child:
+                                          postButton(context, "$currentState"));
+                                }),
                             SizedBox(height: ScreenUtil().setSp(10)),
                             InkWell(
                                 onTap: () {
@@ -642,17 +693,24 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                     onCompleted: (dynamic resultData) {
                                       print("🚨 resultData : $resultData");
                                       if (resultData["del_promotions"]
-                                          ["result"]) {}
+                                          ["result"]) {
+                                        adDeleteDonePopup(context, 100);
+                                      }
                                     }),
                                 builder: (RunMutation runMutation,
                                     QueryResult queryResult) {
-                                  // runMutation({
-                                  //   "promotions_id": int.parse(
-                                  //       "${widget.paramData["promotions_id"]}"),
-                                  //   "customer_id": int.parse(
-                                  //       "${widget.paramData["customer_id"]}"),
-                                  // })
-                                  return postButton(context, "게시물 삭제하기");
+                                  return InkWell(
+                                      onTap: () {
+                                        adDeletePopup(
+                                            context,
+                                            () => runMutation({
+                                                  "promotions_id": int.parse(
+                                                      "${widget.paramData["promotions_id"]}"),
+                                                  "customer_id": int.parse(
+                                                      "${widget.paramData["customer_id"]}"),
+                                                }));
+                                      },
+                                      child: postButton(context, "게시물 삭제하기"));
                                 }),
                             SizedBox(height: ScreenUtil().setSp(20)),
                             Container(

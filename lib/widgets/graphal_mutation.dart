@@ -211,9 +211,9 @@ class Mutations {
 
   static final String pausePromotions = """
     mutation(
-      \$promotions_id: Int!) {
+      \$promotions_id: Int!, \$type: Int!) {
       pause_promotions(
-        promotions_id: \$promotions_id) 
+        promotions_id: \$promotions_id, type: \$type) 
       {
           result
           msg

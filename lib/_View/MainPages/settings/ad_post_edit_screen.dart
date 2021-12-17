@@ -13,7 +13,6 @@ import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 
 class AdPostEditScreen extends StatefulWidget {
@@ -485,26 +484,8 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                           print("🚨 resultData : $resultData");
                           if (resultData["change_promotions"]["result"]) {
                             seeValue("customerId").then((customerId) {
-                              Get.to(() => Query(
-                                  options: QueryOptions(
-                                    document: gql(Queries.myPromotionsList),
-                                    variables: {
-                                      "customer_id": int.parse(customerId)
-                                    },
-                                  ),
-                                  builder: (result, {refetch, fetchMore}) {
-                                    if (!result.isLoading &&
-                                        result.data != null) {
-                                      print(
-                                          "🚨 myPromotionsList result : $result");
-                                      List resultData =
-                                          result.data["my_promotions_list"];
-                                      return AdPostListScreen(
-                                          paramData: resultData);
-                                    } else {
-                                      return Container();
-                                    }
-                                  }));
+                              Get.to(() => AdPostListScreen(
+                                  customerId: int.parse(customerId)));
                             });
                           }
                         }),
@@ -513,20 +494,25 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                       return InkWell(
                           onTap: () {
                             if (isAllFilled) {
-                              editUploadAWS(imageList).then((imageUrlList) {
-                                String uploadImageList = imageUrlList.join(",");
-                                runMutation({
-                                  "promotions_id": int.parse(
-                                      "${widget.paramData["promotions_id"]}"),
-                                  "title": titleTextController.text,
-                                  "image_link": uploadImageList,
-                                  "main_text": contentTextController.text,
-                                  "location_link": address,
-                                  "phone": phoneTextController.text,
-                                  "latitude": "$lat",
-                                  "longitude": "$lng",
-                                });
-                              });
+                              adEditPopup(
+                                  context,
+                                  () => editUploadAWS(imageList)
+                                          .then((imageUrlList) {
+                                        String uploadImageList =
+                                            imageUrlList.join(",");
+                                        runMutation({
+                                          "promotions_id": int.parse(
+                                              "${widget.paramData["promotions_id"]}"),
+                                          "title": titleTextController.text,
+                                          "image_link": uploadImageList,
+                                          "main_text":
+                                              contentTextController.text,
+                                          "location_link": address,
+                                          "phone": phoneTextController.text,
+                                          "latitude": "$lat",
+                                          "longitude": "$lng",
+                                        });
+                                      }));
                             }
                           },
                           child: Container(

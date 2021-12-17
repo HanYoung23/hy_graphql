@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:letsgotrip/_View/InitPages/login_screen.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_post_list_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
@@ -81,9 +83,7 @@ savePostPopup(BuildContext context, Function saveDataCallback) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             saveDataCallback();
@@ -157,9 +157,7 @@ saveAdPopup(BuildContext context, Function saveDataCallback) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             saveDataCallback();
@@ -366,9 +364,7 @@ logOutPopup(BuildContext context) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             seeValue("loginType").then((loginType) async {
@@ -459,9 +455,7 @@ signOutPopupFirst(BuildContext context) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       Mutation(
                           options: MutationOptions(
                               document: gql(Mutations.secession),
@@ -612,9 +606,7 @@ permissionPopup(BuildContext context, String content) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             openAppSettings();
@@ -688,9 +680,7 @@ deleteCommentPopup(BuildContext context, Function runMutationCallback) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             runMutationCallback();
@@ -764,9 +754,7 @@ deletePostPopup(BuildContext context, Function runMutationCallback) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             runMutationCallback();
@@ -913,9 +901,7 @@ settingsPopup(BuildContext context) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             AppSettings.openLocationSettings();
@@ -936,7 +922,7 @@ settingsPopup(BuildContext context) {
           ));
 }
 
-adPausePopup(BuildContext context, Function callback) {
+adPausePopup(BuildContext context, dynamic callback) {
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -988,9 +974,7 @@ adPausePopup(BuildContext context, Function callback) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             Get.back();
@@ -1012,7 +996,7 @@ adPausePopup(BuildContext context, Function callback) {
           ));
 }
 
-adResumePopup(BuildContext context, Function callback) {
+adResumePopup(BuildContext context) {
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -1053,7 +1037,6 @@ adResumePopup(BuildContext context, Function callback) {
                       Spacer(),
                       InkWell(
                           onTap: () {
-                            callback();
                             Get.back();
                           },
                           child: Text(
@@ -1124,9 +1107,7 @@ adDeletePopup(BuildContext context, Function callback) {
                               color: app_font_grey,
                             ),
                           )),
-                      SizedBox(
-                        width: ScreenUtil().setSp(20),
-                      ),
+                      SizedBox(width: ScreenUtil().setSp(20)),
                       InkWell(
                           onTap: () {
                             Get.back();
@@ -1148,7 +1129,10 @@ adDeletePopup(BuildContext context, Function callback) {
           ));
 }
 
-adDeleteDonePopup(BuildContext context, Function callback) {
+adDeleteDonePopup(BuildContext context, int count) {
+  var format = NumberFormat('###,###,###,###');
+  int moneyValue = count * 100;
+  String countString = format.format(moneyValue);
   showDialog(
       context: context,
       barrierDismissible: false,
@@ -1174,7 +1158,7 @@ adDeleteDonePopup(BuildContext context, Function callback) {
                   ),
                   Container(
                     child: Text(
-                      "삭제되었습니다.(남은 횟수:47회)\n4,700원이 적립되었습니다.",
+                      "삭제되었습니다.(남은 횟수:$count회)\n$countString원이 적립되었습니다.",
                       style: TextStyle(
                         fontFamily: "NotoSansCJKkrRegular",
                         fontSize: ScreenUtil().setSp(16),
@@ -1189,11 +1173,87 @@ adDeleteDonePopup(BuildContext context, Function callback) {
                       Spacer(),
                       InkWell(
                           onTap: () {
+                            seeValue("customerId").then((customerId) {
+                              Get.off(() => AdPostListScreen(
+                                  customerId: int.parse(customerId)));
+                            });
+                          },
+                          child: Text(
+                            "확인",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                            ),
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ));
+}
+
+adEditPopup(BuildContext context, Function callback) {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(ScreenUtil().setSp(10)),
+            ),
+            content: Container(
+              width: ScreenUtil().setSp(336),
+              height: ScreenUtil().setSp(156),
+              padding: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setSp(20),
+                vertical: ScreenUtil().setSp(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: ScreenUtil().setSp(14),
+                  ),
+                  Container(
+                    child: Text(
+                      "수정하시겠습니까?\n수정이 완료되면 심사대기중으로 변경됩니다.",
+                      style: TextStyle(
+                        fontFamily: "NotoSansCJKkrRegular",
+                        fontSize: ScreenUtil().setSp(16),
+                        letterSpacing: ScreenUtil().setSp(letter_spacing),
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "취소",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrBold",
+                              fontSize: ScreenUtil().setSp(16),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                              color: app_font_grey,
+                            ),
+                          )),
+                      SizedBox(width: ScreenUtil().setSp(20)),
+                      InkWell(
+                          onTap: () {
                             callback();
                             Get.back();
                           },
                           child: Text(
-                            "확인",
+                            "수정하기",
                             style: TextStyle(
                               fontFamily: "NotoSansCJKkrBold",
                               fontSize: ScreenUtil().setSp(16),

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_list_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
-import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class AdScreen extends StatelessWidget {
   const AdScreen({Key key}) : super(key: key);
@@ -102,21 +100,8 @@ class AdScreen extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       seeValue("customerId").then((customerId) {
-                        Get.to(() => Query(
-                            options: QueryOptions(
-                              document: gql(Queries.myPromotionsList),
-                              variables: {"customer_id": int.parse(customerId)},
-                            ),
-                            builder: (result, {refetch, fetchMore}) {
-                              if (!result.isLoading && result.data != null) {
-                                print("🚨 myPromotionsList result : $result");
-                                List resultData =
-                                    result.data["my_promotions_list"];
-                                return AdPostListScreen(paramData: resultData);
-                              } else {
-                                return Container();
-                              }
-                            }));
+                        Get.to(() => AdPostListScreen(
+                            customerId: int.parse(customerId)));
                       });
                     },
                     child: Container(
