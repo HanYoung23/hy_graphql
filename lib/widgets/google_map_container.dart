@@ -96,7 +96,11 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     List<MapMarker> mapMarkers = [];
     if (dataList.length > 0) {
       for (Map data in dataList) {
-        await MapHelper.getMarkerImageFromUrl("${data["imageLink"][0]}")
+        await MapHelper.getMarkerImageFromUrl(
+                "${data["imageLink"][0]}",
+                ScreenUtil().screenHeight -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom)
             .then((markerImage) {
           mapMarkers.add(
             MapMarker(
@@ -166,6 +170,9 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     final updatedMarkers = await MapHelper.getClusterMarkers(
       _clusterManager,
       _currentZoom,
+      ScreenUtil().screenHeight -
+          MediaQuery.of(context).padding.top -
+          MediaQuery.of(context).padding.bottom,
     );
     _markers
       ..clear()

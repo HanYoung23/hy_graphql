@@ -1133,6 +1133,7 @@ adDeleteDonePopup(BuildContext context, int count) {
   var format = NumberFormat('###,###,###,###');
   int moneyValue = count * 100;
   String countString = format.format(moneyValue);
+  print("🚨 count : $count");
   showDialog(
       context: context,
       barrierDismissible: false,

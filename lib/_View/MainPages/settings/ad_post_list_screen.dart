@@ -158,64 +158,77 @@ class AdPostListScreen extends StatelessWidget {
                                                 SizedBox(
                                                     width:
                                                         ScreenUtil().setSp(10)),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${post["title"]}",
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "NotoSansCJKkrRegular",
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                        letterSpacing:
-                                                            ScreenUtil().setSp(
-                                                                letter_spacing_small),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 2,
+                                                Flexible(
+                                                  child: Container(
+                                                    height:
+                                                        ScreenUtil().setSp(94),
+                                                    // width: ScreenUtil()
+                                                    //         .screenWidth -
+                                                    //     ScreenUtil().setSp(
+                                                    //         105 + side_gap * 2),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "${post["title"]}",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansCJKkrRegular",
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(14),
+                                                            letterSpacing:
+                                                                ScreenUtil().setSp(
+                                                                    letter_spacing_small),
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 2,
+                                                        ),
+                                                        Spacer(),
+                                                        Text(
+                                                          "$promotionState",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansCJKkrBold",
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(14),
+                                                            letterSpacing:
+                                                                ScreenUtil().setSp(
+                                                                    letter_spacing_small),
+                                                            color: app_blue,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 2,
+                                                        ),
+                                                        SizedBox(
+                                                            height: ScreenUtil()
+                                                                .setSp(2)),
+                                                        Text(
+                                                          "(${post["promotions_count"]}/${post["promotions_count_total"]})",
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "NotoSansCJKkrRegular",
+                                                            fontSize:
+                                                                ScreenUtil()
+                                                                    .setSp(14),
+                                                            letterSpacing:
+                                                                ScreenUtil().setSp(
+                                                                    letter_spacing_small),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    SizedBox(
-                                                        height: ScreenUtil()
-                                                            .setSp(20)),
-                                                    Text(
-                                                      "$promotionState",
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "NotoSansCJKkrBold",
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                        letterSpacing:
-                                                            ScreenUtil().setSp(
-                                                                letter_spacing_small),
-                                                        color: app_blue,
-                                                      ),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 2,
-                                                    ),
-                                                    SizedBox(
-                                                        height: ScreenUtil()
-                                                            .setSp(2)),
-                                                    Text(
-                                                      "(${post["promotions_count"]}/${post["promotions_count_total"]})",
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "NotoSansCJKkrRegular",
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(14),
-                                                        letterSpacing:
-                                                            ScreenUtil().setSp(
-                                                                letter_spacing_small),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 )
                                               ],
                                             ),

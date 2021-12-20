@@ -188,17 +188,12 @@ class _AdPostScreenState extends State<AdPostScreen> {
                                   height: ScreenUtil().setSp(arrow_back_size))),
                         ),
                       ),
-                      InkWell(
-                        // onTap: () {
-                        //   Get.to(() => AdPostDoneScreen());
-                        // },
-                        child: Text(
-                          "홍보 게시물 작성",
-                          style: TextStyle(
-                            fontFamily: "NotoSansCJKkrBold",
-                            fontSize: ScreenUtil().setSp(appbar_title_size),
-                            letterSpacing: ScreenUtil().setSp(letter_spacing),
-                          ),
+                      Text(
+                        "홍보 게시물 작성",
+                        style: TextStyle(
+                          fontFamily: "NotoSansCJKkrBold",
+                          fontSize: ScreenUtil().setSp(appbar_title_size),
+                          letterSpacing: ScreenUtil().setSp(letter_spacing),
                         ),
                       ),
                       Expanded(

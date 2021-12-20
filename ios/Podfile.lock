@@ -62,7 +62,11 @@ PODS:
   - flutter_naver_login (0.0.1):
     - Flutter
     - naveridlogin-sdk-ios (~> 4.1.0)
+  - flutter_phone_direct_caller (0.0.1):
+    - Flutter
   - flutter_secure_storage (3.3.1):
+    - Flutter
+  - flutter_webview_plugin (0.0.1):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -79,6 +83,8 @@ PODS:
   - GoogleMaps/Base (5.2.0)
   - GoogleMaps/Maps (5.2.0):
     - GoogleMaps/Base
+  - iamport_flutter (0.0.1):
+    - Flutter
   - image_picker (0.0.1):
     - Flutter
   - kakao_flutter_sdk (0.8.2):
@@ -101,6 +107,10 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - uni_links (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
   - webview_flutter (0.0.1):
     - Flutter
 
@@ -115,10 +125,13 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_exif (from `.symlinks/plugins/flutter_exif/ios`)
   - flutter_naver_login (from `.symlinks/plugins/flutter_naver_login/ios`)
+  - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - geocoder (from `.symlinks/plugins/geocoder/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - iamport_flutter (from `.symlinks/plugins/iamport_flutter/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - kakao_flutter_sdk (from `.symlinks/plugins/kakao_flutter_sdk/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -128,6 +141,8 @@ DEPENDENCIES:
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - uni_links (from `.symlinks/plugins/uni_links/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
@@ -168,14 +183,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_exif/ios"
   flutter_naver_login:
     :path: ".symlinks/plugins/flutter_naver_login/ios"
+  flutter_phone_direct_caller:
+    :path: ".symlinks/plugins/flutter_phone_direct_caller/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  flutter_webview_plugin:
+    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   geocoder:
     :path: ".symlinks/plugins/geocoder/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
+  iamport_flutter:
+    :path: ".symlinks/plugins/iamport_flutter/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   kakao_flutter_sdk:
@@ -194,6 +215,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  uni_links:
+    :path: ".symlinks/plugins/uni_links/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
@@ -217,12 +242,15 @@ SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_exif: 8a00d834e4e728f4f870f027b4c40ca2a2ad46c8
   flutter_naver_login: 1dbf6d21aae5235cdf76a28ac79cf6871899282f
+  flutter_phone_direct_caller: bd2ffd297f371a8a6c7bfbba0196964ffe3c4358
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
   geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
   google_maps_flutter: 279865bd07e2d8751f43a3bc64bac7f6075d0c93
   GoogleMaps: 025272d5876d3b32604e5c080dc25eaf68764693
+  iamport_flutter: d443d80a5c77d7cb80357657b89965346807c56a
   image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
   kakao_flutter_sdk: 99c58edf8b0996fb735cbe9e610096555ef7472e
   naveridlogin-sdk-ios: b9d7c20677981177ed994ecb1c8c2b49f223277d
@@ -235,6 +263,8 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
+  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
 PODFILE CHECKSUM: a5adfe7971131cf0589107393691ada35be2b45f

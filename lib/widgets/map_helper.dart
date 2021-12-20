@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/widgets/map_marker.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -15,25 +16,25 @@ class MapHelper {
   double largeRatio = 0.35;
   double smallRatio = 0.24;
 
-  static Future<BitmapDescriptor> getMarkerImageFromUrl(String url) async {
+  static Future<BitmapDescriptor> getMarkerImageFromUrl(
+      String url, double markerSize) async {
     File markerImageFile;
     markerImageFile = await DefaultCacheManager().getSingleFile(url);
-    return convertImageFileToBitmapDescriptor(markerImageFile);
+    return convertImageFileToBitmapDescriptor(markerImageFile, markerSize);
   }
 
   static Future<BitmapDescriptor> convertImageFileToBitmapDescriptor(
-      File imageFile) async {
+      File imageFile, double markerSize) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
-    int size = (ScreenUtil().screenHeight * 0.24).toInt();
+    int size = (markerSize * 0.24).toInt();
     int whitePadding = ScreenUtil().setSp(8).toInt();
 
     Paint paint = Paint();
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, 0, (ScreenUtil().screenHeight * 0.24),
-        (ScreenUtil().screenHeight * 0.24));
+    final rect = Rect.fromLTWH(0, 0, (markerSize * 0.24), (markerSize * 0.24));
     canvas.drawRRect(
         RRect.fromRectAndRadius(rect, Radius.circular(ScreenUtil().setSp(10))),
         paint);
@@ -41,12 +42,41 @@ class MapHelper {
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List,
         targetWidth: size - whitePadding, targetHeight: size - whitePadding);
     final ui.FrameInfo imageFI = await codec.getNextFrame();
+
     paintImage(
         canvas: canvas,
-        rect: Rect.fromLTWH(0, 0, (ScreenUtil().screenHeight * 0.24),
-            (ScreenUtil().screenHeight * 0.24)),
+        rect: Rect.fromLTWH(0, 0, (markerSize * 0.24), (markerSize * 0.24)),
         image: imageFI.image,
         alignment: Alignment.center);
+
+    // AD
+    final TextPainter textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+    );
+    paint.color = Colors.blue;
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(
+            Rect.fromLTWH(markerSize * 0.008, markerSize * 0.006,
+                markerSize * 0.1, markerSize * 0.06),
+            Radius.circular(ScreenUtil().setSp(50))),
+        paint);
+
+    textPainter.text = TextSpan(
+      text: "AD",
+      style: TextStyle(
+        fontSize: ScreenUtil().setSp(24),
+        fontFamily: "NotoSansCJKkrBold",
+        color: Colors.white,
+        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+        // backgroundColor: Colors.blue,
+      ),
+    );
+
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(markerSize * 0.008 + textPainter.width * 0.5, markerSize * 0.006),
+    );
 
     final _image = await pictureRecorder.endRecording().toImage(size, size);
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
@@ -86,10 +116,9 @@ class MapHelper {
   /// Gets a list of markers and clusters that reside within the visible bounding box for
   /// the given [currentZoom]. For more info check [Fluster.clusters].
   static Future<List<Marker>> getClusterMarkers(
-    Fluster<MapMarker> clusterManager,
-    double currentZoom,
-    // int clusterWidth,
-  ) {
+      Fluster<MapMarker> clusterManager,
+      double currentZoom,
+      double markerSize) {
     if (clusterManager == null) return Future.value([]);
 
     return Future.wait(clusterManager.clusters(
@@ -97,14 +126,15 @@ class MapHelper {
       currentZoom.toInt(),
     ).map((mapMarker) async {
       if (mapMarker.isCluster) {
-        mapMarker.icon = await _getClusterMarker(mapMarker);
+        mapMarker.icon = await _getClusterMarker(mapMarker, markerSize);
       }
 
       return mapMarker.toMarker();
     }).toList());
   }
 
-  static Future<BitmapDescriptor> _getClusterMarker(MapMarker mapMarker) async {
+  static Future<BitmapDescriptor> _getClusterMarker(
+      MapMarker mapMarker, double markerSize) async {
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
     final Paint paint = Paint()..color = Colors.blue;
@@ -114,26 +144,26 @@ class MapHelper {
     // final DecorationImagePainter
 //
     // paint.color = Colors.red;
-    // final redrect = Rect.fromLTWH(0, 0, (ScreenUtil().screenHeight * 0.34),
-    //     (ScreenUtil().screenHeight * 0.34));
+    // final redrect = Rect.fromLTWH(0, 0, (markerSize * 0.34),
+    //     (markerSize * 0.34));
     // canvas.drawRRect(
     //     RRect.fromRectAndRadius(
     //         redrect, Radius.circular(ScreenUtil().setSp(10))),
     //     paint);
 //
-    // //
+    //
     String imageUrl = mapMarker.childMarkerId.substring(
         mapMarker.childMarkerId.indexOf(",") + 1,
         mapMarker.childMarkerId.length);
 
     File markerImageFile;
     markerImageFile = await DefaultCacheManager().getSingleFile(imageUrl);
-    int size = (ScreenUtil().screenHeight * 0.24).toInt();
+    int size = (markerSize * 0.24).toInt();
     int whitePadding = ScreenUtil().setSp(8).toInt();
     paint.color = Colors.white;
 
-    final rect = Rect.fromLTWH(0, ScreenUtil().screenHeight * 0.06,
-        (ScreenUtil().screenHeight * 0.24), (ScreenUtil().screenHeight * 0.24));
+    final rect = Rect.fromLTWH(
+        0, markerSize * 0.06, (markerSize * 0.24), (markerSize * 0.24));
     canvas.drawRRect(
         RRect.fromRectAndRadius(rect, Radius.circular(ScreenUtil().setSp(10))),
         paint);
@@ -147,14 +177,11 @@ class MapHelper {
     paintImage(
       canvas: canvas,
       rect: Rect.fromLTWH(
-          0,
-          ScreenUtil().screenHeight * 0.06,
-          (ScreenUtil().screenHeight * 0.24),
-          (ScreenUtil().screenHeight * 0.24)),
+          0, markerSize * 0.06, (markerSize * 0.24), (markerSize * 0.24)),
       image: imageFI.image,
       alignment: Alignment.center,
     );
-    // //
+    //
     paint.color = Colors.blue;
 
     String textNum = mapMarker.pointsSize.toString();
@@ -168,18 +195,14 @@ class MapHelper {
     int textLength = textNum.length;
     final double radius = ScreenUtil().setSp(40);
 
-    double blueBoxWidth =
-        textLength * ScreenUtil().screenHeight * 0.03 + radius;
-    double blueBoxHeight = ScreenUtil().screenHeight * 0.03 + radius;
+    double blueBoxWidth = textLength * markerSize * 0.03 + radius;
+    double blueBoxHeight = markerSize * 0.03 + radius;
     double offsetX = size - blueBoxWidth / 2 - whitePadding / 2;
 
     canvas.drawRRect(
         RRect.fromRectAndRadius(
-            Rect.fromLTWH(
-                offsetX,
-                ScreenUtil().screenHeight * 0.015 + whitePadding,
-                blueBoxWidth,
-                blueBoxHeight),
+            Rect.fromLTWH(offsetX, markerSize * 0.015 + whitePadding,
+                blueBoxWidth, blueBoxHeight),
             Radius.circular(ScreenUtil().setSp(50))),
         paint);
 
@@ -189,8 +212,10 @@ class MapHelper {
       text: textNum,
       style: TextStyle(
         fontSize: textSize,
-        fontWeight: FontWeight.bold,
+        // fontWeight: FontWeight.bold,
+        fontFamily: "NotoSansCJKkrBold",
         color: Colors.white,
+        letterSpacing: ScreenUtil().setSp(letter_spacing),
         // backgroundColor: Colors.blue,
       ),
     );
@@ -202,15 +227,15 @@ class MapHelper {
       //     radius - textPainter.height / 2 + textSize + whitePadding),
       Offset(
           offsetX + blueBoxWidth / 2 - textPainter.width / 2,
-          ScreenUtil().screenHeight * 0.015 -
+          markerSize * 0.015 -
               textPainter.height / 2 +
               blueBoxHeight / 2 +
               whitePadding),
     );
 
     final image = await pictureRecorder.endRecording().toImage(
-          (ScreenUtil().screenHeight * 0.34).toInt(),
-          (ScreenUtil().screenHeight * 0.34).toInt(),
+          (markerSize * 0.34).toInt(),
+          (markerSize * 0.34).toInt(),
         );
     final data = await image.toByteData(format: ImageByteFormat.png);
 

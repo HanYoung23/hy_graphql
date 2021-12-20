@@ -637,6 +637,9 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                       print("🚨 resultData : $resultData");
                                       if (resultData["pause_promotions"]
                                           ["result"]) {
+                                        currentState == "일시중지"
+                                            ? adResumePopup(context)
+                                            : print("");
                                         setState(() {
                                           promotionState =
                                               currentState != "일시중지"
@@ -648,28 +651,26 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                           clickedButton = currentState;
                                         });
                                         widget.refetchCallback();
-                                        adResumePopup(context);
                                       }
                                     }),
                                 builder: (RunMutation runMutation,
                                     QueryResult queryResult) {
                                   return InkWell(
                                       onTap: () {
-                                        adPausePopup(
-                                            context,
-                                            () => currentState == "일시중지"
-                                                ? runMutation({
-                                                    "promotions_id":
-                                                        widget.paramData[
-                                                            "promotions_id"],
-                                                    "type": 4,
-                                                  })
-                                                : runMutation({
-                                                    "promotions_id":
-                                                        widget.paramData[
-                                                            "promotions_id"],
-                                                    "type": 3,
-                                                  }));
+                                        currentState == "일시중지"
+                                            ? adPausePopup(
+                                                context,
+                                                () => runMutation({
+                                                      "promotions_id":
+                                                          widget.paramData[
+                                                              "promotions_id"],
+                                                      "type": 4,
+                                                    }))
+                                            : runMutation({
+                                                "promotions_id": widget
+                                                    .paramData["promotions_id"],
+                                                "type": 3,
+                                              });
                                       },
                                       child:
                                           postButton(context, "$currentState"));
@@ -691,10 +692,17 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                     update: (GraphQLDataProxy proxy,
                                         QueryResult result) {},
                                     onCompleted: (dynamic resultData) {
+                                      int totalCount = int.parse(
+                                          "${widget.paramData["promotions_count_total"]}");
+                                      int usedCount = int.parse(
+                                          "${resultData["del_promotions"]["msg"]}");
+
                                       print("🚨 resultData : $resultData");
                                       if (resultData["del_promotions"]
                                           ["result"]) {
-                                        adDeleteDonePopup(context, 100);
+                                        adDeleteDonePopup(
+                                            context, totalCount - usedCount);
+                                        // adDeleteDonePopup(context, 100);
                                       }
                                     }),
                                 builder: (RunMutation runMutation,
