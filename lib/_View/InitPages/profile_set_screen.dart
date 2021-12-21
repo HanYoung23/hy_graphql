@@ -111,7 +111,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(12)),
+                SizedBox(height: ScreenUtil().setSp(12)),
                 InkWell(
                   onTap: () {
                     checkGalleryPermission().then((permission) async {
@@ -160,7 +160,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                 height: ScreenUtil().setSp(101),
                                 fit: BoxFit.cover,
                               )),
-                      SizedBox(height: ScreenUtil().setHeight(3)),
+                      SizedBox(height: ScreenUtil().setSp(3)),
                       Text(
                         "변경하기",
                         style: TextStyle(
@@ -174,7 +174,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: ScreenUtil().setHeight(7)),
+                SizedBox(height: ScreenUtil().setSp(7)),
                 Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   Text(
                     "프로필 별명",
@@ -186,7 +186,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                     ),
                   )
                 ]),
-                SizedBox(height: ScreenUtil().setHeight(5)),
+                SizedBox(height: ScreenUtil().setSp(5)),
                 Mutation(
                     options: MutationOptions(
                         document: gql(Mutations.checkNickname),
@@ -284,9 +284,9 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                                 },
                                 child: Container(
                                   width: ScreenUtil().setSp(56),
-                                  height: ScreenUtil().setHeight(34),
+                                  height: ScreenUtil().setSp(34),
                                   margin: EdgeInsets.symmetric(
-                                      vertical: ScreenUtil().setHeight(5),
+                                      vertical: ScreenUtil().setSp(5),
                                       horizontal: ScreenUtil().setSp(8)),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(
@@ -309,7 +309,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             ),
                           ));
                     }),
-                SizedBox(height: ScreenUtil().setHeight(5)),
+                SizedBox(height: ScreenUtil().setSp(5)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -324,7 +324,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: ScreenUtil().setHeight(15)),
+                SizedBox(height: ScreenUtil().setSp(15)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -399,7 +399,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                         child: Container(
                           width: ScreenUtil().screenWidth,
                           padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setHeight(13)),
+                              vertical: ScreenUtil().setSp(13)),
                           decoration: BoxDecoration(
                               color: isAllFilled
                                   ? app_blue

@@ -57,6 +57,8 @@ class _AdPostScreenState extends State<AdPostScreen> {
       "phoneText": phoneTextController.text,
       "contentText": contentTextController.text,
       "addrresText": address,
+      "lat": lat,
+      "lng": lng,
     };
     String adSaveData = jsonEncode(paramMap);
 
@@ -93,8 +95,12 @@ class _AdPostScreenState extends State<AdPostScreen> {
       titleTextController.text = paramMap["titleText"];
       phoneTextController.text = paramMap["phoneText"];
       contentTextController.text = paramMap["contentText"];
+
       setState(() {
-        address = paramMap["addressText"];
+        address =
+            paramMap["addressText"] != null ? paramMap["addressText"] : "";
+        lat = paramMap["lat"] != null ? paramMap["lat"] : "";
+        lng = paramMap["lng"] != null ? paramMap["lng"] : "";
       });
     });
 
@@ -268,7 +274,7 @@ class _AdPostScreenState extends State<AdPostScreen> {
                           alignment: Alignment.centerLeft,
                           height: ScreenUtil().setSp(40),
                           child: Text(
-                            address == "" ? '주소를 남겨보세요(필수사항)' : address,
+                            address == "" ? '주소를 남겨보세요(필수사항)' : "$address",
                             style: TextStyle(
                               color:
                                   address == "" ? app_font_grey : Colors.black,

@@ -6,11 +6,17 @@ import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
+import 'package:letsgotrip/widgets/place_search_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PostalWeb extends StatelessWidget {
   final Function callback;
   const PostalWeb({Key key, @required this.callback}) : super(key: key);
+
+  placeQueryCallback(Map queryMap) {
+    Get.back();
+    callback(queryMap);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +30,7 @@ class PostalWeb extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Container(
+            color: Colors.white,
             width: ScreenUtil().screenWidth,
             // height: ScreenUtil().screenHeight,
             child: Column(
@@ -45,7 +52,7 @@ class PostalWeb extends StatelessWidget {
                               width: ScreenUtil().setSp(arrow_back_size),
                               height: ScreenUtil().setSp(arrow_back_size))),
                       Text(
-                        "장소 설정",
+                        "주소 검색",
                         style: TextStyle(
                           fontFamily: "NotoSansCJKkrBold",
                           fontSize: ScreenUtil().setSp(appbar_title_size),
@@ -58,6 +65,34 @@ class PostalWeb extends StatelessWidget {
                           height: ScreenUtil().setSp(arrow_back_size)),
                     ],
                   ),
+                ),
+                Row(
+                  children: [
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => PlaceSearchScreen(
+                              callback: (query) => placeQueryCallback(query),
+                              // callback: callback,
+                            ));
+                      },
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(side_gap),
+                            vertical: ScreenUtil().setSp(10)),
+                        child: Text(
+                          "장소명으로 검색",
+                          style: TextStyle(
+                            fontFamily: "NotoSansCJKkrBold",
+                            fontSize: ScreenUtil().setSp(appbar_title_size),
+                            letterSpacing: ScreenUtil().setSp(letter_spacing),
+                            color: app_font_grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Container(
                   height: ScreenUtil().screenHeight -

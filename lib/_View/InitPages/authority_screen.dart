@@ -39,8 +39,6 @@ class AuthorityScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        // margin:
-                        //     EdgeInsets.only(top: ScreenUtil().setHeight(94)),
                         child: Image.asset(
                             "assets/images/authority/authority_title.png",
                             width: ScreenUtil().setSp(226),

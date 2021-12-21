@@ -395,7 +395,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                     }
                                   }),
                             ),
-                            SizedBox(height: ScreenUtil().setHeight(16)),
+                            SizedBox(height: ScreenUtil().setSp(16)),
                             Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: ScreenUtil().setSp(16),
@@ -416,7 +416,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                         .setSp(letter_spacing_x_small),
                                   ),
                                 )),
-                            SizedBox(height: ScreenUtil().setHeight(10)),
+                            SizedBox(height: ScreenUtil().setSp(10)),
                             Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: ScreenUtil().setSp(20)),
@@ -432,7 +432,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                 // overflow: TextOverflow.fade,
                               ),
                             ),
-                            SizedBox(height: ScreenUtil().setHeight(10)),
+                            SizedBox(height: ScreenUtil().setSp(10)),
                             Container(
                               padding: EdgeInsets.symmetric(
                                   horizontal: ScreenUtil().setSp(20)),

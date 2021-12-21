@@ -198,21 +198,24 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
           ),
           body: Container(
             // height: ScreenUtil().screenHeight,
-            margin: EdgeInsets.all(ScreenUtil().setSp(20)),
+            // padding:
+            //     EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(side_gap)),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(height: ScreenUtil().setSp(side_gap)),
                   Container(
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().setSp(44),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setSp(side_gap)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: Container(
-                            // width: ScreenUtil().setSp(appbar_title_size * 3),
                             alignment: Alignment.centerLeft,
                             child: InkWell(
                                 onTap: () {
@@ -243,12 +246,19 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                   Container(
                     width: ScreenUtil().screenWidth,
                     height: ScreenUtil().setSp(240),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setSp(side_gap)),
                     child: GoogleMap(
+                      compassEnabled: false,
                       mapToolbarEnabled: false,
-                      zoomGesturesEnabled: false,
-                      myLocationButtonEnabled: false,
-                      myLocationEnabled: false,
+                      rotateGesturesEnabled: false,
+                      scrollGesturesEnabled: false,
                       zoomControlsEnabled: false,
+                      zoomGesturesEnabled: false,
+                      liteModeEnabled: false,
+                      tiltGesturesEnabled: false,
+                      myLocationEnabled: false,
+                      myLocationButtonEnabled: false,
                       initialCameraPosition: CameraPosition(
                         target: photoLatLng,
                         zoom: 14,
@@ -289,6 +299,8 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                   SizedBox(height: ScreenUtil().setSp(6)),
                   Container(
                     width: ScreenUtil().screenWidth,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setSp(side_gap)),
                     child: Text(
                       widget.paramMap["address"],
                       style: TextStyle(
@@ -314,6 +326,8 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                     },
                     child: Container(
                       width: ScreenUtil().screenWidth,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setSp(side_gap)),
                       child: Text(
                         "반경 $range",
                         style: TextStyle(
@@ -344,6 +358,8 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                     },
                     child: Container(
                       width: ScreenUtil().screenWidth,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setSp(side_gap)),
                       child: Text(
                         count == "0회" ? "횟수 설정하기" : "$count",
                         style: TextStyle(
@@ -363,32 +379,36 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                     children: [contentTitle("장소(상호)명 입력")],
                   ),
                   SizedBox(height: ScreenUtil().setSp(10)),
-                  TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: locationTextController,
-                      minLines: 1,
-                      maxLines: 1,
-                      onChanged: (String value) {
-                        checkIsAllFilled();
-                      },
-                      style: TextStyle(
-                          fontFamily: "NotoSansCJKkrRegular",
-                          letterSpacing:
-                              ScreenUtil().setSp(letter_spacing_small),
-                          fontSize: ScreenUtil().setSp(14),
-                          color: Colors.black),
-                      decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: app_grey)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)),
-                          hintText: "해당 장소명을 남겨주세요.",
-                          hintStyle: TextStyle(
-                              fontFamily: "NotoSansCJKkrRegular",
-                              letterSpacing:
-                                  ScreenUtil().setSp(letter_spacing_small),
-                              color: app_font_grey,
-                              fontSize: ScreenUtil().setSp(14)))),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: ScreenUtil().setSp(side_gap)),
+                    child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: locationTextController,
+                        minLines: 1,
+                        maxLines: 1,
+                        onChanged: (String value) {
+                          checkIsAllFilled();
+                        },
+                        style: TextStyle(
+                            fontFamily: "NotoSansCJKkrRegular",
+                            letterSpacing:
+                                ScreenUtil().setSp(letter_spacing_small),
+                            fontSize: ScreenUtil().setSp(14),
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: app_grey)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+                            hintText: "해당 장소명을 남겨주세요.",
+                            hintStyle: TextStyle(
+                                fontFamily: "NotoSansCJKkrRegular",
+                                letterSpacing:
+                                    ScreenUtil().setSp(letter_spacing_small),
+                                color: app_font_grey,
+                                fontSize: ScreenUtil().setSp(14)))),
+                  ),
                   SizedBox(height: ScreenUtil().setSp(60)),
                   Container(
                     alignment: Alignment.center,
@@ -435,6 +455,8 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                     child: Container(
                         width: ScreenUtil().screenWidth,
                         height: ScreenUtil().setSp(50),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setSp(side_gap)),
                         decoration: BoxDecoration(
                           borderRadius:
                               BorderRadius.circular(ScreenUtil().setSp(10)),
@@ -455,7 +477,8 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
                           ),
                         )),
                   ),
-                  SizedBox(height: ScreenUtil().setSp(14)),
+                  // SizedBox(height: ScreenUtil().setSp(14)),
+                  // SizedBox(height: ScreenUtil().setSp(side_gap)),
                 ],
               ),
             ),
@@ -463,13 +486,16 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
     );
   }
 
-  Text contentTitle(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontFamily: "NotoSansCJKkrBold",
-        letterSpacing: ScreenUtil().setSp(letter_spacing),
-        fontSize: ScreenUtil().setSp(16),
+  Container contentTitle(String title) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setSp(side_gap)),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontFamily: "NotoSansCJKkrBold",
+          letterSpacing: ScreenUtil().setSp(letter_spacing),
+          fontSize: ScreenUtil().setSp(16),
+        ),
       ),
     );
   }

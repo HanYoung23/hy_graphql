@@ -382,8 +382,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
-                                          height: ScreenUtil().setHeight(10)),
+                                      SizedBox(height: ScreenUtil().setSp(10)),
                                       Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal:
@@ -404,8 +403,7 @@ class _PlaceDetailScreenState extends State<PlaceDetailScreen> {
                                                   .setSp(letter_spacing_small),
                                             ),
                                           )),
-                                      SizedBox(
-                                          height: ScreenUtil().setHeight(10)),
+                                      SizedBox(height: ScreenUtil().setSp(10)),
                                       Row(
                                         children: [
                                           Column(
