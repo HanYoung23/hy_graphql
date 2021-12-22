@@ -30,8 +30,22 @@ class Mutations {
 """;
 
   static final String createContents = """
-    mutation(\$category_id: Int!, \$contents_title: String!,\$location_link: String!,\$image_link: String!,\$main_text: String!,\$tags: String!,\$customer_id: Int!,\$star_rating1: Int!,\$star_rating2: Int!,\$star_rating3: Int!,\$star_rating4: Int!,\$latitude: String!,\$longitude: String!) {
-      createContents(category_id: \$category_id, contents_title: \$contents_title,location_link: \$location_link ,image_link: \$image_link ,main_text: \$main_text ,tags: \$tags ,customer_id: \$customer_id ,star_rating1: \$star_rating1 ,star_rating2: \$star_rating2 ,star_rating3: \$star_rating3 ,star_rating4: \$star_rating4 ,latitude: \$latitude ,longitude: \$longitude) 
+    mutation(\$category_id: Int!, \$contents_title: String!,\$location_link: String!,\$image_link: String!,\$thumbnail: String!,\$main_text: String!,\$tags: String!,\$customer_id: Int!,\$star_rating1: Int!,\$star_rating2: Int!,\$star_rating3: Int!,\$star_rating4: Int!,\$latitude: String!,\$longitude: String!) {
+      createContents(
+        category_id: \$category_id,
+       contents_title: \$contents_title,
+      location_link: \$location_link,
+      image_link: \$image_link,
+      thumbnail: \$thumbnail,
+      main_text: \$main_text,
+      tags: \$tags,
+      customer_id: \$customer_id,
+      star_rating1: \$star_rating1,
+      star_rating2: \$star_rating2,
+      star_rating3: \$star_rating3,
+      star_rating4: \$star_rating4,
+      latitude: \$latitude,
+      longitude: \$longitude,)
       {
           result
           msg
@@ -100,8 +114,22 @@ class Mutations {
 """;
 
   static final String changeContents = """
-    mutation(\$type: String!, \$contents_id: Int!, \$category_id: Int!, \$contents_title: String!, \$location_link : String!, \$image_link : String!, \$main_text : String!, \$tags : String!, \$star_rating1 : Int!, \$star_rating2 : Int!, \$star_rating3 : Int!, \$star_rating4 : Int!, \$latitude : String!, \$longitude : String! ) {
-      change_contents(type : \$type, contents_id: \$contents_id, category_id: \$category_id, contents_title : \$contents_title, location_link:\$location_link, image_link:\$image_link, main_text:\$main_text, tags:\$tags, star_rating1:\$star_rating1,star_rating2:\$star_rating2,star_rating3:\$star_rating3,star_rating4:\$star_rating4, latitude:\$latitude, longitude:\$longitude)
+    mutation(\$type: String!, \$contents_id: Int!, \$category_id: Int!, \$contents_title: String!, \$location_link : String!, \$image_link : String!, \$thumbnail : String!, \$main_text : String!, \$tags : String!, \$star_rating1 : Int!, \$star_rating2 : Int!, \$star_rating3 : Int!, \$star_rating4 : Int!, \$latitude : String!, \$longitude : String! ) {
+       change_contents(type : \$type,
+       contents_id: \$contents_id,
+       category_id: \$category_id,
+       contents_title : \$contents_title,
+       location_link:\$location_link,
+       thumbnail: \$thumbnail,
+       image_link:\$image_link,
+       main_text:\$main_text,
+       tags:\$tags,
+       star_rating1:\$star_rating1,
+       star_rating2:\$star_rating2,
+       star_rating3:\$star_rating3,
+       star_rating4:\$star_rating4,
+       latitude:\$latitude,
+       longitude:\$longitude)
       {
           result
           msg
@@ -152,6 +180,7 @@ class Mutations {
   static final String newPromotions = """
     mutation(
       \$title: String!, 
+      \$thumbnail: String!,
       \$image_link: String!,
       \$main_text: String!,
       \$location_link: String!,
@@ -165,6 +194,7 @@ class Mutations {
       \$longitude: String!) {
       new_promotions(
         title: \$title, 
+        thumbnail: \$thumbnail,
         image_link: \$image_link,
         main_text: \$main_text,
         location_link: \$location_link,
@@ -187,6 +217,7 @@ class Mutations {
     mutation(
       \$promotions_id: Int!, 
       \$title: String!, 
+      \$thumbnail: String!,
       \$image_link: String!,
       \$main_text: String!,
       \$location_link: String!,
@@ -196,6 +227,7 @@ class Mutations {
       change_promotions(
         promotions_id: \$promotions_id, 
         title: \$title, 
+        thumbnail:\$thumbnail, 
         image_link: \$image_link,
         main_text: \$main_text,
         location_link: \$location_link,

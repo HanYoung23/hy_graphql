@@ -81,7 +81,7 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                 }));
       }
     });
-    print("🚨 ${widget.paramData}");
+    // print("🚨 ${widget.paramData}");
     setParamData();
     super.initState();
   }

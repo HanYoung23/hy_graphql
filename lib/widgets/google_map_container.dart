@@ -217,7 +217,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
               // print("🚨 resultData : ${resultData.length}");
-              // print("🚨 resultData : $resultData");
+              print("🚨 resultData : ${resultData["photo_list_map"]}");
               if (resultData != null &&
                   resultData["photo_list_map"].length > 0) {
                 List<Map> newPhotoMapList = [];

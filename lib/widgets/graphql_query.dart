@@ -29,6 +29,7 @@ class Queries {
       {
           count
           results
+          type
         }
     }
 """;
@@ -361,6 +362,28 @@ class Queries {
           longitude,
           promotions_state,
           customer_id,
+      }
+    }
+""";
+
+  static final String promotionsDetail = """
+    query promotions_detail(\$customer_id: Int!, \$promotions_id: Int!) {
+      promotions_detail(customer_id: \$customer_id, promotions_id: \$promotions_id) 
+      {
+          promotions_id,
+          title,
+          image_link,
+          main_text,
+          location_link,
+          business_name,
+          customer_id,
+          phone,
+          nick_name,
+          regist_date,
+          edit_date,
+          latitude,
+          longitude,
+          
       }
     }
 """;

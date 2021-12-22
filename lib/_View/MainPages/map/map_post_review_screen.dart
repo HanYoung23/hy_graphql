@@ -42,13 +42,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
     return Mutation(
         options: MutationOptions(
             document: gql(Mutations.createContents),
-            update: (GraphQLDataProxy proxy, QueryResult result) {
-              if (result.hasException) {
-                // print(['optimistic', result.exception.toString()]);
-              } else {
-                // Do something
-              }
-            },
+            update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
               // print("🚨 resultData : $resultData");
 
@@ -175,6 +169,8 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                                   awsUrlList.add(photoUrl);
                                 }
                               });
+                              String thumbnail = "${awsUrlList[0]}";
+                              awsUrlList.removeAt(0);
                               String imageLink = awsUrlList.join(",");
                               String tag = "${widget.paramMap["tags"]}";
                               String tags = "";
@@ -193,6 +189,7 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                                     "${widget.paramMap["contentsTitle"]}",
                                 "location_link":
                                     widget.paramMap["locationLink"],
+                                "thumbnail": thumbnail,
                                 "image_link": imageLink,
                                 "main_text": widget.paramMap["mainText"],
                                 "tags": tags,

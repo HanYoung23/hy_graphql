@@ -498,12 +498,16 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                                   context,
                                   () => editUploadAWS(imageList)
                                           .then((imageUrlList) {
+                                        List propsList = imageUrlList;
+                                        String thumbnail = propsList[0];
+                                        propsList.removeAt(0);
                                         String uploadImageList =
-                                            imageUrlList.join(",");
+                                            propsList.join(",");
                                         runMutation({
                                           "promotions_id": int.parse(
                                               "${widget.paramData["promotions_id"]}"),
                                           "title": titleTextController.text,
+                                          "thumbnail": thumbnail,
                                           "image_link": uploadImageList,
                                           "main_text":
                                               contentTextController.text,

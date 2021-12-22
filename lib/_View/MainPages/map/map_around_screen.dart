@@ -10,6 +10,7 @@ import 'package:letsgotrip/_View/MainPages/map/place_detail_ad_screen.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/homepage.dart';
+import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/add_button.dart';
 import 'package:letsgotrip/widgets/calendar_bottom_sheet.dart';
 import 'package:letsgotrip/widgets/filter_button.dart';
@@ -631,15 +632,30 @@ class _MapAroundScreenState extends State<MapAroundScreen> {
                 )
               : InkWell(
                   onTap: () {
-                    Map mapData = {
-                      "promotionsId": imageMaps[index]["promotionsId"],
-                      "imageLink": imageMaps[index]["imageLink"],
-                      "mainText": imageMaps[index]["mainText"],
-                      "locationLink": imageMaps[index]["locationLink"],
-                    };
-                    Get.to(() => PlaceDetailAdScreen(
-                          mapData: mapData,
-                        ));
+                    // print("🚨 ${imageMaps[index]["promotionsId"]}");
+                    seeValue("customerId").then((customerId) {
+                      Get.to(() => Query(
+                          options: QueryOptions(
+                            document: gql(Queries.promotionsDetail),
+                            variables: {
+                              "customer_id": int.parse(customerId),
+                              "promotions_id": int.parse(
+                                  "${imageMaps[index]["promotionsId"]}"),
+                            },
+                          ),
+                          builder: (result, {refetch, fetchMore}) {
+                            if (!result.isLoading && result.data != null) {
+                              // print("🚨 promotionsDetail result : $result");
+
+                              Map mapData = result.data["promotions_detail"][0];
+                              return PlaceDetailAdScreen(
+                                paramData: mapData,
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }));
+                    });
                   },
                   child: Stack(
                     children: [

@@ -186,6 +186,8 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                                   awsUrlList.add(photoUrl);
                                 }
                               });
+                              String thumbnail = awsUrlList[0];
+                              awsUrlList.removeAt(0);
                               String imageLink = awsUrlList.join(",");
                               String tag = "${widget.paramMap["tags"]}";
                               String tags = "";
@@ -206,6 +208,7 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                                     "${widget.paramMap["contentsTitle"]}",
                                 "location_link":
                                     widget.paramMap["locationLink"],
+                                "thumbnail": thumbnail,
                                 "image_link": imageLink,
                                 "main_text": widget.paramMap["mainText"],
                                 "tags": tags,

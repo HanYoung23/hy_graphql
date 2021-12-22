@@ -101,10 +101,13 @@ class Payment extends StatelessWidget {
                     awsUrlList.add(photoUrl);
                   }
                 });
+                String thumbnail = awsUrlList[0];
+                awsUrlList.removeAt(0);
                 String imageLink = awsUrlList.join(",");
 
                 runMutation({
                   "title": "${paramData["titleText"]}",
+                  "thumbnail": "$thumbnail",
                   "image_link": "$imageLink",
                   "main_text": "${paramData["contentText"]}",
                   "location_link": "${paramData["address"]}",

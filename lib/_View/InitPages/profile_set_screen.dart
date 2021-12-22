@@ -365,7 +365,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                             if (isAllFilled) {
                               if (pickedImage != null) {
                                 File file = File(pickedImage.path);
-                                uploadAWS([file]).then((awsLink) {
+                                profileImageUploadAWS([file]).then((awsLink) {
                                   if (awsLink[0] != null) {
                                     runMutation({
                                       "nick_name": "${nicknameController.text}",
