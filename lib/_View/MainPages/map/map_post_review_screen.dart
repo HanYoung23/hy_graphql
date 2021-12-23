@@ -44,9 +44,9 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
             document: gql(Mutations.createContents),
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
-              // print("🚨 resultData : $resultData");
+              print("🚨 resultData : $resultData");
 
-              if (resultData["createContents"]["result"]) {
+              if (resultData["createContents_n"]["result"]) {
                 CameraPosition cameraPosition = CameraPosition(
                     bearing: 0.0,
                     target: LatLng(
@@ -58,7 +58,8 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                 gmWholeImages.setCameraPosition(cameraPosition);
                 Get.offAll(() => HomePage());
               } else {
-                Get.snackbar("error", "${resultData["createContents"]["msg"]}");
+                Get.snackbar(
+                    "error", "${resultData["createContents_n"]["msg"]}");
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
@@ -181,7 +182,6 @@ class _MapPostReviewScreenState extends State<MapPostReviewScreen> {
                               }
                               String customerId =
                                   await storage.read(key: "customerId");
-
                               runMutation({
                                 "customer_id": int.parse(customerId),
                                 "category_id": widget.paramMap["categoryId"],

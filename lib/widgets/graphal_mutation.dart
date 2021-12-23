@@ -31,7 +31,7 @@ class Mutations {
 
   static final String createContents = """
     mutation(\$category_id: Int!, \$contents_title: String!,\$location_link: String!,\$image_link: String!,\$thumbnail: String!,\$main_text: String!,\$tags: String!,\$customer_id: Int!,\$star_rating1: Int!,\$star_rating2: Int!,\$star_rating3: Int!,\$star_rating4: Int!,\$latitude: String!,\$longitude: String!) {
-      createContents(
+      createContents_n(
         category_id: \$category_id,
        contents_title: \$contents_title,
       location_link: \$location_link,
@@ -48,7 +48,6 @@ class Mutations {
       longitude: \$longitude,)
       {
           result
-          msg
         }
     }
 """;
@@ -159,7 +158,7 @@ class Mutations {
 
   static final String photoListMap = """
     mutation(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!,) {
-      photo_list_map(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2, 
+      photo_list_map_n(latitude1: \$latitude1, latitude2: \$latitude2,longitude1: \$longitude1, longitude2:\$longitude2, category_id:\$category_id, date1:\$date1, date2:\$date2, 
       )
       {
         results

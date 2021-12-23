@@ -105,6 +105,9 @@ class Payment extends StatelessWidget {
                 awsUrlList.removeAt(0);
                 String imageLink = awsUrlList.join(",");
 
+                // print(
+                //     "🚨 title: ${paramData["titleText"]}, thumbnail: https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-12-23 13:47:48.539384.png,image_link: https://travelmapimageflutter140446-dev.s3.ap-northeast-2.amazonaws.com/public/2021-12-23 13:47:49.942467.png,main_text: ${paramData["contentText"]},location_link: ${paramData["address"]},phone: ${paramData["phoneText"]}, customer_id: ${paramData["customerId"]},ranges: ${paramData["range"]},promotions_count_total: ${paramData["count"]},business_name: ${paramData["businessName"]},point_total: ${paramData["amount"]},latitude: ${paramData["lat"]},longitude: ${paramData["lng"]},");
+
                 runMutation({
                   "title": "${paramData["titleText"]}",
                   "thumbnail": "$thumbnail",

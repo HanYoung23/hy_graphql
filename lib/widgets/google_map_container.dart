@@ -97,14 +97,15 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
     if (dataList.length > 0) {
       for (Map data in dataList) {
         await MapHelper.getMarkerImageFromUrl(
-                "${data["imageLink"][0]}",
+                "${data["thumbnail"][0]}",
                 ScreenUtil().screenHeight -
                     MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom)
+                    MediaQuery.of(context).padding.bottom,
+                data["type"])
             .then((markerImage) {
           mapMarkers.add(
             MapMarker(
-              id: "${data["contentsId"]},${data["imageLink"][0]}",
+              id: "${data["contentsId"]},${data["thumbnail"][0]}",
               position: LatLng(data["latitude"], data["longitude"]),
               icon: markerImage,
             ),
@@ -217,31 +218,35 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
             update: (GraphQLDataProxy proxy, QueryResult result) {},
             onCompleted: (dynamic resultData) {
               // print("🚨 resultData : ${resultData.length}");
-              print("🚨 resultData : ${resultData["photo_list_map"]}");
+              // print("🚨 resultData : ${resultData["photo_list_map_n"]}");
               if (resultData != null &&
-                  resultData["photo_list_map"].length > 0) {
+                  resultData["photo_list_map_n"].length > 0) {
                 List<Map> newPhotoMapList = [];
                 List queryItemList = [];
-                for (Map resultData in resultData["photo_list_map"]
+                for (Map resultData in resultData["photo_list_map_n"]
                     ["results"]) {
-                  int customerId = int.parse("${resultData["customer_id"]}");
-                  int contentsId = int.parse("${resultData["contents_id"]}");
-                  List<String> imageLink =
-                      ("${resultData["image_link"]}").split(",");
+                  // int customerId = int.parse("${resultData["customer_id"]}");
+                  int contentsId = int.parse("${resultData["id"]}");
+                  List<String> thumbnail = [];
+                  if (resultData["thumbnail"] != null) {
+                    thumbnail = ("${resultData["thumbnail"]}").split(",");
+                  }
                   double latitude = double.parse("${resultData["latitude"]}");
                   double longitude = double.parse("${resultData["longitude"]}");
 
                   Map<dynamic, dynamic> photoDataMap = {
-                    "customerId": customerId,
+                    // "customerId": customerId,
                     "contentsId": contentsId,
-                    "imageLink": imageLink,
+                    "thumbnail": thumbnail,
+                    "type": "${resultData["type"]}",
                     "latitude": latitude,
                     "longitude": longitude,
                   };
 
-                  if (!currentItemList.contains("$imageLink")) {
+                  if (!currentItemList.contains("$thumbnail") &&
+                      resultData["thumbnail"] != null) {
                     newPhotoMapList.add(photoDataMap);
-                    queryItemList.add("$imageLink");
+                    queryItemList.add("$thumbnail");
                   }
                 }
 
@@ -257,7 +262,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
                     photoMapList = previousList;
                     currentItemList = previousItemList;
                   });
-                  // print("🚨 photomaplist : ${photoMapList.length}");
+                  print("🚨 photomaplist : ${photoMapList.length}");
                   // print("🚨 currentItemList 2 : ${currentItemList.length}");
                   setMapMarker(photoMapList);
                 }

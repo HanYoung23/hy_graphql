@@ -17,14 +17,15 @@ class MapHelper {
   double smallRatio = 0.24;
 
   static Future<BitmapDescriptor> getMarkerImageFromUrl(
-      String url, double markerSize) async {
+      String url, double markerSize, String type) async {
     File markerImageFile;
     markerImageFile = await DefaultCacheManager().getSingleFile(url);
-    return convertImageFileToBitmapDescriptor(markerImageFile, markerSize);
+    return convertImageFileToBitmapDescriptor(
+        markerImageFile, markerSize, type);
   }
 
   static Future<BitmapDescriptor> convertImageFileToBitmapDescriptor(
-      File imageFile, double markerSize) async {
+      File imageFile, double markerSize, String type) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
@@ -50,34 +51,37 @@ class MapHelper {
         alignment: Alignment.center);
 
     // AD
-    final TextPainter textPainter = TextPainter(
-      textDirection: TextDirection.ltr,
-    );
-    paint.color = Colors.blue;
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromLTWH(markerSize * 0.008, markerSize * 0.006,
-                markerSize * 0.1, markerSize * 0.06),
-            Radius.circular(ScreenUtil().setSp(50))),
-        paint);
+    if (type == "promotions") {
+      print("🚨 type : $type");
+      final TextPainter textPainter = TextPainter(
+        textDirection: TextDirection.ltr,
+      );
+      paint.color = Colors.blue;
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromLTWH(markerSize * 0.008, markerSize * 0.006,
+                  markerSize * 0.1, markerSize * 0.06),
+              Radius.circular(ScreenUtil().setSp(50))),
+          paint);
 
-    textPainter.text = TextSpan(
-      text: "AD",
-      style: TextStyle(
-        fontSize: ScreenUtil().setSp(24),
-        fontFamily: "NotoSansCJKkrBold",
-        color: Colors.white,
-        letterSpacing: ScreenUtil().setSp(letter_spacing_small),
-        // backgroundColor: Colors.blue,
-      ),
-    );
+      textPainter.text = TextSpan(
+        text: "AD",
+        style: TextStyle(
+          fontSize: ScreenUtil().setSp(24),
+          fontFamily: "NotoSansCJKkrBold",
+          color: Colors.white,
+          letterSpacing: ScreenUtil().setSp(letter_spacing_small),
+          // backgroundColor: Colors.blue,
+        ),
+      );
 
-    textPainter.layout();
-    textPainter.paint(
-      canvas,
-      Offset(markerSize * 0.008 + textPainter.width * 0.5, markerSize * 0.006),
-    );
-
+      textPainter.layout();
+      textPainter.paint(
+        canvas,
+        Offset(
+            markerSize * 0.008 + textPainter.width * 0.5, markerSize * 0.006),
+      );
+    }
     final _image = await pictureRecorder.endRecording().toImage(size, size);
     final data = await _image.toByteData(format: ui.ImageByteFormat.png);
 
@@ -101,15 +105,19 @@ class MapHelper {
         BaseCluster cluster,
         double lng,
         double lat,
-      ) =>
-          MapMarker(
-        id: cluster.id.toString(),
-        position: LatLng(lat, lng),
-        isCluster: cluster.isCluster,
-        clusterId: cluster.id,
-        pointsSize: cluster.pointsSize,
-        childMarkerId: cluster.childMarkerId,
-      ),
+      ) {
+        // print("🚨 cluster child marker id : ${cluster.childMarkerId}");
+        // print("🚨 cluster id : ${cluster.id}");
+        // print("🚨 cluster marekr id : ${cluster.markerId}");
+        return MapMarker(
+          id: cluster.id.toString(),
+          position: LatLng(lat, lng),
+          isCluster: cluster.isCluster,
+          clusterId: cluster.id,
+          pointsSize: cluster.pointsSize,
+          childMarkerId: cluster.childMarkerId,
+        );
+      },
     );
   }
 

@@ -29,10 +29,11 @@ class Queries {
       {
           count
           results
-          type
         }
     }
 """;
+// count
+  // results
 
   static final String photoListMapCount = """
     query photo_list_map(\$latitude1: String!, \$latitude2: String!,\$longitude1: String!,\$longitude2: String!, \$category_id : Int!, \$date1 : Date!, \$date2 : Date!, \$page: Int!) {

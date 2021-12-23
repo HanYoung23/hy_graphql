@@ -13,6 +13,7 @@ import 'package:letsgotrip/constants/keys.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:http/http.dart' as http;
 import 'package:letsgotrip/widgets/location_unable_screen.dart';
+import 'package:letsgotrip/widgets/place_search_screen.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 
 class MapPostCreationDetailScreen extends StatefulWidget {
@@ -202,7 +203,7 @@ class _MapPostCreationDetailScreenState
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
                                   onTap: () {
-                                    Get.to(() => PostalWeb(
+                                    Get.to(() => PlaceSearchScreen(
                                           callback: (address) =>
                                               callBackAddress(address),
                                         ));

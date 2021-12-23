@@ -13,6 +13,7 @@ import 'package:letsgotrip/functions/aws_upload.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
+import 'package:letsgotrip/widgets/place_search_screen.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 
 class AdPostEditScreen extends StatefulWidget {
@@ -275,7 +276,7 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                 SizedBox(height: ScreenUtil().setSp(10)),
                 InkWell(
                   onTap: () {
-                    Get.to(() => PostalWeb(
+                    Get.to(() => PlaceSearchScreen(
                           callback: (address) => callBackAddress(address),
                         ));
                   },

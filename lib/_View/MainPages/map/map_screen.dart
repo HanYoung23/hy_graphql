@@ -160,7 +160,7 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
               };
 
               if (!result.isLoading && result.data != null) {
-                List<Map> photoMapMarkerList = [];
+                // List<Map> photoMapMarkerList = [];
                 // print(
                 // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
                 // "🚨 result photo : ${result.data["photo_list_map"]["results"]}");
@@ -182,49 +182,49 @@ class _MapScreenState extends State<MapScreen> with WidgetsBindingObserver {
                 //   }
                 // });
 
-                if (result.data != null) {
-                  if (result.data["photo_list_map"]["results"].length > 0) {
-                    for (Map resultData in result.data["photo_list_map"]
-                        ["results"]) {
-                      int customerId =
-                          int.parse("${resultData["customer_id"]}");
-                      int contentsId =
-                          int.parse("${resultData["contents_id"]}");
-                      int categoryId =
-                          int.parse("${resultData["category_id"]}");
-                      List<String> imageLink =
-                          ("${resultData["image_link"]}").split(",");
-                      List<String> tags = ("${resultData["tags"]}").split(",");
-                      List<int> starRating = [
-                        resultData["star_rating1"],
-                        resultData["star_rating2"],
-                        resultData["star_rating3"],
-                        resultData["star_rating4"],
-                      ];
-                      double latitude =
-                          double.parse("${resultData["latitude"]}");
-                      double longitude =
-                          double.parse("${resultData["longitude"]}");
+                // if (result.data != null) {
+                // if (result.data["photo_list_map"]["results"].length > 0) {
+                // for (Map resultData in result.data["photo_list_map"]
+                //     ["results"]) {
+                //   int customerId =
+                //       int.parse("${resultData["customer_id"]}");
+                //   int contentsId =
+                //       int.parse("${resultData["contents_id"]}");
+                //   int categoryId =
+                //       int.parse("${resultData["category_id"]}");
+                //   List<String> imageLink =
+                //       ("${resultData["image_link"]}").split(",");
+                //   List<String> tags = ("${resultData["tags"]}").split(",");
+                //   List<int> starRating = [
+                //     resultData["star_rating1"],
+                //     resultData["star_rating2"],
+                //     resultData["star_rating3"],
+                //     resultData["star_rating4"],
+                //   ];
+                //   double latitude =
+                //       double.parse("${resultData["latitude"]}");
+                //   double longitude =
+                //       double.parse("${resultData["longitude"]}");
 
-                      Map<dynamic, dynamic> photoDataMap = {
-                        "customerId": customerId,
-                        "contentsId": contentsId,
-                        "categoryId": categoryId,
-                        "contentsTitle": "${resultData["contents_title"]}",
-                        "locationLink": "${resultData["location_link"]}",
-                        "imageLink": imageLink,
-                        "mainText": "${resultData["main_text"]}",
-                        "tags": tags,
-                        "starRating": starRating,
-                        "latitude": latitude,
-                        "longitude": longitude,
-                        "registDate": "${resultData["regist_date"]}"
-                      };
+                //   Map<dynamic, dynamic> photoDataMap = {
+                //     "customerId": customerId,
+                //     "contentsId": contentsId,
+                //     "categoryId": categoryId,
+                //     "contentsTitle": "${resultData["contents_title"]}",
+                //     "locationLink": "${resultData["location_link"]}",
+                //     "imageLink": imageLink,
+                //     "mainText": "${resultData["main_text"]}",
+                //     "tags": tags,
+                //     "starRating": starRating,
+                //     "latitude": latitude,
+                //     "longitude": longitude,
+                //     "registDate": "${resultData["regist_date"]}"
+                //   };
 
-                      photoMapMarkerList.add(photoDataMap);
-                    }
-                  }
-                }
+                // photoMapMarkerList.add(photoDataMap);
+                // }
+                // }
+                // }
 
                 return Scaffold(
                   key: scaffoldKey,

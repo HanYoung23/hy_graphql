@@ -128,15 +128,18 @@ class PostalWeb extends StatelessWidget {
             double lat = value.latitude;
             Map addressMap = {"address": address, "lat": lat, "lng": lng};
             // print("🚨 address : $addressMap");
-            callback(addressMap);
-            Get.back();
+            // callback(addressMap);
+            // Get.back();
+            placeQueryCallback(addressMap);
           });
         });
   }
 
   Future getAddressCoordinate(String address) async {
+    print("🚨 address : $address");
     var addresses =
         await Geocoder.google(googleWebKey).findAddressesFromQuery(address);
+    print("🚨 address : $addresses");
     var coord = addresses.first.coordinates;
     return coord;
   }

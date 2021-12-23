@@ -11,6 +11,7 @@ import 'package:letsgotrip/_View/MainPages/map/edit_post_review_screen.dart';
 import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/location_unable_screen.dart';
+import 'package:letsgotrip/widgets/place_search_screen.dart';
 import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
@@ -220,7 +221,7 @@ class _EditPostCreationDetailScreenState
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
                                   onTap: () {
-                                    Get.to(() => PostalWeb(
+                                    Get.to(() => PlaceSearchScreen(
                                           callback: (address) =>
                                               callBackAddress(address),
                                         ));

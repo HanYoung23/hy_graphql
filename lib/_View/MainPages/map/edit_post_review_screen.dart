@@ -75,7 +75,8 @@ class _EditPostReviewScreenState extends State<EditPostReviewScreen> {
                 gmWholeImages.setCameraPosition(cameraPosition);
                 Get.offAll(() => HomePage());
               } else {
-                Get.snackbar("error", "${resultData["createContents"]["msg"]}");
+                Get.snackbar(
+                    "error", "${resultData["change_contents"]["msg"]}");
               }
             }),
         builder: (RunMutation runMutation, QueryResult queryResult) {
