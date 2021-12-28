@@ -11,7 +11,6 @@ import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/place_search_screen.dart';
-import 'package:letsgotrip/widgets/postal.dart';
 
 class AdPostScreen extends StatefulWidget {
   const AdPostScreen({
@@ -171,6 +170,7 @@ class _AdPostScreenState extends State<AdPostScreen> {
         body: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           child: Container(
+            color: Colors.white,
             // height: ScreenUtil().screenHeight -
             //     MediaQuery.of(context).padding.top -
             //     MediaQuery.of(context).padding.bottom,

@@ -14,7 +14,6 @@ import 'package:letsgotrip/functions/user_location.dart';
 import 'package:http/http.dart' as http;
 import 'package:letsgotrip/widgets/location_unable_screen.dart';
 import 'package:letsgotrip/widgets/place_search_screen.dart';
-import 'package:letsgotrip/widgets/postal.dart';
 
 class MapPostCreationDetailScreen extends StatefulWidget {
   final Map paramMap;

@@ -18,7 +18,7 @@ class _PlaceSearchScreenState extends State<PlaceSearchScreen> {
   List queryList;
 
   setQueryList(List result) {
-    print("🚨 callback : $result");
+    // print("🚨 callback : $result");
     setState(() {
       queryList = result;
     });
@@ -36,6 +36,7 @@ class _PlaceSearchScreenState extends State<PlaceSearchScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Container(
+          color: Colors.white,
           width: ScreenUtil().screenWidth,
           height: ScreenUtil().screenHeight,
           child: SingleChildScrollView(

@@ -14,7 +14,6 @@ import 'package:letsgotrip/functions/material_popup.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphal_mutation.dart';
 import 'package:letsgotrip/widgets/place_search_screen.dart';
-import 'package:letsgotrip/widgets/postal.dart';
 
 class AdPostEditScreen extends StatefulWidget {
   final Map paramData;
@@ -188,6 +187,7 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
         body: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           child: Container(
+            color: Colors.white,
             // height: ScreenUtil().screenHeight -
             //     MediaQuery.of(context).padding.top -
             //     MediaQuery.of(context).padding.bottom,

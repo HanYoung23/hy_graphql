@@ -12,7 +12,6 @@ import 'package:letsgotrip/functions/user_location.dart';
 import 'package:letsgotrip/widgets/loading_indicator.dart';
 import 'package:letsgotrip/widgets/location_unable_screen.dart';
 import 'package:letsgotrip/widgets/place_search_screen.dart';
-import 'package:letsgotrip/widgets/postal.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/constants/keys.dart';
 import 'package:http/http.dart' as http;
