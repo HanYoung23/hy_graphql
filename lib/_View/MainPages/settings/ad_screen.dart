@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_list_screen.dart';
 import 'package:letsgotrip/_View/MainPages/settings/ad_post_screen.dart';
 import 'package:letsgotrip/constants/common_value.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 class AdScreen extends StatelessWidget {
-  const AdScreen({Key key}) : super(key: key);
+  final int customerId;
+  const AdScreen({Key key, @required this.customerId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -128,14 +132,31 @@ class AdScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: ScreenUtil().setSp(20)),
-                  Text(
-                    "2,400원",
-                    style: TextStyle(
-                      fontFamily: "NotoSansCJKkrRegular",
-                      fontSize: ScreenUtil().setSp(font_s),
-                      letterSpacing: ScreenUtil().setSp(letter_spacing),
-                    ),
-                  ),
+                  Query(
+                      options: QueryOptions(
+                        document: gql(Queries.customerPoint),
+                        variables: {"customer_id": customerId},
+                      ),
+                      builder: (result, {refetch, fetchMore}) {
+                        if (!result.isLoading) {
+                          // print("🚨 customerPoint : $result");
+                          int point = result.data["customer_point"]["point"];
+
+                          var format = NumberFormat('###,###,###,###');
+                          String pointValue = format.format(point);
+
+                          return Text(
+                            "$pointValue 원",
+                            style: TextStyle(
+                              fontFamily: "NotoSansCJKkrRegular",
+                              fontSize: ScreenUtil().setSp(font_s),
+                              letterSpacing: ScreenUtil().setSp(letter_spacing),
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
                 ],
               ),
             ),

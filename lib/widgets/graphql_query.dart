@@ -388,4 +388,13 @@ class Queries {
       }
     }
 """;
+
+  static final String customerPoint = """
+    query customer_point(\$customer_id: Int!) {
+      customer_point(customer_id: \$customer_id) 
+      {
+          point
+        }
+    }
+""";
 }

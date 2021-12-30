@@ -304,7 +304,10 @@ class StoreMenuDrawer extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.to(() => AdScreen());
+                          seeValue("customerId").then((customerId) {
+                            Get.to(() =>
+                                AdScreen(customerId: int.parse(customerId)));
+                          });
                         },
                         child: Container(
                           width: ScreenUtil().screenWidth,
