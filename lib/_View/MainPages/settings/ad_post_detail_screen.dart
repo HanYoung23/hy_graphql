@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -159,17 +162,34 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
         CameraPosition(target: photoLatLng, zoom: zoom)));
   }
 
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
+  }
+
   @override
   void initState() {
     setState(() {
       photoLatLng = LatLng(widget.paramMap["lat"], widget.paramMap["lng"]);
     });
     WidgetsBinding.instance.addObserver(this);
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(), 'assets/images/location_dot.png')
+    // BitmapDescriptor.fromAssetImage(
+    //         ImageConfiguration(), 'assets/images/location_dot.png')
+    //     .then((value) {
+    //   setState(() {
+    //     icon = value;
+    //   });
+    // });
+    getBytesFromAsset(
+            'assets/images/location_dot.png', ScreenUtil().setSp(100).round())
         .then((value) {
       setState(() {
-        icon = value;
+        icon = BitmapDescriptor.fromBytes(value);
       });
     });
     super.initState();

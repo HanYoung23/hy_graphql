@@ -78,8 +78,11 @@ class MapHelper {
       textPainter.layout();
       textPainter.paint(
         canvas,
+        // Offset(
+        //     markerSize * 0.008 + textPainter.width * 0.5, markerSize * 0.006),
         Offset(
-            markerSize * 0.008 + textPainter.width * 0.5, markerSize * 0.006),
+            markerSize * 0.1 / 2 - textPainter.width * 0.5 + markerSize * 0.008,
+            markerSize * 0.06 - textPainter.height - markerSize * 0.006),
       );
     }
     final _image = await pictureRecorder.endRecording().toImage(size, size);

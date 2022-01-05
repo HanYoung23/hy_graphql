@@ -464,50 +464,61 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                               child: Row(
                                 children: [
                                   Spacer(),
-                                  InkWell(
-                                    onTap: () {
-                                      showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            PhoneCallCupertinoBottomSheet(
-                                          phone: "${widget.paramData["phone"]}",
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: ScreenUtil().setSp(0.5),
-                                            color: app_font_grey),
-                                        borderRadius: BorderRadius.circular(
-                                            ScreenUtil().setSp(10)),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: ScreenUtil().setSp(12),
-                                        vertical: ScreenUtil().setSp(8),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/images/phone_icon.png",
-                                            width: ScreenUtil().setSp(14),
-                                            height: ScreenUtil().setSp(14),
-                                          ),
-                                          SizedBox(
-                                              width: ScreenUtil().setSp(8)),
-                                          Text(
-                                            "전화연결",
-                                            style: TextStyle(
-                                              fontFamily: "NotoSansCJKkrBold",
-                                              fontSize: ScreenUtil().setSp(14),
-                                              letterSpacing: ScreenUtil()
-                                                  .setSp(letter_spacing_small),
+                                  "${widget.paramData["phone"]}" != "null"
+                                      ? InkWell(
+                                          onTap: () {
+                                            showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  PhoneCallCupertinoBottomSheet(
+                                                phone:
+                                                    "${widget.paramData["phone"]}",
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width:
+                                                      ScreenUtil().setSp(0.5),
+                                                  color: app_font_grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      ScreenUtil().setSp(10)),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setSp(12),
+                                              vertical: ScreenUtil().setSp(8),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Image.asset(
+                                                  "assets/images/phone_icon.png",
+                                                  width: ScreenUtil().setSp(14),
+                                                  height:
+                                                      ScreenUtil().setSp(14),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        ScreenUtil().setSp(8)),
+                                                Text(
+                                                  "전화연결",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrBold",
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14),
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(
+                                                            letter_spacing_small),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                        )
+                                      : Container(),
                                   SizedBox(width: ScreenUtil().setSp(6)),
                                   InkWell(
                                     onTap: () {
@@ -657,23 +668,58 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
                                     QueryResult queryResult) {
                                   return InkWell(
                                       onTap: () {
-                                        currentState == "일시중지"
-                                            ? adPausePopup(
-                                                context,
-                                                () => runMutation({
-                                                      "promotions_id":
-                                                          widget.paramData[
+                                        "${widget.paramData["promotions_count"]}" !=
+                                                "${widget.paramData["promotions_count_total"]}"
+                                            ? currentState == "일시중지"
+                                                ? adPausePopup(
+                                                    context,
+                                                    () => runMutation({
+                                                          "promotions_id": widget
+                                                                  .paramData[
                                                               "promotions_id"],
-                                                      "type": 4,
-                                                    }))
-                                            : runMutation({
-                                                "promotions_id": widget
-                                                    .paramData["promotions_id"],
-                                                "type": 3,
-                                              });
+                                                          "type": 4,
+                                                        }))
+                                                : runMutation({
+                                                    "promotions_id":
+                                                        widget.paramData[
+                                                            "promotions_id"],
+                                                    "type": 3,
+                                                  })
+                                            : print("");
                                       },
-                                      child:
-                                          postButton(context, "$currentState"));
+                                      child: "${widget.paramData["promotions_count"]}" !=
+                                              "${widget.paramData["promotions_count_total"]}"
+                                          ? postButton(context, "$currentState")
+                                          : Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal:
+                                                      ScreenUtil().setSp(20)),
+                                              width: ScreenUtil().screenWidth,
+                                              height: ScreenUtil().setSp(50),
+                                              decoration: BoxDecoration(
+                                                color: app_grey,
+                                                border: Border.all(
+                                                    width:
+                                                        ScreenUtil().setSp(0.5),
+                                                    color: app_font_grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        ScreenUtil().setSp(5)),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "게시물 홍보 진행하기",
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      "NotoSansCJKkrRegular",
+                                                  fontSize:
+                                                      ScreenUtil().setSp(14),
+                                                  letterSpacing: ScreenUtil()
+                                                      .setSp(
+                                                          letter_spacing_small),
+                                                  color: app_font_grey,
+                                                ),
+                                              )));
                                 }),
                             SizedBox(height: ScreenUtil().setSp(10)),
                             InkWell(
@@ -745,7 +791,8 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().setSp(50),
         decoration: BoxDecoration(
-          color: clickedButton == title ? app_grey : Colors.white,
+          // color: clickedButton == title ? app_grey : Colors.white,
+          color: Colors.white,
           border:
               Border.all(width: ScreenUtil().setSp(0.5), color: app_font_grey),
           borderRadius: BorderRadius.circular(ScreenUtil().setSp(5)),
@@ -757,7 +804,8 @@ class _AdPostMineScreenState extends State<AdPostMineScreen> {
             fontFamily: "NotoSansCJKkrRegular",
             fontSize: ScreenUtil().setSp(14),
             letterSpacing: ScreenUtil().setSp(letter_spacing_small),
-            color: clickedButton == title ? app_font_grey : Colors.black,
+            // color: clickedButton == title ? app_font_grey : Colors.black,
+            color: Colors.black,
           ),
         ));
   }

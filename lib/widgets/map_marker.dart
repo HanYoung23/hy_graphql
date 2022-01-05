@@ -2,8 +2,12 @@ import 'package:fluster/fluster.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:letsgotrip/_View/MainPages/map/place_detail_ad_screen.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
+import 'package:letsgotrip/_View/MainPages/settings/ad_post_detail_screen.dart';
 import 'package:letsgotrip/storage/storage.dart';
+import 'package:letsgotrip/widgets/graphql_query.dart';
 
 /// [Fluster] can only handle markers that conform to the [Clusterable] abstract class.
 ///
@@ -14,6 +18,7 @@ import 'package:letsgotrip/storage/storage.dart';
 class MapMarker extends Clusterable {
   final String id;
   final LatLng position;
+  final String type;
   // final String imageUrl;
   BitmapDescriptor icon;
 
@@ -22,6 +27,7 @@ class MapMarker extends Clusterable {
       @required this.id,
       @required this.position,
       // @required this.imageUrl,
+      @required this.type,
       this.icon,
       isCluster = false,
       clusterId,
@@ -45,21 +51,47 @@ class MapMarker extends Clusterable {
       ),
       icon: icon,
       onTap: () {
-        // print("🚨 child: $childMarkerId");
-        // print("🚨 id: $id");
-
-        seeValue("customerId").then((customerId) {
-          int contentsId;
-          if (childMarkerId != null) {
-            contentsId = int.parse(
-                childMarkerId.substring(0, childMarkerId.indexOf(",")));
-            Get.to(() => PlaceDetailScreen(
-                contentsId: contentsId, customerId: int.parse(customerId)));
-          } else {
+        print("🚨 child: $childMarkerId");
+        print("🚨 id: $id");
+        print("🚨 type : $type");
+        int contentsId;
+        if (type != "promotions") {
+          seeValue("customerId").then((customerId) {
+            if (childMarkerId != null) {
+              contentsId = int.parse(
+                  childMarkerId.substring(0, childMarkerId.indexOf(",")));
+              Get.to(() => PlaceDetailScreen(
+                  contentsId: contentsId, customerId: int.parse(customerId)));
+            } else {
+              contentsId = int.parse(id.substring(0, id.indexOf(",")));
+              Get.to(() => PlaceDetailScreen(
+                  contentsId: contentsId, customerId: int.parse(customerId)));
+            }
+          });
+        } else {
+          seeValue("customerId").then((customerId) {
             contentsId = int.parse(id.substring(0, id.indexOf(",")));
-            Get.to(() => PlaceDetailScreen(
-                contentsId: contentsId, customerId: int.parse(customerId)));
-          }
-        });
+            Get.to(() => Query(
+                options: QueryOptions(
+                  document: gql(Queries.promotionsDetail),
+                  variables: {
+                    "customer_id": int.parse(customerId),
+                    "promotions_id": contentsId,
+                  },
+                ),
+                builder: (result, {refetch, fetchMore}) {
+                  if (!result.isLoading && result.data != null) {
+                    // print("🚨 promotionsDetail result : $result");
+
+                    Map mapData = result.data["promotions_detail"][0];
+                    return PlaceDetailAdScreen(
+                      paramData: mapData,
+                    );
+                  } else {
+                    return Container();
+                  }
+                }));
+          });
+        }
       });
 }

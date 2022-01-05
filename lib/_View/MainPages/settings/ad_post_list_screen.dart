@@ -256,35 +256,48 @@ class AdPostListScreen extends StatelessWidget {
                                                   SizedBox(
                                                       height: ScreenUtil()
                                                           .setSp(20)),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setSp(8)),
-                                                      Image.asset(
-                                                        "assets/images/phone_icon.png",
-                                                        width: ScreenUtil()
-                                                            .setSp(14),
-                                                        height: ScreenUtil()
-                                                            .setSp(14),
-                                                      ),
-                                                      SizedBox(
-                                                          width: ScreenUtil()
-                                                              .setSp(8)),
-                                                      Text(
-                                                        "${post["phone"]}",
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              "NotoSansCJKkrRegular",
-                                                          fontSize: ScreenUtil()
-                                                              .setSp(14),
-                                                          letterSpacing:
-                                                              ScreenUtil().setSp(
-                                                                  letter_spacing_small),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                  "${post["phone"]}" != "null"
+                                                      ? Row(
+                                                          children: [
+                                                            SizedBox(
+                                                                width:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            8)),
+                                                            Image.asset(
+                                                              "assets/images/phone_icon.png",
+                                                              width:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          14),
+                                                              height:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          14),
+                                                            ),
+                                                            SizedBox(
+                                                                width:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            8)),
+                                                            Text(
+                                                              "${post["phone"]}",
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "NotoSansCJKkrRegular",
+                                                                fontSize:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            14),
+                                                                letterSpacing:
+                                                                    ScreenUtil()
+                                                                        .setSp(
+                                                                            letter_spacing_small),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : Container(),
                                                   SizedBox(
                                                       height: ScreenUtil()
                                                           .setSp(10)),

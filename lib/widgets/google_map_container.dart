@@ -108,6 +108,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               id: "${data["contentsId"]},${data["thumbnail"][0]}",
               position: LatLng(data["latitude"], data["longitude"]),
               icon: markerImage,
+              type: "${data["type"]}",
             ),
           );
         });

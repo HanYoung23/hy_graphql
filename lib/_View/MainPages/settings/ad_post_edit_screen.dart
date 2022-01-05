@@ -485,7 +485,7 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                           print("🚨 resultData : $resultData");
                           if (resultData["change_promotions"]["result"]) {
                             seeValue("customerId").then((customerId) {
-                              Get.to(() => AdPostListScreen(
+                              Get.off(() => AdPostListScreen(
                                   customerId: int.parse(customerId)));
                             });
                           }
@@ -500,7 +500,17 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                                   () => editUploadAWS(imageList)
                                           .then((imageUrlList) {
                                         List propsList = imageUrlList;
-                                        String thumbnail = propsList[0];
+                                        // print("🚨 propslist : $propsList");
+                                        String thumbnail = "";
+                                        if (propsList[propsList.length - 1] ==
+                                            "thumbnail") {
+                                          propsList.remove("thumbnail");
+                                          thumbnail = propsList[0];
+                                        } else {
+                                          thumbnail =
+                                              "${widget.paramData["thumbnaiil"]}";
+                                        }
+                                        // print("🚨 propslist2 : $propsList");
                                         propsList.removeAt(0);
                                         String uploadImageList =
                                             propsList.join(",");
