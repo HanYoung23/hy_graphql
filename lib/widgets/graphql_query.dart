@@ -363,6 +363,7 @@ class Queries {
           longitude,
           promotions_state,
           customer_id,
+          thumbnail,
       }
     }
 """;

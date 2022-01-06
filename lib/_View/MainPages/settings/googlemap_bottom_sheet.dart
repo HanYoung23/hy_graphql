@@ -70,6 +70,7 @@ class _GooglemapBottomSheetState extends State<GooglemapBottomSheet> {
                   target: widget.latlng,
                   zoom: 18,
                 ),
+                markers: createMarker(widget.latlng),
               ),
             )),
           ),
@@ -98,5 +99,16 @@ class _GooglemapBottomSheetState extends State<GooglemapBottomSheet> {
         ],
       ),
     );
+  }
+
+  createMarker(LatLng position) {
+    return [
+      Marker(
+        draggable: false,
+        markerId: MarkerId("marker_1"),
+        position: position,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      )
+    ].toSet();
   }
 }

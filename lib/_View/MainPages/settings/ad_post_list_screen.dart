@@ -82,6 +82,7 @@ class AdPostListScreen extends StatelessWidget {
                             return resultData.length > 0
                                 ? ListView(
                                     children: resultData.map((post) {
+                                      // print("🚨 post : $post");
                                       String dateString = post["regist_date"];
                                       if (post["edit_date"] != null) {
                                         dateString = post["edit_date"];

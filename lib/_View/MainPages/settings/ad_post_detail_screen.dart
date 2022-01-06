@@ -186,7 +186,7 @@ class _AdPostDetailScreenState extends State<AdPostDetailScreen>
     //   });
     // });
     getBytesFromAsset(
-            'assets/images/location_dot.png', ScreenUtil().setSp(100).round())
+            'assets/images/location_dot.png', ScreenUtil().setSp(70).round())
         .then((value) {
       setState(() {
         icon = BitmapDescriptor.fromBytes(value);

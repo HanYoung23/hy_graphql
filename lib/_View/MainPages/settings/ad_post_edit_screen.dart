@@ -506,12 +506,12 @@ class _AdPostEditScreenState extends State<AdPostEditScreen> {
                                             "thumbnail") {
                                           propsList.remove("thumbnail");
                                           thumbnail = propsList[0];
+                                          propsList.removeAt(0);
                                         } else {
                                           thumbnail =
-                                              "${widget.paramData["thumbnaiil"]}";
+                                              "${widget.paramData["thumbnail"]}";
                                         }
-                                        // print("🚨 propslist2 : $propsList");
-                                        propsList.removeAt(0);
+
                                         String uploadImageList =
                                             propsList.join(",");
                                         runMutation({

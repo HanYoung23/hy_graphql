@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_ad_screen.dart';
 import 'package:letsgotrip/_View/MainPages/map/place_detail_screen.dart';
-import 'package:letsgotrip/_View/MainPages/settings/ad_post_detail_screen.dart';
 import 'package:letsgotrip/storage/storage.dart';
 import 'package:letsgotrip/widgets/graphql_query.dart';
 
@@ -27,7 +26,7 @@ class MapMarker extends Clusterable {
       @required this.id,
       @required this.position,
       // @required this.imageUrl,
-      @required this.type,
+      this.type,
       this.icon,
       isCluster = false,
       clusterId,
@@ -55,7 +54,7 @@ class MapMarker extends Clusterable {
         print("🚨 id: $id");
         print("🚨 type : $type");
         int contentsId;
-        if (type != "promotions") {
+        if ("$type" != "promotions") {
           seeValue("customerId").then((customerId) {
             if (childMarkerId != null) {
               contentsId = int.parse(

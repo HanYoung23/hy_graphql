@@ -418,50 +418,61 @@ class _PlaceDetailAdScreenState extends State<PlaceDetailAdScreen> {
                               child: Row(
                                 children: [
                                   Spacer(),
-                                  InkWell(
-                                    onTap: () {
-                                      showCupertinoModalPopup(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            PhoneCallCupertinoBottomSheet(
-                                          phone: "${widget.paramData["phone"]}",
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: ScreenUtil().setSp(0.5),
-                                            color: app_font_grey),
-                                        borderRadius: BorderRadius.circular(
-                                            ScreenUtil().setSp(10)),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: ScreenUtil().setSp(12),
-                                        vertical: ScreenUtil().setSp(8),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            "assets/images/phone_icon.png",
-                                            width: ScreenUtil().setSp(14),
-                                            height: ScreenUtil().setSp(14),
-                                          ),
-                                          SizedBox(
-                                              width: ScreenUtil().setSp(8)),
-                                          Text(
-                                            "전화연결",
-                                            style: TextStyle(
-                                              fontFamily: "NotoSansCJKkrBold",
-                                              fontSize: ScreenUtil().setSp(14),
-                                              letterSpacing: ScreenUtil()
-                                                  .setSp(letter_spacing_small),
+                                  "${widget.paramData["phone"]}" != "null"
+                                      ? InkWell(
+                                          onTap: () {
+                                            showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  PhoneCallCupertinoBottomSheet(
+                                                phone:
+                                                    "${widget.paramData["phone"]}",
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width:
+                                                      ScreenUtil().setSp(0.5),
+                                                  color: app_font_grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      ScreenUtil().setSp(10)),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  ScreenUtil().setSp(12),
+                                              vertical: ScreenUtil().setSp(8),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Image.asset(
+                                                  "assets/images/phone_icon.png",
+                                                  width: ScreenUtil().setSp(14),
+                                                  height:
+                                                      ScreenUtil().setSp(14),
+                                                ),
+                                                SizedBox(
+                                                    width:
+                                                        ScreenUtil().setSp(8)),
+                                                Text(
+                                                  "전화연결",
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "NotoSansCJKkrBold",
+                                                    fontSize:
+                                                        ScreenUtil().setSp(14),
+                                                    letterSpacing: ScreenUtil()
+                                                        .setSp(
+                                                            letter_spacing_small),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                        )
+                                      : Container(),
                                   SizedBox(width: ScreenUtil().setSp(6)),
                                   InkWell(
                                     onTap: () {
