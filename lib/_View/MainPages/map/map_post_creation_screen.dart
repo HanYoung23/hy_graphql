@@ -445,7 +445,9 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
                   Spacer(),
                   InkWell(
                       onTap: () {
+                        // print("🚨 photolatlng : $photoLatLng");
                         if (isAllFilled) {
+                          photoLatLng.remove(LatLng(1.0, 1.0));
                           Map paramMap = {
                             "categoryId": category,
                             "imageLink": imageList,
@@ -510,6 +512,7 @@ class _MapPostCreationScreenState extends State<MapPostCreationScreen> {
           right: 0,
           child: InkWell(
             onTap: () {
+              print(index);
               imageList.removeAt(index);
               photoLatLng.removeAt(index);
               checkIsAllFilled();

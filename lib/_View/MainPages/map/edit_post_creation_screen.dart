@@ -465,6 +465,7 @@ class _EditPostCreationScreenState extends State<EditPostCreationScreen> {
                   InkWell(
                       onTap: () {
                         if (isAllFilled) {
+                          photoLatLng.remove(LatLng(1.0, 1.0));
                           Map paramMap = {
                             "categoryId": category,
                             "imageLink": imageList,

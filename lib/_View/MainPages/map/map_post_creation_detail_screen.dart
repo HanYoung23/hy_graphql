@@ -63,10 +63,13 @@ class _MapPostCreationDetailScreenState
       double lat = widget.paramMap["imageLatLngList"][0].latitude;
       double lng = widget.paramMap["imageLatLngList"][0].longitude;
 
+      print("🚨 latlng : $lat , $lng");
+
       final url = Uri.parse(
           'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$googleWebKey&language=ko');
       final response = await http.get(url);
 
+      print("🚨 address : ${response.body}");
       String addressJSON = await jsonDecode(response.body.toString())['results']
               [0]['formatted_address']
           .replaceAll("대한민국 ", "");

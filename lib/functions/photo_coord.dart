@@ -47,7 +47,8 @@ Future pullPhotoCoordnate(File photo) async {
     print("🚨 GPSLongitude data : $latValue, $lngValue");
     return LatLng(double.parse(latValue), double.parse(lngValue));
   } else {
-    return null;
+    // print("🚨 GPSLongitude data : ${result.exifData["gps"]}");
+    return LatLng(1.0, 1.0);
   }
 }
 
